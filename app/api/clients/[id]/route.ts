@@ -1,0 +1,51 @@
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/db";
+import { createClient } from "@/lib/supabase/server";
+
+export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const { id } = await params;
+
+  const org = await prisma.organization.findUnique({
+    where: { id },
+    include: {
+      domains: {
+        orderBy: { order: "asc" },
+        include: {
+          capabilities: { orderBy: { order: "asc" } },
+        },
+      },
+      stakeholders: { orderBy: { name: "asc" } },
+      kpis: { orderBy: { name: "asc" } },
+      achievements: { orderBy: { priority: "desc" } },
+      sessions: { orderBy: { createdAt: "desc" }, take: 5 },
+    },
+  });
+
+  if (!org) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  return NextResponse.json(org);
+}
+
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const { id } = await params;
+  const body = await req.json();
+
+  const org = await prisma.organization.update({
+    where: { id },
+    data: {
+      name: body.name,
+      industry: body.industry,
+      size: body.size,
+      notes: body.notes,
+    },
+  });
+
+  return NextResponse.json(org);
+}

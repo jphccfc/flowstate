@@ -1,0 +1,329 @@
+"use client";
+
+import { useState, useEffect, use } from "react";
+import {
+  calculateDomainScore,
+  getGapSeverity,
+  getOverallMaturity,
+  type DomainScore,
+} from "@/lib/scoring/engine";
+
+type Capability = {
+  id: string;
+  name: string;
+  asIsScore: number | null;
+  toBeScore: number | null;
+  importanceScore: number | null;
+  gapScore: number | null;
+  asIsState: string | null;
+  toBeState: string | null;
+  opportunities: string[];
+  weaknesses: string[];
+};
+
+type Domain = {
+  id: string;
+  name: string;
+  color: string | null;
+  capabilities: Capability[];
+};
+
+type KPI = { id: string; name: string; currentValue: string | null; targetValue: string | null };
+type Achievement = { id: string; description: string; priority: number | null; targetDate: string | null; status: string };
+
+type Org = {
+  id: string;
+  name: string;
+  industry: string | null;
+  size: string | null;
+  notes: string | null;
+  domains: Domain[];
+  kpis: KPI[];
+  achievements: Achievement[];
+};
+
+export default function ReportPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
+  const [org, setOrg] = useState<Org | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`/api/clients/${id}`)
+      .then((r) => r.json())
+      .then(setOrg)
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  if (loading) return <div className="flex-1 flex items-center justify-center text-[var(--muted)]">Loading...</div>;
+  if (!org) return null;
+
+  const domainScores: DomainScore[] = org.domains.map((d) => {
+    const caps = d.capabilities.map((c) => ({
+      id: c.id,
+      name: c.name,
+      asIsScore: c.asIsScore,
+      toBeScore: c.toBeScore,
+      importanceScore: c.importanceScore,
+      gapScore: c.gapScore,
+    }));
+    const { averageAsIs, averageToBe, averageGap } = calculateDomainScore(caps);
+    return { id: d.id, name: d.name, color: d.color, averageAsIs, averageToBe, averageGap, capabilities: caps };
+  });
+
+  const overallMaturity = getOverallMaturity(domainScores);
+  const allCaps = org.domains.flatMap((d) => d.capabilities);
+  const topGaps = [...allCaps]
+    .filter((c) => c.gapScore != null && c.gapScore > 0)
+    .sort((a, b) => (b.gapScore ?? 0) - (a.gapScore ?? 0))
+    .slice(0, 5);
+
+  const allOpportunities = allCaps.flatMap((c) => c.opportunities ?? []).filter(Boolean);
+  const allWeaknesses = allCaps.flatMap((c) => c.weaknesses ?? []).filter(Boolean);
+
+  const today = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+
+  return (
+    <div className="max-w-4xl mx-auto w-full px-4 py-8">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-xl font-bold text-[var(--foreground)]">Executive Report</h1>
+          <p className="text-sm text-[var(--muted)]">Generated {today}</p>
+        </div>
+        <button
+          onClick={() => window.print()}
+          className="px-4 py-2 bg-[var(--primary)] text-white rounded-lg text-sm font-medium hover:bg-[#1a3352] transition-colors"
+        >
+          Print / Export PDF
+        </button>
+      </div>
+
+      <div className="space-y-6 print:space-y-4" id="report">
+        {/* Cover */}
+        <div className="bg-[var(--primary)] text-white rounded-xl p-8 print:rounded-none">
+          <div className="text-xs font-semibold uppercase tracking-widest text-white/60 mb-2">
+            Capability Assessment Report
+          </div>
+          <h2 className="text-3xl font-bold mb-1">{org.name}</h2>
+          {org.industry && <div className="text-white/70 text-sm">{org.industry}</div>}
+          <div className="mt-6 flex items-center gap-6">
+            <div>
+              <div className="text-3xl font-bold">{overallMaturity}/10</div>
+              <div className="text-sm text-white/70">Overall Maturity</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold">{org.domains.length}</div>
+              <div className="text-sm text-white/70">Business Domains</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold">{allCaps.length}</div>
+              <div className="text-sm text-white/70">Capabilities Assessed</div>
+            </div>
+          </div>
+          <div className="text-xs text-white/40 mt-6">{today} · Prepared by Flow State Partners</div>
+        </div>
+
+        {/* Executive Summary */}
+        <div className="bg-white rounded-xl border border-[var(--card-border)] p-6 shadow-sm">
+          <h3 className="font-bold text-[var(--foreground)] text-lg mb-4 pb-3 border-b border-[var(--card-border)]">
+            Executive Summary
+          </h3>
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            {domainScores.map((d) => (
+              <div key={d.id} className="p-3 bg-[var(--muted-bg)] rounded-lg">
+                <div className="flex items-center gap-1.5 mb-2">
+                  <div className="w-2 h-2 rounded-full" style={{ background: d.color ?? "#94a3b8" }} />
+                  <span className="text-xs font-semibold text-[var(--foreground)] truncate">{d.name}</span>
+                </div>
+                <div className="flex items-end justify-between">
+                  <div>
+                    <span className="text-xl font-bold text-[var(--foreground)]">{d.averageAsIs}</span>
+                    <span className="text-xs text-[var(--muted)]">/10</span>
+                  </div>
+                  <span className={`text-xs font-medium ${
+                    d.averageGap > 3 ? "text-[var(--destructive)]" : d.averageGap > 1 ? "text-amber-600" : "text-[var(--success)]"
+                  }`}>
+                    Gap: {d.averageGap.toFixed(1)}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+          {org.notes && (
+            <p className="text-sm text-[var(--muted)] italic border-l-4 border-[var(--accent)] pl-4">{org.notes}</p>
+          )}
+        </div>
+
+        {/* Priority Gaps */}
+        {topGaps.length > 0 && (
+          <div className="bg-white rounded-xl border border-[var(--card-border)] p-6 shadow-sm">
+            <h3 className="font-bold text-[var(--foreground)] text-lg mb-4 pb-3 border-b border-[var(--card-border)]">
+              Top Priority Gaps
+            </h3>
+            <div className="space-y-3">
+              {topGaps.map((cap, i) => {
+                const severity = getGapSeverity(cap.gapScore);
+                const domain = org.domains.find((d) => d.capabilities.some((c) => c.id === cap.id));
+                return (
+                  <div key={cap.id} className="flex items-start gap-4 p-4 rounded-lg bg-[var(--muted-bg)]">
+                    <div className="w-7 h-7 rounded-full bg-[var(--primary)] text-white flex items-center justify-center text-sm font-bold shrink-0">
+                      {i + 1}
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-semibold text-[var(--foreground)]">{cap.name}</div>
+                      {domain && (
+                        <div className="text-xs text-[var(--muted)] mb-1">{domain.name}</div>
+                      )}
+                      {cap.asIsState && (
+                        <div className="text-sm text-[var(--muted)] mt-1">{cap.asIsState}</div>
+                      )}
+                      {cap.weaknesses && cap.weaknesses.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-2">
+                          {cap.weaknesses.slice(0, 3).map((w) => (
+                            <span key={w} className="text-xs px-2 py-0.5 bg-red-50 text-red-700 rounded">
+                              {w}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    <div className="text-right shrink-0">
+                      <div className="text-2xl font-bold text-[var(--foreground)]">
+                        {cap.asIsScore} <span className="text-xs text-[var(--muted)] font-normal">→</span> {cap.toBeScore}
+                      </div>
+                      <div className={`text-xs font-semibold ${
+                        severity === "critical" ? "text-[var(--destructive)]" :
+                        severity === "high" ? "text-red-500" :
+                        severity === "medium" ? "text-amber-600" : "text-[var(--success)]"
+                      }`}>
+                        Gap: {cap.gapScore?.toFixed(1)}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Opportunities */}
+        {allOpportunities.length > 0 && (
+          <div className="bg-white rounded-xl border border-[var(--card-border)] p-6 shadow-sm">
+            <h3 className="font-bold text-[var(--foreground)] text-lg mb-4 pb-3 border-b border-[var(--card-border)]">
+              Key Opportunities
+            </h3>
+            <ul className="space-y-2">
+              {allOpportunities.slice(0, 10).map((opp, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-[var(--foreground)]">
+                  <span className="text-[var(--success)] font-bold mt-0.5">+</span>
+                  {opp}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Strengths & Weaknesses summary */}
+        {allWeaknesses.length > 0 && (
+          <div className="bg-white rounded-xl border border-[var(--card-border)] p-6 shadow-sm">
+            <h3 className="font-bold text-[var(--foreground)] text-lg mb-4 pb-3 border-b border-[var(--card-border)]">
+              Identified Weaknesses
+            </h3>
+            <ul className="space-y-2">
+              {allWeaknesses.slice(0, 10).map((w, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-[var(--foreground)]">
+                  <span className="text-[var(--destructive)] font-bold mt-0.5">−</span>
+                  {w}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Domain detail */}
+        {org.domains.map((domain) => {
+          const caps = domain.capabilities.filter((c) => c.asIsScore != null);
+          if (caps.length === 0) return null;
+          return (
+            <div key={domain.id} className="bg-white rounded-xl border border-[var(--card-border)] p-6 shadow-sm">
+              <div className="flex items-center gap-2 mb-4 pb-3 border-b border-[var(--card-border)]">
+                <div className="w-3 h-3 rounded-full" style={{ background: domain.color ?? "#94a3b8" }} />
+                <h3 className="font-bold text-[var(--foreground)] text-lg">{domain.name}</h3>
+              </div>
+              <div className="space-y-3">
+                {caps.map((cap) => (
+                  <div key={cap.id} className="border border-[var(--card-border)] rounded-lg p-4">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="font-semibold text-[var(--foreground)]">{cap.name}</div>
+                        {cap.asIsState && (
+                          <div className="text-sm text-[var(--muted)] mt-1">{cap.asIsState}</div>
+                        )}
+                      </div>
+                      <div className="text-right ml-4 shrink-0">
+                        <div className="text-lg font-bold text-[var(--foreground)]">
+                          {cap.asIsScore} → {cap.toBeScore ?? "?"}
+                        </div>
+                        {cap.gapScore != null && (
+                          <div className="text-xs text-[var(--muted)]">
+                            Gap: <strong>{cap.gapScore.toFixed(1)}</strong>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Target Achievements */}
+        {org.achievements.length > 0 && (
+          <div className="bg-white rounded-xl border border-[var(--card-border)] p-6 shadow-sm">
+            <h3 className="font-bold text-[var(--foreground)] text-lg mb-4 pb-3 border-b border-[var(--card-border)]">
+              Target Achievements
+            </h3>
+            <div className="space-y-2">
+              {org.achievements.map((ach) => (
+                <div key={ach.id} className="flex items-center gap-4 p-3 bg-[var(--muted-bg)] rounded-lg">
+                  <div className={`w-2 h-2 rounded-full shrink-0 ${ach.status === "achieved" ? "bg-[var(--success)]" : "bg-[var(--muted)]"}`} />
+                  <div className="flex-1 text-sm text-[var(--foreground)]">{ach.description}</div>
+                  {ach.targetDate && (
+                    <div className="text-xs text-[var(--muted)] shrink-0">
+                      {new Date(ach.targetDate).toLocaleDateString()}
+                    </div>
+                  )}
+                  <div className="text-xs font-medium text-[var(--muted)] shrink-0">Priority: {ach.priority}/10</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* KPIs */}
+        {org.kpis.length > 0 && (
+          <div className="bg-white rounded-xl border border-[var(--card-border)] p-6 shadow-sm">
+            <h3 className="font-bold text-[var(--foreground)] text-lg mb-4 pb-3 border-b border-[var(--card-border)]">
+              Key Performance Indicators
+            </h3>
+            <div className="grid grid-cols-2 gap-3">
+              {org.kpis.map((kpi) => (
+                <div key={kpi.id} className="p-3 border border-[var(--card-border)] rounded-lg">
+                  <div className="font-medium text-sm text-[var(--foreground)]">{kpi.name}</div>
+                  <div className="flex items-center gap-3 mt-1 text-xs text-[var(--muted)]">
+                    {kpi.currentValue && <span>Current: <strong>{kpi.currentValue}</strong></span>}
+                    {kpi.targetValue && <span>Target: <strong>{kpi.targetValue}</strong></span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="text-center text-xs text-[var(--muted)] py-4">
+          Prepared by Flow State Partners · {today}
+        </div>
+      </div>
+    </div>
+  );
+}

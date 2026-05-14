@@ -1,0 +1,273 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  SYSTEM_ADMIN
+  ADVISOR
+  CLIENT_EXECUTIVE
+  CLIENT_STAKEHOLDER
+  INVESTOR
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      UserRole @default(ADVISOR)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organizations   UserOrganization[]
+  sessions        AssessmentSession[]
+}
+
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  industry  String?
+  size      String?
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users        UserOrganization[]
+  domains      BusinessDomain[]
+  stakeholders Stakeholder[]
+  kpis         KPI[]
+  achievements Achievement[]
+  technologies Technology[]
+  processes    Process[]
+  projects     Project[]
+  sessions     AssessmentSession[]
+}
+
+model UserOrganization {
+  id             String   @id @default(cuid())
+  userId         String
+  organizationId String
+  role           UserRole @default(CLIENT_EXECUTIVE)
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId])
+}
+
+model BusinessDomain {
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  description    String?
+  color          String?
+  order          Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  capabilities Capability[]
+}
+
+model Capability {
+  id          String   @id @default(cuid())
+  domainId    String
+  name        String
+  aliases     String[]
+  description String?
+  dimensions  String[]
+  metrics     String[]
+
+  asIsState       String?
+  asIsScore       Float?
+  asIsNotes       String?
+  importanceScore Float?   @default(5)
+  toBeState       String?
+  toBeScore       Float?
+  opportunities   String[]
+  weaknesses      String[]
+  gapScore        Float?
+
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  domain       BusinessDomain @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  stakeholders CapabilityStakeholder[]
+  kpis         CapabilityKPI[]
+  processes    CapabilityProcess[]
+  technologies CapabilityTechnology[]
+  projects     ProjectCapability[]
+}
+
+model Stakeholder {
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  role           String?
+  email          String?
+  phone          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization  Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  capabilities  CapabilityStakeholder[]
+  achievements  AchievementStakeholder[]
+}
+
+model CapabilityStakeholder {
+  capabilityId  String
+  stakeholderId String
+
+  capability  Capability  @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+  stakeholder Stakeholder @relation(fields: [stakeholderId], references: [id], onDelete: Cascade)
+
+  @@id([capabilityId, stakeholderId])
+}
+
+model KPI {
+  id                   String   @id @default(cuid())
+  organizationId       String
+  name                 String
+  description          String?
+  targetValue          String?
+  currentValue         String?
+  measurementFrequency String?
+  dataSource           String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  organization Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  capabilities CapabilityKPI[]
+}
+
+model CapabilityKPI {
+  capabilityId String
+  kpiId        String
+
+  capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+  kpi        KPI        @relation(fields: [kpiId], references: [id], onDelete: Cascade)
+
+  @@id([capabilityId, kpiId])
+}
+
+model Process {
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  description    String?
+  maturityLevel  Int?     @default(1)
+  documentation  String?
+  effectiveness  Float?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  capabilities CapabilityProcess[]
+}
+
+model CapabilityProcess {
+  capabilityId String
+  processId    String
+
+  capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+  process    Process    @relation(fields: [processId], references: [id], onDelete: Cascade)
+
+  @@id([capabilityId, processId])
+}
+
+model Technology {
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  category       String?
+  status         String?
+  effectiveness  Float?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  capabilities CapabilityTechnology[]
+}
+
+model CapabilityTechnology {
+  capabilityId String
+  technologyId String
+
+  capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+  technology Technology @relation(fields: [technologyId], references: [id], onDelete: Cascade)
+
+  @@id([capabilityId, technologyId])
+}
+
+model Project {
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  objective      String?
+  status         String   @default("planned")
+  timeline       String?
+  resources      String?
+  outcomes       String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  capabilities ProjectCapability[]
+}
+
+model ProjectCapability {
+  projectId        String
+  capabilityId     String
+  projectedImpact  Float?
+  actualImpact     Float?
+
+  project    Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, capabilityId])
+}
+
+model Achievement {
+  id             String    @id @default(cuid())
+  organizationId String
+  description    String
+  targetDate     DateTime?
+  priority       Int?      @default(5)
+  successMetrics String?
+  status         String    @default("pending")
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  organization Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  stakeholders AchievementStakeholder[]
+}
+
+model AchievementStakeholder {
+  achievementId String
+  stakeholderId String
+
+  achievement Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  stakeholder Stakeholder @relation(fields: [stakeholderId], references: [id], onDelete: Cascade)
+
+  @@id([achievementId, stakeholderId])
+}
+
+model AssessmentSession {
+  id             String    @id @default(cuid())
+  organizationId String
+  advisorId      String
+  name           String?
+  status         String    @default("active")
+  notes          String?
+  completedAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  advisor      User         @relation(fields: [advisorId], references: [id])
+}
