@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { prisma } from "@/lib/db";
 import { Navbar } from "@/components/layout/Navbar";
 import { notFound } from "next/navigation";
