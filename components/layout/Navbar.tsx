@@ -11,9 +11,8 @@ interface NavbarProps {
 
 export function Navbar({ clientName, clientId }: NavbarProps) {
   const router = useRouter();
-  const supabase = createClient();
-
   async function handleSignOut() {
+    const supabase = createClient();
     await supabase.auth.signOut();
     router.push("/auth/login");
     router.refresh();
