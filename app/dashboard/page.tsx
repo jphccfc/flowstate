@@ -22,6 +22,7 @@ export default function DashboardPage() {
   const [newName, setNewName] = useState("");
   const [newIndustry, setNewIndustry] = useState("");
   const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState("");
 
   useEffect(() => {
     fetch("/api/clients")
@@ -34,17 +35,24 @@ export default function DashboardPage() {
     e.preventDefault();
     if (!newName.trim()) return;
     setCreating(true);
-    const res = await fetch("/api/clients", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: newName, industry: newIndustry }),
-    });
-    const org = await res.json();
-    setOrgs((prev) => [org, ...prev]);
-    setShowNew(false);
-    setNewName("");
-    setNewIndustry("");
-    setCreating(false);
+    setCreateError("");
+    try {
+      const res = await fetch("/api/clients", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newName, industry: newIndustry }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? `Server error ${res.status}`);
+      setOrgs((prev) => [data, ...prev]);
+      setShowNew(false);
+      setNewName("");
+      setNewIndustry("");
+    } catch (err: unknown) {
+      setCreateError(err instanceof Error ? err.message : "Failed to create client");
+    } finally {
+      setCreating(false);
+    }
   }
 
   return (
@@ -89,6 +97,11 @@ export default function DashboardPage() {
                   />
                 </div>
               </div>
+              {createError && (
+                <div className="text-sm text-[var(--destructive)] bg-red-50 rounded-lg px-3 py-2 border border-red-100">
+                  {createError}
+                </div>
+              )}
               <div className="flex gap-2 justify-end">
                 <button
                   type="button"
