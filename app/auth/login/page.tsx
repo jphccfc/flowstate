@@ -10,6 +10,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState<"login" | "signup">("login");
   const router = useRouter();
@@ -17,19 +18,28 @@ export default function LoginPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    setSuccess("");
     setLoading(true);
 
     try {
       const supabase = createClient();
+
       if (mode === "login") {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        router.push("/dashboard");
+        router.refresh();
       } else {
-        const { error } = await supabase.auth.signUp({ email, password });
+        const { data, error } = await supabase.auth.signUp({ email, password });
         if (error) throw error;
+        // If session is returned immediately, email confirmation is disabled — go straight in
+        if (data.session) {
+          router.push("/dashboard");
+          router.refresh();
+        } else {
+          setSuccess("Account created! Check your email and click the confirmation link, then come back to sign in.");
+        }
       }
-      router.push("/dashboard");
-      router.refresh();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Authentication failed");
     } finally {
@@ -56,72 +66,89 @@ export default function LoginPage() {
         </div>
 
         <div className="bg-white rounded-xl border border-[var(--card-border)] shadow-sm p-8">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-[var(--foreground)] mb-1">
-                Email address
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full px-3 py-2 border border-[var(--card-border)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
-                placeholder="you@company.com"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-[var(--foreground)] mb-1">
-                Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full px-3 py-2 border border-[var(--card-border)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
-                placeholder="••••••••"
-              />
-            </div>
-
-            {error && (
-              <div className="text-sm text-[var(--destructive)] bg-red-50 rounded-lg px-3 py-2 border border-red-100">
-                {error}
+          {success ? (
+            <div className="text-center space-y-4">
+              <div className="text-4xl">📧</div>
+              <div className="text-sm text-[var(--foreground)] bg-green-50 rounded-lg px-4 py-3 border border-green-100">
+                {success}
               </div>
-            )}
+              <button
+                onClick={() => { setSuccess(""); setMode("login"); }}
+                className="text-sm text-[var(--accent)] font-medium hover:underline"
+              >
+                Back to sign in
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-[var(--foreground)] mb-1">
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full px-3 py-2 border border-[var(--card-border)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
+                  placeholder="you@company.com"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-[var(--foreground)] mb-1">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full px-3 py-2 border border-[var(--card-border)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
+                  placeholder="••••••••"
+                />
+              </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-2.5 px-4 bg-[var(--primary)] text-white rounded-lg font-medium text-sm hover:bg-[#1a3352] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              {loading ? "Please wait..." : mode === "login" ? "Sign in" : "Create account"}
-            </button>
-          </form>
+              {error && (
+                <div className="text-sm text-[var(--destructive)] bg-red-50 rounded-lg px-3 py-2 border border-red-100">
+                  {error}
+                </div>
+              )}
 
-          <div className="mt-4 text-center text-sm text-[var(--muted)]">
-            {mode === "login" ? (
-              <>
-                Don&apos;t have an account?{" "}
-                <button
-                  onClick={() => setMode("signup")}
-                  className="text-[var(--accent)] font-medium hover:underline"
-                >
-                  Sign up
-                </button>
-              </>
-            ) : (
-              <>
-                Already have an account?{" "}
-                <button
-                  onClick={() => setMode("login")}
-                  className="text-[var(--accent)] font-medium hover:underline"
-                >
-                  Sign in
-                </button>
-              </>
-            )}
-          </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-2.5 px-4 bg-[var(--primary)] text-white rounded-lg font-medium text-sm hover:bg-[#1a3352] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                {loading ? "Please wait..." : mode === "login" ? "Sign in" : "Create account"}
+              </button>
+            </form>
+          )}
+
+          {!success && (
+            <div className="mt-4 text-center text-sm text-[var(--muted)]">
+              {mode === "login" ? (
+                <>
+                  Don&apos;t have an account?{" "}
+                  <button
+                    onClick={() => { setMode("signup"); setError(""); }}
+                    className="text-[var(--accent)] font-medium hover:underline"
+                  >
+                    Sign up
+                  </button>
+                </>
+              ) : (
+                <>
+                  Already have an account?{" "}
+                  <button
+                    onClick={() => { setMode("login"); setError(""); }}
+                    className="text-[var(--accent)] font-medium hover:underline"
+                  >
+                    Sign in
+                  </button>
+                </>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
