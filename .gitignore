@@ -40,5 +40,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# skills (npx skills)
+/.agents
+/.claude
+skills-lock.json
+
 # Prisma generated client is committed so Vercel can use it without generate step
 # /app/generated/prisma
