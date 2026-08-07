@@ -122,3 +122,13 @@ export type CapturedSegment = Prisma.CapturedSegmentModel
  * 
  */
 export type Tag = Prisma.TagModel
+/**
+ * Model MaturityAssessment
+ * 
+ */
+export type MaturityAssessment = Prisma.MaturityAssessmentModel
+/**
+ * Model CapabilityKPIMaturityCeiling
+ * 
+ */
+export type CapabilityKPIMaturityCeiling = Prisma.CapabilityKPIMaturityCeilingModel

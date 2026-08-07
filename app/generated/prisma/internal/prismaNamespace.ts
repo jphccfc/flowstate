@@ -404,7 +404,9 @@ export const ModelName = {
   AssessmentSession: 'AssessmentSession',
   CapturedInput: 'CapturedInput',
   CapturedSegment: 'CapturedSegment',
-  Tag: 'Tag'
+  Tag: 'Tag',
+  MaturityAssessment: 'MaturityAssessment',
+  CapabilityKPIMaturityCeiling: 'CapabilityKPIMaturityCeiling'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -420,7 +422,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedSegment" | "tag"
+    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedSegment" | "tag" | "maturityAssessment" | "capabilityKPIMaturityCeiling"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1978,6 +1980,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    MaturityAssessment: {
+      payload: Prisma.$MaturityAssessmentPayload<ExtArgs>
+      fields: Prisma.MaturityAssessmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MaturityAssessmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaturityAssessmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MaturityAssessmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaturityAssessmentPayload>
+        }
+        findFirst: {
+          args: Prisma.MaturityAssessmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaturityAssessmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MaturityAssessmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaturityAssessmentPayload>
+        }
+        findMany: {
+          args: Prisma.MaturityAssessmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaturityAssessmentPayload>[]
+        }
+        create: {
+          args: Prisma.MaturityAssessmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaturityAssessmentPayload>
+        }
+        createMany: {
+          args: Prisma.MaturityAssessmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MaturityAssessmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaturityAssessmentPayload>[]
+        }
+        delete: {
+          args: Prisma.MaturityAssessmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaturityAssessmentPayload>
+        }
+        update: {
+          args: Prisma.MaturityAssessmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaturityAssessmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.MaturityAssessmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MaturityAssessmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MaturityAssessmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaturityAssessmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.MaturityAssessmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaturityAssessmentPayload>
+        }
+        aggregate: {
+          args: Prisma.MaturityAssessmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMaturityAssessment>
+        }
+        groupBy: {
+          args: Prisma.MaturityAssessmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MaturityAssessmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MaturityAssessmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MaturityAssessmentCountAggregateOutputType> | number
+        }
+      }
+    }
+    CapabilityKPIMaturityCeiling: {
+      payload: Prisma.$CapabilityKPIMaturityCeilingPayload<ExtArgs>
+      fields: Prisma.CapabilityKPIMaturityCeilingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CapabilityKPIMaturityCeilingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapabilityKPIMaturityCeilingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CapabilityKPIMaturityCeilingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapabilityKPIMaturityCeilingPayload>
+        }
+        findFirst: {
+          args: Prisma.CapabilityKPIMaturityCeilingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapabilityKPIMaturityCeilingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CapabilityKPIMaturityCeilingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapabilityKPIMaturityCeilingPayload>
+        }
+        findMany: {
+          args: Prisma.CapabilityKPIMaturityCeilingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapabilityKPIMaturityCeilingPayload>[]
+        }
+        create: {
+          args: Prisma.CapabilityKPIMaturityCeilingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapabilityKPIMaturityCeilingPayload>
+        }
+        createMany: {
+          args: Prisma.CapabilityKPIMaturityCeilingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CapabilityKPIMaturityCeilingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapabilityKPIMaturityCeilingPayload>[]
+        }
+        delete: {
+          args: Prisma.CapabilityKPIMaturityCeilingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapabilityKPIMaturityCeilingPayload>
+        }
+        update: {
+          args: Prisma.CapabilityKPIMaturityCeilingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapabilityKPIMaturityCeilingPayload>
+        }
+        deleteMany: {
+          args: Prisma.CapabilityKPIMaturityCeilingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CapabilityKPIMaturityCeilingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CapabilityKPIMaturityCeilingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapabilityKPIMaturityCeilingPayload>[]
+        }
+        upsert: {
+          args: Prisma.CapabilityKPIMaturityCeilingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapabilityKPIMaturityCeilingPayload>
+        }
+        aggregate: {
+          args: Prisma.CapabilityKPIMaturityCeilingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCapabilityKPIMaturityCeiling>
+        }
+        groupBy: {
+          args: Prisma.CapabilityKPIMaturityCeilingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CapabilityKPIMaturityCeilingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CapabilityKPIMaturityCeilingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CapabilityKPIMaturityCeilingCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2293,6 +2443,35 @@ export const TagScalarFieldEnum = {
 export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]
 
 
+export const MaturityAssessmentScalarFieldEnum = {
+  id: 'id',
+  capabilityId: 'capabilityId',
+  locationTag: 'locationTag',
+  score: 'score',
+  evidence: 'evidence',
+  sourceSegmentIds: 'sourceSegmentIds',
+  assessedBy: 'assessedBy',
+  assessedAt: 'assessedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type MaturityAssessmentScalarFieldEnum = (typeof MaturityAssessmentScalarFieldEnum)[keyof typeof MaturityAssessmentScalarFieldEnum]
+
+
+export const CapabilityKPIMaturityCeilingScalarFieldEnum = {
+  id: 'id',
+  capabilityId: 'capabilityId',
+  kpiId: 'kpiId',
+  maturityLevel: 'maturityLevel',
+  targetCeilingMin: 'targetCeilingMin',
+  targetCeilingMax: 'targetCeilingMax',
+  valueToNextLevel: 'valueToNextLevel',
+  notes: 'notes'
+} as const
+
+export type CapabilityKPIMaturityCeilingScalarFieldEnum = (typeof CapabilityKPIMaturityCeilingScalarFieldEnum)[keyof typeof CapabilityKPIMaturityCeilingScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2579,6 +2758,8 @@ export type GlobalOmitConfig = {
   capturedInput?: Prisma.CapturedInputOmit
   capturedSegment?: Prisma.CapturedSegmentOmit
   tag?: Prisma.TagOmit
+  maturityAssessment?: Prisma.MaturityAssessmentOmit
+  capabilityKPIMaturityCeiling?: Prisma.CapabilityKPIMaturityCeilingOmit
 }
 
 /* Types for Logging */

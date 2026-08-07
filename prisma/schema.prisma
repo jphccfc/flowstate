@@ -78,10 +78,10 @@ model Capability {
   id          String   @id @default(cuid())
   domainId    String
   name        String
-  aliases     String[]
+  aliases     String[]   @default([])
   description String?
-  dimensions  String[]
-  metrics     String[]
+  dimensions  String[]   @default([])
+  metrics     String[]   @default([])
 
   asIsState       String?
   asIsScore       Float?
@@ -89,8 +89,8 @@ model Capability {
   importanceScore Float?   @default(5)
   toBeState       String?
   toBeScore       Float?
-  opportunities   String[]
-  weaknesses      String[]
+  opportunities   String[]   @default([])
+  weaknesses      String[]   @default([])
   gapScore        Float?
 
   order     Int      @default(0)
@@ -103,6 +103,8 @@ model Capability {
   processes    CapabilityProcess[]
   technologies CapabilityTechnology[]
   projects     ProjectCapability[]
+  maturityAssessments MaturityAssessment[]
+  kpiCeilings          CapabilityKPIMaturityCeiling[]
 }
 
 model Stakeholder {
@@ -144,6 +146,7 @@ model KPI {
 
   organization Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   capabilities CapabilityKPI[]
+  capabilityCeilings CapabilityKPIMaturityCeiling[]
 }
 
 model CapabilityKPI {
@@ -354,4 +357,36 @@ model Tag {
   segment CapturedSegment @relation(fields: [segmentId], references: [id], onDelete: Cascade)
 
   @@index([targetType, targetId])
+}
+
+model MaturityAssessment {
+  id               String   @id @default(cuid())
+  capabilityId     String
+  locationTag      String?
+  score            Int
+  evidence         String?
+  sourceSegmentIds String[]
+  assessedBy       String?
+  assessedAt       DateTime @default(now())
+  createdAt        DateTime @default(now())
+
+  capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+
+  @@index([capabilityId, locationTag, assessedAt])
+}
+
+model CapabilityKPIMaturityCeiling {
+  id               String  @id @default(cuid())
+  capabilityId     String
+  kpiId            String
+  maturityLevel    Int
+  targetCeilingMin Float?
+  targetCeilingMax Float?
+  valueToNextLevel Float?
+  notes            String?
+
+  capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+  kpi        KPI        @relation(fields: [kpiId], references: [id], onDelete: Cascade)
+
+  @@unique([capabilityId, kpiId, maturityLevel])
 }

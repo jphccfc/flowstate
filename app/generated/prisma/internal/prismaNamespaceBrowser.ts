@@ -71,7 +71,9 @@ export const ModelName = {
   AssessmentSession: 'AssessmentSession',
   CapturedInput: 'CapturedInput',
   CapturedSegment: 'CapturedSegment',
-  Tag: 'Tag'
+  Tag: 'Tag',
+  MaturityAssessment: 'MaturityAssessment',
+  CapabilityKPIMaturityCeiling: 'CapabilityKPIMaturityCeiling'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -364,6 +366,35 @@ export const TagScalarFieldEnum = {
 } as const
 
 export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]
+
+
+export const MaturityAssessmentScalarFieldEnum = {
+  id: 'id',
+  capabilityId: 'capabilityId',
+  locationTag: 'locationTag',
+  score: 'score',
+  evidence: 'evidence',
+  sourceSegmentIds: 'sourceSegmentIds',
+  assessedBy: 'assessedBy',
+  assessedAt: 'assessedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type MaturityAssessmentScalarFieldEnum = (typeof MaturityAssessmentScalarFieldEnum)[keyof typeof MaturityAssessmentScalarFieldEnum]
+
+
+export const CapabilityKPIMaturityCeilingScalarFieldEnum = {
+  id: 'id',
+  capabilityId: 'capabilityId',
+  kpiId: 'kpiId',
+  maturityLevel: 'maturityLevel',
+  targetCeilingMin: 'targetCeilingMin',
+  targetCeilingMax: 'targetCeilingMax',
+  valueToNextLevel: 'valueToNextLevel',
+  notes: 'notes'
+} as const
+
+export type CapabilityKPIMaturityCeilingScalarFieldEnum = (typeof CapabilityKPIMaturityCeilingScalarFieldEnum)[keyof typeof CapabilityKPIMaturityCeilingScalarFieldEnum]
 
 
 export const SortOrder = {
