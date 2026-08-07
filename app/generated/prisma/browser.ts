@@ -117,3 +117,8 @@ export type CapturedInput = Prisma.CapturedInputModel
  * 
  */
 export type CapturedSegment = Prisma.CapturedSegmentModel
+/**
+ * Model Tag
+ * 
+ */
+export type Tag = Prisma.TagModel

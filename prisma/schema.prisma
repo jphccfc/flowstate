@@ -322,4 +322,36 @@ model CapturedSegment {
   createdAt       DateTime @default(now())
 
   capturedInput CapturedInput @relation(fields: [capturedInputId], references: [id], onDelete: Cascade)
+  tags          Tag[]
+}
+
+enum TagTargetType {
+  DOMAIN
+  CAPABILITY
+  KPI
+  STAKEHOLDER
+}
+
+enum TagStatus {
+  AUTO_APPROVED
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+  REASSIGNED
+}
+
+model Tag {
+  id         String        @id @default(cuid())
+  segmentId  String
+  targetType TagTargetType
+  targetId   String
+  confidence Float
+  status     TagStatus     @default(PENDING_REVIEW)
+  reviewedBy String?
+  reviewedAt DateTime?
+  createdAt  DateTime      @default(now())
+
+  segment CapturedSegment @relation(fields: [segmentId], references: [id], onDelete: Cascade)
+
+  @@index([targetType, targetId])
 }

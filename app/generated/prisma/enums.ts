@@ -42,3 +42,24 @@ export const ProcessingStatus = {
 } as const
 
 export type ProcessingStatus = (typeof ProcessingStatus)[keyof typeof ProcessingStatus]
+
+
+export const TagTargetType = {
+  DOMAIN: 'DOMAIN',
+  CAPABILITY: 'CAPABILITY',
+  KPI: 'KPI',
+  STAKEHOLDER: 'STAKEHOLDER'
+} as const
+
+export type TagTargetType = (typeof TagTargetType)[keyof typeof TagTargetType]
+
+
+export const TagStatus = {
+  AUTO_APPROVED: 'AUTO_APPROVED',
+  PENDING_REVIEW: 'PENDING_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  REASSIGNED: 'REASSIGNED'
+} as const
+
+export type TagStatus = (typeof TagStatus)[keyof typeof TagStatus]

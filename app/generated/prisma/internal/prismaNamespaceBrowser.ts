@@ -70,7 +70,8 @@ export const ModelName = {
   AchievementStakeholder: 'AchievementStakeholder',
   AssessmentSession: 'AssessmentSession',
   CapturedInput: 'CapturedInput',
-  CapturedSegment: 'CapturedSegment'
+  CapturedSegment: 'CapturedSegment',
+  Tag: 'Tag'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -348,6 +349,21 @@ export const CapturedSegmentScalarFieldEnum = {
 } as const
 
 export type CapturedSegmentScalarFieldEnum = (typeof CapturedSegmentScalarFieldEnum)[keyof typeof CapturedSegmentScalarFieldEnum]
+
+
+export const TagScalarFieldEnum = {
+  id: 'id',
+  segmentId: 'segmentId',
+  targetType: 'targetType',
+  targetId: 'targetId',
+  confidence: 'confidence',
+  status: 'status',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]
 
 
 export const SortOrder = {
