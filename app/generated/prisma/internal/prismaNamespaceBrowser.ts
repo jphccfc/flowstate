@@ -75,7 +75,9 @@ export const ModelName = {
   MaturityAssessment: 'MaturityAssessment',
   CapabilityKPIMaturityCeiling: 'CapabilityKPIMaturityCeiling',
   Dependency: 'Dependency',
-  ConflictFlag: 'ConflictFlag'
+  ConflictFlag: 'ConflictFlag',
+  Recommendation: 'Recommendation',
+  RecommendationFeedback: 'RecommendationFeedback'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -428,6 +430,39 @@ export const ConflictFlagScalarFieldEnum = {
 export type ConflictFlagScalarFieldEnum = (typeof ConflictFlagScalarFieldEnum)[keyof typeof ConflictFlagScalarFieldEnum]
 
 
+export const RecommendationScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  title: 'title',
+  description: 'description',
+  relatedCapabilityIds: 'relatedCapabilityIds',
+  relatedKPIIds: 'relatedKPIIds',
+  estimatedValue: 'estimatedValue',
+  priorityScore: 'priorityScore',
+  status: 'status',
+  reviewedBy: 'reviewedBy',
+  reviewNotes: 'reviewNotes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RecommendationScalarFieldEnum = (typeof RecommendationScalarFieldEnum)[keyof typeof RecommendationScalarFieldEnum]
+
+
+export const RecommendationFeedbackScalarFieldEnum = {
+  id: 'id',
+  recommendationId: 'recommendationId',
+  action: 'action',
+  originalFields: 'originalFields',
+  editedFields: 'editedFields',
+  reason: 'reason',
+  actedBy: 'actedBy',
+  actedAt: 'actedAt'
+} as const
+
+export type RecommendationFeedbackScalarFieldEnum = (typeof RecommendationFeedbackScalarFieldEnum)[keyof typeof RecommendationFeedbackScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -441,6 +476,14 @@ export const JsonNullValueInput = {
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {

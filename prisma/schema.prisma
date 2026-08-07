@@ -46,6 +46,7 @@ model Organization {
   projects     Project[]
   sessions       AssessmentSession[]
   capturedInputs CapturedInput[]
+  recommendations Recommendation[]
 }
 
 model UserOrganization {
@@ -428,4 +429,44 @@ model ConflictFlag {
   createdAt  DateTime       @default(now())
 
   @@index([entityType, entityId])
+}
+
+enum RecommendationStatus {
+  DRAFT
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+  EDITED
+}
+
+model Recommendation {
+  id                    String                @id @default(cuid())
+  organizationId        String
+  title                 String
+  description           String
+  relatedCapabilityIds  String[]
+  relatedKPIIds         String[]
+  estimatedValue        Float?
+  priorityScore         Float?
+  status                RecommendationStatus  @default(DRAFT)
+  reviewedBy            String?
+  reviewNotes           String?
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+
+  organization Organization             @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  feedback     RecommendationFeedback[]
+}
+
+model RecommendationFeedback {
+  id               String   @id @default(cuid())
+  recommendationId String
+  action           String
+  originalFields   Json?
+  editedFields     Json?
+  reason           String?
+  actedBy          String?
+  actedAt          DateTime @default(now())
+
+  recommendation Recommendation @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
 }

@@ -80,3 +80,14 @@ export const ConflictStatus = {
 } as const
 
 export type ConflictStatus = (typeof ConflictStatus)[keyof typeof ConflictStatus]
+
+
+export const RecommendationStatus = {
+  DRAFT: 'DRAFT',
+  PENDING_REVIEW: 'PENDING_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  EDITED: 'EDITED'
+} as const
+
+export type RecommendationStatus = (typeof RecommendationStatus)[keyof typeof RecommendationStatus]

@@ -142,3 +142,13 @@ export type Dependency = Prisma.DependencyModel
  * 
  */
 export type ConflictFlag = Prisma.ConflictFlagModel
+/**
+ * Model Recommendation
+ * 
+ */
+export type Recommendation = Prisma.RecommendationModel
+/**
+ * Model RecommendationFeedback
+ * 
+ */
+export type RecommendationFeedback = Prisma.RecommendationFeedbackModel
