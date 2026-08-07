@@ -73,7 +73,9 @@ export const ModelName = {
   CapturedSegment: 'CapturedSegment',
   Tag: 'Tag',
   MaturityAssessment: 'MaturityAssessment',
-  CapabilityKPIMaturityCeiling: 'CapabilityKPIMaturityCeiling'
+  CapabilityKPIMaturityCeiling: 'CapabilityKPIMaturityCeiling',
+  Dependency: 'Dependency',
+  ConflictFlag: 'ConflictFlag'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -397,12 +399,48 @@ export const CapabilityKPIMaturityCeilingScalarFieldEnum = {
 export type CapabilityKPIMaturityCeilingScalarFieldEnum = (typeof CapabilityKPIMaturityCeilingScalarFieldEnum)[keyof typeof CapabilityKPIMaturityCeilingScalarFieldEnum]
 
 
+export const DependencyScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  sourceType: 'sourceType',
+  sourceId: 'sourceId',
+  targetType: 'targetType',
+  targetId: 'targetId',
+  description: 'description',
+  createdAt: 'createdAt'
+} as const
+
+export type DependencyScalarFieldEnum = (typeof DependencyScalarFieldEnum)[keyof typeof DependencyScalarFieldEnum]
+
+
+export const ConflictFlagScalarFieldEnum = {
+  id: 'id',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  status: 'status',
+  claims: 'claims',
+  resolution: 'resolution',
+  resolvedBy: 'resolvedBy',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type ConflictFlagScalarFieldEnum = (typeof ConflictFlagScalarFieldEnum)[keyof typeof ConflictFlagScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -419,4 +457,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

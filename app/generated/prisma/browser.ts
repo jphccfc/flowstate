@@ -132,3 +132,13 @@ export type MaturityAssessment = Prisma.MaturityAssessmentModel
  * 
  */
 export type CapabilityKPIMaturityCeiling = Prisma.CapabilityKPIMaturityCeilingModel
+/**
+ * Model Dependency
+ * 
+ */
+export type Dependency = Prisma.DependencyModel
+/**
+ * Model ConflictFlag
+ * 
+ */
+export type ConflictFlag = Prisma.ConflictFlagModel

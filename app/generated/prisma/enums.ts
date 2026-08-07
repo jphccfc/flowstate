@@ -63,3 +63,20 @@ export const TagStatus = {
 } as const
 
 export type TagStatus = (typeof TagStatus)[keyof typeof TagStatus]
+
+
+export const DependencyType = {
+  CAPABILITY_TO_KPI: 'CAPABILITY_TO_KPI',
+  KPI_TO_KPI: 'KPI_TO_KPI',
+  CAPABILITY_TO_CAPABILITY: 'CAPABILITY_TO_CAPABILITY'
+} as const
+
+export type DependencyType = (typeof DependencyType)[keyof typeof DependencyType]
+
+
+export const ConflictStatus = {
+  OPEN: 'OPEN',
+  RESOLVED: 'RESOLVED'
+} as const
+
+export type ConflictStatus = (typeof ConflictStatus)[keyof typeof ConflictStatus]

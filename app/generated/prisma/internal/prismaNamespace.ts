@@ -406,7 +406,9 @@ export const ModelName = {
   CapturedSegment: 'CapturedSegment',
   Tag: 'Tag',
   MaturityAssessment: 'MaturityAssessment',
-  CapabilityKPIMaturityCeiling: 'CapabilityKPIMaturityCeiling'
+  CapabilityKPIMaturityCeiling: 'CapabilityKPIMaturityCeiling',
+  Dependency: 'Dependency',
+  ConflictFlag: 'ConflictFlag'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -422,7 +424,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedSegment" | "tag" | "maturityAssessment" | "capabilityKPIMaturityCeiling"
+    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedSegment" | "tag" | "maturityAssessment" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2128,6 +2130,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Dependency: {
+      payload: Prisma.$DependencyPayload<ExtArgs>
+      fields: Prisma.DependencyFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DependencyFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependencyPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DependencyFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependencyPayload>
+        }
+        findFirst: {
+          args: Prisma.DependencyFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependencyPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DependencyFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependencyPayload>
+        }
+        findMany: {
+          args: Prisma.DependencyFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependencyPayload>[]
+        }
+        create: {
+          args: Prisma.DependencyCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependencyPayload>
+        }
+        createMany: {
+          args: Prisma.DependencyCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DependencyCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependencyPayload>[]
+        }
+        delete: {
+          args: Prisma.DependencyDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependencyPayload>
+        }
+        update: {
+          args: Prisma.DependencyUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependencyPayload>
+        }
+        deleteMany: {
+          args: Prisma.DependencyDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DependencyUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DependencyUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependencyPayload>[]
+        }
+        upsert: {
+          args: Prisma.DependencyUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DependencyPayload>
+        }
+        aggregate: {
+          args: Prisma.DependencyAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDependency>
+        }
+        groupBy: {
+          args: Prisma.DependencyGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DependencyGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DependencyCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DependencyCountAggregateOutputType> | number
+        }
+      }
+    }
+    ConflictFlag: {
+      payload: Prisma.$ConflictFlagPayload<ExtArgs>
+      fields: Prisma.ConflictFlagFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ConflictFlagFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConflictFlagPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ConflictFlagFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConflictFlagPayload>
+        }
+        findFirst: {
+          args: Prisma.ConflictFlagFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConflictFlagPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ConflictFlagFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConflictFlagPayload>
+        }
+        findMany: {
+          args: Prisma.ConflictFlagFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConflictFlagPayload>[]
+        }
+        create: {
+          args: Prisma.ConflictFlagCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConflictFlagPayload>
+        }
+        createMany: {
+          args: Prisma.ConflictFlagCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ConflictFlagCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConflictFlagPayload>[]
+        }
+        delete: {
+          args: Prisma.ConflictFlagDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConflictFlagPayload>
+        }
+        update: {
+          args: Prisma.ConflictFlagUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConflictFlagPayload>
+        }
+        deleteMany: {
+          args: Prisma.ConflictFlagDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ConflictFlagUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ConflictFlagUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConflictFlagPayload>[]
+        }
+        upsert: {
+          args: Prisma.ConflictFlagUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConflictFlagPayload>
+        }
+        aggregate: {
+          args: Prisma.ConflictFlagAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateConflictFlag>
+        }
+        groupBy: {
+          args: Prisma.ConflictFlagGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ConflictFlagGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ConflictFlagCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ConflictFlagCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2472,12 +2622,48 @@ export const CapabilityKPIMaturityCeilingScalarFieldEnum = {
 export type CapabilityKPIMaturityCeilingScalarFieldEnum = (typeof CapabilityKPIMaturityCeilingScalarFieldEnum)[keyof typeof CapabilityKPIMaturityCeilingScalarFieldEnum]
 
 
+export const DependencyScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  sourceType: 'sourceType',
+  sourceId: 'sourceId',
+  targetType: 'targetType',
+  targetId: 'targetId',
+  description: 'description',
+  createdAt: 'createdAt'
+} as const
+
+export type DependencyScalarFieldEnum = (typeof DependencyScalarFieldEnum)[keyof typeof DependencyScalarFieldEnum]
+
+
+export const ConflictFlagScalarFieldEnum = {
+  id: 'id',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  status: 'status',
+  claims: 'claims',
+  resolution: 'resolution',
+  resolvedBy: 'resolvedBy',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type ConflictFlagScalarFieldEnum = (typeof ConflictFlagScalarFieldEnum)[keyof typeof ConflictFlagScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -2494,6 +2680,15 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -2625,6 +2820,48 @@ export type EnumTagStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
  * Reference to a field of type 'TagStatus[]'
  */
 export type ListEnumTagStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TagStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DependencyType'
+ */
+export type EnumDependencyTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DependencyType'>
+    
+
+
+/**
+ * Reference to a field of type 'DependencyType[]'
+ */
+export type ListEnumDependencyTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DependencyType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ConflictStatus'
+ */
+export type EnumConflictStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ConflictStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ConflictStatus[]'
+ */
+export type ListEnumConflictStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ConflictStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 /**
@@ -2760,6 +2997,8 @@ export type GlobalOmitConfig = {
   tag?: Prisma.TagOmit
   maturityAssessment?: Prisma.MaturityAssessmentOmit
   capabilityKPIMaturityCeiling?: Prisma.CapabilityKPIMaturityCeilingOmit
+  dependency?: Prisma.DependencyOmit
+  conflictFlag?: Prisma.ConflictFlagOmit
 }
 
 /* Types for Logging */
