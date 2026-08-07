@@ -9,6 +9,10 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    // CLI/migration commands need a direct (non-pooled) connection: pgbouncer
+    // transaction pooling on DATABASE_URL doesn't support the advisory locks
+    // Migrate uses. The app's runtime PrismaClient uses DATABASE_URL (pooled)
+    // separately via the adapter pattern in lib/db/index.ts.
+    url: process.env["DIRECT_URL"],
   },
 });
