@@ -352,10 +352,9 @@ model ProcessingJob {
    `FollowUpSuggestion` rows the UI surfaces to the advisor in real time.
 6. **Assess** — a human (or a Claude-assisted draft the human confirms) turns
    approved tags + evidence into a `MaturityAssessment` row per
-   capability(+location). This is the only way `Capability.asIsScore` gets
-   updated (denormalized copy of the latest assessment per capability, taking
-   the org-wide one if no location-specific one exists — see open question in
-   §8).
+   capability(+location). There is no denormalized field to update — "current
+   maturity" for a capability is always computed by reading the latest
+   `MaturityAssessment` row(s) at request time (§4.3).
 7. **Gap analysis** reads the latest `MaturityAssessment` per
    capability(+location), looks up `CapabilityKPIMaturityCeiling` for the
    corresponding KPI to compute the achievable-target range and the dollar
