@@ -152,3 +152,13 @@ export type Recommendation = Prisma.RecommendationModel
  * 
  */
 export type RecommendationFeedback = Prisma.RecommendationFeedbackModel
+/**
+ * Model FollowUpSuggestion
+ * 
+ */
+export type FollowUpSuggestion = Prisma.FollowUpSuggestionModel
+/**
+ * Model ProcessingJob
+ * 
+ */
+export type ProcessingJob = Prisma.ProcessingJobModel

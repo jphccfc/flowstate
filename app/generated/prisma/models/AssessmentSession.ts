@@ -217,6 +217,7 @@ export type AssessmentSessionWhereInput = {
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   advisor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   capturedInputs?: Prisma.CapturedInputListRelationFilter
+  followUpSuggestions?: Prisma.FollowUpSuggestionListRelationFilter
 }
 
 export type AssessmentSessionOrderByWithRelationInput = {
@@ -232,6 +233,7 @@ export type AssessmentSessionOrderByWithRelationInput = {
   organization?: Prisma.OrganizationOrderByWithRelationInput
   advisor?: Prisma.UserOrderByWithRelationInput
   capturedInputs?: Prisma.CapturedInputOrderByRelationAggregateInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionOrderByRelationAggregateInput
 }
 
 export type AssessmentSessionWhereUniqueInput = Prisma.AtLeast<{
@@ -250,6 +252,7 @@ export type AssessmentSessionWhereUniqueInput = Prisma.AtLeast<{
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   advisor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   capturedInputs?: Prisma.CapturedInputListRelationFilter
+  followUpSuggestions?: Prisma.FollowUpSuggestionListRelationFilter
 }, "id">
 
 export type AssessmentSessionOrderByWithAggregationInput = {
@@ -293,6 +296,7 @@ export type AssessmentSessionCreateInput = {
   organization: Prisma.OrganizationCreateNestedOneWithoutSessionsInput
   advisor: Prisma.UserCreateNestedOneWithoutSessionsInput
   capturedInputs?: Prisma.CapturedInputCreateNestedManyWithoutSessionInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionCreateNestedManyWithoutSessionInput
 }
 
 export type AssessmentSessionUncheckedCreateInput = {
@@ -306,6 +310,7 @@ export type AssessmentSessionUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   capturedInputs?: Prisma.CapturedInputUncheckedCreateNestedManyWithoutSessionInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedCreateNestedManyWithoutSessionInput
 }
 
 export type AssessmentSessionUpdateInput = {
@@ -319,6 +324,7 @@ export type AssessmentSessionUpdateInput = {
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutSessionsNestedInput
   advisor?: Prisma.UserUpdateOneRequiredWithoutSessionsNestedInput
   capturedInputs?: Prisma.CapturedInputUpdateManyWithoutSessionNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUpdateManyWithoutSessionNestedInput
 }
 
 export type AssessmentSessionUncheckedUpdateInput = {
@@ -332,6 +338,7 @@ export type AssessmentSessionUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capturedInputs?: Prisma.CapturedInputUncheckedUpdateManyWithoutSessionNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedUpdateManyWithoutSessionNestedInput
 }
 
 export type AssessmentSessionCreateManyInput = {
@@ -417,6 +424,11 @@ export type AssessmentSessionMinOrderByAggregateInput = {
 export type AssessmentSessionNullableScalarRelationFilter = {
   is?: Prisma.AssessmentSessionWhereInput | null
   isNot?: Prisma.AssessmentSessionWhereInput | null
+}
+
+export type AssessmentSessionScalarRelationFilter = {
+  is?: Prisma.AssessmentSessionWhereInput
+  isNot?: Prisma.AssessmentSessionWhereInput
 }
 
 export type AssessmentSessionCreateNestedManyWithoutAdvisorInput = {
@@ -519,6 +531,20 @@ export type AssessmentSessionUpdateOneWithoutCapturedInputsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AssessmentSessionUpdateToOneWithWhereWithoutCapturedInputsInput, Prisma.AssessmentSessionUpdateWithoutCapturedInputsInput>, Prisma.AssessmentSessionUncheckedUpdateWithoutCapturedInputsInput>
 }
 
+export type AssessmentSessionCreateNestedOneWithoutFollowUpSuggestionsInput = {
+  create?: Prisma.XOR<Prisma.AssessmentSessionCreateWithoutFollowUpSuggestionsInput, Prisma.AssessmentSessionUncheckedCreateWithoutFollowUpSuggestionsInput>
+  connectOrCreate?: Prisma.AssessmentSessionCreateOrConnectWithoutFollowUpSuggestionsInput
+  connect?: Prisma.AssessmentSessionWhereUniqueInput
+}
+
+export type AssessmentSessionUpdateOneRequiredWithoutFollowUpSuggestionsNestedInput = {
+  create?: Prisma.XOR<Prisma.AssessmentSessionCreateWithoutFollowUpSuggestionsInput, Prisma.AssessmentSessionUncheckedCreateWithoutFollowUpSuggestionsInput>
+  connectOrCreate?: Prisma.AssessmentSessionCreateOrConnectWithoutFollowUpSuggestionsInput
+  upsert?: Prisma.AssessmentSessionUpsertWithoutFollowUpSuggestionsInput
+  connect?: Prisma.AssessmentSessionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AssessmentSessionUpdateToOneWithWhereWithoutFollowUpSuggestionsInput, Prisma.AssessmentSessionUpdateWithoutFollowUpSuggestionsInput>, Prisma.AssessmentSessionUncheckedUpdateWithoutFollowUpSuggestionsInput>
+}
+
 export type AssessmentSessionCreateWithoutAdvisorInput = {
   id?: string
   name?: string | null
@@ -529,6 +555,7 @@ export type AssessmentSessionCreateWithoutAdvisorInput = {
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutSessionsInput
   capturedInputs?: Prisma.CapturedInputCreateNestedManyWithoutSessionInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionCreateNestedManyWithoutSessionInput
 }
 
 export type AssessmentSessionUncheckedCreateWithoutAdvisorInput = {
@@ -541,6 +568,7 @@ export type AssessmentSessionUncheckedCreateWithoutAdvisorInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   capturedInputs?: Prisma.CapturedInputUncheckedCreateNestedManyWithoutSessionInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedCreateNestedManyWithoutSessionInput
 }
 
 export type AssessmentSessionCreateOrConnectWithoutAdvisorInput = {
@@ -594,6 +622,7 @@ export type AssessmentSessionCreateWithoutOrganizationInput = {
   updatedAt?: Date | string
   advisor: Prisma.UserCreateNestedOneWithoutSessionsInput
   capturedInputs?: Prisma.CapturedInputCreateNestedManyWithoutSessionInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionCreateNestedManyWithoutSessionInput
 }
 
 export type AssessmentSessionUncheckedCreateWithoutOrganizationInput = {
@@ -606,6 +635,7 @@ export type AssessmentSessionUncheckedCreateWithoutOrganizationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   capturedInputs?: Prisma.CapturedInputUncheckedCreateNestedManyWithoutSessionInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedCreateNestedManyWithoutSessionInput
 }
 
 export type AssessmentSessionCreateOrConnectWithoutOrganizationInput = {
@@ -644,6 +674,7 @@ export type AssessmentSessionCreateWithoutCapturedInputsInput = {
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutSessionsInput
   advisor: Prisma.UserCreateNestedOneWithoutSessionsInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionCreateNestedManyWithoutSessionInput
 }
 
 export type AssessmentSessionUncheckedCreateWithoutCapturedInputsInput = {
@@ -656,6 +687,7 @@ export type AssessmentSessionUncheckedCreateWithoutCapturedInputsInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedCreateNestedManyWithoutSessionInput
 }
 
 export type AssessmentSessionCreateOrConnectWithoutCapturedInputsInput = {
@@ -684,6 +716,7 @@ export type AssessmentSessionUpdateWithoutCapturedInputsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutSessionsNestedInput
   advisor?: Prisma.UserUpdateOneRequiredWithoutSessionsNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUpdateManyWithoutSessionNestedInput
 }
 
 export type AssessmentSessionUncheckedUpdateWithoutCapturedInputsInput = {
@@ -696,6 +729,75 @@ export type AssessmentSessionUncheckedUpdateWithoutCapturedInputsInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedUpdateManyWithoutSessionNestedInput
+}
+
+export type AssessmentSessionCreateWithoutFollowUpSuggestionsInput = {
+  id?: string
+  name?: string | null
+  status?: string
+  notes?: string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutSessionsInput
+  advisor: Prisma.UserCreateNestedOneWithoutSessionsInput
+  capturedInputs?: Prisma.CapturedInputCreateNestedManyWithoutSessionInput
+}
+
+export type AssessmentSessionUncheckedCreateWithoutFollowUpSuggestionsInput = {
+  id?: string
+  organizationId: string
+  advisorId: string
+  name?: string | null
+  status?: string
+  notes?: string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  capturedInputs?: Prisma.CapturedInputUncheckedCreateNestedManyWithoutSessionInput
+}
+
+export type AssessmentSessionCreateOrConnectWithoutFollowUpSuggestionsInput = {
+  where: Prisma.AssessmentSessionWhereUniqueInput
+  create: Prisma.XOR<Prisma.AssessmentSessionCreateWithoutFollowUpSuggestionsInput, Prisma.AssessmentSessionUncheckedCreateWithoutFollowUpSuggestionsInput>
+}
+
+export type AssessmentSessionUpsertWithoutFollowUpSuggestionsInput = {
+  update: Prisma.XOR<Prisma.AssessmentSessionUpdateWithoutFollowUpSuggestionsInput, Prisma.AssessmentSessionUncheckedUpdateWithoutFollowUpSuggestionsInput>
+  create: Prisma.XOR<Prisma.AssessmentSessionCreateWithoutFollowUpSuggestionsInput, Prisma.AssessmentSessionUncheckedCreateWithoutFollowUpSuggestionsInput>
+  where?: Prisma.AssessmentSessionWhereInput
+}
+
+export type AssessmentSessionUpdateToOneWithWhereWithoutFollowUpSuggestionsInput = {
+  where?: Prisma.AssessmentSessionWhereInput
+  data: Prisma.XOR<Prisma.AssessmentSessionUpdateWithoutFollowUpSuggestionsInput, Prisma.AssessmentSessionUncheckedUpdateWithoutFollowUpSuggestionsInput>
+}
+
+export type AssessmentSessionUpdateWithoutFollowUpSuggestionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutSessionsNestedInput
+  advisor?: Prisma.UserUpdateOneRequiredWithoutSessionsNestedInput
+  capturedInputs?: Prisma.CapturedInputUpdateManyWithoutSessionNestedInput
+}
+
+export type AssessmentSessionUncheckedUpdateWithoutFollowUpSuggestionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  advisorId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  capturedInputs?: Prisma.CapturedInputUncheckedUpdateManyWithoutSessionNestedInput
 }
 
 export type AssessmentSessionCreateManyAdvisorInput = {
@@ -719,6 +821,7 @@ export type AssessmentSessionUpdateWithoutAdvisorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutSessionsNestedInput
   capturedInputs?: Prisma.CapturedInputUpdateManyWithoutSessionNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUpdateManyWithoutSessionNestedInput
 }
 
 export type AssessmentSessionUncheckedUpdateWithoutAdvisorInput = {
@@ -731,6 +834,7 @@ export type AssessmentSessionUncheckedUpdateWithoutAdvisorInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capturedInputs?: Prisma.CapturedInputUncheckedUpdateManyWithoutSessionNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedUpdateManyWithoutSessionNestedInput
 }
 
 export type AssessmentSessionUncheckedUpdateManyWithoutAdvisorInput = {
@@ -765,6 +869,7 @@ export type AssessmentSessionUpdateWithoutOrganizationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   advisor?: Prisma.UserUpdateOneRequiredWithoutSessionsNestedInput
   capturedInputs?: Prisma.CapturedInputUpdateManyWithoutSessionNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUpdateManyWithoutSessionNestedInput
 }
 
 export type AssessmentSessionUncheckedUpdateWithoutOrganizationInput = {
@@ -777,6 +882,7 @@ export type AssessmentSessionUncheckedUpdateWithoutOrganizationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capturedInputs?: Prisma.CapturedInputUncheckedUpdateManyWithoutSessionNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedUpdateManyWithoutSessionNestedInput
 }
 
 export type AssessmentSessionUncheckedUpdateManyWithoutOrganizationInput = {
@@ -797,10 +903,12 @@ export type AssessmentSessionUncheckedUpdateManyWithoutOrganizationInput = {
 
 export type AssessmentSessionCountOutputType = {
   capturedInputs: number
+  followUpSuggestions: number
 }
 
 export type AssessmentSessionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   capturedInputs?: boolean | AssessmentSessionCountOutputTypeCountCapturedInputsArgs
+  followUpSuggestions?: boolean | AssessmentSessionCountOutputTypeCountFollowUpSuggestionsArgs
 }
 
 /**
@@ -820,6 +928,13 @@ export type AssessmentSessionCountOutputTypeCountCapturedInputsArgs<ExtArgs exte
   where?: Prisma.CapturedInputWhereInput
 }
 
+/**
+ * AssessmentSessionCountOutputType without action
+ */
+export type AssessmentSessionCountOutputTypeCountFollowUpSuggestionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FollowUpSuggestionWhereInput
+}
+
 
 export type AssessmentSessionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -834,6 +949,7 @@ export type AssessmentSessionSelect<ExtArgs extends runtime.Types.Extensions.Int
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   advisor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   capturedInputs?: boolean | Prisma.AssessmentSession$capturedInputsArgs<ExtArgs>
+  followUpSuggestions?: boolean | Prisma.AssessmentSession$followUpSuggestionsArgs<ExtArgs>
   _count?: boolean | Prisma.AssessmentSessionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["assessmentSession"]>
 
@@ -882,6 +998,7 @@ export type AssessmentSessionInclude<ExtArgs extends runtime.Types.Extensions.In
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   advisor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   capturedInputs?: boolean | Prisma.AssessmentSession$capturedInputsArgs<ExtArgs>
+  followUpSuggestions?: boolean | Prisma.AssessmentSession$followUpSuggestionsArgs<ExtArgs>
   _count?: boolean | Prisma.AssessmentSessionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AssessmentSessionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -899,6 +1016,7 @@ export type $AssessmentSessionPayload<ExtArgs extends runtime.Types.Extensions.I
     organization: Prisma.$OrganizationPayload<ExtArgs>
     advisor: Prisma.$UserPayload<ExtArgs>
     capturedInputs: Prisma.$CapturedInputPayload<ExtArgs>[]
+    followUpSuggestions: Prisma.$FollowUpSuggestionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1307,6 +1425,7 @@ export interface Prisma__AssessmentSessionClient<T, Null = never, ExtArgs extend
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   advisor<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   capturedInputs<T extends Prisma.AssessmentSession$capturedInputsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssessmentSession$capturedInputsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CapturedInputPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  followUpSuggestions<T extends Prisma.AssessmentSession$followUpSuggestionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssessmentSession$followUpSuggestionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FollowUpSuggestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1767,6 +1886,30 @@ export type AssessmentSession$capturedInputsArgs<ExtArgs extends runtime.Types.E
   take?: number
   skip?: number
   distinct?: Prisma.CapturedInputScalarFieldEnum | Prisma.CapturedInputScalarFieldEnum[]
+}
+
+/**
+ * AssessmentSession.followUpSuggestions
+ */
+export type AssessmentSession$followUpSuggestionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FollowUpSuggestion
+   */
+  select?: Prisma.FollowUpSuggestionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FollowUpSuggestion
+   */
+  omit?: Prisma.FollowUpSuggestionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FollowUpSuggestionInclude<ExtArgs> | null
+  where?: Prisma.FollowUpSuggestionWhereInput
+  orderBy?: Prisma.FollowUpSuggestionOrderByWithRelationInput | Prisma.FollowUpSuggestionOrderByWithRelationInput[]
+  cursor?: Prisma.FollowUpSuggestionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FollowUpSuggestionScalarFieldEnum | Prisma.FollowUpSuggestionScalarFieldEnum[]
 }
 
 /**

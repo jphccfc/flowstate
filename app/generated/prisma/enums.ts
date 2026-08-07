@@ -91,3 +91,22 @@ export const RecommendationStatus = {
 } as const
 
 export type RecommendationStatus = (typeof RecommendationStatus)[keyof typeof RecommendationStatus]
+
+
+export const FollowUpStatus = {
+  SHOWN: 'SHOWN',
+  ASKED: 'ASKED',
+  DISMISSED: 'DISMISSED'
+} as const
+
+export type FollowUpStatus = (typeof FollowUpStatus)[keyof typeof FollowUpStatus]
+
+
+export const JobStatus = {
+  QUEUED: 'QUEUED',
+  RUNNING: 'RUNNING',
+  DONE: 'DONE',
+  FAILED: 'FAILED'
+} as const
+
+export type JobStatus = (typeof JobStatus)[keyof typeof JobStatus]

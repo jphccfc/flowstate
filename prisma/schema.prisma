@@ -106,6 +106,7 @@ model Capability {
   projects     ProjectCapability[]
   maturityAssessments MaturityAssessment[]
   kpiCeilings          CapabilityKPIMaturityCeiling[]
+  followUpSuggestions FollowUpSuggestion[]
 }
 
 model Stakeholder {
@@ -276,6 +277,7 @@ model AssessmentSession {
   organization  Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   advisor       User            @relation(fields: [advisorId], references: [id])
   capturedInputs CapturedInput[]
+  followUpSuggestions FollowUpSuggestion[]
 }
 
 enum InputType {
@@ -327,6 +329,7 @@ model CapturedSegment {
 
   capturedInput CapturedInput @relation(fields: [capturedInputId], references: [id], onDelete: Cascade)
   tags          Tag[]
+  followUps FollowUpSuggestion[]
 }
 
 enum TagTargetType {
@@ -469,4 +472,42 @@ model RecommendationFeedback {
   actedAt          DateTime @default(now())
 
   recommendation Recommendation @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+}
+
+enum FollowUpStatus {
+  SHOWN
+  ASKED
+  DISMISSED
+}
+
+model FollowUpSuggestion {
+  id                String         @id @default(cuid())
+  sessionId         String
+  triggerSegmentId  String?
+  capabilityId      String?
+  suggestedQuestion String
+  status            FollowUpStatus @default(SHOWN)
+  createdAt         DateTime       @default(now())
+
+  session        AssessmentSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  triggerSegment CapturedSegment?  @relation(fields: [triggerSegmentId], references: [id])
+  capability     Capability?       @relation(fields: [capabilityId], references: [id])
+}
+
+enum JobStatus {
+  QUEUED
+  RUNNING
+  DONE
+  FAILED
+}
+
+model ProcessingJob {
+  id        String    @id @default(cuid())
+  type      String
+  targetId  String
+  status    JobStatus @default(QUEUED)
+  attempts  Int       @default(0)
+  error     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }

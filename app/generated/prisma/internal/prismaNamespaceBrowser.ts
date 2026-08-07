@@ -77,7 +77,9 @@ export const ModelName = {
   Dependency: 'Dependency',
   ConflictFlag: 'ConflictFlag',
   Recommendation: 'Recommendation',
-  RecommendationFeedback: 'RecommendationFeedback'
+  RecommendationFeedback: 'RecommendationFeedback',
+  FollowUpSuggestion: 'FollowUpSuggestion',
+  ProcessingJob: 'ProcessingJob'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -461,6 +463,33 @@ export const RecommendationFeedbackScalarFieldEnum = {
 } as const
 
 export type RecommendationFeedbackScalarFieldEnum = (typeof RecommendationFeedbackScalarFieldEnum)[keyof typeof RecommendationFeedbackScalarFieldEnum]
+
+
+export const FollowUpSuggestionScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  triggerSegmentId: 'triggerSegmentId',
+  capabilityId: 'capabilityId',
+  suggestedQuestion: 'suggestedQuestion',
+  status: 'status',
+  createdAt: 'createdAt'
+} as const
+
+export type FollowUpSuggestionScalarFieldEnum = (typeof FollowUpSuggestionScalarFieldEnum)[keyof typeof FollowUpSuggestionScalarFieldEnum]
+
+
+export const ProcessingJobScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  targetId: 'targetId',
+  status: 'status',
+  attempts: 'attempts',
+  error: 'error',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProcessingJobScalarFieldEnum = (typeof ProcessingJobScalarFieldEnum)[keyof typeof ProcessingJobScalarFieldEnum]
 
 
 export const SortOrder = {
