@@ -18,3 +18,27 @@ export const UserRole = {
 } as const
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+
+
+export const InputType = {
+  AUDIO: 'AUDIO',
+  TEXT_NOTE: 'TEXT_NOTE',
+  EMAIL: 'EMAIL',
+  DOCUMENT: 'DOCUMENT',
+  DATA_ROOM_FILE: 'DATA_ROOM_FILE'
+} as const
+
+export type InputType = (typeof InputType)[keyof typeof InputType]
+
+
+export const ProcessingStatus = {
+  PENDING: 'PENDING',
+  TRANSCRIBING: 'TRANSCRIBING',
+  TRANSCRIBED: 'TRANSCRIBED',
+  SEGMENTING: 'SEGMENTING',
+  TAGGING: 'TAGGING',
+  TAGGED: 'TAGGED',
+  FAILED: 'FAILED'
+} as const
+
+export type ProcessingStatus = (typeof ProcessingStatus)[keyof typeof ProcessingStatus]

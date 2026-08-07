@@ -44,7 +44,8 @@ model Organization {
   technologies Technology[]
   processes    Process[]
   projects     Project[]
-  sessions     AssessmentSession[]
+  sessions       AssessmentSession[]
+  capturedInputs CapturedInput[]
 }
 
 model UserOrganization {
@@ -268,6 +269,57 @@ model AssessmentSession {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  advisor      User         @relation(fields: [advisorId], references: [id])
+  organization  Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  advisor       User            @relation(fields: [advisorId], references: [id])
+  capturedInputs CapturedInput[]
+}
+
+enum InputType {
+  AUDIO
+  TEXT_NOTE
+  EMAIL
+  DOCUMENT
+  DATA_ROOM_FILE
+}
+
+enum ProcessingStatus {
+  PENDING
+  TRANSCRIBING
+  TRANSCRIBED
+  SEGMENTING
+  TAGGING
+  TAGGED
+  FAILED
+}
+
+model CapturedInput {
+  id             String            @id @default(cuid())
+  organizationId String
+  sessionId      String?
+  type           InputType
+  sourceRef      String?
+  rawText        String?
+  locationTag    String?
+  status         ProcessingStatus  @default(PENDING)
+  error          String?
+  capturedAt     DateTime          @default(now())
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  session      AssessmentSession? @relation(fields: [sessionId], references: [id])
+  segments     CapturedSegment[]
+}
+
+model CapturedSegment {
+  id              String   @id @default(cuid())
+  capturedInputId String
+  order           Int
+  speaker         String?
+  text            String
+  startMs         Int?
+  endMs           Int?
+  createdAt       DateTime @default(now())
+
+  capturedInput CapturedInput @relation(fields: [capturedInputId], references: [id], onDelete: Cascade)
 }

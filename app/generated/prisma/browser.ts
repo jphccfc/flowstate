@@ -107,3 +107,13 @@ export type AchievementStakeholder = Prisma.AchievementStakeholderModel
  * 
  */
 export type AssessmentSession = Prisma.AssessmentSessionModel
+/**
+ * Model CapturedInput
+ * 
+ */
+export type CapturedInput = Prisma.CapturedInputModel
+/**
+ * Model CapturedSegment
+ * 
+ */
+export type CapturedSegment = Prisma.CapturedSegmentModel

@@ -68,7 +68,9 @@ export const ModelName = {
   ProjectCapability: 'ProjectCapability',
   Achievement: 'Achievement',
   AchievementStakeholder: 'AchievementStakeholder',
-  AssessmentSession: 'AssessmentSession'
+  AssessmentSession: 'AssessmentSession',
+  CapturedInput: 'CapturedInput',
+  CapturedSegment: 'CapturedSegment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -314,6 +316,38 @@ export const AssessmentSessionScalarFieldEnum = {
 } as const
 
 export type AssessmentSessionScalarFieldEnum = (typeof AssessmentSessionScalarFieldEnum)[keyof typeof AssessmentSessionScalarFieldEnum]
+
+
+export const CapturedInputScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  sessionId: 'sessionId',
+  type: 'type',
+  sourceRef: 'sourceRef',
+  rawText: 'rawText',
+  locationTag: 'locationTag',
+  status: 'status',
+  error: 'error',
+  capturedAt: 'capturedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CapturedInputScalarFieldEnum = (typeof CapturedInputScalarFieldEnum)[keyof typeof CapturedInputScalarFieldEnum]
+
+
+export const CapturedSegmentScalarFieldEnum = {
+  id: 'id',
+  capturedInputId: 'capturedInputId',
+  order: 'order',
+  speaker: 'speaker',
+  text: 'text',
+  startMs: 'startMs',
+  endMs: 'endMs',
+  createdAt: 'createdAt'
+} as const
+
+export type CapturedSegmentScalarFieldEnum = (typeof CapturedSegmentScalarFieldEnum)[keyof typeof CapturedSegmentScalarFieldEnum]
 
 
 export const SortOrder = {

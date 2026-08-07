@@ -216,6 +216,7 @@ export type AssessmentSessionWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"AssessmentSession"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   advisor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  capturedInputs?: Prisma.CapturedInputListRelationFilter
 }
 
 export type AssessmentSessionOrderByWithRelationInput = {
@@ -230,6 +231,7 @@ export type AssessmentSessionOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   organization?: Prisma.OrganizationOrderByWithRelationInput
   advisor?: Prisma.UserOrderByWithRelationInput
+  capturedInputs?: Prisma.CapturedInputOrderByRelationAggregateInput
 }
 
 export type AssessmentSessionWhereUniqueInput = Prisma.AtLeast<{
@@ -247,6 +249,7 @@ export type AssessmentSessionWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"AssessmentSession"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   advisor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  capturedInputs?: Prisma.CapturedInputListRelationFilter
 }, "id">
 
 export type AssessmentSessionOrderByWithAggregationInput = {
@@ -289,6 +292,7 @@ export type AssessmentSessionCreateInput = {
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutSessionsInput
   advisor: Prisma.UserCreateNestedOneWithoutSessionsInput
+  capturedInputs?: Prisma.CapturedInputCreateNestedManyWithoutSessionInput
 }
 
 export type AssessmentSessionUncheckedCreateInput = {
@@ -301,6 +305,7 @@ export type AssessmentSessionUncheckedCreateInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  capturedInputs?: Prisma.CapturedInputUncheckedCreateNestedManyWithoutSessionInput
 }
 
 export type AssessmentSessionUpdateInput = {
@@ -313,6 +318,7 @@ export type AssessmentSessionUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutSessionsNestedInput
   advisor?: Prisma.UserUpdateOneRequiredWithoutSessionsNestedInput
+  capturedInputs?: Prisma.CapturedInputUpdateManyWithoutSessionNestedInput
 }
 
 export type AssessmentSessionUncheckedUpdateInput = {
@@ -325,6 +331,7 @@ export type AssessmentSessionUncheckedUpdateInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  capturedInputs?: Prisma.CapturedInputUncheckedUpdateManyWithoutSessionNestedInput
 }
 
 export type AssessmentSessionCreateManyInput = {
@@ -405,6 +412,11 @@ export type AssessmentSessionMinOrderByAggregateInput = {
   completedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type AssessmentSessionNullableScalarRelationFilter = {
+  is?: Prisma.AssessmentSessionWhereInput | null
+  isNot?: Prisma.AssessmentSessionWhereInput | null
 }
 
 export type AssessmentSessionCreateNestedManyWithoutAdvisorInput = {
@@ -491,6 +503,22 @@ export type AssessmentSessionUncheckedUpdateManyWithoutOrganizationNestedInput =
   deleteMany?: Prisma.AssessmentSessionScalarWhereInput | Prisma.AssessmentSessionScalarWhereInput[]
 }
 
+export type AssessmentSessionCreateNestedOneWithoutCapturedInputsInput = {
+  create?: Prisma.XOR<Prisma.AssessmentSessionCreateWithoutCapturedInputsInput, Prisma.AssessmentSessionUncheckedCreateWithoutCapturedInputsInput>
+  connectOrCreate?: Prisma.AssessmentSessionCreateOrConnectWithoutCapturedInputsInput
+  connect?: Prisma.AssessmentSessionWhereUniqueInput
+}
+
+export type AssessmentSessionUpdateOneWithoutCapturedInputsNestedInput = {
+  create?: Prisma.XOR<Prisma.AssessmentSessionCreateWithoutCapturedInputsInput, Prisma.AssessmentSessionUncheckedCreateWithoutCapturedInputsInput>
+  connectOrCreate?: Prisma.AssessmentSessionCreateOrConnectWithoutCapturedInputsInput
+  upsert?: Prisma.AssessmentSessionUpsertWithoutCapturedInputsInput
+  disconnect?: Prisma.AssessmentSessionWhereInput | boolean
+  delete?: Prisma.AssessmentSessionWhereInput | boolean
+  connect?: Prisma.AssessmentSessionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AssessmentSessionUpdateToOneWithWhereWithoutCapturedInputsInput, Prisma.AssessmentSessionUpdateWithoutCapturedInputsInput>, Prisma.AssessmentSessionUncheckedUpdateWithoutCapturedInputsInput>
+}
+
 export type AssessmentSessionCreateWithoutAdvisorInput = {
   id?: string
   name?: string | null
@@ -500,6 +528,7 @@ export type AssessmentSessionCreateWithoutAdvisorInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutSessionsInput
+  capturedInputs?: Prisma.CapturedInputCreateNestedManyWithoutSessionInput
 }
 
 export type AssessmentSessionUncheckedCreateWithoutAdvisorInput = {
@@ -511,6 +540,7 @@ export type AssessmentSessionUncheckedCreateWithoutAdvisorInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  capturedInputs?: Prisma.CapturedInputUncheckedCreateNestedManyWithoutSessionInput
 }
 
 export type AssessmentSessionCreateOrConnectWithoutAdvisorInput = {
@@ -563,6 +593,7 @@ export type AssessmentSessionCreateWithoutOrganizationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   advisor: Prisma.UserCreateNestedOneWithoutSessionsInput
+  capturedInputs?: Prisma.CapturedInputCreateNestedManyWithoutSessionInput
 }
 
 export type AssessmentSessionUncheckedCreateWithoutOrganizationInput = {
@@ -574,6 +605,7 @@ export type AssessmentSessionUncheckedCreateWithoutOrganizationInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  capturedInputs?: Prisma.CapturedInputUncheckedCreateNestedManyWithoutSessionInput
 }
 
 export type AssessmentSessionCreateOrConnectWithoutOrganizationInput = {
@@ -602,6 +634,70 @@ export type AssessmentSessionUpdateManyWithWhereWithoutOrganizationInput = {
   data: Prisma.XOR<Prisma.AssessmentSessionUpdateManyMutationInput, Prisma.AssessmentSessionUncheckedUpdateManyWithoutOrganizationInput>
 }
 
+export type AssessmentSessionCreateWithoutCapturedInputsInput = {
+  id?: string
+  name?: string | null
+  status?: string
+  notes?: string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutSessionsInput
+  advisor: Prisma.UserCreateNestedOneWithoutSessionsInput
+}
+
+export type AssessmentSessionUncheckedCreateWithoutCapturedInputsInput = {
+  id?: string
+  organizationId: string
+  advisorId: string
+  name?: string | null
+  status?: string
+  notes?: string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type AssessmentSessionCreateOrConnectWithoutCapturedInputsInput = {
+  where: Prisma.AssessmentSessionWhereUniqueInput
+  create: Prisma.XOR<Prisma.AssessmentSessionCreateWithoutCapturedInputsInput, Prisma.AssessmentSessionUncheckedCreateWithoutCapturedInputsInput>
+}
+
+export type AssessmentSessionUpsertWithoutCapturedInputsInput = {
+  update: Prisma.XOR<Prisma.AssessmentSessionUpdateWithoutCapturedInputsInput, Prisma.AssessmentSessionUncheckedUpdateWithoutCapturedInputsInput>
+  create: Prisma.XOR<Prisma.AssessmentSessionCreateWithoutCapturedInputsInput, Prisma.AssessmentSessionUncheckedCreateWithoutCapturedInputsInput>
+  where?: Prisma.AssessmentSessionWhereInput
+}
+
+export type AssessmentSessionUpdateToOneWithWhereWithoutCapturedInputsInput = {
+  where?: Prisma.AssessmentSessionWhereInput
+  data: Prisma.XOR<Prisma.AssessmentSessionUpdateWithoutCapturedInputsInput, Prisma.AssessmentSessionUncheckedUpdateWithoutCapturedInputsInput>
+}
+
+export type AssessmentSessionUpdateWithoutCapturedInputsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutSessionsNestedInput
+  advisor?: Prisma.UserUpdateOneRequiredWithoutSessionsNestedInput
+}
+
+export type AssessmentSessionUncheckedUpdateWithoutCapturedInputsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  advisorId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type AssessmentSessionCreateManyAdvisorInput = {
   id?: string
   organizationId: string
@@ -622,6 +718,7 @@ export type AssessmentSessionUpdateWithoutAdvisorInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutSessionsNestedInput
+  capturedInputs?: Prisma.CapturedInputUpdateManyWithoutSessionNestedInput
 }
 
 export type AssessmentSessionUncheckedUpdateWithoutAdvisorInput = {
@@ -633,6 +730,7 @@ export type AssessmentSessionUncheckedUpdateWithoutAdvisorInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  capturedInputs?: Prisma.CapturedInputUncheckedUpdateManyWithoutSessionNestedInput
 }
 
 export type AssessmentSessionUncheckedUpdateManyWithoutAdvisorInput = {
@@ -666,6 +764,7 @@ export type AssessmentSessionUpdateWithoutOrganizationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   advisor?: Prisma.UserUpdateOneRequiredWithoutSessionsNestedInput
+  capturedInputs?: Prisma.CapturedInputUpdateManyWithoutSessionNestedInput
 }
 
 export type AssessmentSessionUncheckedUpdateWithoutOrganizationInput = {
@@ -677,6 +776,7 @@ export type AssessmentSessionUncheckedUpdateWithoutOrganizationInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  capturedInputs?: Prisma.CapturedInputUncheckedUpdateManyWithoutSessionNestedInput
 }
 
 export type AssessmentSessionUncheckedUpdateManyWithoutOrganizationInput = {
@@ -691,6 +791,35 @@ export type AssessmentSessionUncheckedUpdateManyWithoutOrganizationInput = {
 }
 
 
+/**
+ * Count Type AssessmentSessionCountOutputType
+ */
+
+export type AssessmentSessionCountOutputType = {
+  capturedInputs: number
+}
+
+export type AssessmentSessionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  capturedInputs?: boolean | AssessmentSessionCountOutputTypeCountCapturedInputsArgs
+}
+
+/**
+ * AssessmentSessionCountOutputType without action
+ */
+export type AssessmentSessionCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AssessmentSessionCountOutputType
+   */
+  select?: Prisma.AssessmentSessionCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * AssessmentSessionCountOutputType without action
+ */
+export type AssessmentSessionCountOutputTypeCountCapturedInputsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CapturedInputWhereInput
+}
+
 
 export type AssessmentSessionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -704,6 +833,8 @@ export type AssessmentSessionSelect<ExtArgs extends runtime.Types.Extensions.Int
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   advisor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  capturedInputs?: boolean | Prisma.AssessmentSession$capturedInputsArgs<ExtArgs>
+  _count?: boolean | Prisma.AssessmentSessionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["assessmentSession"]>
 
 export type AssessmentSessionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -750,6 +881,8 @@ export type AssessmentSessionOmit<ExtArgs extends runtime.Types.Extensions.Inter
 export type AssessmentSessionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   advisor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  capturedInputs?: boolean | Prisma.AssessmentSession$capturedInputsArgs<ExtArgs>
+  _count?: boolean | Prisma.AssessmentSessionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AssessmentSessionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -765,6 +898,7 @@ export type $AssessmentSessionPayload<ExtArgs extends runtime.Types.Extensions.I
   objects: {
     organization: Prisma.$OrganizationPayload<ExtArgs>
     advisor: Prisma.$UserPayload<ExtArgs>
+    capturedInputs: Prisma.$CapturedInputPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1172,6 +1306,7 @@ export interface Prisma__AssessmentSessionClient<T, Null = never, ExtArgs extend
   readonly [Symbol.toStringTag]: "PrismaPromise"
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   advisor<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  capturedInputs<T extends Prisma.AssessmentSession$capturedInputsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssessmentSession$capturedInputsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CapturedInputPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1608,6 +1743,30 @@ export type AssessmentSessionDeleteManyArgs<ExtArgs extends runtime.Types.Extens
    * Limit how many AssessmentSessions to delete.
    */
   limit?: number
+}
+
+/**
+ * AssessmentSession.capturedInputs
+ */
+export type AssessmentSession$capturedInputsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CapturedInput
+   */
+  select?: Prisma.CapturedInputSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CapturedInput
+   */
+  omit?: Prisma.CapturedInputOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CapturedInputInclude<ExtArgs> | null
+  where?: Prisma.CapturedInputWhereInput
+  orderBy?: Prisma.CapturedInputOrderByWithRelationInput | Prisma.CapturedInputOrderByWithRelationInput[]
+  cursor?: Prisma.CapturedInputWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CapturedInputScalarFieldEnum | Prisma.CapturedInputScalarFieldEnum[]
 }
 
 /**

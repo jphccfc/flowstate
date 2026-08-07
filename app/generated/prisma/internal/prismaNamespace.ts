@@ -401,7 +401,9 @@ export const ModelName = {
   ProjectCapability: 'ProjectCapability',
   Achievement: 'Achievement',
   AchievementStakeholder: 'AchievementStakeholder',
-  AssessmentSession: 'AssessmentSession'
+  AssessmentSession: 'AssessmentSession',
+  CapturedInput: 'CapturedInput',
+  CapturedSegment: 'CapturedSegment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -417,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession"
+    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedSegment"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1753,6 +1755,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CapturedInput: {
+      payload: Prisma.$CapturedInputPayload<ExtArgs>
+      fields: Prisma.CapturedInputFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CapturedInputFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CapturedInputFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputPayload>
+        }
+        findFirst: {
+          args: Prisma.CapturedInputFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CapturedInputFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputPayload>
+        }
+        findMany: {
+          args: Prisma.CapturedInputFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputPayload>[]
+        }
+        create: {
+          args: Prisma.CapturedInputCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputPayload>
+        }
+        createMany: {
+          args: Prisma.CapturedInputCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CapturedInputCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputPayload>[]
+        }
+        delete: {
+          args: Prisma.CapturedInputDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputPayload>
+        }
+        update: {
+          args: Prisma.CapturedInputUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputPayload>
+        }
+        deleteMany: {
+          args: Prisma.CapturedInputDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CapturedInputUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CapturedInputUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputPayload>[]
+        }
+        upsert: {
+          args: Prisma.CapturedInputUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputPayload>
+        }
+        aggregate: {
+          args: Prisma.CapturedInputAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCapturedInput>
+        }
+        groupBy: {
+          args: Prisma.CapturedInputGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CapturedInputGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CapturedInputCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CapturedInputCountAggregateOutputType> | number
+        }
+      }
+    }
+    CapturedSegment: {
+      payload: Prisma.$CapturedSegmentPayload<ExtArgs>
+      fields: Prisma.CapturedSegmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CapturedSegmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedSegmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CapturedSegmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedSegmentPayload>
+        }
+        findFirst: {
+          args: Prisma.CapturedSegmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedSegmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CapturedSegmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedSegmentPayload>
+        }
+        findMany: {
+          args: Prisma.CapturedSegmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedSegmentPayload>[]
+        }
+        create: {
+          args: Prisma.CapturedSegmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedSegmentPayload>
+        }
+        createMany: {
+          args: Prisma.CapturedSegmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CapturedSegmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedSegmentPayload>[]
+        }
+        delete: {
+          args: Prisma.CapturedSegmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedSegmentPayload>
+        }
+        update: {
+          args: Prisma.CapturedSegmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedSegmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.CapturedSegmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CapturedSegmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CapturedSegmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedSegmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.CapturedSegmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedSegmentPayload>
+        }
+        aggregate: {
+          args: Prisma.CapturedSegmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCapturedSegment>
+        }
+        groupBy: {
+          args: Prisma.CapturedSegmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CapturedSegmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CapturedSegmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CapturedSegmentCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2021,6 +2171,38 @@ export const AssessmentSessionScalarFieldEnum = {
 export type AssessmentSessionScalarFieldEnum = (typeof AssessmentSessionScalarFieldEnum)[keyof typeof AssessmentSessionScalarFieldEnum]
 
 
+export const CapturedInputScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  sessionId: 'sessionId',
+  type: 'type',
+  sourceRef: 'sourceRef',
+  rawText: 'rawText',
+  locationTag: 'locationTag',
+  status: 'status',
+  error: 'error',
+  capturedAt: 'capturedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CapturedInputScalarFieldEnum = (typeof CapturedInputScalarFieldEnum)[keyof typeof CapturedInputScalarFieldEnum]
+
+
+export const CapturedSegmentScalarFieldEnum = {
+  id: 'id',
+  capturedInputId: 'capturedInputId',
+  order: 'order',
+  speaker: 'speaker',
+  text: 'text',
+  startMs: 'startMs',
+  endMs: 'endMs',
+  createdAt: 'createdAt'
+} as const
+
+export type CapturedSegmentScalarFieldEnum = (typeof CapturedSegmentScalarFieldEnum)[keyof typeof CapturedSegmentScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2118,6 +2300,34 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'InputType'
+ */
+export type EnumInputTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InputType'>
+    
+
+
+/**
+ * Reference to a field of type 'InputType[]'
+ */
+export type ListEnumInputTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InputType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ProcessingStatus'
+ */
+export type EnumProcessingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProcessingStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ProcessingStatus[]'
+ */
+export type ListEnumProcessingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProcessingStatus[]'>
     
 
 /**
@@ -2248,6 +2458,8 @@ export type GlobalOmitConfig = {
   achievement?: Prisma.AchievementOmit
   achievementStakeholder?: Prisma.AchievementStakeholderOmit
   assessmentSession?: Prisma.AssessmentSessionOmit
+  capturedInput?: Prisma.CapturedInputOmit
+  capturedSegment?: Prisma.CapturedSegmentOmit
 }
 
 /* Types for Logging */
