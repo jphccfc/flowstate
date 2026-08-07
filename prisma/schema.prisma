@@ -78,10 +78,10 @@ model Capability {
   id          String   @id @default(cuid())
   domainId    String
   name        String
-  aliases     String[]   @default([])
+  aliases     String[]
   description String?
-  dimensions  String[]   @default([])
-  metrics     String[]   @default([])
+  dimensions  String[]
+  metrics     String[]
 
   asIsState       String?
   asIsScore       Float?
@@ -89,8 +89,8 @@ model Capability {
   importanceScore Float?   @default(5)
   toBeState       String?
   toBeScore       Float?
-  opportunities   String[]   @default([])
-  weaknesses      String[]   @default([])
+  opportunities   String[]
+  weaknesses      String[]
   gapScore        Float?
 
   order     Int      @default(0)
