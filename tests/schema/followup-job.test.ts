@@ -3,9 +3,11 @@ import { cleanupOrganization, createTestOrganization, prisma } from "../helpers/
 
 describe("follow-up suggestion and processing job models", () => {
   let orgId: string;
+  let advisorId: string;
 
   afterAll(async () => {
     if (orgId) await cleanupOrganization(orgId);
+    if (advisorId) await prisma.user.delete({ where: { id: advisorId } });
     await prisma.$disconnect();
   });
 
@@ -16,6 +18,7 @@ describe("follow-up suggestion and processing job models", () => {
     const advisor = await prisma.user.create({
       data: { email: `advisor-${Date.now()}@flowstate.test`, role: "ADVISOR" },
     });
+    advisorId = advisor.id;
     const session = await prisma.assessmentSession.create({
       data: { organizationId: org.id, advisorId: advisor.id, status: "active" },
     });

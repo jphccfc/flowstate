@@ -3,16 +3,18 @@ import { cleanupOrganization, createTestOrganization, prisma } from "../helpers/
 import { getCurrentMaturity } from "../../lib/maturity/current";
 
 describe("getCurrentMaturity", () => {
-  let orgId: string;
+  let orgId1: string;
+  let orgId2: string;
 
   afterAll(async () => {
-    if (orgId) await cleanupOrganization(orgId);
+    if (orgId1) await cleanupOrganization(orgId1);
+    if (orgId2) await cleanupOrganization(orgId2);
     await prisma.$disconnect();
   });
 
   it("returns the latest assessment per location, not older ones", async () => {
     const org = await createTestOrganization({ name: "Current Maturity Test Org" });
-    orgId = org.id;
+    orgId1 = org.id;
 
     const domain = await prisma.businessDomain.create({
       data: { organizationId: org.id, name: "Operations" },
@@ -42,7 +44,7 @@ describe("getCurrentMaturity", () => {
 
   it("returns an empty array when a capability has never been assessed", async () => {
     const org = await createTestOrganization({ name: "Unassessed Test Org" });
-    orgId = org.id;
+    orgId2 = org.id;
 
     const domain = await prisma.businessDomain.create({
       data: { organizationId: org.id, name: "Operations" },

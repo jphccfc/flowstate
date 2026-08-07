@@ -3,8 +3,12 @@ import { cleanupOrganization, createTestOrganization, prisma } from "../helpers/
 
 describe("dependency and conflict models", () => {
   let orgId: string;
+  let dependencyId: string;
+  let conflictId: string;
 
   afterAll(async () => {
+    if (dependencyId) await prisma.dependency.delete({ where: { id: dependencyId } });
+    if (conflictId) await prisma.conflictFlag.delete({ where: { id: conflictId } });
     if (orgId) await cleanupOrganization(orgId);
     await prisma.$disconnect();
   });
@@ -33,6 +37,7 @@ describe("dependency and conflict models", () => {
         description: "CRM data accuracy cascades into quarterly finance targets",
       },
     });
+    dependencyId = dependency.id;
     expect(dependency.description).toContain("cascades");
 
     const conflict = await prisma.conflictFlag.create({
@@ -45,6 +50,7 @@ describe("dependency and conflict models", () => {
         ],
       },
     });
+    conflictId = conflict.id;
     expect(conflict.status).toBe("OPEN");
     expect(Array.isArray(conflict.claims)).toBe(true);
   });
