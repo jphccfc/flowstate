@@ -13,6 +13,12 @@ describe("tagging model", () => {
     const org = await createTestOrganization({ name: "Tagging Test Org" });
     orgId = org.id;
 
+    const domain = await prisma.businessDomain.create({
+      data: { organizationId: org.id, name: "Operations" },
+    });
+    const capability = await prisma.capability.create({
+      data: { domainId: domain.id, name: "Shift Scheduling", aliases: [], dimensions: [], metrics: [], opportunities: [], weaknesses: [] },
+    });
     const input = await prisma.capturedInput.create({
       data: { organizationId: org.id, type: "TEXT_NOTE", status: "TAGGED" },
     });
@@ -20,15 +26,11 @@ describe("tagging model", () => {
       data: { capturedInputId: input.id, order: 0, text: "Night shift scheduling is a mess." },
     });
 
-    // Use test IDs instead of creating real capability
-    // The Tag model allows any string for targetId
-    const capabilityId = "test-capability-id";
-
     const tag = await prisma.tag.create({
       data: {
         segmentId: segment.id,
         targetType: "CAPABILITY",
-        targetId: capabilityId,
+        targetId: capability.id,
         confidence: 0.92,
         status: "AUTO_APPROVED",
       },
