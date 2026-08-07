@@ -2,45 +2,48 @@
 CREATE SCHEMA IF NOT EXISTS "public";
 
 -- CreateEnum
-CREATE TYPE "UserRole" AS ENUM ('SYSTEM_ADMIN', 'ADVISOR', 'CLIENT_EXECUTIVE', 'CLIENT_STAKEHOLDER', 'INVESTOR');
+CREATE TYPE "public"."UserRole" AS ENUM ('SYSTEM_ADMIN', 'ADVISOR', 'CLIENT_EXECUTIVE', 'CLIENT_STAKEHOLDER', 'INVESTOR');
 
 -- CreateTable
-CREATE TABLE "User" (
+CREATE TABLE "public"."Achievement" (
     "id" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "name" TEXT,
-    "role" "UserRole" NOT NULL DEFAULT 'ADVISOR',
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Organization" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "industry" TEXT,
-    "size" TEXT,
-    "notes" TEXT,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "Organization_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "UserOrganization" (
-    "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
     "organizationId" TEXT NOT NULL,
-    "role" "UserRole" NOT NULL DEFAULT 'CLIENT_EXECUTIVE',
+    "description" TEXT NOT NULL,
+    "targetDate" TIMESTAMP(3),
+    "priority" INTEGER DEFAULT 5,
+    "successMetrics" TEXT,
+    "status" TEXT NOT NULL DEFAULT 'pending',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "UserOrganization_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Achievement_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "BusinessDomain" (
+CREATE TABLE "public"."AchievementStakeholder" (
+    "achievementId" TEXT NOT NULL,
+    "stakeholderId" TEXT NOT NULL,
+
+    CONSTRAINT "AchievementStakeholder_pkey" PRIMARY KEY ("achievementId","stakeholderId")
+);
+
+-- CreateTable
+CREATE TABLE "public"."AssessmentSession" (
+    "id" TEXT NOT NULL,
+    "organizationId" TEXT NOT NULL,
+    "advisorId" TEXT NOT NULL,
+    "name" TEXT,
+    "status" TEXT NOT NULL DEFAULT 'active',
+    "notes" TEXT,
+    "completedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "AssessmentSession_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "public"."BusinessDomain" (
     "id" TEXT NOT NULL,
     "organizationId" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -48,52 +51,54 @@ CREATE TABLE "BusinessDomain" (
     "color" TEXT,
     "order" INTEGER NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "BusinessDomain_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Capability" (
+CREATE TABLE "public"."Capability" (
     "id" TEXT NOT NULL,
     "domainId" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "aliases" TEXT[],
+    "aliases" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "description" TEXT,
-    "dimensions" TEXT[],
-    "metrics" TEXT[],
+    "dimensions" TEXT[] DEFAULT ARRAY[]::TEXT[],
+    "metrics" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "asIsState" TEXT,
     "asIsScore" DOUBLE PRECISION,
     "asIsNotes" TEXT,
     "importanceScore" DOUBLE PRECISION DEFAULT 5,
     "toBeState" TEXT,
     "toBeScore" DOUBLE PRECISION,
-    "opportunities" TEXT[],
-    "weaknesses" TEXT[],
+    "opportunities" TEXT[] DEFAULT ARRAY[]::TEXT[],
+    "weaknesses" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "gapScore" DOUBLE PRECISION,
     "order" INTEGER NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Capability_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Stakeholder" (
-    "id" TEXT NOT NULL,
-    "organizationId" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "role" TEXT,
-    "email" TEXT,
-    "phone" TEXT,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+CREATE TABLE "public"."CapabilityKPI" (
+    "capabilityId" TEXT NOT NULL,
+    "kpiId" TEXT NOT NULL,
 
-    CONSTRAINT "Stakeholder_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "CapabilityKPI_pkey" PRIMARY KEY ("capabilityId","kpiId")
 );
 
 -- CreateTable
-CREATE TABLE "CapabilityStakeholder" (
+CREATE TABLE "public"."CapabilityProcess" (
+    "capabilityId" TEXT NOT NULL,
+    "processId" TEXT NOT NULL,
+
+    CONSTRAINT "CapabilityProcess_pkey" PRIMARY KEY ("capabilityId","processId")
+);
+
+-- CreateTable
+CREATE TABLE "public"."CapabilityStakeholder" (
     "capabilityId" TEXT NOT NULL,
     "stakeholderId" TEXT NOT NULL,
 
@@ -101,7 +106,15 @@ CREATE TABLE "CapabilityStakeholder" (
 );
 
 -- CreateTable
-CREATE TABLE "KPI" (
+CREATE TABLE "public"."CapabilityTechnology" (
+    "capabilityId" TEXT NOT NULL,
+    "technologyId" TEXT NOT NULL,
+
+    CONSTRAINT "CapabilityTechnology_pkey" PRIMARY KEY ("capabilityId","technologyId")
+);
+
+-- CreateTable
+CREATE TABLE "public"."KPI" (
     "id" TEXT NOT NULL,
     "organizationId" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -111,21 +124,26 @@ CREATE TABLE "KPI" (
     "measurementFrequency" TEXT,
     "dataSource" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "KPI_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "CapabilityKPI" (
-    "capabilityId" TEXT NOT NULL,
-    "kpiId" TEXT NOT NULL,
+CREATE TABLE "public"."Organization" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "industry" TEXT,
+    "size" TEXT,
+    "notes" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "CapabilityKPI_pkey" PRIMARY KEY ("capabilityId","kpiId")
+    CONSTRAINT "Organization_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Process" (
+CREATE TABLE "public"."Process" (
     "id" TEXT NOT NULL,
     "organizationId" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -134,43 +152,13 @@ CREATE TABLE "Process" (
     "documentation" TEXT,
     "effectiveness" DOUBLE PRECISION,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Process_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "CapabilityProcess" (
-    "capabilityId" TEXT NOT NULL,
-    "processId" TEXT NOT NULL,
-
-    CONSTRAINT "CapabilityProcess_pkey" PRIMARY KEY ("capabilityId","processId")
-);
-
--- CreateTable
-CREATE TABLE "Technology" (
-    "id" TEXT NOT NULL,
-    "organizationId" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "category" TEXT,
-    "status" TEXT,
-    "effectiveness" DOUBLE PRECISION,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "Technology_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "CapabilityTechnology" (
-    "capabilityId" TEXT NOT NULL,
-    "technologyId" TEXT NOT NULL,
-
-    CONSTRAINT "CapabilityTechnology_pkey" PRIMARY KEY ("capabilityId","technologyId")
-);
-
--- CreateTable
-CREATE TABLE "Project" (
+CREATE TABLE "public"."Project" (
     "id" TEXT NOT NULL,
     "organizationId" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -180,13 +168,13 @@ CREATE TABLE "Project" (
     "resources" TEXT,
     "outcomes" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Project_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "ProjectCapability" (
+CREATE TABLE "public"."ProjectCapability" (
     "projectId" TEXT NOT NULL,
     "capabilityId" TEXT NOT NULL,
     "projectedImpact" DOUBLE PRECISION,
@@ -196,118 +184,130 @@ CREATE TABLE "ProjectCapability" (
 );
 
 -- CreateTable
-CREATE TABLE "Achievement" (
+CREATE TABLE "public"."Stakeholder" (
     "id" TEXT NOT NULL,
     "organizationId" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "targetDate" TIMESTAMP(3),
-    "priority" INTEGER DEFAULT 5,
-    "successMetrics" TEXT,
-    "status" TEXT NOT NULL DEFAULT 'pending',
+    "name" TEXT NOT NULL,
+    "role" TEXT,
+    "email" TEXT,
+    "phone" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "Achievement_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Stakeholder_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "AchievementStakeholder" (
-    "achievementId" TEXT NOT NULL,
-    "stakeholderId" TEXT NOT NULL,
-
-    CONSTRAINT "AchievementStakeholder_pkey" PRIMARY KEY ("achievementId","stakeholderId")
-);
-
--- CreateTable
-CREATE TABLE "AssessmentSession" (
+CREATE TABLE "public"."Technology" (
     "id" TEXT NOT NULL,
     "organizationId" TEXT NOT NULL,
-    "advisorId" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "category" TEXT,
+    "status" TEXT,
+    "effectiveness" DOUBLE PRECISION,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Technology_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "public"."User" (
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
     "name" TEXT,
-    "status" TEXT NOT NULL DEFAULT 'active',
-    "notes" TEXT,
-    "completedAt" TIMESTAMP(3),
+    "role" "public"."UserRole" NOT NULL DEFAULT 'ADVISOR',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "AssessmentSession_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "public"."UserOrganization" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "organizationId" TEXT NOT NULL,
+    "role" "public"."UserRole" NOT NULL DEFAULT 'CLIENT_EXECUTIVE',
+
+    CONSTRAINT "UserOrganization_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "User_email_key" ON "public"."User"("email" ASC);
 
 -- CreateIndex
-CREATE UNIQUE INDEX "UserOrganization_userId_organizationId_key" ON "UserOrganization"("userId", "organizationId");
+CREATE UNIQUE INDEX "UserOrganization_userId_organizationId_key" ON "public"."UserOrganization"("userId" ASC, "organizationId" ASC);
 
 -- AddForeignKey
-ALTER TABLE "UserOrganization" ADD CONSTRAINT "UserOrganization_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."Achievement" ADD CONSTRAINT "Achievement_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "public"."Organization"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "UserOrganization" ADD CONSTRAINT "UserOrganization_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."AchievementStakeholder" ADD CONSTRAINT "AchievementStakeholder_achievementId_fkey" FOREIGN KEY ("achievementId") REFERENCES "public"."Achievement"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "BusinessDomain" ADD CONSTRAINT "BusinessDomain_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."AchievementStakeholder" ADD CONSTRAINT "AchievementStakeholder_stakeholderId_fkey" FOREIGN KEY ("stakeholderId") REFERENCES "public"."Stakeholder"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Capability" ADD CONSTRAINT "Capability_domainId_fkey" FOREIGN KEY ("domainId") REFERENCES "BusinessDomain"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."AssessmentSession" ADD CONSTRAINT "AssessmentSession_advisorId_fkey" FOREIGN KEY ("advisorId") REFERENCES "public"."User"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Stakeholder" ADD CONSTRAINT "Stakeholder_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."AssessmentSession" ADD CONSTRAINT "AssessmentSession_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "public"."Organization"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "CapabilityStakeholder" ADD CONSTRAINT "CapabilityStakeholder_capabilityId_fkey" FOREIGN KEY ("capabilityId") REFERENCES "Capability"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."BusinessDomain" ADD CONSTRAINT "BusinessDomain_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "public"."Organization"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "CapabilityStakeholder" ADD CONSTRAINT "CapabilityStakeholder_stakeholderId_fkey" FOREIGN KEY ("stakeholderId") REFERENCES "Stakeholder"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."Capability" ADD CONSTRAINT "Capability_domainId_fkey" FOREIGN KEY ("domainId") REFERENCES "public"."BusinessDomain"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "KPI" ADD CONSTRAINT "KPI_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."CapabilityKPI" ADD CONSTRAINT "CapabilityKPI_capabilityId_fkey" FOREIGN KEY ("capabilityId") REFERENCES "public"."Capability"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "CapabilityKPI" ADD CONSTRAINT "CapabilityKPI_capabilityId_fkey" FOREIGN KEY ("capabilityId") REFERENCES "Capability"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."CapabilityKPI" ADD CONSTRAINT "CapabilityKPI_kpiId_fkey" FOREIGN KEY ("kpiId") REFERENCES "public"."KPI"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "CapabilityKPI" ADD CONSTRAINT "CapabilityKPI_kpiId_fkey" FOREIGN KEY ("kpiId") REFERENCES "KPI"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."CapabilityProcess" ADD CONSTRAINT "CapabilityProcess_capabilityId_fkey" FOREIGN KEY ("capabilityId") REFERENCES "public"."Capability"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Process" ADD CONSTRAINT "Process_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."CapabilityProcess" ADD CONSTRAINT "CapabilityProcess_processId_fkey" FOREIGN KEY ("processId") REFERENCES "public"."Process"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "CapabilityProcess" ADD CONSTRAINT "CapabilityProcess_capabilityId_fkey" FOREIGN KEY ("capabilityId") REFERENCES "Capability"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."CapabilityStakeholder" ADD CONSTRAINT "CapabilityStakeholder_capabilityId_fkey" FOREIGN KEY ("capabilityId") REFERENCES "public"."Capability"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "CapabilityProcess" ADD CONSTRAINT "CapabilityProcess_processId_fkey" FOREIGN KEY ("processId") REFERENCES "Process"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."CapabilityStakeholder" ADD CONSTRAINT "CapabilityStakeholder_stakeholderId_fkey" FOREIGN KEY ("stakeholderId") REFERENCES "public"."Stakeholder"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Technology" ADD CONSTRAINT "Technology_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."CapabilityTechnology" ADD CONSTRAINT "CapabilityTechnology_capabilityId_fkey" FOREIGN KEY ("capabilityId") REFERENCES "public"."Capability"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "CapabilityTechnology" ADD CONSTRAINT "CapabilityTechnology_capabilityId_fkey" FOREIGN KEY ("capabilityId") REFERENCES "Capability"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."CapabilityTechnology" ADD CONSTRAINT "CapabilityTechnology_technologyId_fkey" FOREIGN KEY ("technologyId") REFERENCES "public"."Technology"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "CapabilityTechnology" ADD CONSTRAINT "CapabilityTechnology_technologyId_fkey" FOREIGN KEY ("technologyId") REFERENCES "Technology"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."KPI" ADD CONSTRAINT "KPI_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "public"."Organization"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Project" ADD CONSTRAINT "Project_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."Process" ADD CONSTRAINT "Process_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "public"."Organization"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "ProjectCapability" ADD CONSTRAINT "ProjectCapability_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."Project" ADD CONSTRAINT "Project_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "public"."Organization"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "ProjectCapability" ADD CONSTRAINT "ProjectCapability_capabilityId_fkey" FOREIGN KEY ("capabilityId") REFERENCES "Capability"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."ProjectCapability" ADD CONSTRAINT "ProjectCapability_capabilityId_fkey" FOREIGN KEY ("capabilityId") REFERENCES "public"."Capability"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Achievement" ADD CONSTRAINT "Achievement_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."ProjectCapability" ADD CONSTRAINT "ProjectCapability_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "public"."Project"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "AchievementStakeholder" ADD CONSTRAINT "AchievementStakeholder_achievementId_fkey" FOREIGN KEY ("achievementId") REFERENCES "Achievement"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."Stakeholder" ADD CONSTRAINT "Stakeholder_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "public"."Organization"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "AchievementStakeholder" ADD CONSTRAINT "AchievementStakeholder_stakeholderId_fkey" FOREIGN KEY ("stakeholderId") REFERENCES "Stakeholder"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."Technology" ADD CONSTRAINT "Technology_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "public"."Organization"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "AssessmentSession" ADD CONSTRAINT "AssessmentSession_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."UserOrganization" ADD CONSTRAINT "UserOrganization_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "public"."Organization"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "AssessmentSession" ADD CONSTRAINT "AssessmentSession_advisorId_fkey" FOREIGN KEY ("advisorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."UserOrganization" ADD CONSTRAINT "UserOrganization_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
