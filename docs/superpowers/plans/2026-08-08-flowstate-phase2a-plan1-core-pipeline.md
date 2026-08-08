@@ -684,7 +684,7 @@ export async function GET(req: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const organizationId = req.nextUrl.searchParams.get("organizationId");
+  const organizationId = new URL(req.url).searchParams.get("organizationId");
   if (!organizationId) {
     return NextResponse.json({ error: "organizationId is required" }, { status: 400 });
   }
@@ -855,7 +855,7 @@ export async function GET(req: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const organizationId = req.nextUrl.searchParams.get("organizationId");
+  const organizationId = new URL(req.url).searchParams.get("organizationId");
   if (!organizationId) {
     return NextResponse.json({ error: "organizationId is required" }, { status: 400 });
   }
