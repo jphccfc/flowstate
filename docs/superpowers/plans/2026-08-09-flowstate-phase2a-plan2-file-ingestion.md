@@ -154,9 +154,8 @@ git commit -m "Add Whisper-backed audio transcription"
 Run:
 ```bash
 npm install pdf-parse mammoth
-npm install -D @types/pdf-parse
 ```
-Expected: `pdf-parse`, `mammoth` added to `dependencies`; `@types/pdf-parse` added to `devDependencies` in `package.json` (mammoth ships its own types, no separate `@types` package needed).
+Expected: `pdf-parse`, `mammoth` added to `dependencies` in `package.json`. Both ship their own TypeScript types — no separate `@types` packages needed. **Note:** `pdf-parse` resolves to the current major (2.x), which uses a class-based `PDFParse` API (`new PDFParse({ data: buffer }).getText()`), not the older v1 callable-function API (`pdfParse(buffer)`) — the implementation in Step 4 below already reflects this.
 
 - [ ] **Step 2: Write the failing test**
 
@@ -165,7 +164,12 @@ Create `tests/schema/extraction.test.ts`:
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("pdf-parse", () => ({
-  default: vi.fn().mockResolvedValue({ text: "Extracted PDF content" }),
+  PDFParse: vi.fn().mockImplementation(function () {
+    return {
+      getText: vi.fn().mockResolvedValue({ text: "Extracted PDF content" }),
+      destroy: vi.fn().mockResolvedValue(undefined),
+    };
+  }),
 }));
 vi.mock("mammoth", () => ({
   extractRawText: vi.fn().mockResolvedValue({ value: "Extracted DOCX content" }),
@@ -211,7 +215,7 @@ Expected: FAIL — `Cannot find module '../../lib/documents/extraction'`.
 
 Create `lib/documents/extraction.ts`:
 ```typescript
-import pdfParse from "pdf-parse";
+import { PDFParse } from "pdf-parse";
 import * as mammoth from "mammoth";
 
 export async function extractDocumentText(fileUrl: string): Promise<string> {
@@ -220,7 +224,9 @@ export async function extractDocumentText(fileUrl: string): Promise<string> {
   const extension = fileUrl.split(".").pop()?.toLowerCase();
 
   if (extension === "pdf") {
-    const result = await pdfParse(buffer);
+    const parser = new PDFParse({ data: buffer });
+    const result = await parser.getText();
+    await parser.destroy();
     return result.text;
   }
   if (extension === "docx") {
