@@ -728,9 +728,14 @@ import { put } from "@vercel/blob";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
 import { processCapturedInput } from "@/lib/ingestion/pipeline";
+import { InputType } from "@/app/generated/prisma/enums";
 
-const VALID_TYPES = new Set(["TEXT_NOTE", "EMAIL", "AUDIO", "DOCUMENT", "DATA_ROOM_FILE"]);
-const TEXT_TYPES = new Set(["TEXT_NOTE", "EMAIL"]);
+const VALID_TYPES = new Set<InputType>(["TEXT_NOTE", "EMAIL", "AUDIO", "DOCUMENT", "DATA_ROOM_FILE"]);
+const TEXT_TYPES = new Set<InputType>(["TEXT_NOTE", "EMAIL"]);
+
+function isInputType(value: string): value is InputType {
+  return (VALID_TYPES as Set<string>).has(value);
+}
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
@@ -747,7 +752,7 @@ export async function POST(req: NextRequest) {
   if (typeof organizationId !== "string" || !organizationId || typeof type !== "string" || !type) {
     return NextResponse.json({ error: "organizationId and type are required" }, { status: 400 });
   }
-  if (!VALID_TYPES.has(type)) {
+  if (!isInputType(type)) {
     return NextResponse.json({ error: `Unsupported type: ${type}` }, { status: 400 });
   }
 
