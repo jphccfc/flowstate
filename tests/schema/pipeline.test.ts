@@ -1,12 +1,23 @@
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import { cleanupOrganization, createTestOrganization, prisma } from "../helpers/db";
 import { processCapturedInput } from "../../lib/ingestion/pipeline";
+import { transcribeAudio } from "../../lib/ai/transcription";
+import { extractDocumentText } from "../../lib/documents/extraction";
+
+vi.mock("../../lib/ai/transcription", () => ({
+  transcribeAudio: vi.fn(),
+}));
+vi.mock("../../lib/documents/extraction", () => ({
+  extractDocumentText: vi.fn(),
+}));
 
 describe("processCapturedInput", () => {
   let orgId: string;
 
   afterEach(() => {
     vi.unstubAllGlobals();
+    vi.mocked(transcribeAudio).mockReset();
+    vi.mocked(extractDocumentText).mockReset();
   });
 
   afterAll(async () => {
@@ -103,5 +114,42 @@ describe("processCapturedInput", () => {
     const updatedInput = await prisma.capturedInput.findUniqueOrThrow({ where: { id: input.id } });
     expect(updatedInput.status).toBe("FAILED");
     expect(updatedInput.error).toContain("Claude API unavailable");
+  });
+
+  it("transcribes an AUDIO CapturedInput before segmenting, when rawText is null", async () => {
+    const org = await createTestOrganization({ name: "Pipeline Audio Test Org" });
+    orgId = org.id;
+
+    const domain = await prisma.businessDomain.create({
+      data: { organizationId: org.id, name: "Operations" },
+    });
+    await prisma.capability.create({ data: { domainId: domain.id, name: "Shift Scheduling" } });
+
+    const input = await prisma.capturedInput.create({
+      data: {
+        organizationId: org.id,
+        type: "AUDIO",
+        sourceRef: "https://blob.example.com/interview.m4a",
+        status: "PENDING",
+      },
+    });
+
+    vi.mocked(transcribeAudio).mockResolvedValue("Night shift scheduling is a mess.");
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({ json: async () => ({ content: [{ text: "[]" }] }) })
+    );
+
+    await processCapturedInput(input.id);
+
+    expect(transcribeAudio).toHaveBeenCalledWith("https://blob.example.com/interview.m4a");
+    expect(extractDocumentText).not.toHaveBeenCalled();
+
+    const updatedInput = await prisma.capturedInput.findUniqueOrThrow({ where: { id: input.id } });
+    expect(updatedInput.rawText).toBe("Night shift scheduling is a mess.");
+    expect(updatedInput.status).toBe("TAGGED");
+
+    const jobs = await prisma.processingJob.findMany({ where: { targetId: input.id }, orderBy: { createdAt: "asc" } });
+    expect(jobs.map((j) => j.type)).toEqual(["transcribe", "segment", "tag"]);
   });
 });
