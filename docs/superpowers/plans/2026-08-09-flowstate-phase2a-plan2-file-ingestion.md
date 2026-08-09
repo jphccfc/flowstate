@@ -107,7 +107,8 @@ export async function transcribeAudio(audioUrl: string): Promise<string> {
   const audioBlob = await audioResponse.blob();
 
   const formData = new FormData();
-  formData.append("file", audioBlob, "audio");
+  const name = audioUrl.split("/").pop() ?? "audio.m4a";
+  formData.append("file", audioBlob, name);
   formData.append("model", "whisper-1");
 
   const response = await fetch("https://api.openai.com/v1/audio/transcriptions", {
@@ -776,7 +777,7 @@ export async function POST(req: NextRequest) {
     if (!(file instanceof File)) {
       return NextResponse.json({ error: "file is required" }, { status: 400 });
     }
-    const blob = await put(file.name, file, { access: "public" });
+    const blob = await put(file.name, file, { access: "public", addRandomSuffix: true });
     capturedInput = await prisma.capturedInput.create({
       data: {
         organizationId,
