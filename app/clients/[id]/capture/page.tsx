@@ -3,6 +3,10 @@
 import { useState, useEffect, useCallback, use } from "react";
 import Link from "next/link";
 
+type CapturedInputType = "TEXT_NOTE" | "EMAIL" | "AUDIO" | "DOCUMENT" | "DATA_ROOM_FILE";
+
+const FILE_TYPES = new Set<CapturedInputType>(["AUDIO", "DOCUMENT", "DATA_ROOM_FILE"]);
+
 type CapturedInput = {
   id: string;
   type: string;
@@ -13,11 +17,14 @@ type CapturedInput = {
 
 export default function CapturePage({ params }: { params: Promise<{ id: string }> }) {
   const { id: organizationId } = use(params);
-  const [type, setType] = useState<"TEXT_NOTE" | "EMAIL">("TEXT_NOTE");
+  const [type, setType] = useState<CapturedInputType>("TEXT_NOTE");
   const [rawText, setRawText] = useState("");
+  const [file, setFile] = useState<File | null>(null);
   const [locationTag, setLocationTag] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [inputs, setInputs] = useState<CapturedInput[]>([]);
+
+  const isFileType = FILE_TYPES.has(type);
 
   const loadInputs = useCallback(async () => {
     const res = await fetch(`/api/captured-inputs?organizationId=${organizationId}`);
@@ -30,18 +37,31 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
     return () => clearInterval(interval);
   }, [loadInputs]);
 
+  function handleTypeChange(next: CapturedInputType) {
+    setType(next);
+    setRawText("");
+    setFile(null);
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!rawText.trim()) return;
+    if (isFileType ? !file : !rawText.trim()) return;
     setSubmitting(true);
     try {
-      const res = await fetch("/api/captured-inputs", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ organizationId, type, rawText, locationTag: locationTag || undefined }),
-      });
+      const formData = new FormData();
+      formData.append("organizationId", organizationId);
+      formData.append("type", type);
+      if (locationTag) formData.append("locationTag", locationTag);
+      if (isFileType) {
+        formData.append("file", file as File);
+      } else {
+        formData.append("rawText", rawText);
+      }
+
+      const res = await fetch("/api/captured-inputs", { method: "POST", body: formData });
       if (res.ok) {
         setRawText("");
+        setFile(null);
         loadInputs();
       }
     } finally {
@@ -63,11 +83,14 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
           <label className="block text-xs font-medium text-[var(--muted)] mb-1">Type</label>
           <select
             value={type}
-            onChange={(e) => setType(e.target.value as "TEXT_NOTE" | "EMAIL")}
+            onChange={(e) => handleTypeChange(e.target.value as CapturedInputType)}
             className="border border-[var(--card-border)] rounded px-2 py-1 text-sm"
           >
             <option value="TEXT_NOTE">Text Note</option>
             <option value="EMAIL">Email</option>
+            <option value="AUDIO">Audio</option>
+            <option value="DOCUMENT">Document</option>
+            <option value="DATA_ROOM_FILE">Data Room File</option>
           </select>
         </div>
         <div className="mb-4">
@@ -80,20 +103,34 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
             className="border border-[var(--card-border)] rounded px-2 py-1 text-sm w-full"
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-xs font-medium text-[var(--muted)] mb-1">
-            {type === "EMAIL" ? "Email content (sender, subject, body)" : "Note"}
-          </label>
-          <textarea
-            value={rawText}
-            onChange={(e) => setRawText(e.target.value)}
-            rows={8}
-            className="border border-[var(--card-border)] rounded px-2 py-1 text-sm w-full"
-          />
-        </div>
+        {isFileType ? (
+          <div className="mb-4">
+            <label className="block text-xs font-medium text-[var(--muted)] mb-1">
+              {type === "AUDIO" ? "Audio file" : "Document (PDF or DOCX)"}
+            </label>
+            <input
+              type="file"
+              accept={type === "AUDIO" ? "audio/*" : ".pdf,.docx"}
+              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+              className="text-sm w-full"
+            />
+          </div>
+        ) : (
+          <div className="mb-4">
+            <label className="block text-xs font-medium text-[var(--muted)] mb-1">
+              {type === "EMAIL" ? "Email content (sender, subject, body)" : "Note"}
+            </label>
+            <textarea
+              value={rawText}
+              onChange={(e) => setRawText(e.target.value)}
+              rows={8}
+              className="border border-[var(--card-border)] rounded px-2 py-1 text-sm w-full"
+            />
+          </div>
+        )}
         <button
           type="submit"
-          disabled={submitting || !rawText.trim()}
+          disabled={submitting || (isFileType ? !file : !rawText.trim())}
           className="bg-[var(--accent)] text-white text-sm font-medium px-4 py-2 rounded disabled:opacity-50"
         >
           {submitting ? "Submitting…" : "Capture"}
