@@ -1,7 +1,12 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("pdf-parse", () => ({
-  default: vi.fn().mockResolvedValue({ text: "Extracted PDF content" }),
+  PDFParse: vi.fn().mockImplementation(function () {
+    return {
+      getText: vi.fn().mockResolvedValue({ text: "Extracted PDF content" }),
+      destroy: vi.fn().mockResolvedValue(undefined),
+    };
+  }),
 }));
 vi.mock("mammoth", () => ({
   extractRawText: vi.fn().mockResolvedValue({ value: "Extracted DOCX content" }),

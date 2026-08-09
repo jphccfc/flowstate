@@ -1,4 +1,4 @@
-import pdfParse from "pdf-parse";
+import { PDFParse } from "pdf-parse";
 import * as mammoth from "mammoth";
 
 export async function extractDocumentText(fileUrl: string): Promise<string> {
@@ -7,7 +7,9 @@ export async function extractDocumentText(fileUrl: string): Promise<string> {
   const extension = fileUrl.split(".").pop()?.toLowerCase();
 
   if (extension === "pdf") {
-    const result = await pdfParse(buffer);
+    const parser = new PDFParse({ data: buffer });
+    const result = await parser.getText();
+    await parser.destroy();
     return result.text;
   }
   if (extension === "docx") {
