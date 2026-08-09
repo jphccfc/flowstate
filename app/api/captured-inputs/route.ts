@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
     if (!(file instanceof File)) {
       return NextResponse.json({ error: "file is required" }, { status: 400 });
     }
-    const blob = await put(file.name, file, { access: "public" });
+    const blob = await put(file.name, file, { access: "public", addRandomSuffix: true });
     capturedInput = await prisma.capturedInput.create({
       data: {
         organizationId,
