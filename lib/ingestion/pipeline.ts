@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/db";
 import { segmentText } from "@/lib/ai/segmenting";
 import { generateTagSuggestions, type TaggableEntity } from "@/lib/ai/tagging";
+import { transcribeAudio } from "@/lib/ai/transcription";
+import { extractDocumentText } from "@/lib/documents/extraction";
 
 const AUTO_APPROVE_THRESHOLD = 0.85;
 
@@ -10,13 +12,40 @@ export async function processCapturedInput(capturedInputId: string): Promise<voi
   });
 
   try {
+    let rawText = input.rawText;
+
+    if (rawText == null) {
+      if (!input.sourceRef) {
+        throw new Error("CapturedInput has no rawText and no sourceRef to transcribe/extract from");
+      }
+
+      rawText = await runJob("transcribe", capturedInputId, async () => {
+        await prisma.capturedInput.update({
+          where: { id: capturedInputId },
+          data: { status: "TRANSCRIBING" },
+        });
+
+        const text =
+          input.type === "AUDIO"
+            ? await transcribeAudio(input.sourceRef!)
+            : await extractDocumentText(input.sourceRef!);
+
+        await prisma.capturedInput.update({
+          where: { id: capturedInputId },
+          data: { rawText: text, status: "TRANSCRIBED" },
+        });
+
+        return text;
+      });
+    }
+
     const segments = await runJob("segment", capturedInputId, async () => {
       await prisma.capturedInput.update({
         where: { id: capturedInputId },
         data: { status: "SEGMENTING" },
       });
 
-      const rawSegments = segmentText(input.rawText ?? "");
+      const rawSegments = segmentText(rawText ?? "");
       return Promise.all(
         rawSegments.map((s) =>
           prisma.capturedSegment.create({
