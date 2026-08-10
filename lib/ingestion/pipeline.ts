@@ -3,6 +3,7 @@ import { segmentText } from "@/lib/ai/segmenting";
 import { generateTagSuggestions, type TaggableEntity } from "@/lib/ai/tagging";
 import { transcribeAudio } from "@/lib/ai/transcription";
 import { extractDocumentText } from "@/lib/documents/extraction";
+import { generateFollowUpSuggestions } from "@/lib/ai/followups";
 
 const AUTO_APPROVE_THRESHOLD = 0.85;
 
@@ -82,6 +83,30 @@ export async function processCapturedInput(capturedInputId: string): Promise<voi
       }
     });
 
+    if (input.sessionId) {
+      const sessionId = input.sessionId;
+      await runJob("suggest_followups", capturedInputId, async () => {
+        const latestSegment = segments[segments.length - 1];
+        if (!latestSegment) return;
+
+        const touchedAreaNames = await getTouchedAreaNames(sessionId);
+        const questions = await generateFollowUpSuggestions(latestSegment.text, touchedAreaNames);
+
+        for (const question of questions) {
+          await prisma.followUpSuggestion.create({
+            data: {
+              sessionId,
+              triggerSegmentId: latestSegment.id,
+              suggestedQuestion: question,
+              status: "SHOWN",
+            },
+          });
+        }
+      }).catch((err) => {
+        console.error("suggest_followups step failed (non-fatal):", err);
+      });
+    }
+
     await prisma.capturedInput.update({
       where: { id: capturedInputId },
       data: { status: "TAGGED" },
@@ -145,4 +170,38 @@ async function getTaggableEntities(organizationId: string): Promise<TaggableEnti
     entities.push({ targetType: "STAKEHOLDER", targetId: stakeholder.id, name: stakeholder.name });
   }
   return entities;
+}
+
+async function getTouchedAreaNames(sessionId: string): Promise<string[]> {
+  const tags = await prisma.tag.findMany({
+    where: {
+      status: { in: ["AUTO_APPROVED", "APPROVED"] },
+      segment: { capturedInput: { sessionId } },
+    },
+  });
+
+  if (tags.length === 0) return [];
+
+  const idsByType = new Map<string, string[]>();
+  for (const tag of tags) {
+    const ids = idsByType.get(tag.targetType) ?? [];
+    ids.push(tag.targetId);
+    idsByType.set(tag.targetType, ids);
+  }
+
+  const [domains, capabilities, kpis, stakeholders] = await Promise.all([
+    prisma.businessDomain.findMany({ where: { id: { in: idsByType.get("DOMAIN") ?? [] } } }),
+    prisma.capability.findMany({ where: { id: { in: idsByType.get("CAPABILITY") ?? [] } } }),
+    prisma.kPI.findMany({ where: { id: { in: idsByType.get("KPI") ?? [] } } }),
+    prisma.stakeholder.findMany({ where: { id: { in: idsByType.get("STAKEHOLDER") ?? [] } } }),
+  ]);
+
+  const names = [
+    ...domains.map((d) => d.name),
+    ...capabilities.map((c) => c.name),
+    ...kpis.map((k) => k.name),
+    ...stakeholders.map((s) => s.name),
+  ];
+
+  return Array.from(new Set(names));
 }

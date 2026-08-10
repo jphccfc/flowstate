@@ -3,6 +3,7 @@ import { cleanupOrganization, createTestOrganization, prisma } from "../helpers/
 import { processCapturedInput } from "../../lib/ingestion/pipeline";
 import { transcribeAudio } from "../../lib/ai/transcription";
 import { extractDocumentText } from "../../lib/documents/extraction";
+import { generateFollowUpSuggestions } from "../../lib/ai/followups";
 
 vi.mock("../../lib/ai/transcription", () => ({
   transcribeAudio: vi.fn(),
@@ -10,18 +11,24 @@ vi.mock("../../lib/ai/transcription", () => ({
 vi.mock("../../lib/documents/extraction", () => ({
   extractDocumentText: vi.fn(),
 }));
+vi.mock("../../lib/ai/followups", () => ({
+  generateFollowUpSuggestions: vi.fn(),
+}));
 
 describe("processCapturedInput", () => {
   let orgId: string;
+  let sessionOrgId: string;
 
   afterEach(() => {
     vi.unstubAllGlobals();
     vi.mocked(transcribeAudio).mockReset();
     vi.mocked(extractDocumentText).mockReset();
+    vi.mocked(generateFollowUpSuggestions).mockReset();
   });
 
   afterAll(async () => {
     if (orgId) await cleanupOrganization(orgId);
+    if (sessionOrgId) await cleanupOrganization(sessionOrgId);
     await prisma.$disconnect();
   });
 
@@ -84,6 +91,7 @@ describe("processCapturedInput", () => {
     const jobs = await prisma.processingJob.findMany({ where: { targetId: input.id }, orderBy: { createdAt: "asc" } });
     expect(jobs.map((j) => j.type)).toEqual(["segment", "tag"]);
     expect(jobs.every((j) => j.status === "DONE")).toBe(true);
+    expect(generateFollowUpSuggestions).not.toHaveBeenCalled();
   });
 
   it("marks the input FAILED and records the error when tagging throws", async () => {
@@ -151,5 +159,109 @@ describe("processCapturedInput", () => {
 
     const jobs = await prisma.processingJob.findMany({ where: { targetId: input.id }, orderBy: { createdAt: "asc" } });
     expect(jobs.map((j) => j.type)).toEqual(["transcribe", "segment", "tag"]);
+  });
+
+  it("generates follow-up suggestions after tagging when the input belongs to a live session", async () => {
+    const org = await createTestOrganization({ name: "Pipeline Session Test Org" });
+    sessionOrgId = org.id;
+
+    const domain = await prisma.businessDomain.create({
+      data: { organizationId: org.id, name: "Operations" },
+    });
+    const capability = await prisma.capability.create({
+      data: { domainId: domain.id, name: "Shift Scheduling" },
+    });
+    const advisor = await prisma.user.create({
+      data: { email: `advisor-${Date.now()}@flowstate.test`, role: "ADVISOR" },
+    });
+    const session = await prisma.assessmentSession.create({
+      data: { organizationId: org.id, advisorId: advisor.id, status: "active" },
+    });
+
+    // Prior capture in this session, already tagged, to seed "touched areas"
+    const priorInput = await prisma.capturedInput.create({
+      data: { organizationId: org.id, sessionId: session.id, type: "TEXT_NOTE", rawText: "Night shift scheduling.", status: "TAGGED" },
+    });
+    const priorSegment = await prisma.capturedSegment.create({
+      data: { capturedInputId: priorInput.id, order: 0, text: "Night shift scheduling." },
+    });
+    await prisma.tag.create({
+      data: { segmentId: priorSegment.id, targetType: "CAPABILITY", targetId: capability.id, confidence: 0.9, status: "AUTO_APPROVED" },
+    });
+
+    const input = await prisma.capturedInput.create({
+      data: {
+        organizationId: org.id,
+        sessionId: session.id,
+        type: "TEXT_NOTE",
+        rawText: "It's worse in the winter months.",
+        status: "TRANSCRIBED",
+      },
+    });
+
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({ json: async () => ({ content: [{ text: "[]" }] }) })
+    );
+    vi.mocked(generateFollowUpSuggestions).mockResolvedValue([
+      "How does seasonal demand affect the night shift specifically?",
+    ]);
+
+    await processCapturedInput(input.id);
+
+    expect(generateFollowUpSuggestions).toHaveBeenCalledWith(
+      "It's worse in the winter months.",
+      ["Shift Scheduling"]
+    );
+
+    const suggestions = await prisma.followUpSuggestion.findMany({ where: { sessionId: session.id } });
+    expect(suggestions).toHaveLength(1);
+    expect(suggestions[0].suggestedQuestion).toBe("How does seasonal demand affect the night shift specifically?");
+    expect(suggestions[0].status).toBe("SHOWN");
+
+    const updatedInput = await prisma.capturedInput.findUniqueOrThrow({ where: { id: input.id } });
+    expect(updatedInput.status).toBe("TAGGED");
+
+    const jobs = await prisma.processingJob.findMany({ where: { targetId: input.id }, orderBy: { createdAt: "asc" } });
+    expect(jobs.map((j) => j.type)).toEqual(["segment", "tag", "suggest_followups"]);
+  });
+
+  it("still reaches TAGGED when the suggest_followups step throws (non-fatal)", async () => {
+    const org = await createTestOrganization({ name: "Pipeline Session Failure Test Org" });
+    sessionOrgId = org.id;
+
+    await prisma.businessDomain.create({ data: { organizationId: org.id, name: "Operations" } });
+    const advisor = await prisma.user.create({
+      data: { email: `advisor2-${Date.now()}@flowstate.test`, role: "ADVISOR" },
+    });
+    const session = await prisma.assessmentSession.create({
+      data: { organizationId: org.id, advisorId: advisor.id, status: "active" },
+    });
+
+    const input = await prisma.capturedInput.create({
+      data: {
+        organizationId: org.id,
+        sessionId: session.id,
+        type: "TEXT_NOTE",
+        rawText: "Some live note.",
+        status: "TRANSCRIBED",
+      },
+    });
+
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({ json: async () => ({ content: [{ text: "[]" }] }) })
+    );
+    vi.mocked(generateFollowUpSuggestions).mockRejectedValue(new Error("Claude unavailable"));
+
+    await processCapturedInput(input.id);
+
+    const updatedInput = await prisma.capturedInput.findUniqueOrThrow({ where: { id: input.id } });
+    expect(updatedInput.status).toBe("TAGGED");
+
+    const jobs = await prisma.processingJob.findMany({ where: { targetId: input.id }, orderBy: { createdAt: "asc" } });
+    const suggestJob = jobs.find((j) => j.type === "suggest_followups");
+    expect(suggestJob?.status).toBe("FAILED");
+    expect(suggestJob?.error).toContain("Claude unavailable");
   });
 });
