@@ -23,12 +23,18 @@ export async function POST(req: NextRequest) {
   const locationTag = formData.get("locationTag");
   const rawText = formData.get("rawText");
   const file = formData.get("file");
+  const sessionIdField = formData.get("sessionId");
 
   if (typeof organizationId !== "string" || !organizationId || typeof type !== "string" || !type) {
     return NextResponse.json({ error: "organizationId and type are required" }, { status: 400 });
   }
   if (!isInputType(type)) {
     return NextResponse.json({ error: `Unsupported type: ${type}` }, { status: 400 });
+  }
+
+  const sessionId = typeof sessionIdField === "string" && sessionIdField ? sessionIdField : null;
+  if (sessionId && type !== "TEXT_NOTE") {
+    return NextResponse.json({ error: "Live session captures must be type TEXT_NOTE" }, { status: 400 });
   }
 
   const resolvedLocationTag = typeof locationTag === "string" && locationTag ? locationTag : null;
@@ -44,6 +50,7 @@ export async function POST(req: NextRequest) {
         type,
         rawText,
         locationTag: resolvedLocationTag,
+        sessionId,
         status: "TRANSCRIBED",
       },
     });
@@ -58,6 +65,7 @@ export async function POST(req: NextRequest) {
         type,
         sourceRef: blob.url,
         locationTag: resolvedLocationTag,
+        sessionId,
         status: "PENDING",
       },
     });

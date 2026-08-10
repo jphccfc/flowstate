@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, use } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type CapturedInputType = "TEXT_NOTE" | "EMAIL" | "AUDIO" | "DOCUMENT" | "DATA_ROOM_FILE";
 
@@ -17,11 +18,13 @@ type CapturedInput = {
 
 export default function CapturePage({ params }: { params: Promise<{ id: string }> }) {
   const { id: organizationId } = use(params);
+  const router = useRouter();
   const [type, setType] = useState<CapturedInputType>("TEXT_NOTE");
   const [rawText, setRawText] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [locationTag, setLocationTag] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [startingSession, setStartingSession] = useState(false);
   const [inputs, setInputs] = useState<CapturedInput[]>([]);
 
   const isFileType = FILE_TYPES.has(type);
@@ -69,12 +72,36 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
     }
   }
 
+  async function startLiveSession() {
+    setStartingSession(true);
+    try {
+      const res = await fetch("/api/sessions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ organizationId }),
+      });
+      if (res.ok) {
+        const session = await res.json();
+        router.push(`/clients/${organizationId}/session/${session.id}`);
+      }
+    } finally {
+      setStartingSession(false);
+    }
+  }
+
   return (
     <div className="max-w-3xl mx-auto p-6">
-      <div className="mb-4">
+      <div className="mb-4 flex items-center justify-between">
         <Link href={`/clients/${organizationId}`} className="text-sm text-[var(--muted)]">
           &larr; Back to client
         </Link>
+        <button
+          onClick={startLiveSession}
+          disabled={startingSession}
+          className="text-xs font-medium px-3 py-1 rounded bg-[var(--accent)] text-white disabled:opacity-50"
+        >
+          {startingSession ? "Starting…" : "Start Live Session"}
+        </button>
       </div>
       <h1 className="text-2xl font-bold mb-6">Capture</h1>
 
