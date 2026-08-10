@@ -18,3 +18,95 @@ export const UserRole = {
 } as const
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+
+
+export const InputType = {
+  AUDIO: 'AUDIO',
+  TEXT_NOTE: 'TEXT_NOTE',
+  EMAIL: 'EMAIL',
+  DOCUMENT: 'DOCUMENT',
+  DATA_ROOM_FILE: 'DATA_ROOM_FILE'
+} as const
+
+export type InputType = (typeof InputType)[keyof typeof InputType]
+
+
+export const ProcessingStatus = {
+  PENDING: 'PENDING',
+  TRANSCRIBING: 'TRANSCRIBING',
+  TRANSCRIBED: 'TRANSCRIBED',
+  SEGMENTING: 'SEGMENTING',
+  TAGGING: 'TAGGING',
+  TAGGED: 'TAGGED',
+  FAILED: 'FAILED'
+} as const
+
+export type ProcessingStatus = (typeof ProcessingStatus)[keyof typeof ProcessingStatus]
+
+
+export const TagTargetType = {
+  DOMAIN: 'DOMAIN',
+  CAPABILITY: 'CAPABILITY',
+  KPI: 'KPI',
+  STAKEHOLDER: 'STAKEHOLDER'
+} as const
+
+export type TagTargetType = (typeof TagTargetType)[keyof typeof TagTargetType]
+
+
+export const TagStatus = {
+  AUTO_APPROVED: 'AUTO_APPROVED',
+  PENDING_REVIEW: 'PENDING_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  REASSIGNED: 'REASSIGNED'
+} as const
+
+export type TagStatus = (typeof TagStatus)[keyof typeof TagStatus]
+
+
+export const DependencyType = {
+  CAPABILITY_TO_KPI: 'CAPABILITY_TO_KPI',
+  KPI_TO_KPI: 'KPI_TO_KPI',
+  CAPABILITY_TO_CAPABILITY: 'CAPABILITY_TO_CAPABILITY'
+} as const
+
+export type DependencyType = (typeof DependencyType)[keyof typeof DependencyType]
+
+
+export const ConflictStatus = {
+  OPEN: 'OPEN',
+  RESOLVED: 'RESOLVED'
+} as const
+
+export type ConflictStatus = (typeof ConflictStatus)[keyof typeof ConflictStatus]
+
+
+export const RecommendationStatus = {
+  DRAFT: 'DRAFT',
+  PENDING_REVIEW: 'PENDING_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  EDITED: 'EDITED'
+} as const
+
+export type RecommendationStatus = (typeof RecommendationStatus)[keyof typeof RecommendationStatus]
+
+
+export const FollowUpStatus = {
+  SHOWN: 'SHOWN',
+  ASKED: 'ASKED',
+  DISMISSED: 'DISMISSED'
+} as const
+
+export type FollowUpStatus = (typeof FollowUpStatus)[keyof typeof FollowUpStatus]
+
+
+export const JobStatus = {
+  QUEUED: 'QUEUED',
+  RUNNING: 'RUNNING',
+  DONE: 'DONE',
+  FAILED: 'FAILED'
+} as const
+
+export type JobStatus = (typeof JobStatus)[keyof typeof JobStatus]

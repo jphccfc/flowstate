@@ -131,3 +131,58 @@ export type AchievementStakeholder = Prisma.AchievementStakeholderModel
  * 
  */
 export type AssessmentSession = Prisma.AssessmentSessionModel
+/**
+ * Model CapturedInput
+ * 
+ */
+export type CapturedInput = Prisma.CapturedInputModel
+/**
+ * Model CapturedSegment
+ * 
+ */
+export type CapturedSegment = Prisma.CapturedSegmentModel
+/**
+ * Model Tag
+ * 
+ */
+export type Tag = Prisma.TagModel
+/**
+ * Model MaturityAssessment
+ * 
+ */
+export type MaturityAssessment = Prisma.MaturityAssessmentModel
+/**
+ * Model CapabilityKPIMaturityCeiling
+ * 
+ */
+export type CapabilityKPIMaturityCeiling = Prisma.CapabilityKPIMaturityCeilingModel
+/**
+ * Model Dependency
+ * 
+ */
+export type Dependency = Prisma.DependencyModel
+/**
+ * Model ConflictFlag
+ * 
+ */
+export type ConflictFlag = Prisma.ConflictFlagModel
+/**
+ * Model Recommendation
+ * 
+ */
+export type Recommendation = Prisma.RecommendationModel
+/**
+ * Model RecommendationFeedback
+ * 
+ */
+export type RecommendationFeedback = Prisma.RecommendationFeedbackModel
+/**
+ * Model FollowUpSuggestion
+ * 
+ */
+export type FollowUpSuggestion = Prisma.FollowUpSuggestionModel
+/**
+ * Model ProcessingJob
+ * 
+ */
+export type ProcessingJob = Prisma.ProcessingJobModel

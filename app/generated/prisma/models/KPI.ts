@@ -224,6 +224,7 @@ export type KPIWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"KPI"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   capabilities?: Prisma.CapabilityKPIListRelationFilter
+  capabilityCeilings?: Prisma.CapabilityKPIMaturityCeilingListRelationFilter
 }
 
 export type KPIOrderByWithRelationInput = {
@@ -239,6 +240,7 @@ export type KPIOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   organization?: Prisma.OrganizationOrderByWithRelationInput
   capabilities?: Prisma.CapabilityKPIOrderByRelationAggregateInput
+  capabilityCeilings?: Prisma.CapabilityKPIMaturityCeilingOrderByRelationAggregateInput
 }
 
 export type KPIWhereUniqueInput = Prisma.AtLeast<{
@@ -257,6 +259,7 @@ export type KPIWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"KPI"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   capabilities?: Prisma.CapabilityKPIListRelationFilter
+  capabilityCeilings?: Prisma.CapabilityKPIMaturityCeilingListRelationFilter
 }, "id">
 
 export type KPIOrderByWithAggregationInput = {
@@ -303,6 +306,7 @@ export type KPICreateInput = {
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutKpisInput
   capabilities?: Prisma.CapabilityKPICreateNestedManyWithoutKpiInput
+  capabilityCeilings?: Prisma.CapabilityKPIMaturityCeilingCreateNestedManyWithoutKpiInput
 }
 
 export type KPIUncheckedCreateInput = {
@@ -317,6 +321,7 @@ export type KPIUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   capabilities?: Prisma.CapabilityKPIUncheckedCreateNestedManyWithoutKpiInput
+  capabilityCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedCreateNestedManyWithoutKpiInput
 }
 
 export type KPIUpdateInput = {
@@ -331,6 +336,7 @@ export type KPIUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutKpisNestedInput
   capabilities?: Prisma.CapabilityKPIUpdateManyWithoutKpiNestedInput
+  capabilityCeilings?: Prisma.CapabilityKPIMaturityCeilingUpdateManyWithoutKpiNestedInput
 }
 
 export type KPIUncheckedUpdateInput = {
@@ -345,6 +351,7 @@ export type KPIUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capabilities?: Prisma.CapabilityKPIUncheckedUpdateManyWithoutKpiNestedInput
+  capabilityCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedUpdateManyWithoutKpiNestedInput
 }
 
 export type KPICreateManyInput = {
@@ -495,6 +502,20 @@ export type KPIUpdateOneRequiredWithoutCapabilitiesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.KPIUpdateToOneWithWhereWithoutCapabilitiesInput, Prisma.KPIUpdateWithoutCapabilitiesInput>, Prisma.KPIUncheckedUpdateWithoutCapabilitiesInput>
 }
 
+export type KPICreateNestedOneWithoutCapabilityCeilingsInput = {
+  create?: Prisma.XOR<Prisma.KPICreateWithoutCapabilityCeilingsInput, Prisma.KPIUncheckedCreateWithoutCapabilityCeilingsInput>
+  connectOrCreate?: Prisma.KPICreateOrConnectWithoutCapabilityCeilingsInput
+  connect?: Prisma.KPIWhereUniqueInput
+}
+
+export type KPIUpdateOneRequiredWithoutCapabilityCeilingsNestedInput = {
+  create?: Prisma.XOR<Prisma.KPICreateWithoutCapabilityCeilingsInput, Prisma.KPIUncheckedCreateWithoutCapabilityCeilingsInput>
+  connectOrCreate?: Prisma.KPICreateOrConnectWithoutCapabilityCeilingsInput
+  upsert?: Prisma.KPIUpsertWithoutCapabilityCeilingsInput
+  connect?: Prisma.KPIWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.KPIUpdateToOneWithWhereWithoutCapabilityCeilingsInput, Prisma.KPIUpdateWithoutCapabilityCeilingsInput>, Prisma.KPIUncheckedUpdateWithoutCapabilityCeilingsInput>
+}
+
 export type KPICreateWithoutOrganizationInput = {
   id?: string
   name: string
@@ -506,6 +527,7 @@ export type KPICreateWithoutOrganizationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   capabilities?: Prisma.CapabilityKPICreateNestedManyWithoutKpiInput
+  capabilityCeilings?: Prisma.CapabilityKPIMaturityCeilingCreateNestedManyWithoutKpiInput
 }
 
 export type KPIUncheckedCreateWithoutOrganizationInput = {
@@ -519,6 +541,7 @@ export type KPIUncheckedCreateWithoutOrganizationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   capabilities?: Prisma.CapabilityKPIUncheckedCreateNestedManyWithoutKpiInput
+  capabilityCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedCreateNestedManyWithoutKpiInput
 }
 
 export type KPICreateOrConnectWithoutOrganizationInput = {
@@ -574,6 +597,7 @@ export type KPICreateWithoutCapabilitiesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutKpisInput
+  capabilityCeilings?: Prisma.CapabilityKPIMaturityCeilingCreateNestedManyWithoutKpiInput
 }
 
 export type KPIUncheckedCreateWithoutCapabilitiesInput = {
@@ -587,6 +611,7 @@ export type KPIUncheckedCreateWithoutCapabilitiesInput = {
   dataSource?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  capabilityCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedCreateNestedManyWithoutKpiInput
 }
 
 export type KPICreateOrConnectWithoutCapabilitiesInput = {
@@ -616,6 +641,7 @@ export type KPIUpdateWithoutCapabilitiesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutKpisNestedInput
+  capabilityCeilings?: Prisma.CapabilityKPIMaturityCeilingUpdateManyWithoutKpiNestedInput
 }
 
 export type KPIUncheckedUpdateWithoutCapabilitiesInput = {
@@ -629,6 +655,79 @@ export type KPIUncheckedUpdateWithoutCapabilitiesInput = {
   dataSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  capabilityCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedUpdateManyWithoutKpiNestedInput
+}
+
+export type KPICreateWithoutCapabilityCeilingsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  targetValue?: string | null
+  currentValue?: string | null
+  measurementFrequency?: string | null
+  dataSource?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutKpisInput
+  capabilities?: Prisma.CapabilityKPICreateNestedManyWithoutKpiInput
+}
+
+export type KPIUncheckedCreateWithoutCapabilityCeilingsInput = {
+  id?: string
+  organizationId: string
+  name: string
+  description?: string | null
+  targetValue?: string | null
+  currentValue?: string | null
+  measurementFrequency?: string | null
+  dataSource?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  capabilities?: Prisma.CapabilityKPIUncheckedCreateNestedManyWithoutKpiInput
+}
+
+export type KPICreateOrConnectWithoutCapabilityCeilingsInput = {
+  where: Prisma.KPIWhereUniqueInput
+  create: Prisma.XOR<Prisma.KPICreateWithoutCapabilityCeilingsInput, Prisma.KPIUncheckedCreateWithoutCapabilityCeilingsInput>
+}
+
+export type KPIUpsertWithoutCapabilityCeilingsInput = {
+  update: Prisma.XOR<Prisma.KPIUpdateWithoutCapabilityCeilingsInput, Prisma.KPIUncheckedUpdateWithoutCapabilityCeilingsInput>
+  create: Prisma.XOR<Prisma.KPICreateWithoutCapabilityCeilingsInput, Prisma.KPIUncheckedCreateWithoutCapabilityCeilingsInput>
+  where?: Prisma.KPIWhereInput
+}
+
+export type KPIUpdateToOneWithWhereWithoutCapabilityCeilingsInput = {
+  where?: Prisma.KPIWhereInput
+  data: Prisma.XOR<Prisma.KPIUpdateWithoutCapabilityCeilingsInput, Prisma.KPIUncheckedUpdateWithoutCapabilityCeilingsInput>
+}
+
+export type KPIUpdateWithoutCapabilityCeilingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  measurementFrequency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dataSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutKpisNestedInput
+  capabilities?: Prisma.CapabilityKPIUpdateManyWithoutKpiNestedInput
+}
+
+export type KPIUncheckedUpdateWithoutCapabilityCeilingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  measurementFrequency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dataSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  capabilities?: Prisma.CapabilityKPIUncheckedUpdateManyWithoutKpiNestedInput
 }
 
 export type KPICreateManyOrganizationInput = {
@@ -654,6 +753,7 @@ export type KPIUpdateWithoutOrganizationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capabilities?: Prisma.CapabilityKPIUpdateManyWithoutKpiNestedInput
+  capabilityCeilings?: Prisma.CapabilityKPIMaturityCeilingUpdateManyWithoutKpiNestedInput
 }
 
 export type KPIUncheckedUpdateWithoutOrganizationInput = {
@@ -667,6 +767,7 @@ export type KPIUncheckedUpdateWithoutOrganizationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capabilities?: Prisma.CapabilityKPIUncheckedUpdateManyWithoutKpiNestedInput
+  capabilityCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedUpdateManyWithoutKpiNestedInput
 }
 
 export type KPIUncheckedUpdateManyWithoutOrganizationInput = {
@@ -688,10 +789,12 @@ export type KPIUncheckedUpdateManyWithoutOrganizationInput = {
 
 export type KPICountOutputType = {
   capabilities: number
+  capabilityCeilings: number
 }
 
 export type KPICountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   capabilities?: boolean | KPICountOutputTypeCountCapabilitiesArgs
+  capabilityCeilings?: boolean | KPICountOutputTypeCountCapabilityCeilingsArgs
 }
 
 /**
@@ -711,6 +814,13 @@ export type KPICountOutputTypeCountCapabilitiesArgs<ExtArgs extends runtime.Type
   where?: Prisma.CapabilityKPIWhereInput
 }
 
+/**
+ * KPICountOutputType without action
+ */
+export type KPICountOutputTypeCountCapabilityCeilingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CapabilityKPIMaturityCeilingWhereInput
+}
+
 
 export type KPISelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -725,6 +835,7 @@ export type KPISelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   capabilities?: boolean | Prisma.KPI$capabilitiesArgs<ExtArgs>
+  capabilityCeilings?: boolean | Prisma.KPI$capabilityCeilingsArgs<ExtArgs>
   _count?: boolean | Prisma.KPICountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["kPI"]>
 
@@ -773,6 +884,7 @@ export type KPIOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
 export type KPIInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   capabilities?: boolean | Prisma.KPI$capabilitiesArgs<ExtArgs>
+  capabilityCeilings?: boolean | Prisma.KPI$capabilityCeilingsArgs<ExtArgs>
   _count?: boolean | Prisma.KPICountOutputTypeDefaultArgs<ExtArgs>
 }
 export type KPIIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -787,6 +899,7 @@ export type $KPIPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   objects: {
     organization: Prisma.$OrganizationPayload<ExtArgs>
     capabilities: Prisma.$CapabilityKPIPayload<ExtArgs>[]
+    capabilityCeilings: Prisma.$CapabilityKPIMaturityCeilingPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1195,6 +1308,7 @@ export interface Prisma__KPIClient<T, Null = never, ExtArgs extends runtime.Type
   readonly [Symbol.toStringTag]: "PrismaPromise"
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   capabilities<T extends Prisma.KPI$capabilitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KPI$capabilitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CapabilityKPIPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  capabilityCeilings<T extends Prisma.KPI$capabilityCeilingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KPI$capabilityCeilingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CapabilityKPIMaturityCeilingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1656,6 +1770,30 @@ export type KPI$capabilitiesArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.CapabilityKPIScalarFieldEnum | Prisma.CapabilityKPIScalarFieldEnum[]
+}
+
+/**
+ * KPI.capabilityCeilings
+ */
+export type KPI$capabilityCeilingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CapabilityKPIMaturityCeiling
+   */
+  select?: Prisma.CapabilityKPIMaturityCeilingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CapabilityKPIMaturityCeiling
+   */
+  omit?: Prisma.CapabilityKPIMaturityCeilingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CapabilityKPIMaturityCeilingInclude<ExtArgs> | null
+  where?: Prisma.CapabilityKPIMaturityCeilingWhereInput
+  orderBy?: Prisma.CapabilityKPIMaturityCeilingOrderByWithRelationInput | Prisma.CapabilityKPIMaturityCeilingOrderByWithRelationInput[]
+  cursor?: Prisma.CapabilityKPIMaturityCeilingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CapabilityKPIMaturityCeilingScalarFieldEnum | Prisma.CapabilityKPIMaturityCeilingScalarFieldEnum[]
 }
 
 /**

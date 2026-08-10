@@ -330,6 +330,9 @@ export type CapabilityWhereInput = {
   processes?: Prisma.CapabilityProcessListRelationFilter
   technologies?: Prisma.CapabilityTechnologyListRelationFilter
   projects?: Prisma.ProjectCapabilityListRelationFilter
+  maturityAssessments?: Prisma.MaturityAssessmentListRelationFilter
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingListRelationFilter
+  followUpSuggestions?: Prisma.FollowUpSuggestionListRelationFilter
 }
 
 export type CapabilityOrderByWithRelationInput = {
@@ -358,6 +361,9 @@ export type CapabilityOrderByWithRelationInput = {
   processes?: Prisma.CapabilityProcessOrderByRelationAggregateInput
   technologies?: Prisma.CapabilityTechnologyOrderByRelationAggregateInput
   projects?: Prisma.ProjectCapabilityOrderByRelationAggregateInput
+  maturityAssessments?: Prisma.MaturityAssessmentOrderByRelationAggregateInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingOrderByRelationAggregateInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionOrderByRelationAggregateInput
 }
 
 export type CapabilityWhereUniqueInput = Prisma.AtLeast<{
@@ -389,6 +395,9 @@ export type CapabilityWhereUniqueInput = Prisma.AtLeast<{
   processes?: Prisma.CapabilityProcessListRelationFilter
   technologies?: Prisma.CapabilityTechnologyListRelationFilter
   projects?: Prisma.ProjectCapabilityListRelationFilter
+  maturityAssessments?: Prisma.MaturityAssessmentListRelationFilter
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingListRelationFilter
+  followUpSuggestions?: Prisma.FollowUpSuggestionListRelationFilter
 }, "id">
 
 export type CapabilityOrderByWithAggregationInput = {
@@ -468,6 +477,9 @@ export type CapabilityCreateInput = {
   processes?: Prisma.CapabilityProcessCreateNestedManyWithoutCapabilityInput
   technologies?: Prisma.CapabilityTechnologyCreateNestedManyWithoutCapabilityInput
   projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionCreateNestedManyWithoutCapabilityInput
 }
 
 export type CapabilityUncheckedCreateInput = {
@@ -495,6 +507,9 @@ export type CapabilityUncheckedCreateInput = {
   processes?: Prisma.CapabilityProcessUncheckedCreateNestedManyWithoutCapabilityInput
   technologies?: Prisma.CapabilityTechnologyUncheckedCreateNestedManyWithoutCapabilityInput
   projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedCreateNestedManyWithoutCapabilityInput
 }
 
 export type CapabilityUpdateInput = {
@@ -522,6 +537,9 @@ export type CapabilityUpdateInput = {
   processes?: Prisma.CapabilityProcessUpdateManyWithoutCapabilityNestedInput
   technologies?: Prisma.CapabilityTechnologyUpdateManyWithoutCapabilityNestedInput
   projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUpdateManyWithoutCapabilityNestedInput
 }
 
 export type CapabilityUncheckedUpdateInput = {
@@ -549,6 +567,9 @@ export type CapabilityUncheckedUpdateInput = {
   processes?: Prisma.CapabilityProcessUncheckedUpdateManyWithoutCapabilityNestedInput
   technologies?: Prisma.CapabilityTechnologyUncheckedUpdateManyWithoutCapabilityNestedInput
   projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedUpdateManyWithoutCapabilityNestedInput
 }
 
 export type CapabilityCreateManyInput = {
@@ -709,6 +730,11 @@ export type CapabilitySumOrderByAggregateInput = {
 export type CapabilityScalarRelationFilter = {
   is?: Prisma.CapabilityWhereInput
   isNot?: Prisma.CapabilityWhereInput
+}
+
+export type CapabilityNullableScalarRelationFilter = {
+  is?: Prisma.CapabilityWhereInput | null
+  isNot?: Prisma.CapabilityWhereInput | null
 }
 
 export type CapabilityCreateNestedManyWithoutDomainInput = {
@@ -876,6 +902,50 @@ export type CapabilityUpdateOneRequiredWithoutProjectsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CapabilityUpdateToOneWithWhereWithoutProjectsInput, Prisma.CapabilityUpdateWithoutProjectsInput>, Prisma.CapabilityUncheckedUpdateWithoutProjectsInput>
 }
 
+export type CapabilityCreateNestedOneWithoutMaturityAssessmentsInput = {
+  create?: Prisma.XOR<Prisma.CapabilityCreateWithoutMaturityAssessmentsInput, Prisma.CapabilityUncheckedCreateWithoutMaturityAssessmentsInput>
+  connectOrCreate?: Prisma.CapabilityCreateOrConnectWithoutMaturityAssessmentsInput
+  connect?: Prisma.CapabilityWhereUniqueInput
+}
+
+export type CapabilityUpdateOneRequiredWithoutMaturityAssessmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.CapabilityCreateWithoutMaturityAssessmentsInput, Prisma.CapabilityUncheckedCreateWithoutMaturityAssessmentsInput>
+  connectOrCreate?: Prisma.CapabilityCreateOrConnectWithoutMaturityAssessmentsInput
+  upsert?: Prisma.CapabilityUpsertWithoutMaturityAssessmentsInput
+  connect?: Prisma.CapabilityWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CapabilityUpdateToOneWithWhereWithoutMaturityAssessmentsInput, Prisma.CapabilityUpdateWithoutMaturityAssessmentsInput>, Prisma.CapabilityUncheckedUpdateWithoutMaturityAssessmentsInput>
+}
+
+export type CapabilityCreateNestedOneWithoutKpiCeilingsInput = {
+  create?: Prisma.XOR<Prisma.CapabilityCreateWithoutKpiCeilingsInput, Prisma.CapabilityUncheckedCreateWithoutKpiCeilingsInput>
+  connectOrCreate?: Prisma.CapabilityCreateOrConnectWithoutKpiCeilingsInput
+  connect?: Prisma.CapabilityWhereUniqueInput
+}
+
+export type CapabilityUpdateOneRequiredWithoutKpiCeilingsNestedInput = {
+  create?: Prisma.XOR<Prisma.CapabilityCreateWithoutKpiCeilingsInput, Prisma.CapabilityUncheckedCreateWithoutKpiCeilingsInput>
+  connectOrCreate?: Prisma.CapabilityCreateOrConnectWithoutKpiCeilingsInput
+  upsert?: Prisma.CapabilityUpsertWithoutKpiCeilingsInput
+  connect?: Prisma.CapabilityWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CapabilityUpdateToOneWithWhereWithoutKpiCeilingsInput, Prisma.CapabilityUpdateWithoutKpiCeilingsInput>, Prisma.CapabilityUncheckedUpdateWithoutKpiCeilingsInput>
+}
+
+export type CapabilityCreateNestedOneWithoutFollowUpSuggestionsInput = {
+  create?: Prisma.XOR<Prisma.CapabilityCreateWithoutFollowUpSuggestionsInput, Prisma.CapabilityUncheckedCreateWithoutFollowUpSuggestionsInput>
+  connectOrCreate?: Prisma.CapabilityCreateOrConnectWithoutFollowUpSuggestionsInput
+  connect?: Prisma.CapabilityWhereUniqueInput
+}
+
+export type CapabilityUpdateOneWithoutFollowUpSuggestionsNestedInput = {
+  create?: Prisma.XOR<Prisma.CapabilityCreateWithoutFollowUpSuggestionsInput, Prisma.CapabilityUncheckedCreateWithoutFollowUpSuggestionsInput>
+  connectOrCreate?: Prisma.CapabilityCreateOrConnectWithoutFollowUpSuggestionsInput
+  upsert?: Prisma.CapabilityUpsertWithoutFollowUpSuggestionsInput
+  disconnect?: Prisma.CapabilityWhereInput | boolean
+  delete?: Prisma.CapabilityWhereInput | boolean
+  connect?: Prisma.CapabilityWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CapabilityUpdateToOneWithWhereWithoutFollowUpSuggestionsInput, Prisma.CapabilityUpdateWithoutFollowUpSuggestionsInput>, Prisma.CapabilityUncheckedUpdateWithoutFollowUpSuggestionsInput>
+}
+
 export type CapabilityCreateWithoutDomainInput = {
   id?: string
   name: string
@@ -900,6 +970,9 @@ export type CapabilityCreateWithoutDomainInput = {
   processes?: Prisma.CapabilityProcessCreateNestedManyWithoutCapabilityInput
   technologies?: Prisma.CapabilityTechnologyCreateNestedManyWithoutCapabilityInput
   projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionCreateNestedManyWithoutCapabilityInput
 }
 
 export type CapabilityUncheckedCreateWithoutDomainInput = {
@@ -926,6 +999,9 @@ export type CapabilityUncheckedCreateWithoutDomainInput = {
   processes?: Prisma.CapabilityProcessUncheckedCreateNestedManyWithoutCapabilityInput
   technologies?: Prisma.CapabilityTechnologyUncheckedCreateNestedManyWithoutCapabilityInput
   projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedCreateNestedManyWithoutCapabilityInput
 }
 
 export type CapabilityCreateOrConnectWithoutDomainInput = {
@@ -1003,6 +1079,9 @@ export type CapabilityCreateWithoutStakeholdersInput = {
   processes?: Prisma.CapabilityProcessCreateNestedManyWithoutCapabilityInput
   technologies?: Prisma.CapabilityTechnologyCreateNestedManyWithoutCapabilityInput
   projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionCreateNestedManyWithoutCapabilityInput
 }
 
 export type CapabilityUncheckedCreateWithoutStakeholdersInput = {
@@ -1029,6 +1108,9 @@ export type CapabilityUncheckedCreateWithoutStakeholdersInput = {
   processes?: Prisma.CapabilityProcessUncheckedCreateNestedManyWithoutCapabilityInput
   technologies?: Prisma.CapabilityTechnologyUncheckedCreateNestedManyWithoutCapabilityInput
   projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedCreateNestedManyWithoutCapabilityInput
 }
 
 export type CapabilityCreateOrConnectWithoutStakeholdersInput = {
@@ -1071,6 +1153,9 @@ export type CapabilityUpdateWithoutStakeholdersInput = {
   processes?: Prisma.CapabilityProcessUpdateManyWithoutCapabilityNestedInput
   technologies?: Prisma.CapabilityTechnologyUpdateManyWithoutCapabilityNestedInput
   projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUpdateManyWithoutCapabilityNestedInput
 }
 
 export type CapabilityUncheckedUpdateWithoutStakeholdersInput = {
@@ -1097,6 +1182,9 @@ export type CapabilityUncheckedUpdateWithoutStakeholdersInput = {
   processes?: Prisma.CapabilityProcessUncheckedUpdateManyWithoutCapabilityNestedInput
   technologies?: Prisma.CapabilityTechnologyUncheckedUpdateManyWithoutCapabilityNestedInput
   projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedUpdateManyWithoutCapabilityNestedInput
 }
 
 export type CapabilityCreateWithoutKpisInput = {
@@ -1123,6 +1211,9 @@ export type CapabilityCreateWithoutKpisInput = {
   processes?: Prisma.CapabilityProcessCreateNestedManyWithoutCapabilityInput
   technologies?: Prisma.CapabilityTechnologyCreateNestedManyWithoutCapabilityInput
   projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionCreateNestedManyWithoutCapabilityInput
 }
 
 export type CapabilityUncheckedCreateWithoutKpisInput = {
@@ -1149,6 +1240,9 @@ export type CapabilityUncheckedCreateWithoutKpisInput = {
   processes?: Prisma.CapabilityProcessUncheckedCreateNestedManyWithoutCapabilityInput
   technologies?: Prisma.CapabilityTechnologyUncheckedCreateNestedManyWithoutCapabilityInput
   projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedCreateNestedManyWithoutCapabilityInput
 }
 
 export type CapabilityCreateOrConnectWithoutKpisInput = {
@@ -1191,6 +1285,9 @@ export type CapabilityUpdateWithoutKpisInput = {
   processes?: Prisma.CapabilityProcessUpdateManyWithoutCapabilityNestedInput
   technologies?: Prisma.CapabilityTechnologyUpdateManyWithoutCapabilityNestedInput
   projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUpdateManyWithoutCapabilityNestedInput
 }
 
 export type CapabilityUncheckedUpdateWithoutKpisInput = {
@@ -1217,6 +1314,9 @@ export type CapabilityUncheckedUpdateWithoutKpisInput = {
   processes?: Prisma.CapabilityProcessUncheckedUpdateManyWithoutCapabilityNestedInput
   technologies?: Prisma.CapabilityTechnologyUncheckedUpdateManyWithoutCapabilityNestedInput
   projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedUpdateManyWithoutCapabilityNestedInput
 }
 
 export type CapabilityCreateWithoutProcessesInput = {
@@ -1243,6 +1343,9 @@ export type CapabilityCreateWithoutProcessesInput = {
   kpis?: Prisma.CapabilityKPICreateNestedManyWithoutCapabilityInput
   technologies?: Prisma.CapabilityTechnologyCreateNestedManyWithoutCapabilityInput
   projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionCreateNestedManyWithoutCapabilityInput
 }
 
 export type CapabilityUncheckedCreateWithoutProcessesInput = {
@@ -1269,6 +1372,9 @@ export type CapabilityUncheckedCreateWithoutProcessesInput = {
   kpis?: Prisma.CapabilityKPIUncheckedCreateNestedManyWithoutCapabilityInput
   technologies?: Prisma.CapabilityTechnologyUncheckedCreateNestedManyWithoutCapabilityInput
   projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedCreateNestedManyWithoutCapabilityInput
 }
 
 export type CapabilityCreateOrConnectWithoutProcessesInput = {
@@ -1311,6 +1417,9 @@ export type CapabilityUpdateWithoutProcessesInput = {
   kpis?: Prisma.CapabilityKPIUpdateManyWithoutCapabilityNestedInput
   technologies?: Prisma.CapabilityTechnologyUpdateManyWithoutCapabilityNestedInput
   projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUpdateManyWithoutCapabilityNestedInput
 }
 
 export type CapabilityUncheckedUpdateWithoutProcessesInput = {
@@ -1337,6 +1446,9 @@ export type CapabilityUncheckedUpdateWithoutProcessesInput = {
   kpis?: Prisma.CapabilityKPIUncheckedUpdateManyWithoutCapabilityNestedInput
   technologies?: Prisma.CapabilityTechnologyUncheckedUpdateManyWithoutCapabilityNestedInput
   projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedUpdateManyWithoutCapabilityNestedInput
 }
 
 export type CapabilityCreateWithoutTechnologiesInput = {
@@ -1363,6 +1475,9 @@ export type CapabilityCreateWithoutTechnologiesInput = {
   kpis?: Prisma.CapabilityKPICreateNestedManyWithoutCapabilityInput
   processes?: Prisma.CapabilityProcessCreateNestedManyWithoutCapabilityInput
   projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionCreateNestedManyWithoutCapabilityInput
 }
 
 export type CapabilityUncheckedCreateWithoutTechnologiesInput = {
@@ -1389,6 +1504,9 @@ export type CapabilityUncheckedCreateWithoutTechnologiesInput = {
   kpis?: Prisma.CapabilityKPIUncheckedCreateNestedManyWithoutCapabilityInput
   processes?: Prisma.CapabilityProcessUncheckedCreateNestedManyWithoutCapabilityInput
   projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedCreateNestedManyWithoutCapabilityInput
 }
 
 export type CapabilityCreateOrConnectWithoutTechnologiesInput = {
@@ -1431,6 +1549,9 @@ export type CapabilityUpdateWithoutTechnologiesInput = {
   kpis?: Prisma.CapabilityKPIUpdateManyWithoutCapabilityNestedInput
   processes?: Prisma.CapabilityProcessUpdateManyWithoutCapabilityNestedInput
   projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUpdateManyWithoutCapabilityNestedInput
 }
 
 export type CapabilityUncheckedUpdateWithoutTechnologiesInput = {
@@ -1457,6 +1578,9 @@ export type CapabilityUncheckedUpdateWithoutTechnologiesInput = {
   kpis?: Prisma.CapabilityKPIUncheckedUpdateManyWithoutCapabilityNestedInput
   processes?: Prisma.CapabilityProcessUncheckedUpdateManyWithoutCapabilityNestedInput
   projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedUpdateManyWithoutCapabilityNestedInput
 }
 
 export type CapabilityCreateWithoutProjectsInput = {
@@ -1483,6 +1607,9 @@ export type CapabilityCreateWithoutProjectsInput = {
   kpis?: Prisma.CapabilityKPICreateNestedManyWithoutCapabilityInput
   processes?: Prisma.CapabilityProcessCreateNestedManyWithoutCapabilityInput
   technologies?: Prisma.CapabilityTechnologyCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionCreateNestedManyWithoutCapabilityInput
 }
 
 export type CapabilityUncheckedCreateWithoutProjectsInput = {
@@ -1509,6 +1636,9 @@ export type CapabilityUncheckedCreateWithoutProjectsInput = {
   kpis?: Prisma.CapabilityKPIUncheckedCreateNestedManyWithoutCapabilityInput
   processes?: Prisma.CapabilityProcessUncheckedCreateNestedManyWithoutCapabilityInput
   technologies?: Prisma.CapabilityTechnologyUncheckedCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedCreateNestedManyWithoutCapabilityInput
 }
 
 export type CapabilityCreateOrConnectWithoutProjectsInput = {
@@ -1551,6 +1681,9 @@ export type CapabilityUpdateWithoutProjectsInput = {
   kpis?: Prisma.CapabilityKPIUpdateManyWithoutCapabilityNestedInput
   processes?: Prisma.CapabilityProcessUpdateManyWithoutCapabilityNestedInput
   technologies?: Prisma.CapabilityTechnologyUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUpdateManyWithoutCapabilityNestedInput
 }
 
 export type CapabilityUncheckedUpdateWithoutProjectsInput = {
@@ -1577,6 +1710,405 @@ export type CapabilityUncheckedUpdateWithoutProjectsInput = {
   kpis?: Prisma.CapabilityKPIUncheckedUpdateManyWithoutCapabilityNestedInput
   processes?: Prisma.CapabilityProcessUncheckedUpdateManyWithoutCapabilityNestedInput
   technologies?: Prisma.CapabilityTechnologyUncheckedUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedUpdateManyWithoutCapabilityNestedInput
+}
+
+export type CapabilityCreateWithoutMaturityAssessmentsInput = {
+  id?: string
+  name: string
+  aliases?: Prisma.CapabilityCreatealiasesInput | string[]
+  description?: string | null
+  dimensions?: Prisma.CapabilityCreatedimensionsInput | string[]
+  metrics?: Prisma.CapabilityCreatemetricsInput | string[]
+  asIsState?: string | null
+  asIsScore?: number | null
+  asIsNotes?: string | null
+  importanceScore?: number | null
+  toBeState?: string | null
+  toBeScore?: number | null
+  opportunities?: Prisma.CapabilityCreateopportunitiesInput | string[]
+  weaknesses?: Prisma.CapabilityCreateweaknessesInput | string[]
+  gapScore?: number | null
+  order?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  domain: Prisma.BusinessDomainCreateNestedOneWithoutCapabilitiesInput
+  stakeholders?: Prisma.CapabilityStakeholderCreateNestedManyWithoutCapabilityInput
+  kpis?: Prisma.CapabilityKPICreateNestedManyWithoutCapabilityInput
+  processes?: Prisma.CapabilityProcessCreateNestedManyWithoutCapabilityInput
+  technologies?: Prisma.CapabilityTechnologyCreateNestedManyWithoutCapabilityInput
+  projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionCreateNestedManyWithoutCapabilityInput
+}
+
+export type CapabilityUncheckedCreateWithoutMaturityAssessmentsInput = {
+  id?: string
+  domainId: string
+  name: string
+  aliases?: Prisma.CapabilityCreatealiasesInput | string[]
+  description?: string | null
+  dimensions?: Prisma.CapabilityCreatedimensionsInput | string[]
+  metrics?: Prisma.CapabilityCreatemetricsInput | string[]
+  asIsState?: string | null
+  asIsScore?: number | null
+  asIsNotes?: string | null
+  importanceScore?: number | null
+  toBeState?: string | null
+  toBeScore?: number | null
+  opportunities?: Prisma.CapabilityCreateopportunitiesInput | string[]
+  weaknesses?: Prisma.CapabilityCreateweaknessesInput | string[]
+  gapScore?: number | null
+  order?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  stakeholders?: Prisma.CapabilityStakeholderUncheckedCreateNestedManyWithoutCapabilityInput
+  kpis?: Prisma.CapabilityKPIUncheckedCreateNestedManyWithoutCapabilityInput
+  processes?: Prisma.CapabilityProcessUncheckedCreateNestedManyWithoutCapabilityInput
+  technologies?: Prisma.CapabilityTechnologyUncheckedCreateNestedManyWithoutCapabilityInput
+  projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedCreateNestedManyWithoutCapabilityInput
+}
+
+export type CapabilityCreateOrConnectWithoutMaturityAssessmentsInput = {
+  where: Prisma.CapabilityWhereUniqueInput
+  create: Prisma.XOR<Prisma.CapabilityCreateWithoutMaturityAssessmentsInput, Prisma.CapabilityUncheckedCreateWithoutMaturityAssessmentsInput>
+}
+
+export type CapabilityUpsertWithoutMaturityAssessmentsInput = {
+  update: Prisma.XOR<Prisma.CapabilityUpdateWithoutMaturityAssessmentsInput, Prisma.CapabilityUncheckedUpdateWithoutMaturityAssessmentsInput>
+  create: Prisma.XOR<Prisma.CapabilityCreateWithoutMaturityAssessmentsInput, Prisma.CapabilityUncheckedCreateWithoutMaturityAssessmentsInput>
+  where?: Prisma.CapabilityWhereInput
+}
+
+export type CapabilityUpdateToOneWithWhereWithoutMaturityAssessmentsInput = {
+  where?: Prisma.CapabilityWhereInput
+  data: Prisma.XOR<Prisma.CapabilityUpdateWithoutMaturityAssessmentsInput, Prisma.CapabilityUncheckedUpdateWithoutMaturityAssessmentsInput>
+}
+
+export type CapabilityUpdateWithoutMaturityAssessmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  aliases?: Prisma.CapabilityUpdatealiasesInput | string[]
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dimensions?: Prisma.CapabilityUpdatedimensionsInput | string[]
+  metrics?: Prisma.CapabilityUpdatemetricsInput | string[]
+  asIsState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  asIsScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  asIsNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  importanceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  toBeState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toBeScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  opportunities?: Prisma.CapabilityUpdateopportunitiesInput | string[]
+  weaknesses?: Prisma.CapabilityUpdateweaknessesInput | string[]
+  gapScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  domain?: Prisma.BusinessDomainUpdateOneRequiredWithoutCapabilitiesNestedInput
+  stakeholders?: Prisma.CapabilityStakeholderUpdateManyWithoutCapabilityNestedInput
+  kpis?: Prisma.CapabilityKPIUpdateManyWithoutCapabilityNestedInput
+  processes?: Prisma.CapabilityProcessUpdateManyWithoutCapabilityNestedInput
+  technologies?: Prisma.CapabilityTechnologyUpdateManyWithoutCapabilityNestedInput
+  projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUpdateManyWithoutCapabilityNestedInput
+}
+
+export type CapabilityUncheckedUpdateWithoutMaturityAssessmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  domainId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  aliases?: Prisma.CapabilityUpdatealiasesInput | string[]
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dimensions?: Prisma.CapabilityUpdatedimensionsInput | string[]
+  metrics?: Prisma.CapabilityUpdatemetricsInput | string[]
+  asIsState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  asIsScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  asIsNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  importanceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  toBeState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toBeScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  opportunities?: Prisma.CapabilityUpdateopportunitiesInput | string[]
+  weaknesses?: Prisma.CapabilityUpdateweaknessesInput | string[]
+  gapScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stakeholders?: Prisma.CapabilityStakeholderUncheckedUpdateManyWithoutCapabilityNestedInput
+  kpis?: Prisma.CapabilityKPIUncheckedUpdateManyWithoutCapabilityNestedInput
+  processes?: Prisma.CapabilityProcessUncheckedUpdateManyWithoutCapabilityNestedInput
+  technologies?: Prisma.CapabilityTechnologyUncheckedUpdateManyWithoutCapabilityNestedInput
+  projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedUpdateManyWithoutCapabilityNestedInput
+}
+
+export type CapabilityCreateWithoutKpiCeilingsInput = {
+  id?: string
+  name: string
+  aliases?: Prisma.CapabilityCreatealiasesInput | string[]
+  description?: string | null
+  dimensions?: Prisma.CapabilityCreatedimensionsInput | string[]
+  metrics?: Prisma.CapabilityCreatemetricsInput | string[]
+  asIsState?: string | null
+  asIsScore?: number | null
+  asIsNotes?: string | null
+  importanceScore?: number | null
+  toBeState?: string | null
+  toBeScore?: number | null
+  opportunities?: Prisma.CapabilityCreateopportunitiesInput | string[]
+  weaknesses?: Prisma.CapabilityCreateweaknessesInput | string[]
+  gapScore?: number | null
+  order?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  domain: Prisma.BusinessDomainCreateNestedOneWithoutCapabilitiesInput
+  stakeholders?: Prisma.CapabilityStakeholderCreateNestedManyWithoutCapabilityInput
+  kpis?: Prisma.CapabilityKPICreateNestedManyWithoutCapabilityInput
+  processes?: Prisma.CapabilityProcessCreateNestedManyWithoutCapabilityInput
+  technologies?: Prisma.CapabilityTechnologyCreateNestedManyWithoutCapabilityInput
+  projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionCreateNestedManyWithoutCapabilityInput
+}
+
+export type CapabilityUncheckedCreateWithoutKpiCeilingsInput = {
+  id?: string
+  domainId: string
+  name: string
+  aliases?: Prisma.CapabilityCreatealiasesInput | string[]
+  description?: string | null
+  dimensions?: Prisma.CapabilityCreatedimensionsInput | string[]
+  metrics?: Prisma.CapabilityCreatemetricsInput | string[]
+  asIsState?: string | null
+  asIsScore?: number | null
+  asIsNotes?: string | null
+  importanceScore?: number | null
+  toBeState?: string | null
+  toBeScore?: number | null
+  opportunities?: Prisma.CapabilityCreateopportunitiesInput | string[]
+  weaknesses?: Prisma.CapabilityCreateweaknessesInput | string[]
+  gapScore?: number | null
+  order?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  stakeholders?: Prisma.CapabilityStakeholderUncheckedCreateNestedManyWithoutCapabilityInput
+  kpis?: Prisma.CapabilityKPIUncheckedCreateNestedManyWithoutCapabilityInput
+  processes?: Prisma.CapabilityProcessUncheckedCreateNestedManyWithoutCapabilityInput
+  technologies?: Prisma.CapabilityTechnologyUncheckedCreateNestedManyWithoutCapabilityInput
+  projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedCreateNestedManyWithoutCapabilityInput
+}
+
+export type CapabilityCreateOrConnectWithoutKpiCeilingsInput = {
+  where: Prisma.CapabilityWhereUniqueInput
+  create: Prisma.XOR<Prisma.CapabilityCreateWithoutKpiCeilingsInput, Prisma.CapabilityUncheckedCreateWithoutKpiCeilingsInput>
+}
+
+export type CapabilityUpsertWithoutKpiCeilingsInput = {
+  update: Prisma.XOR<Prisma.CapabilityUpdateWithoutKpiCeilingsInput, Prisma.CapabilityUncheckedUpdateWithoutKpiCeilingsInput>
+  create: Prisma.XOR<Prisma.CapabilityCreateWithoutKpiCeilingsInput, Prisma.CapabilityUncheckedCreateWithoutKpiCeilingsInput>
+  where?: Prisma.CapabilityWhereInput
+}
+
+export type CapabilityUpdateToOneWithWhereWithoutKpiCeilingsInput = {
+  where?: Prisma.CapabilityWhereInput
+  data: Prisma.XOR<Prisma.CapabilityUpdateWithoutKpiCeilingsInput, Prisma.CapabilityUncheckedUpdateWithoutKpiCeilingsInput>
+}
+
+export type CapabilityUpdateWithoutKpiCeilingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  aliases?: Prisma.CapabilityUpdatealiasesInput | string[]
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dimensions?: Prisma.CapabilityUpdatedimensionsInput | string[]
+  metrics?: Prisma.CapabilityUpdatemetricsInput | string[]
+  asIsState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  asIsScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  asIsNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  importanceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  toBeState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toBeScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  opportunities?: Prisma.CapabilityUpdateopportunitiesInput | string[]
+  weaknesses?: Prisma.CapabilityUpdateweaknessesInput | string[]
+  gapScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  domain?: Prisma.BusinessDomainUpdateOneRequiredWithoutCapabilitiesNestedInput
+  stakeholders?: Prisma.CapabilityStakeholderUpdateManyWithoutCapabilityNestedInput
+  kpis?: Prisma.CapabilityKPIUpdateManyWithoutCapabilityNestedInput
+  processes?: Prisma.CapabilityProcessUpdateManyWithoutCapabilityNestedInput
+  technologies?: Prisma.CapabilityTechnologyUpdateManyWithoutCapabilityNestedInput
+  projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUpdateManyWithoutCapabilityNestedInput
+}
+
+export type CapabilityUncheckedUpdateWithoutKpiCeilingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  domainId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  aliases?: Prisma.CapabilityUpdatealiasesInput | string[]
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dimensions?: Prisma.CapabilityUpdatedimensionsInput | string[]
+  metrics?: Prisma.CapabilityUpdatemetricsInput | string[]
+  asIsState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  asIsScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  asIsNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  importanceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  toBeState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toBeScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  opportunities?: Prisma.CapabilityUpdateopportunitiesInput | string[]
+  weaknesses?: Prisma.CapabilityUpdateweaknessesInput | string[]
+  gapScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stakeholders?: Prisma.CapabilityStakeholderUncheckedUpdateManyWithoutCapabilityNestedInput
+  kpis?: Prisma.CapabilityKPIUncheckedUpdateManyWithoutCapabilityNestedInput
+  processes?: Prisma.CapabilityProcessUncheckedUpdateManyWithoutCapabilityNestedInput
+  technologies?: Prisma.CapabilityTechnologyUncheckedUpdateManyWithoutCapabilityNestedInput
+  projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedUpdateManyWithoutCapabilityNestedInput
+}
+
+export type CapabilityCreateWithoutFollowUpSuggestionsInput = {
+  id?: string
+  name: string
+  aliases?: Prisma.CapabilityCreatealiasesInput | string[]
+  description?: string | null
+  dimensions?: Prisma.CapabilityCreatedimensionsInput | string[]
+  metrics?: Prisma.CapabilityCreatemetricsInput | string[]
+  asIsState?: string | null
+  asIsScore?: number | null
+  asIsNotes?: string | null
+  importanceScore?: number | null
+  toBeState?: string | null
+  toBeScore?: number | null
+  opportunities?: Prisma.CapabilityCreateopportunitiesInput | string[]
+  weaknesses?: Prisma.CapabilityCreateweaknessesInput | string[]
+  gapScore?: number | null
+  order?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  domain: Prisma.BusinessDomainCreateNestedOneWithoutCapabilitiesInput
+  stakeholders?: Prisma.CapabilityStakeholderCreateNestedManyWithoutCapabilityInput
+  kpis?: Prisma.CapabilityKPICreateNestedManyWithoutCapabilityInput
+  processes?: Prisma.CapabilityProcessCreateNestedManyWithoutCapabilityInput
+  technologies?: Prisma.CapabilityTechnologyCreateNestedManyWithoutCapabilityInput
+  projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingCreateNestedManyWithoutCapabilityInput
+}
+
+export type CapabilityUncheckedCreateWithoutFollowUpSuggestionsInput = {
+  id?: string
+  domainId: string
+  name: string
+  aliases?: Prisma.CapabilityCreatealiasesInput | string[]
+  description?: string | null
+  dimensions?: Prisma.CapabilityCreatedimensionsInput | string[]
+  metrics?: Prisma.CapabilityCreatemetricsInput | string[]
+  asIsState?: string | null
+  asIsScore?: number | null
+  asIsNotes?: string | null
+  importanceScore?: number | null
+  toBeState?: string | null
+  toBeScore?: number | null
+  opportunities?: Prisma.CapabilityCreateopportunitiesInput | string[]
+  weaknesses?: Prisma.CapabilityCreateweaknessesInput | string[]
+  gapScore?: number | null
+  order?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  stakeholders?: Prisma.CapabilityStakeholderUncheckedCreateNestedManyWithoutCapabilityInput
+  kpis?: Prisma.CapabilityKPIUncheckedCreateNestedManyWithoutCapabilityInput
+  processes?: Prisma.CapabilityProcessUncheckedCreateNestedManyWithoutCapabilityInput
+  technologies?: Prisma.CapabilityTechnologyUncheckedCreateNestedManyWithoutCapabilityInput
+  projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedCreateNestedManyWithoutCapabilityInput
+}
+
+export type CapabilityCreateOrConnectWithoutFollowUpSuggestionsInput = {
+  where: Prisma.CapabilityWhereUniqueInput
+  create: Prisma.XOR<Prisma.CapabilityCreateWithoutFollowUpSuggestionsInput, Prisma.CapabilityUncheckedCreateWithoutFollowUpSuggestionsInput>
+}
+
+export type CapabilityUpsertWithoutFollowUpSuggestionsInput = {
+  update: Prisma.XOR<Prisma.CapabilityUpdateWithoutFollowUpSuggestionsInput, Prisma.CapabilityUncheckedUpdateWithoutFollowUpSuggestionsInput>
+  create: Prisma.XOR<Prisma.CapabilityCreateWithoutFollowUpSuggestionsInput, Prisma.CapabilityUncheckedCreateWithoutFollowUpSuggestionsInput>
+  where?: Prisma.CapabilityWhereInput
+}
+
+export type CapabilityUpdateToOneWithWhereWithoutFollowUpSuggestionsInput = {
+  where?: Prisma.CapabilityWhereInput
+  data: Prisma.XOR<Prisma.CapabilityUpdateWithoutFollowUpSuggestionsInput, Prisma.CapabilityUncheckedUpdateWithoutFollowUpSuggestionsInput>
+}
+
+export type CapabilityUpdateWithoutFollowUpSuggestionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  aliases?: Prisma.CapabilityUpdatealiasesInput | string[]
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dimensions?: Prisma.CapabilityUpdatedimensionsInput | string[]
+  metrics?: Prisma.CapabilityUpdatemetricsInput | string[]
+  asIsState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  asIsScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  asIsNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  importanceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  toBeState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toBeScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  opportunities?: Prisma.CapabilityUpdateopportunitiesInput | string[]
+  weaknesses?: Prisma.CapabilityUpdateweaknessesInput | string[]
+  gapScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  domain?: Prisma.BusinessDomainUpdateOneRequiredWithoutCapabilitiesNestedInput
+  stakeholders?: Prisma.CapabilityStakeholderUpdateManyWithoutCapabilityNestedInput
+  kpis?: Prisma.CapabilityKPIUpdateManyWithoutCapabilityNestedInput
+  processes?: Prisma.CapabilityProcessUpdateManyWithoutCapabilityNestedInput
+  technologies?: Prisma.CapabilityTechnologyUpdateManyWithoutCapabilityNestedInput
+  projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUpdateManyWithoutCapabilityNestedInput
+}
+
+export type CapabilityUncheckedUpdateWithoutFollowUpSuggestionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  domainId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  aliases?: Prisma.CapabilityUpdatealiasesInput | string[]
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dimensions?: Prisma.CapabilityUpdatedimensionsInput | string[]
+  metrics?: Prisma.CapabilityUpdatemetricsInput | string[]
+  asIsState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  asIsScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  asIsNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  importanceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  toBeState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toBeScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  opportunities?: Prisma.CapabilityUpdateopportunitiesInput | string[]
+  weaknesses?: Prisma.CapabilityUpdateweaknessesInput | string[]
+  gapScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stakeholders?: Prisma.CapabilityStakeholderUncheckedUpdateManyWithoutCapabilityNestedInput
+  kpis?: Prisma.CapabilityKPIUncheckedUpdateManyWithoutCapabilityNestedInput
+  processes?: Prisma.CapabilityProcessUncheckedUpdateManyWithoutCapabilityNestedInput
+  technologies?: Prisma.CapabilityTechnologyUncheckedUpdateManyWithoutCapabilityNestedInput
+  projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedUpdateManyWithoutCapabilityNestedInput
 }
 
 export type CapabilityCreateManyDomainInput = {
@@ -1624,6 +2156,9 @@ export type CapabilityUpdateWithoutDomainInput = {
   processes?: Prisma.CapabilityProcessUpdateManyWithoutCapabilityNestedInput
   technologies?: Prisma.CapabilityTechnologyUpdateManyWithoutCapabilityNestedInput
   projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUpdateManyWithoutCapabilityNestedInput
 }
 
 export type CapabilityUncheckedUpdateWithoutDomainInput = {
@@ -1650,6 +2185,9 @@ export type CapabilityUncheckedUpdateWithoutDomainInput = {
   processes?: Prisma.CapabilityProcessUncheckedUpdateManyWithoutCapabilityNestedInput
   technologies?: Prisma.CapabilityTechnologyUncheckedUpdateManyWithoutCapabilityNestedInput
   projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedUpdateManyWithoutCapabilityNestedInput
 }
 
 export type CapabilityUncheckedUpdateManyWithoutDomainInput = {
@@ -1684,6 +2222,9 @@ export type CapabilityCountOutputType = {
   processes: number
   technologies: number
   projects: number
+  maturityAssessments: number
+  kpiCeilings: number
+  followUpSuggestions: number
 }
 
 export type CapabilityCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1692,6 +2233,9 @@ export type CapabilityCountOutputTypeSelect<ExtArgs extends runtime.Types.Extens
   processes?: boolean | CapabilityCountOutputTypeCountProcessesArgs
   technologies?: boolean | CapabilityCountOutputTypeCountTechnologiesArgs
   projects?: boolean | CapabilityCountOutputTypeCountProjectsArgs
+  maturityAssessments?: boolean | CapabilityCountOutputTypeCountMaturityAssessmentsArgs
+  kpiCeilings?: boolean | CapabilityCountOutputTypeCountKpiCeilingsArgs
+  followUpSuggestions?: boolean | CapabilityCountOutputTypeCountFollowUpSuggestionsArgs
 }
 
 /**
@@ -1739,6 +2283,27 @@ export type CapabilityCountOutputTypeCountProjectsArgs<ExtArgs extends runtime.T
   where?: Prisma.ProjectCapabilityWhereInput
 }
 
+/**
+ * CapabilityCountOutputType without action
+ */
+export type CapabilityCountOutputTypeCountMaturityAssessmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MaturityAssessmentWhereInput
+}
+
+/**
+ * CapabilityCountOutputType without action
+ */
+export type CapabilityCountOutputTypeCountKpiCeilingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CapabilityKPIMaturityCeilingWhereInput
+}
+
+/**
+ * CapabilityCountOutputType without action
+ */
+export type CapabilityCountOutputTypeCountFollowUpSuggestionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FollowUpSuggestionWhereInput
+}
+
 
 export type CapabilitySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1766,6 +2331,9 @@ export type CapabilitySelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   processes?: boolean | Prisma.Capability$processesArgs<ExtArgs>
   technologies?: boolean | Prisma.Capability$technologiesArgs<ExtArgs>
   projects?: boolean | Prisma.Capability$projectsArgs<ExtArgs>
+  maturityAssessments?: boolean | Prisma.Capability$maturityAssessmentsArgs<ExtArgs>
+  kpiCeilings?: boolean | Prisma.Capability$kpiCeilingsArgs<ExtArgs>
+  followUpSuggestions?: boolean | Prisma.Capability$followUpSuggestionsArgs<ExtArgs>
   _count?: boolean | Prisma.CapabilityCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["capability"]>
 
@@ -1845,6 +2413,9 @@ export type CapabilityInclude<ExtArgs extends runtime.Types.Extensions.InternalA
   processes?: boolean | Prisma.Capability$processesArgs<ExtArgs>
   technologies?: boolean | Prisma.Capability$technologiesArgs<ExtArgs>
   projects?: boolean | Prisma.Capability$projectsArgs<ExtArgs>
+  maturityAssessments?: boolean | Prisma.Capability$maturityAssessmentsArgs<ExtArgs>
+  kpiCeilings?: boolean | Prisma.Capability$kpiCeilingsArgs<ExtArgs>
+  followUpSuggestions?: boolean | Prisma.Capability$followUpSuggestionsArgs<ExtArgs>
   _count?: boolean | Prisma.CapabilityCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CapabilityIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1863,6 +2434,9 @@ export type $CapabilityPayload<ExtArgs extends runtime.Types.Extensions.Internal
     processes: Prisma.$CapabilityProcessPayload<ExtArgs>[]
     technologies: Prisma.$CapabilityTechnologyPayload<ExtArgs>[]
     projects: Prisma.$ProjectCapabilityPayload<ExtArgs>[]
+    maturityAssessments: Prisma.$MaturityAssessmentPayload<ExtArgs>[]
+    kpiCeilings: Prisma.$CapabilityKPIMaturityCeilingPayload<ExtArgs>[]
+    followUpSuggestions: Prisma.$FollowUpSuggestionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2284,6 +2858,9 @@ export interface Prisma__CapabilityClient<T, Null = never, ExtArgs extends runti
   processes<T extends Prisma.Capability$processesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Capability$processesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CapabilityProcessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   technologies<T extends Prisma.Capability$technologiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Capability$technologiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CapabilityTechnologyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   projects<T extends Prisma.Capability$projectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Capability$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectCapabilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  maturityAssessments<T extends Prisma.Capability$maturityAssessmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Capability$maturityAssessmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaturityAssessmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  kpiCeilings<T extends Prisma.Capability$kpiCeilingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Capability$kpiCeilingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CapabilityKPIMaturityCeilingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  followUpSuggestions<T extends Prisma.Capability$followUpSuggestionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Capability$followUpSuggestionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FollowUpSuggestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2850,6 +3427,78 @@ export type Capability$projectsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.ProjectCapabilityScalarFieldEnum | Prisma.ProjectCapabilityScalarFieldEnum[]
+}
+
+/**
+ * Capability.maturityAssessments
+ */
+export type Capability$maturityAssessmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MaturityAssessment
+   */
+  select?: Prisma.MaturityAssessmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MaturityAssessment
+   */
+  omit?: Prisma.MaturityAssessmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MaturityAssessmentInclude<ExtArgs> | null
+  where?: Prisma.MaturityAssessmentWhereInput
+  orderBy?: Prisma.MaturityAssessmentOrderByWithRelationInput | Prisma.MaturityAssessmentOrderByWithRelationInput[]
+  cursor?: Prisma.MaturityAssessmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MaturityAssessmentScalarFieldEnum | Prisma.MaturityAssessmentScalarFieldEnum[]
+}
+
+/**
+ * Capability.kpiCeilings
+ */
+export type Capability$kpiCeilingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CapabilityKPIMaturityCeiling
+   */
+  select?: Prisma.CapabilityKPIMaturityCeilingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CapabilityKPIMaturityCeiling
+   */
+  omit?: Prisma.CapabilityKPIMaturityCeilingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CapabilityKPIMaturityCeilingInclude<ExtArgs> | null
+  where?: Prisma.CapabilityKPIMaturityCeilingWhereInput
+  orderBy?: Prisma.CapabilityKPIMaturityCeilingOrderByWithRelationInput | Prisma.CapabilityKPIMaturityCeilingOrderByWithRelationInput[]
+  cursor?: Prisma.CapabilityKPIMaturityCeilingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CapabilityKPIMaturityCeilingScalarFieldEnum | Prisma.CapabilityKPIMaturityCeilingScalarFieldEnum[]
+}
+
+/**
+ * Capability.followUpSuggestions
+ */
+export type Capability$followUpSuggestionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FollowUpSuggestion
+   */
+  select?: Prisma.FollowUpSuggestionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FollowUpSuggestion
+   */
+  omit?: Prisma.FollowUpSuggestionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FollowUpSuggestionInclude<ExtArgs> | null
+  where?: Prisma.FollowUpSuggestionWhereInput
+  orderBy?: Prisma.FollowUpSuggestionOrderByWithRelationInput | Prisma.FollowUpSuggestionOrderByWithRelationInput[]
+  cursor?: Prisma.FollowUpSuggestionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FollowUpSuggestionScalarFieldEnum | Prisma.FollowUpSuggestionScalarFieldEnum[]
 }
 
 /**

@@ -68,7 +68,18 @@ export const ModelName = {
   ProjectCapability: 'ProjectCapability',
   Achievement: 'Achievement',
   AchievementStakeholder: 'AchievementStakeholder',
-  AssessmentSession: 'AssessmentSession'
+  AssessmentSession: 'AssessmentSession',
+  CapturedInput: 'CapturedInput',
+  CapturedSegment: 'CapturedSegment',
+  Tag: 'Tag',
+  MaturityAssessment: 'MaturityAssessment',
+  CapabilityKPIMaturityCeiling: 'CapabilityKPIMaturityCeiling',
+  Dependency: 'Dependency',
+  ConflictFlag: 'ConflictFlag',
+  Recommendation: 'Recommendation',
+  RecommendationFeedback: 'RecommendationFeedback',
+  FollowUpSuggestion: 'FollowUpSuggestion',
+  ProcessingJob: 'ProcessingJob'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -316,12 +327,192 @@ export const AssessmentSessionScalarFieldEnum = {
 export type AssessmentSessionScalarFieldEnum = (typeof AssessmentSessionScalarFieldEnum)[keyof typeof AssessmentSessionScalarFieldEnum]
 
 
+export const CapturedInputScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  sessionId: 'sessionId',
+  type: 'type',
+  sourceRef: 'sourceRef',
+  rawText: 'rawText',
+  locationTag: 'locationTag',
+  status: 'status',
+  error: 'error',
+  capturedAt: 'capturedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CapturedInputScalarFieldEnum = (typeof CapturedInputScalarFieldEnum)[keyof typeof CapturedInputScalarFieldEnum]
+
+
+export const CapturedSegmentScalarFieldEnum = {
+  id: 'id',
+  capturedInputId: 'capturedInputId',
+  order: 'order',
+  speaker: 'speaker',
+  text: 'text',
+  startMs: 'startMs',
+  endMs: 'endMs',
+  createdAt: 'createdAt'
+} as const
+
+export type CapturedSegmentScalarFieldEnum = (typeof CapturedSegmentScalarFieldEnum)[keyof typeof CapturedSegmentScalarFieldEnum]
+
+
+export const TagScalarFieldEnum = {
+  id: 'id',
+  segmentId: 'segmentId',
+  targetType: 'targetType',
+  targetId: 'targetId',
+  confidence: 'confidence',
+  status: 'status',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]
+
+
+export const MaturityAssessmentScalarFieldEnum = {
+  id: 'id',
+  capabilityId: 'capabilityId',
+  locationTag: 'locationTag',
+  score: 'score',
+  evidence: 'evidence',
+  sourceSegmentIds: 'sourceSegmentIds',
+  assessedBy: 'assessedBy',
+  assessedAt: 'assessedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type MaturityAssessmentScalarFieldEnum = (typeof MaturityAssessmentScalarFieldEnum)[keyof typeof MaturityAssessmentScalarFieldEnum]
+
+
+export const CapabilityKPIMaturityCeilingScalarFieldEnum = {
+  id: 'id',
+  capabilityId: 'capabilityId',
+  kpiId: 'kpiId',
+  maturityLevel: 'maturityLevel',
+  targetCeilingMin: 'targetCeilingMin',
+  targetCeilingMax: 'targetCeilingMax',
+  valueToNextLevel: 'valueToNextLevel',
+  notes: 'notes'
+} as const
+
+export type CapabilityKPIMaturityCeilingScalarFieldEnum = (typeof CapabilityKPIMaturityCeilingScalarFieldEnum)[keyof typeof CapabilityKPIMaturityCeilingScalarFieldEnum]
+
+
+export const DependencyScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  sourceType: 'sourceType',
+  sourceId: 'sourceId',
+  targetType: 'targetType',
+  targetId: 'targetId',
+  description: 'description',
+  createdAt: 'createdAt'
+} as const
+
+export type DependencyScalarFieldEnum = (typeof DependencyScalarFieldEnum)[keyof typeof DependencyScalarFieldEnum]
+
+
+export const ConflictFlagScalarFieldEnum = {
+  id: 'id',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  status: 'status',
+  claims: 'claims',
+  resolution: 'resolution',
+  resolvedBy: 'resolvedBy',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type ConflictFlagScalarFieldEnum = (typeof ConflictFlagScalarFieldEnum)[keyof typeof ConflictFlagScalarFieldEnum]
+
+
+export const RecommendationScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  title: 'title',
+  description: 'description',
+  relatedCapabilityIds: 'relatedCapabilityIds',
+  relatedKPIIds: 'relatedKPIIds',
+  estimatedValue: 'estimatedValue',
+  priorityScore: 'priorityScore',
+  status: 'status',
+  reviewedBy: 'reviewedBy',
+  reviewNotes: 'reviewNotes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RecommendationScalarFieldEnum = (typeof RecommendationScalarFieldEnum)[keyof typeof RecommendationScalarFieldEnum]
+
+
+export const RecommendationFeedbackScalarFieldEnum = {
+  id: 'id',
+  recommendationId: 'recommendationId',
+  action: 'action',
+  originalFields: 'originalFields',
+  editedFields: 'editedFields',
+  reason: 'reason',
+  actedBy: 'actedBy',
+  actedAt: 'actedAt'
+} as const
+
+export type RecommendationFeedbackScalarFieldEnum = (typeof RecommendationFeedbackScalarFieldEnum)[keyof typeof RecommendationFeedbackScalarFieldEnum]
+
+
+export const FollowUpSuggestionScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  triggerSegmentId: 'triggerSegmentId',
+  capabilityId: 'capabilityId',
+  suggestedQuestion: 'suggestedQuestion',
+  status: 'status',
+  createdAt: 'createdAt'
+} as const
+
+export type FollowUpSuggestionScalarFieldEnum = (typeof FollowUpSuggestionScalarFieldEnum)[keyof typeof FollowUpSuggestionScalarFieldEnum]
+
+
+export const ProcessingJobScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  targetId: 'targetId',
+  status: 'status',
+  attempts: 'attempts',
+  error: 'error',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProcessingJobScalarFieldEnum = (typeof ProcessingJobScalarFieldEnum)[keyof typeof ProcessingJobScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -338,4 +529,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
