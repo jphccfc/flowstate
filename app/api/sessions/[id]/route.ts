@@ -38,6 +38,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     return NextResponse.json({ error: "Invalid action" }, { status: 400 });
   }
 
+  const existing = await prisma.assessmentSession.findUnique({ where: { id } });
+  if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
   const session = await prisma.assessmentSession.update({
     where: { id },
     data: { status: "completed", completedAt: new Date() },

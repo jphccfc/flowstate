@@ -90,4 +90,19 @@ describe("sessions routes", () => {
     );
     expect(patchRes.status).toBe(400);
   });
+
+  it("returns 404 from PATCH for a nonexistent session", async () => {
+    const nonexistentId = "clnonexistentsessionid00";
+
+    const patchRes = await patchSession(
+      new Request("http://localhost/api/sessions/" + nonexistentId, {
+        method: "PATCH",
+        body: JSON.stringify({ action: "end" }),
+      }) as never,
+      { params: Promise.resolve({ id: nonexistentId }) }
+    );
+    expect(patchRes.status).toBe(404);
+    const body = await patchRes.json();
+    expect(body).toEqual({ error: "Not found" });
+  });
 });
