@@ -95,4 +95,40 @@ describe("captured-inputs routes", () => {
     );
     expect(res.status).toBe(400);
   });
+
+  it("sets sessionId on a TEXT_NOTE capture submitted with a session", async () => {
+    const org = await createTestOrganization({ name: "Route Session Test Org" });
+    orgId = org.id;
+
+    const advisor = await prisma.user.create({
+      data: { email: `route-session-advisor-${Date.now()}@flowstate.test`, role: "ADVISOR" },
+    });
+    const session = await prisma.assessmentSession.create({
+      data: { organizationId: org.id, advisorId: advisor.id, status: "active" },
+    });
+
+    const res = await createInput(
+      makeFormDataRequest({ organizationId: org.id, type: "TEXT_NOTE", rawText: "Live note.", sessionId: session.id })
+    );
+    expect(res.status).toBe(201);
+    const created = await res.json();
+    expect(created.sessionId).toBe(session.id);
+  });
+
+  it("rejects a sessionId paired with a non-TEXT_NOTE type", async () => {
+    const org = await createTestOrganization({ name: "Route Session Reject Test Org" });
+    orgId = org.id;
+
+    const advisor = await prisma.user.create({
+      data: { email: `route-session-advisor2-${Date.now()}@flowstate.test`, role: "ADVISOR" },
+    });
+    const session = await prisma.assessmentSession.create({
+      data: { organizationId: org.id, advisorId: advisor.id, status: "active" },
+    });
+
+    const res = await createInput(
+      makeFormDataRequest({ organizationId: org.id, type: "EMAIL", rawText: "n/a", sessionId: session.id })
+    );
+    expect(res.status).toBe(400);
+  });
 });
