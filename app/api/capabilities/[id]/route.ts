@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
-import { calculateGap } from "@/lib/scoring/engine";
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient();
@@ -11,11 +10,6 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const { id } = await params;
   const body = await req.json();
 
-  const gapScore = calculateGap(
-    body.asIsScore ?? null,
-    body.toBeScore ?? null
-  );
-
   const capability = await prisma.capability.update({
     where: { id },
     data: {
@@ -24,16 +18,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       aliases: body.aliases,
       dimensions: body.dimensions,
       metrics: body.metrics,
-      asIsState: body.asIsState,
-      asIsScore: body.asIsScore,
-      asIsNotes: body.asIsNotes,
+      tags: body.tags,
       importanceScore: body.importanceScore,
-      toBeState: body.toBeState,
-      toBeScore: body.toBeScore,
-      opportunities: body.opportunities,
-      weaknesses: body.weaknesses,
       order: body.order,
-      gapScore,
     },
   });
 

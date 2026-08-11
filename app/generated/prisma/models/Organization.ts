@@ -30,6 +30,7 @@ export type OrganizationMinAggregateOutputType = {
   industry: string | null
   size: string | null
   notes: string | null
+  engagementMotive: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -40,6 +41,7 @@ export type OrganizationMaxAggregateOutputType = {
   industry: string | null
   size: string | null
   notes: string | null
+  engagementMotive: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -50,6 +52,7 @@ export type OrganizationCountAggregateOutputType = {
   industry: number
   size: number
   notes: number
+  engagementMotive: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -62,6 +65,7 @@ export type OrganizationMinAggregateInputType = {
   industry?: true
   size?: true
   notes?: true
+  engagementMotive?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -72,6 +76,7 @@ export type OrganizationMaxAggregateInputType = {
   industry?: true
   size?: true
   notes?: true
+  engagementMotive?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -82,6 +87,7 @@ export type OrganizationCountAggregateInputType = {
   industry?: true
   size?: true
   notes?: true
+  engagementMotive?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -165,6 +171,7 @@ export type OrganizationGroupByOutputType = {
   industry: string | null
   size: string | null
   notes: string | null
+  engagementMotive: string | null
   createdAt: Date
   updatedAt: Date
   _count: OrganizationCountAggregateOutputType | null
@@ -196,6 +203,7 @@ export type OrganizationWhereInput = {
   industry?: Prisma.StringNullableFilter<"Organization"> | string | null
   size?: Prisma.StringNullableFilter<"Organization"> | string | null
   notes?: Prisma.StringNullableFilter<"Organization"> | string | null
+  engagementMotive?: Prisma.StringNullableFilter<"Organization"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Organization"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Organization"> | Date | string
   users?: Prisma.UserOrganizationListRelationFilter
@@ -217,6 +225,7 @@ export type OrganizationOrderByWithRelationInput = {
   industry?: Prisma.SortOrderInput | Prisma.SortOrder
   size?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  engagementMotive?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   users?: Prisma.UserOrganizationOrderByRelationAggregateInput
@@ -241,6 +250,7 @@ export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
   industry?: Prisma.StringNullableFilter<"Organization"> | string | null
   size?: Prisma.StringNullableFilter<"Organization"> | string | null
   notes?: Prisma.StringNullableFilter<"Organization"> | string | null
+  engagementMotive?: Prisma.StringNullableFilter<"Organization"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Organization"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Organization"> | Date | string
   users?: Prisma.UserOrganizationListRelationFilter
@@ -262,6 +272,7 @@ export type OrganizationOrderByWithAggregationInput = {
   industry?: Prisma.SortOrderInput | Prisma.SortOrder
   size?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  engagementMotive?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.OrganizationCountOrderByAggregateInput
@@ -278,6 +289,7 @@ export type OrganizationScalarWhereWithAggregatesInput = {
   industry?: Prisma.StringNullableWithAggregatesFilter<"Organization"> | string | null
   size?: Prisma.StringNullableWithAggregatesFilter<"Organization"> | string | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"Organization"> | string | null
+  engagementMotive?: Prisma.StringNullableWithAggregatesFilter<"Organization"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Organization"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Organization"> | Date | string
 }
@@ -288,6 +300,7 @@ export type OrganizationCreateInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationCreateNestedManyWithoutOrganizationInput
@@ -309,6 +322,7 @@ export type OrganizationUncheckedCreateInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
@@ -330,6 +344,7 @@ export type OrganizationUpdateInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUpdateManyWithoutOrganizationNestedInput
@@ -351,6 +366,7 @@ export type OrganizationUncheckedUpdateInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -372,6 +388,7 @@ export type OrganizationCreateManyInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -382,6 +399,7 @@ export type OrganizationUpdateManyMutationInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -392,6 +410,7 @@ export type OrganizationUncheckedUpdateManyInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -402,6 +421,7 @@ export type OrganizationCountOrderByAggregateInput = {
   industry?: Prisma.SortOrder
   size?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  engagementMotive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -412,6 +432,7 @@ export type OrganizationMaxOrderByAggregateInput = {
   industry?: Prisma.SortOrder
   size?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  engagementMotive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -422,6 +443,7 @@ export type OrganizationMinOrderByAggregateInput = {
   industry?: Prisma.SortOrder
   size?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  engagementMotive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -591,6 +613,7 @@ export type OrganizationCreateWithoutUsersInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   domains?: Prisma.BusinessDomainCreateNestedManyWithoutOrganizationInput
@@ -611,6 +634,7 @@ export type OrganizationUncheckedCreateWithoutUsersInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   domains?: Prisma.BusinessDomainUncheckedCreateNestedManyWithoutOrganizationInput
@@ -647,6 +671,7 @@ export type OrganizationUpdateWithoutUsersInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   domains?: Prisma.BusinessDomainUpdateManyWithoutOrganizationNestedInput
@@ -667,6 +692,7 @@ export type OrganizationUncheckedUpdateWithoutUsersInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   domains?: Prisma.BusinessDomainUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -687,6 +713,7 @@ export type OrganizationCreateWithoutDomainsInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationCreateNestedManyWithoutOrganizationInput
@@ -707,6 +734,7 @@ export type OrganizationUncheckedCreateWithoutDomainsInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
@@ -743,6 +771,7 @@ export type OrganizationUpdateWithoutDomainsInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUpdateManyWithoutOrganizationNestedInput
@@ -763,6 +792,7 @@ export type OrganizationUncheckedUpdateWithoutDomainsInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -783,6 +813,7 @@ export type OrganizationCreateWithoutStakeholdersInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationCreateNestedManyWithoutOrganizationInput
@@ -803,6 +834,7 @@ export type OrganizationUncheckedCreateWithoutStakeholdersInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
@@ -839,6 +871,7 @@ export type OrganizationUpdateWithoutStakeholdersInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUpdateManyWithoutOrganizationNestedInput
@@ -859,6 +892,7 @@ export type OrganizationUncheckedUpdateWithoutStakeholdersInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -879,6 +913,7 @@ export type OrganizationCreateWithoutKpisInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationCreateNestedManyWithoutOrganizationInput
@@ -899,6 +934,7 @@ export type OrganizationUncheckedCreateWithoutKpisInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
@@ -935,6 +971,7 @@ export type OrganizationUpdateWithoutKpisInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUpdateManyWithoutOrganizationNestedInput
@@ -955,6 +992,7 @@ export type OrganizationUncheckedUpdateWithoutKpisInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -975,6 +1013,7 @@ export type OrganizationCreateWithoutProcessesInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationCreateNestedManyWithoutOrganizationInput
@@ -995,6 +1034,7 @@ export type OrganizationUncheckedCreateWithoutProcessesInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
@@ -1031,6 +1071,7 @@ export type OrganizationUpdateWithoutProcessesInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUpdateManyWithoutOrganizationNestedInput
@@ -1051,6 +1092,7 @@ export type OrganizationUncheckedUpdateWithoutProcessesInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -1071,6 +1113,7 @@ export type OrganizationCreateWithoutTechnologiesInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationCreateNestedManyWithoutOrganizationInput
@@ -1091,6 +1134,7 @@ export type OrganizationUncheckedCreateWithoutTechnologiesInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
@@ -1127,6 +1171,7 @@ export type OrganizationUpdateWithoutTechnologiesInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUpdateManyWithoutOrganizationNestedInput
@@ -1147,6 +1192,7 @@ export type OrganizationUncheckedUpdateWithoutTechnologiesInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -1167,6 +1213,7 @@ export type OrganizationCreateWithoutProjectsInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationCreateNestedManyWithoutOrganizationInput
@@ -1187,6 +1234,7 @@ export type OrganizationUncheckedCreateWithoutProjectsInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
@@ -1223,6 +1271,7 @@ export type OrganizationUpdateWithoutProjectsInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUpdateManyWithoutOrganizationNestedInput
@@ -1243,6 +1292,7 @@ export type OrganizationUncheckedUpdateWithoutProjectsInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -1263,6 +1313,7 @@ export type OrganizationCreateWithoutAchievementsInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationCreateNestedManyWithoutOrganizationInput
@@ -1283,6 +1334,7 @@ export type OrganizationUncheckedCreateWithoutAchievementsInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
@@ -1319,6 +1371,7 @@ export type OrganizationUpdateWithoutAchievementsInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUpdateManyWithoutOrganizationNestedInput
@@ -1339,6 +1392,7 @@ export type OrganizationUncheckedUpdateWithoutAchievementsInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -1359,6 +1413,7 @@ export type OrganizationCreateWithoutSessionsInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationCreateNestedManyWithoutOrganizationInput
@@ -1379,6 +1434,7 @@ export type OrganizationUncheckedCreateWithoutSessionsInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
@@ -1415,6 +1471,7 @@ export type OrganizationUpdateWithoutSessionsInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUpdateManyWithoutOrganizationNestedInput
@@ -1435,6 +1492,7 @@ export type OrganizationUncheckedUpdateWithoutSessionsInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -1455,6 +1513,7 @@ export type OrganizationCreateWithoutCapturedInputsInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationCreateNestedManyWithoutOrganizationInput
@@ -1475,6 +1534,7 @@ export type OrganizationUncheckedCreateWithoutCapturedInputsInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
@@ -1511,6 +1571,7 @@ export type OrganizationUpdateWithoutCapturedInputsInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUpdateManyWithoutOrganizationNestedInput
@@ -1531,6 +1592,7 @@ export type OrganizationUncheckedUpdateWithoutCapturedInputsInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -1551,6 +1613,7 @@ export type OrganizationCreateWithoutRecommendationsInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationCreateNestedManyWithoutOrganizationInput
@@ -1571,6 +1634,7 @@ export type OrganizationUncheckedCreateWithoutRecommendationsInput = {
   industry?: string | null
   size?: string | null
   notes?: string | null
+  engagementMotive?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
@@ -1607,6 +1671,7 @@ export type OrganizationUpdateWithoutRecommendationsInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUpdateManyWithoutOrganizationNestedInput
@@ -1627,6 +1692,7 @@ export type OrganizationUncheckedUpdateWithoutRecommendationsInput = {
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -1768,6 +1834,7 @@ export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   industry?: boolean
   size?: boolean
   notes?: boolean
+  engagementMotive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   users?: boolean | Prisma.Organization$usersArgs<ExtArgs>
@@ -1790,6 +1857,7 @@ export type OrganizationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   industry?: boolean
   size?: boolean
   notes?: boolean
+  engagementMotive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["organization"]>
@@ -1800,6 +1868,7 @@ export type OrganizationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   industry?: boolean
   size?: boolean
   notes?: boolean
+  engagementMotive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["organization"]>
@@ -1810,11 +1879,12 @@ export type OrganizationSelectScalar = {
   industry?: boolean
   size?: boolean
   notes?: boolean
+  engagementMotive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type OrganizationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "industry" | "size" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["organization"]>
+export type OrganizationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "industry" | "size" | "notes" | "engagementMotive" | "createdAt" | "updatedAt", ExtArgs["result"]["organization"]>
 export type OrganizationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   users?: boolean | Prisma.Organization$usersArgs<ExtArgs>
   domains?: boolean | Prisma.Organization$domainsArgs<ExtArgs>
@@ -1853,6 +1923,7 @@ export type $OrganizationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     industry: string | null
     size: string | null
     notes: string | null
+    engagementMotive: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["organization"]>
@@ -2294,6 +2365,7 @@ export interface OrganizationFieldRefs {
   readonly industry: Prisma.FieldRef<"Organization", 'String'>
   readonly size: Prisma.FieldRef<"Organization", 'String'>
   readonly notes: Prisma.FieldRef<"Organization", 'String'>
+  readonly engagementMotive: Prisma.FieldRef<"Organization", 'String'>
   readonly createdAt: Prisma.FieldRef<"Organization", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Organization", 'DateTime'>
 }

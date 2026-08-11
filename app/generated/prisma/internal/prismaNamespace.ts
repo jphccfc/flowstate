@@ -406,6 +406,7 @@ export const ModelName = {
   CapturedSegment: 'CapturedSegment',
   Tag: 'Tag',
   MaturityAssessment: 'MaturityAssessment',
+  TargetMaturity: 'TargetMaturity',
   CapabilityKPIMaturityCeiling: 'CapabilityKPIMaturityCeiling',
   Dependency: 'Dependency',
   ConflictFlag: 'ConflictFlag',
@@ -428,7 +429,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedSegment" | "tag" | "maturityAssessment" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob"
+    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedSegment" | "tag" | "maturityAssessment" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2060,6 +2061,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TargetMaturity: {
+      payload: Prisma.$TargetMaturityPayload<ExtArgs>
+      fields: Prisma.TargetMaturityFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TargetMaturityFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TargetMaturityPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TargetMaturityFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TargetMaturityPayload>
+        }
+        findFirst: {
+          args: Prisma.TargetMaturityFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TargetMaturityPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TargetMaturityFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TargetMaturityPayload>
+        }
+        findMany: {
+          args: Prisma.TargetMaturityFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TargetMaturityPayload>[]
+        }
+        create: {
+          args: Prisma.TargetMaturityCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TargetMaturityPayload>
+        }
+        createMany: {
+          args: Prisma.TargetMaturityCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TargetMaturityCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TargetMaturityPayload>[]
+        }
+        delete: {
+          args: Prisma.TargetMaturityDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TargetMaturityPayload>
+        }
+        update: {
+          args: Prisma.TargetMaturityUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TargetMaturityPayload>
+        }
+        deleteMany: {
+          args: Prisma.TargetMaturityDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TargetMaturityUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TargetMaturityUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TargetMaturityPayload>[]
+        }
+        upsert: {
+          args: Prisma.TargetMaturityUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TargetMaturityPayload>
+        }
+        aggregate: {
+          args: Prisma.TargetMaturityAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTargetMaturity>
+        }
+        groupBy: {
+          args: Prisma.TargetMaturityGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TargetMaturityGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TargetMaturityCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TargetMaturityCountAggregateOutputType> | number
+        }
+      }
+    }
     CapabilityKPIMaturityCeiling: {
       payload: Prisma.$CapabilityKPIMaturityCeilingPayload<ExtArgs>
       fields: Prisma.CapabilityKPIMaturityCeilingFieldRefs
@@ -2635,6 +2710,7 @@ export const OrganizationScalarFieldEnum = {
   industry: 'industry',
   size: 'size',
   notes: 'notes',
+  engagementMotive: 'engagementMotive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -2674,15 +2750,8 @@ export const CapabilityScalarFieldEnum = {
   description: 'description',
   dimensions: 'dimensions',
   metrics: 'metrics',
-  asIsState: 'asIsState',
-  asIsScore: 'asIsScore',
-  asIsNotes: 'asIsNotes',
+  tags: 'tags',
   importanceScore: 'importanceScore',
-  toBeState: 'toBeState',
-  toBeScore: 'toBeScore',
-  opportunities: 'opportunities',
-  weaknesses: 'weaknesses',
-  gapScore: 'gapScore',
   order: 'order',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -2906,6 +2975,23 @@ export const MaturityAssessmentScalarFieldEnum = {
 } as const
 
 export type MaturityAssessmentScalarFieldEnum = (typeof MaturityAssessmentScalarFieldEnum)[keyof typeof MaturityAssessmentScalarFieldEnum]
+
+
+export const TargetMaturityScalarFieldEnum = {
+  id: 'id',
+  capabilityId: 'capabilityId',
+  locationTag: 'locationTag',
+  score: 'score',
+  rationale: 'rationale',
+  committedBy: 'committedBy',
+  source: 'source',
+  sourceSegmentIds: 'sourceSegmentIds',
+  setBy: 'setBy',
+  setAt: 'setAt',
+  createdAt: 'createdAt'
+} as const
+
+export type TargetMaturityScalarFieldEnum = (typeof TargetMaturityScalarFieldEnum)[keyof typeof TargetMaturityScalarFieldEnum]
 
 
 export const CapabilityKPIMaturityCeilingScalarFieldEnum = {
@@ -3406,6 +3492,7 @@ export type GlobalOmitConfig = {
   capturedSegment?: Prisma.CapturedSegmentOmit
   tag?: Prisma.TagOmit
   maturityAssessment?: Prisma.MaturityAssessmentOmit
+  targetMaturity?: Prisma.TargetMaturityOmit
   capabilityKPIMaturityCeiling?: Prisma.CapabilityKPIMaturityCeilingOmit
   dependency?: Prisma.DependencyOmit
   conflictFlag?: Prisma.ConflictFlagOmit

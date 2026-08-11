@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await req.json();
-  const { domainId, name, description, dimensions, metrics, aliases, order } = body;
+  const { domainId, name, description, dimensions, metrics, aliases, tags, order } = body;
 
   const capability = await prisma.capability.create({
     data: {
@@ -18,9 +18,9 @@ export async function POST(req: NextRequest) {
       dimensions: dimensions ?? [],
       metrics: metrics ?? [],
       aliases: aliases ?? [],
+      tags: tags ?? [],
       order: order ?? 0,
       importanceScore: 5,
-      toBeScore: 8,
     },
   });
 
