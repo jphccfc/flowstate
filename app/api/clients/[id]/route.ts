@@ -77,6 +77,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       industry: body.industry,
       size: body.size,
       notes: body.notes,
+      engagementMotive: body.engagementMotive,
     },
   });
 

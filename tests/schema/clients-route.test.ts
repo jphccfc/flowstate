@@ -7,7 +7,7 @@ vi.mock("@/lib/supabase/server", () => ({
   }),
 }));
 
-import { GET as getClient } from "../../app/api/clients/[id]/route";
+import { GET as getClient, PATCH as patchClient } from "../../app/api/clients/[id]/route";
 
 describe("GET /api/clients/[id]", () => {
   let orgId: string;
@@ -55,5 +55,22 @@ describe("GET /api/clients/[id]", () => {
     const body = await res.json();
     expect(body.domains[0].capabilities[0].currentAsIs).toEqual([]);
     expect(body.domains[0].capabilities[0].currentToBe).toEqual([]);
+  });
+
+  it("PATCH updates engagementMotive", async () => {
+    const org = await createTestOrganization({ name: "Engagement Motive Test Org" });
+    orgId = org.id;
+
+    const res = await patchClient(
+      new Request("http://localhost/api/clients/" + org.id, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ engagementMotive: "Liquidation" }),
+      }) as never,
+      { params: Promise.resolve({ id: org.id }) }
+    );
+    expect(res.status).toBe(200);
+    const updated = await res.json();
+    expect(updated.engagementMotive).toBe("Liquidation");
   });
 });
