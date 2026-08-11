@@ -66,13 +66,17 @@ function EntryForm({
   const [committedBy, setCommittedBy] = useState("");
   const [drafting, setDrafting] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleDraft() {
     setDrafting(true);
+    setError(null);
     try {
       const draft = await onDraft();
       setScore(draft.score);
       setText(draft.text);
+    } catch {
+      setError("Failed to generate draft. Please try again.");
     } finally {
       setDrafting(false);
     }
@@ -80,12 +84,15 @@ function EntryForm({
 
   async function handleSubmit() {
     setSubmitting(true);
+    setError(null);
     try {
       await onSubmit({ locationTag: locationTag.trim() || null, score, text, committedBy: committedBy.trim() || undefined });
       setLocationTag("");
       setText("");
       setCommittedBy("");
       setScore(0);
+    } catch {
+      setError("Failed to save. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -144,6 +151,7 @@ function EntryForm({
           {drafting ? "Drafting..." : "Draft with AI"}
         </button>
       </div>
+      {error && <p className="text-xs text-red-600">{error}</p>}
     </div>
   );
 }
@@ -184,18 +192,19 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
 
   async function saveAsIs(data: { locationTag: string | null; score: number; text: string }) {
     if (!selectedCapId) return;
-    await fetch("/api/maturity-assessments", {
+    const res = await fetch("/api/maturity-assessments", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ capabilityId: selectedCapId, locationTag: data.locationTag, score: data.score, evidence: data.text }),
     });
+    if (!res.ok) throw new Error("Failed to save as-is assessment");
     await loadHistory(selectedCapId);
     await loadOrg();
   }
 
   async function saveToBe(data: { locationTag: string | null; score: number; text: string; committedBy?: string }) {
     if (!selectedCapId) return;
-    await fetch("/api/target-maturities", {
+    const res = await fetch("/api/target-maturities", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -206,6 +215,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
         committedBy: data.committedBy,
       }),
     });
+    if (!res.ok) throw new Error("Failed to save to-be assessment");
     await loadHistory(selectedCapId);
     await loadOrg();
   }
@@ -216,12 +226,14 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({}),
     });
+    if (!res.ok) throw new Error("Failed to draft as-is assessment");
     const draft = await res.json();
     return { score: draft.score, text: draft.evidence };
   }
 
   async function draftToBe(): Promise<{ score: number; text: string }> {
     const res = await fetch(`/api/capabilities/${selectedCapId}/draft-to-be`, { method: "POST" });
+    if (!res.ok) throw new Error("Failed to draft to-be assessment");
     const draft = await res.json();
     return { score: draft.score, text: draft.rationale };
   }
