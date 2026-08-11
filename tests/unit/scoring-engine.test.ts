@@ -44,6 +44,12 @@ describe("calculateGap", () => {
   it("never returns a negative gap", () => {
     expect(calculateGap([{ locationTag: null, score: 5 }], [{ locationTag: null, score: 2 }])).toBe(0);
   });
+
+  it("returns null when no as-is location matches any to-be target (no org-wide fallback exists either)", () => {
+    const asIs = [{ locationTag: "Alexandria", score: 2 }];
+    const toBe = [{ locationTag: "Brampton", score: 4 }];
+    expect(calculateGap(asIs, toBe)).toBeNull();
+  });
 });
 
 describe("calculateDomainScore", () => {

@@ -49,13 +49,12 @@ export function calculateGap(asIs: MaturitySnapshot[], toBe: MaturitySnapshot[])
     if (matched != null) matchedToBeScores.push(matched);
   }
 
-  const asIsAvg = averageScore(asIs);
-  const toBeAvg =
-    matchedToBeScores.length > 0
-      ? matchedToBeScores.reduce((a, b) => a + b, 0) / matchedToBeScores.length
-      : averageScore(toBe);
+  if (matchedToBeScores.length === 0) return null;
 
-  if (asIsAvg == null || toBeAvg == null) return null;
+  const asIsAvg = averageScore(asIs);
+  const toBeAvg = matchedToBeScores.reduce((a, b) => a + b, 0) / matchedToBeScores.length;
+
+  if (asIsAvg == null) return null;
   return Math.max(0, Math.round((toBeAvg - asIsAvg) * 10) / 10);
 }
 
