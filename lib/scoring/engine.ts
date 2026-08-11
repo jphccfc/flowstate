@@ -42,19 +42,21 @@ export function calculateGap(asIs: MaturitySnapshot[], toBe: MaturitySnapshot[])
   const toBeByLocation = new Map(toBe.map((t) => [t.locationTag, t.score]));
   const orgWideToBe = toBeByLocation.get(null);
 
-  // Match each as-is location's target: same location first, else org-wide fallback.
-  const matchedToBeScores: number[] = [];
+  // Only locations with a valid to-be match (same location, else org-wide fallback)
+  // contribute to the gap — on either side. A location with no match at all
+  // (no same-location target, no org-wide fallback) is excluded entirely,
+  // not just from the to-be side, so both averages cover the same location set.
+  const matchedPairs: { asIsScore: number; toBeScore: number }[] = [];
   for (const a of asIs) {
     const matched = toBeByLocation.has(a.locationTag) ? toBeByLocation.get(a.locationTag)! : orgWideToBe;
-    if (matched != null) matchedToBeScores.push(matched);
+    if (matched != null) matchedPairs.push({ asIsScore: a.score, toBeScore: matched });
   }
 
-  if (matchedToBeScores.length === 0) return null;
+  if (matchedPairs.length === 0) return null;
 
-  const asIsAvg = averageScore(asIs);
-  const toBeAvg = matchedToBeScores.reduce((a, b) => a + b, 0) / matchedToBeScores.length;
+  const asIsAvg = matchedPairs.reduce((sum, p) => sum + p.asIsScore, 0) / matchedPairs.length;
+  const toBeAvg = matchedPairs.reduce((sum, p) => sum + p.toBeScore, 0) / matchedPairs.length;
 
-  if (asIsAvg == null) return null;
   return Math.max(0, Math.round((toBeAvg - asIsAvg) * 10) / 10);
 }
 

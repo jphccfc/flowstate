@@ -50,6 +50,13 @@ describe("calculateGap", () => {
     const toBe = [{ locationTag: "Brampton", score: 4 }];
     expect(calculateGap(asIs, toBe)).toBeNull();
   });
+
+  it("excludes an as-is location from BOTH sides when it has no matching target and no org-wide fallback, rather than skewing the as-is average", () => {
+    const asIs = [{ locationTag: "Alexandria", score: 2 }, { locationTag: "Brampton", score: 4 }];
+    const toBe = [{ locationTag: "Alexandria", score: 5 }]; // no Brampton target, no org-wide fallback
+    // Brampton is excluded entirely (no valid comparison) — only Alexandria contributes: 5 - 2 = 3
+    expect(calculateGap(asIs, toBe)).toBe(3);
+  });
 });
 
 describe("calculateDomainScore", () => {
