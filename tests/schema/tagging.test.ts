@@ -17,7 +17,7 @@ describe("tagging model", () => {
       data: { organizationId: org.id, name: "Operations" },
     });
     const capability = await prisma.capability.create({
-      data: { domainId: domain.id, name: "Shift Scheduling", aliases: [], dimensions: [], metrics: [], opportunities: [], weaknesses: [] },
+      data: { domainId: domain.id, name: "Shift Scheduling", aliases: [], dimensions: [], metrics: [] },
     });
     const input = await prisma.capturedInput.create({
       data: { organizationId: org.id, type: "TEXT_NOTE", status: "TAGGED" },
