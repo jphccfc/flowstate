@@ -1,15 +1,16 @@
 import { prisma } from "@/lib/db";
+import type { OrgCurrentMaturity } from "./current";
 
 export type CurrentMaturity = {
   locationTag: string | null;
   score: number;
-  assessedAt: Date;
+  setAt: Date;
 };
 
-export async function getCurrentMaturity(capabilityId: string): Promise<CurrentMaturity[]> {
-  const rows = await prisma.maturityAssessment.findMany({
+export async function getCurrentTargetMaturity(capabilityId: string): Promise<CurrentMaturity[]> {
+  const rows = await prisma.targetMaturity.findMany({
     where: { capabilityId },
-    orderBy: { assessedAt: "desc" },
+    orderBy: { setAt: "desc" },
   });
 
   const latestByLocation = new Map<string | null, CurrentMaturity>();
@@ -18,7 +19,7 @@ export async function getCurrentMaturity(capabilityId: string): Promise<CurrentM
       latestByLocation.set(row.locationTag, {
         locationTag: row.locationTag,
         score: row.score,
-        assessedAt: row.assessedAt,
+        setAt: row.setAt,
       });
     }
   }
@@ -26,16 +27,10 @@ export async function getCurrentMaturity(capabilityId: string): Promise<CurrentM
   return Array.from(latestByLocation.values());
 }
 
-export type OrgCurrentMaturity = {
-  capabilityId: string;
-  locationTag: string | null;
-  score: number;
-};
-
-export async function getCurrentMaturityForOrganization(organizationId: string): Promise<OrgCurrentMaturity[]> {
-  const rows = await prisma.maturityAssessment.findMany({
+export async function getCurrentTargetMaturityForOrganization(organizationId: string): Promise<OrgCurrentMaturity[]> {
+  const rows = await prisma.targetMaturity.findMany({
     where: { capability: { domain: { organizationId } } },
-    orderBy: { assessedAt: "desc" },
+    orderBy: { setAt: "desc" },
     distinct: ["capabilityId", "locationTag"],
   });
 
