@@ -16,6 +16,10 @@ vi.mock("@vercel/blob", () => ({
   put: vi.fn().mockResolvedValue({ url: "https://blob.example.com/interview.m4a" }),
 }));
 
+vi.mock("@/lib/ingestion/pipeline", () => ({
+  processCapturedInput: vi.fn().mockResolvedValue(undefined),
+}));
+
 import { GET as listInputs, POST as createInput } from "../../app/api/captured-inputs/route";
 import { GET as getInput } from "../../app/api/captured-inputs/[id]/route";
 
