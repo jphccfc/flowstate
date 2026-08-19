@@ -73,6 +73,7 @@ export const ModelName = {
   CapturedSegment: 'CapturedSegment',
   Tag: 'Tag',
   MaturityAssessment: 'MaturityAssessment',
+  TargetMaturity: 'TargetMaturity',
   CapabilityKPIMaturityCeiling: 'CapabilityKPIMaturityCeiling',
   Dependency: 'Dependency',
   ConflictFlag: 'ConflictFlag',
@@ -116,6 +117,7 @@ export const OrganizationScalarFieldEnum = {
   industry: 'industry',
   size: 'size',
   notes: 'notes',
+  engagementMotive: 'engagementMotive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -155,15 +157,8 @@ export const CapabilityScalarFieldEnum = {
   description: 'description',
   dimensions: 'dimensions',
   metrics: 'metrics',
-  asIsState: 'asIsState',
-  asIsScore: 'asIsScore',
-  asIsNotes: 'asIsNotes',
+  tags: 'tags',
   importanceScore: 'importanceScore',
-  toBeState: 'toBeState',
-  toBeScore: 'toBeScore',
-  opportunities: 'opportunities',
-  weaknesses: 'weaknesses',
-  gapScore: 'gapScore',
   order: 'order',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -387,6 +382,23 @@ export const MaturityAssessmentScalarFieldEnum = {
 } as const
 
 export type MaturityAssessmentScalarFieldEnum = (typeof MaturityAssessmentScalarFieldEnum)[keyof typeof MaturityAssessmentScalarFieldEnum]
+
+
+export const TargetMaturityScalarFieldEnum = {
+  id: 'id',
+  capabilityId: 'capabilityId',
+  locationTag: 'locationTag',
+  score: 'score',
+  rationale: 'rationale',
+  committedBy: 'committedBy',
+  source: 'source',
+  sourceSegmentIds: 'sourceSegmentIds',
+  setBy: 'setBy',
+  setAt: 'setAt',
+  createdAt: 'createdAt'
+} as const
+
+export type TargetMaturityScalarFieldEnum = (typeof TargetMaturityScalarFieldEnum)[keyof typeof TargetMaturityScalarFieldEnum]
 
 
 export const CapabilityKPIMaturityCeilingScalarFieldEnum = {

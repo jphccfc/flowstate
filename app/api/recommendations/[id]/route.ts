@@ -1,0 +1,114 @@
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/db";
+import { createClient } from "@/lib/supabase/server";
+
+const EDITABLE_FIELDS = [
+  "title",
+  "description",
+  "relatedCapabilityIds",
+  "relatedKPIIds",
+  "estimatedValue",
+  "priorityScore",
+  "reviewNotes",
+] as const;
+
+const ACTION_STATUS = {
+  approve: { status: "APPROVED", feedbackAction: "approved" },
+  reject: { status: "REJECTED", feedbackAction: "rejected" },
+} as const;
+
+type EditableField = (typeof EDITABLE_FIELDS)[number];
+
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const { id } = await params;
+  const recommendation = await prisma.recommendation.findUnique({ where: { id } });
+  if (!recommendation) {
+    return NextResponse.json({ error: "Recommendation not found" }, { status: 404 });
+  }
+
+  const body = await req.json();
+  const action = body.action as string | undefined;
+
+  if (action && !(action in ACTION_STATUS)) {
+    return NextResponse.json({ error: "Invalid action" }, { status: 400 });
+  }
+
+  if (action) {
+    const selectedAction = ACTION_STATUS[action as keyof typeof ACTION_STATUS];
+    const updated = await prisma.$transaction(async (tx) => {
+      const nextRecommendation = await tx.recommendation.update({
+        where: { id },
+        data: {
+          status: selectedAction.status,
+          reviewedBy: user.email ?? null,
+          reviewNotes: body.reason ?? recommendation.reviewNotes,
+        },
+      });
+      await tx.recommendationFeedback.create({
+        data: {
+          recommendationId: id,
+          action: selectedAction.feedbackAction,
+          reason: body.reason ?? null,
+          actedBy: user.email ?? null,
+        },
+      });
+      return nextRecommendation;
+    });
+    return NextResponse.json(updated);
+  }
+
+  const editedFields = Object.fromEntries(
+    EDITABLE_FIELDS
+      .filter((field): field is EditableField => Object.prototype.hasOwnProperty.call(body, field))
+      .map((field) => [field, body[field]])
+  );
+
+  if (Object.keys(editedFields).length === 0) {
+    return NextResponse.json(
+      { error: "At least one editable field or action is required" },
+      { status: 400 }
+    );
+  }
+
+  if ("title" in editedFields && (typeof editedFields.title !== "string" || !editedFields.title.trim())) {
+    return NextResponse.json({ error: "title must not be empty" }, { status: 400 });
+  }
+  if ("description" in editedFields && (typeof editedFields.description !== "string" || !editedFields.description.trim())) {
+    return NextResponse.json({ error: "description must not be empty" }, { status: 400 });
+  }
+  if ("relatedCapabilityIds" in editedFields && !Array.isArray(editedFields.relatedCapabilityIds)) {
+    return NextResponse.json({ error: "relatedCapabilityIds must be an array" }, { status: 400 });
+  }
+  if ("relatedKPIIds" in editedFields && !Array.isArray(editedFields.relatedKPIIds)) {
+    return NextResponse.json({ error: "relatedKPIIds must be an array" }, { status: 400 });
+  }
+
+  const updated = await prisma.$transaction(async (tx) => {
+    const nextRecommendation = await tx.recommendation.update({
+      where: { id },
+      data: { ...editedFields, status: "EDITED" },
+    });
+    await tx.recommendationFeedback.create({
+      data: {
+        recommendationId: id,
+        action: "edited",
+        originalFields: Object.fromEntries(
+          Object.keys(editedFields).map((field) => [field, recommendation[field as EditableField]])
+        ),
+        editedFields,
+        reason: body.reason ?? null,
+        actedBy: user.email ?? null,
+      },
+    });
+    return nextRecommendation;
+  });
+
+  return NextResponse.json(updated);
+}

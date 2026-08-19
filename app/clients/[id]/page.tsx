@@ -25,9 +25,16 @@ export default async function ClientOverviewPage({
 
   if (!org) notFound();
 
+  const assessedRows = await prisma.maturityAssessment.findMany({
+    where: { capability: { domain: { organizationId: id } } },
+    distinct: ["capabilityId"],
+    select: { capabilityId: true },
+  });
+  const assessedCapabilityIds = new Set(assessedRows.map((r) => r.capabilityId));
+
   const totalCapabilities = org.domains.reduce((sum, d) => sum + d.capabilities.length, 0);
   const assessedCapabilities = org.domains.reduce(
-    (sum, d) => sum + d.capabilities.filter((c) => c.asIsScore != null).length,
+    (sum, d) => sum + d.capabilities.filter((c) => assessedCapabilityIds.has(c.id)).length,
     0
   );
 
@@ -82,7 +89,7 @@ export default async function ClientOverviewPage({
           <h2 className="font-semibold text-[var(--foreground)] mb-4">Domains Overview</h2>
           <div className="space-y-2">
             {org.domains.map((domain) => {
-              const assessed = domain.capabilities.filter((c) => c.asIsScore != null).length;
+              const assessed = domain.capabilities.filter((c) => assessedCapabilityIds.has(c.id)).length;
               const pct = domain.capabilities.length > 0
                 ? Math.round((assessed / domain.capabilities.length) * 100)
                 : 0;

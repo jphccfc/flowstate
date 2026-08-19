@@ -22,8 +22,8 @@ type Capability = {
   aliases: string[];
   dimensions: string[];
   metrics: string[];
+  tags: string[];
   importanceScore: number | null;
-  toBeScore: number | null;
   order: number;
 };
 
@@ -297,16 +297,6 @@ export default function ConfigurePage({ params }: { params: Promise<{ id: string
                                 <div className="text-xs text-[var(--muted)] mt-0.5">{cap.description}</div>
                               )}
                               <div className="flex items-center gap-3 mt-2">
-                                <label className="text-xs text-[var(--muted)]">Target score:</label>
-                                <input
-                                  type="number"
-                                  min={1}
-                                  max={10}
-                                  step={0.5}
-                                  value={cap.toBeScore ?? 8}
-                                  onChange={(e) => updateCapabilityField(cap.id, "toBeScore", parseFloat(e.target.value))}
-                                  className="w-16 px-2 py-0.5 border border-[var(--card-border)] rounded text-xs text-center focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
-                                />
                                 <label className="text-xs text-[var(--muted)]">Importance:</label>
                                 <input
                                   type="number"
@@ -315,6 +305,20 @@ export default function ConfigurePage({ params }: { params: Promise<{ id: string
                                   value={cap.importanceScore ?? 5}
                                   onChange={(e) => updateCapabilityField(cap.id, "importanceScore", parseFloat(e.target.value))}
                                   className="w-16 px-2 py-0.5 border border-[var(--card-border)] rounded text-xs text-center focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+                                />
+                                <label className="text-xs text-[var(--muted)]">Tags:</label>
+                                <input
+                                  type="text"
+                                  defaultValue={cap.tags?.join(", ") ?? ""}
+                                  onBlur={(e) =>
+                                    updateCapabilityField(
+                                      cap.id,
+                                      "tags",
+                                      e.target.value.split(",").map((t) => t.trim()).filter(Boolean)
+                                    )
+                                  }
+                                  placeholder="Strength, Culture, Legal..."
+                                  className="flex-1 px-2 py-0.5 border border-[var(--card-border)] rounded text-xs focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
                                 />
                               </div>
                             </div>

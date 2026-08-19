@@ -25,3 +25,23 @@ export async function getCurrentMaturity(capabilityId: string): Promise<CurrentM
 
   return Array.from(latestByLocation.values());
 }
+
+export type OrgCurrentMaturity = {
+  capabilityId: string;
+  locationTag: string | null;
+  score: number;
+};
+
+export async function getCurrentMaturityForOrganization(organizationId: string): Promise<OrgCurrentMaturity[]> {
+  const rows = await prisma.maturityAssessment.findMany({
+    where: { capability: { domain: { organizationId } } },
+    orderBy: { assessedAt: "desc" },
+    distinct: ["capabilityId", "locationTag"],
+  });
+
+  return rows.map((row) => ({
+    capabilityId: row.capabilityId,
+    locationTag: row.locationTag,
+    score: row.score,
+  }));
+}

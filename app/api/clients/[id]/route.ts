@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
+import { getCurrentMaturityForOrganization } from "@/lib/maturity/current";
+import { getCurrentTargetMaturityForOrganization } from "@/lib/maturity/target";
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient();
@@ -26,7 +28,38 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
   });
 
   if (!org) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  return NextResponse.json(org);
+
+  const [currentAsIs, currentToBe] = await Promise.all([
+    getCurrentMaturityForOrganization(id),
+    getCurrentTargetMaturityForOrganization(id),
+  ]);
+
+  const asIsByCapability = new Map<string, { locationTag: string | null; score: number }[]>();
+  for (const row of currentAsIs) {
+    const list = asIsByCapability.get(row.capabilityId) ?? [];
+    list.push({ locationTag: row.locationTag, score: row.score });
+    asIsByCapability.set(row.capabilityId, list);
+  }
+  const toBeByCapability = new Map<string, { locationTag: string | null; score: number }[]>();
+  for (const row of currentToBe) {
+    const list = toBeByCapability.get(row.capabilityId) ?? [];
+    list.push({ locationTag: row.locationTag, score: row.score });
+    toBeByCapability.set(row.capabilityId, list);
+  }
+
+  const enriched = {
+    ...org,
+    domains: org.domains.map((domain) => ({
+      ...domain,
+      capabilities: domain.capabilities.map((cap) => ({
+        ...cap,
+        currentAsIs: asIsByCapability.get(cap.id) ?? [],
+        currentToBe: toBeByCapability.get(cap.id) ?? [],
+      })),
+    })),
+  };
+
+  return NextResponse.json(enriched);
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -44,6 +77,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       industry: body.industry,
       size: body.size,
       notes: body.notes,
+      engagementMotive: body.engagementMotive,
     },
   });
 

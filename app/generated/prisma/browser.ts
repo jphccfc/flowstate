@@ -128,6 +128,11 @@ export type Tag = Prisma.TagModel
  */
 export type MaturityAssessment = Prisma.MaturityAssessmentModel
 /**
+ * Model TargetMaturity
+ * 
+ */
+export type TargetMaturity = Prisma.TargetMaturityModel
+/**
  * Model CapabilityKPIMaturityCeiling
  * 
  */
