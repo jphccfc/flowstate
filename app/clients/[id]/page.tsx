@@ -43,6 +43,7 @@ export default async function ClientOverviewPage({
     { href: `/clients/${id}/assess`, label: "Assess", icon: "📋", desc: "Run a live capability assessment interview", cta: "Start / Continue Assessment" },
     { href: `/clients/${id}/analysis`, label: "Analysis", icon: "📊", desc: "View gap analysis, radar charts, and capability heatmaps", cta: "View Analysis" },
     { href: `/clients/${id}/report`, label: "Report", icon: "📄", desc: "Generate an executive summary and growth plan", cta: "View Report" },
+    { href: `/clients/${id}/recommendations`, label: "Recommendations", icon: "💡", desc: "Create and review improvement recommendations", cta: "Review Recommendations" },
   ];
 
   return (

@@ -77,6 +77,11 @@ export async function GET(req: NextRequest) {
       organizationId,
       ...(statusFilter ? { status: statusFilter } : {}),
     },
+    include: {
+      feedback: {
+        orderBy: { actedAt: "desc" },
+      },
+    },
     orderBy: { createdAt: "desc" },
   });
 
