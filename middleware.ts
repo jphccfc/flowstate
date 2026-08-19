@@ -42,7 +42,8 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(url);
     }
 
-    if (user && pathname.startsWith("/auth")) {
+    const recoveryPath = pathname === "/auth/callback" || pathname === "/auth/reset-password";
+    if (user && pathname.startsWith("/auth") && !recoveryPath) {
       const url = request.nextUrl.clone();
       url.pathname = "/dashboard";
       return NextResponse.redirect(url);
