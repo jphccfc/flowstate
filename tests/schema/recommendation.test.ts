@@ -103,6 +103,39 @@ describe("recommendation routes", () => {
     expect(body[0].organizationId).toBe(organization.id);
   });
 
+  it("GET includes review feedback history for each recommendation", async () => {
+    const organization = await createOrganization("Recommendation Feedback Org");
+    const recommendation = await prisma.recommendation.create({
+      data: {
+        organizationId: organization.id,
+        title: "Feedback recommendation",
+        description: "Recommendation with review history",
+        status: "REJECTED",
+      },
+    });
+    await prisma.recommendationFeedback.create({
+      data: {
+        recommendationId: recommendation.id,
+        action: "rejected",
+        reason: "Needs a stronger business case",
+        actedBy: "reviewer@test.com",
+      },
+    });
+
+    const response = await listRecommendations(
+      request(`/api/recommendations?organizationId=${organization.id}`) as never
+    );
+
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body[0].feedback).toHaveLength(1);
+    expect(body[0].feedback[0]).toMatchObject({
+      action: "rejected",
+      reason: "Needs a stronger business case",
+      actedBy: "reviewer@test.com",
+    });
+  });
+
   it("PATCH edits fields, marks the recommendation EDITED, and records feedback", async () => {
     const organization = await createOrganization("Recommendation Edit Org");
     const recommendation = await prisma.recommendation.create({
