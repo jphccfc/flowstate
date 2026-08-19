@@ -121,6 +121,26 @@ export default function LoginPage() {
               >
                 {loading ? "Please wait..." : mode === "login" ? "Sign in" : "Create account"}
               </button>
+              {mode === "login" && (
+                <button
+                  type="button"
+                  onClick={async () => {
+                    setError("");
+                    setSuccess("");
+                    if (!email) { setError("Enter your email address first."); return; }
+                    setLoading(true);
+                    const { error } = await createClient().auth.resetPasswordForEmail(email, {
+                      redirectTo: `${window.location.origin}/auth/callback?next=/auth/reset-password`,
+                    });
+                    setLoading(false);
+                    if (error) setError(error.message);
+                    else setSuccess("Password reset email sent. Check your inbox and follow the link to choose a new password.");
+                  }}
+                  className="w-full text-sm text-[var(--accent)] font-medium hover:underline"
+                >
+                  Forgot password?
+                </button>
+              )}
             </form>
           )}
 
