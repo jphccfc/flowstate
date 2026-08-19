@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { getPasswordValidation } from "@/lib/auth/password-reset-validation";
 
 export default function ResetPasswordPage() {
   const [password, setPassword] = useState("");
@@ -11,6 +12,7 @@ export default function ResetPasswordPage() {
   const [ready, setReady] = useState(false);
   const [saving, setSaving] = useState(false);
   const router = useRouter();
+  const validation = getPasswordValidation(password, confirmation);
 
   useEffect(() => {
     let active = true;
@@ -43,8 +45,7 @@ export default function ResetPasswordPage() {
   async function submit(event: FormEvent) {
     event.preventDefault();
     setError("");
-    if (password.length < 8) { setError("Password must be at least 8 characters."); return; }
-    if (password !== confirmation) { setError("Passwords do not match."); return; }
+    if (!validation.canSubmit) return;
     setSaving(true);
     const { error: updateError } = await createClient().auth.updateUser({ password });
     setSaving(false);
@@ -61,8 +62,8 @@ export default function ResetPasswordPage() {
           <p className="text-sm text-[var(--muted)]">Choose a new password for your Flowstate account.</p>
           <label className="block text-sm font-medium">New password<input required type="password" minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1 w-full px-3 py-2 border border-[var(--card-border)] rounded-lg" /></label>
           <label className="block text-sm font-medium">Confirm new password<input required type="password" minLength={8} value={confirmation} onChange={(e) => setConfirmation(e.target.value)} className="mt-1 w-full px-3 py-2 border border-[var(--card-border)] rounded-lg" /></label>
-          {error && <div role="alert" className="text-sm text-[var(--destructive)] bg-red-50 rounded-lg px-3 py-2">{error}</div>}
-          <button disabled={saving || Boolean(error)} className="w-full py-2.5 px-4 bg-[var(--primary)] text-white rounded-lg font-medium disabled:opacity-50">{saving ? "Saving..." : "Set new password"}</button>
+          {(error || validation.message) && <div role="alert" className="text-sm text-[var(--destructive)] bg-red-50 rounded-lg px-3 py-2">{error || validation.message}</div>}
+          <button disabled={saving || Boolean(error) || !validation.canSubmit} className="w-full py-2.5 px-4 bg-[var(--primary)] text-white rounded-lg font-medium disabled:opacity-50">{saving ? "Saving..." : "Set new password"}</button>
         </>}
       </form>
     </main>
