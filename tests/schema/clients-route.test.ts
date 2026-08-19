@@ -8,6 +8,7 @@ vi.mock("@/lib/supabase/server", () => ({
 }));
 
 import { GET as getClient, PATCH as patchClient } from "../../app/api/clients/[id]/route";
+import { POST as createClient } from "../../app/api/clients/route";
 
 describe("GET /api/clients/[id]", () => {
   let orgId: string;
@@ -15,6 +16,19 @@ describe("GET /api/clients/[id]", () => {
   afterAll(async () => {
     if (orgId) await cleanupOrganization(orgId);
     await prisma.$disconnect();
+  });
+
+  it("POST returns dashboard-compatible count fields", async () => {
+    const response = await createClient(new Request("http://localhost/api/clients", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: "Created Client Org", industry: "Technology" }),
+    }) as never);
+
+    expect(response.status).toBe(201);
+    const body = await response.json();
+    orgId = body.id;
+    expect(body._count).toEqual({ domains: 0, sessions: 0 });
   });
 
   it("embeds currentAsIs and currentToBe per capability", async () => {

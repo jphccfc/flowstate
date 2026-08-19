@@ -49,7 +49,12 @@ export async function POST(req: NextRequest) {
       data: { userId: dbUser.id, organizationId: org.id, role: "ADVISOR" },
     });
 
-    return NextResponse.json(org, { status: 201 });
+    const responseOrg = await prisma.organization.findUniqueOrThrow({
+      where: { id: org.id },
+      include: { _count: { select: { domains: true, sessions: true } } },
+    });
+
+    return NextResponse.json(responseOrg, { status: 201 });
   } catch (err) {
     console.error("POST /api/clients:", err);
     return NextResponse.json(
