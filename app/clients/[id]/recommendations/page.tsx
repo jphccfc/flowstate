@@ -37,7 +37,16 @@ export default function RecommendationsPage({ params }: { params: Promise<{ id: 
   const { id: organizationId } = use(params);
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [status, setStatus] = useState<(typeof statuses)[number]>("ALL");
-  const [form, setForm] = useState<FormValues>(EMPTY_FORM);
+  const [form, setForm] = useState<FormValues>(() => {
+    if (typeof window === "undefined") return EMPTY_FORM;
+    const params = new URLSearchParams(window.location.search);
+    return {
+      title: params.get("title") ?? "",
+      description: params.get("description") ?? "",
+      estimatedValue: params.get("estimatedValue") ?? "",
+      priorityScore: params.get("priorityScore") ?? "",
+    };
+  });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [actionId, setActionId] = useState<string | null>(null);
   const [reason, setReason] = useState("");
