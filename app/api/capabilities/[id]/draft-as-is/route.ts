@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
+import { isOrganizationMember } from "@/lib/auth/organization";
 import { draftAsIsScore } from "@/lib/ai/maturity-draft";
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -12,8 +13,12 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   const body = await req.json().catch(() => ({}));
   const locationTag: string | null = body.locationTag ?? null;
 
-  const capability = await prisma.capability.findUnique({ where: { id } });
+  const capability = await prisma.capability.findUnique({
+    where: { id },
+    include: { domain: { select: { organizationId: true } } },
+  });
   if (!capability) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (!(await isOrganizationMember(user.email, capability.domain.organizationId))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const tags = await prisma.tag.findMany({
     where: {

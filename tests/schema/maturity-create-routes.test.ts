@@ -69,6 +69,18 @@ describe("POST /api/maturity-assessments", () => {
     const res = await createAssessment(jsonRequest({ capabilityId: "does-not-exist", score: 3 }));
     expect(res.status).toBe(404);
   });
+
+  it("rejects a capability from an organization without membership", async () => {
+    const outsider = await prisma.organization.create({ data: { name: "Other Assessment Org" } });
+    try {
+      const domain = await prisma.businessDomain.create({ data: { organizationId: outsider.id, name: "Operations" } });
+      const capability = await prisma.capability.create({ data: { domainId: domain.id, name: "Private Capability" } });
+      const res = await createAssessment(jsonRequest({ capabilityId: capability.id, score: 3 }));
+      expect(res.status).toBe(403);
+    } finally {
+      await cleanupOrganization(outsider.id);
+    }
+  });
 });
 
 describe("POST /api/target-maturities", () => {

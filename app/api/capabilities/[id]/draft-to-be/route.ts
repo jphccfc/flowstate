@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
+import { isOrganizationMember } from "@/lib/auth/organization";
 import { draftToBeScore } from "@/lib/ai/maturity-draft";
 
 export async function POST(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -15,6 +16,7 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
     include: { domain: { include: { organization: true } }, kpis: { include: { kpi: true } } },
   });
   if (!capability) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (!(await isOrganizationMember(user.email, capability.domain.organizationId))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const kpiTargets = capability.kpis
     .map((ck) => ck.kpi)

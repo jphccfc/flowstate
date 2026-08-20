@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
+import { isOrganizationMember } from "@/lib/auth/organization";
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
@@ -9,6 +10,7 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json();
   const { organizationId, name, description, targetValue, currentValue, measurementFrequency, dataSource } = body;
+  if (!(await isOrganizationMember(user.email, organizationId))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const kpi = await prisma.kPI.create({
     data: { organizationId, name, description, targetValue, currentValue, measurementFrequency, dataSource },

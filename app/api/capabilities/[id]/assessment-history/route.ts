@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
+import { isOrganizationMember } from "@/lib/auth/organization";
 import { getCurrentMaturity } from "@/lib/maturity/current";
 import { getCurrentTargetMaturity } from "@/lib/maturity/target";
 
@@ -11,8 +12,9 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
 
   const { id } = await params;
 
-  const capability = await prisma.capability.findUnique({ where: { id } });
+  const capability = await prisma.capability.findUnique({ where: { id }, include: { domain: { select: { organizationId: true } } } });
   if (!capability) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (!(await isOrganizationMember(user.email, capability.domain.organizationId))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const [currentAsIs, currentToBe, asIsHistory, toBeHistory] = await Promise.all([
     getCurrentMaturity(id),
