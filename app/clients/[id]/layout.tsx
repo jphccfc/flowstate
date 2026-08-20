@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { prisma } from "@/lib/db";
-import { Navbar } from "@/components/layout/Navbar";
+import { WorkspaceNav } from "@/components/layout/WorkspaceNav";
 import { notFound } from "next/navigation";
 
 export default async function ClientLayout({
@@ -17,8 +17,10 @@ export default async function ClientLayout({
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar clientName={org.name} clientId={id} />
-      <div className="flex-1 flex flex-col">{children}</div>
+      <div className="workspace-frame">
+        <WorkspaceNav clientName={org.name} clientId={id} />
+        <div className="workspace-content">{children}</div>
+      </div>
     </div>
   );
 }

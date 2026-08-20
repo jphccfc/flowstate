@@ -19,12 +19,10 @@ export function Navbar({ clientName, clientId }: NavbarProps) {
   }
 
   return (
-    <nav className="h-14 bg-[var(--primary)] text-white flex items-center px-4 gap-4 shrink-0">
+    <nav className="h-16 bg-[var(--primary)] text-white flex items-center px-4 sm:px-6 gap-4 shrink-0 border-b border-[var(--workspace-border)]">
       <Link href="/dashboard" className="flex items-center gap-2 shrink-0">
-        <div className="w-7 h-7 rounded bg-white/20 flex items-center justify-center">
-          <span className="font-bold text-xs">FS</span>
-        </div>
-        <span className="font-semibold text-sm hidden sm:block">Flowstate</span>
+        <div className="workspace-brand-mark">FS</div>
+        <span className="workspace-brand-name text-sm hidden sm:block">Flowstate</span>
       </Link>
 
       {clientName && clientId && (
@@ -40,6 +38,7 @@ export function Navbar({ clientName, clientId }: NavbarProps) {
       )}
 
       <div className="ml-auto flex items-center gap-2">
+        <span className="hidden md:block text-xs text-[var(--workspace-muted)]">Capability, readiness & growth</span>
         {clientId && (
           <nav className="flex items-center gap-1">
             {[

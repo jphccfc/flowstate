@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Flowstate — Growth Planning Platform",
+  title: "Flowstate Workspace — Capability, Readiness & Growth",
   description: "Capability assessment and growth planning for ambitious businesses.",
 };
 
