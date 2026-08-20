@@ -211,6 +211,30 @@ describe("recommendation routes", () => {
     });
   });
 
+  it("requires a rejection reason at the API boundary", async () => {
+    const organization = await createOrganization("Recommendation Rejection Reason Org");
+    const recommendation = await prisma.recommendation.create({
+      data: {
+        organizationId: organization.id,
+        title: "Reason-required recommendation",
+        description: "Must include rejection rationale",
+        status: "PENDING_REVIEW",
+      },
+    });
+
+    const response = await patchRecommendation(
+      request(`/api/recommendations/${recommendation.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "reject" }),
+      }) as never,
+      { params: Promise.resolve({ id: recommendation.id }) }
+    );
+
+    expect(response.status).toBe(400);
+    expect((await response.json()).error).toContain("reason");
+  });
+
   it("rejects approval before a recommendation is submitted for review", async () => {
     const organization = await createOrganization("Recommendation Workflow Org");
     const recommendation = await prisma.recommendation.create({
