@@ -27,6 +27,8 @@ export default function SessionPage({ params }: { params: Promise<{ id: string; 
   }, [sessionId]);
 
   useEffect(() => {
+    // Remote session polling intentionally updates state after each fetch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadSession();
     loadSuggestions();
     const interval = setInterval(() => {

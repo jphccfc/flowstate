@@ -35,6 +35,8 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
   }, [organizationId]);
 
   useEffect(() => {
+    // Remote capture polling intentionally updates state after each fetch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadInputs();
     const interval = setInterval(loadInputs, 3000);
     return () => clearInterval(interval);

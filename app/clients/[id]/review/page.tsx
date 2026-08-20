@@ -20,35 +20,64 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
   const [tags, setTags] = useState<PendingTag[]>([]);
   const [loading, setLoading] = useState(true);
   const [reassignChoice, setReassignChoice] = useState<Record<string, string>>({});
+  const [error, setError] = useState<string | null>(null);
+  const [actionId, setActionId] = useState<string | null>(null);
 
   const loadTags = useCallback(async () => {
-    const res = await fetch(`/api/tags?organizationId=${organizationId}`);
-    if (res.ok) setTags(await res.json());
-    setLoading(false);
+    setError(null);
+    try {
+      const res = await fetch(`/api/tags?organizationId=${organizationId}`);
+      if (!res.ok) throw new Error("Tags could not be loaded.");
+      setTags(await res.json());
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Tags could not be loaded.");
+    } finally {
+      setLoading(false);
+    }
   }, [organizationId]);
 
   useEffect(() => {
+    // This call intentionally synchronizes the page with the remote tag API.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadTags();
   }, [loadTags]);
 
   async function act(tagId: string, action: "approve" | "reject") {
-    await fetch(`/api/tags/${tagId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action }),
-    });
-    setTags((prev) => prev.filter((t) => t.id !== tagId));
+    setActionId(tagId);
+    setError(null);
+    try {
+      const res = await fetch(`/api/tags/${tagId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action }),
+      });
+      if (!res.ok) throw new Error("The tag could not be updated.");
+      setTags((prev) => prev.filter((t) => t.id !== tagId));
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The tag could not be updated.");
+    } finally {
+      setActionId(null);
+    }
   }
 
   async function reassign(tagId: string) {
     const targetId = reassignChoice[tagId];
     if (!targetId) return;
-    await fetch(`/api/tags/${tagId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "reassign", targetId }),
-    });
-    setTags((prev) => prev.filter((t) => t.id !== tagId));
+    setActionId(tagId);
+    setError(null);
+    try {
+      const res = await fetch(`/api/tags/${tagId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "reassign", targetId }),
+      });
+      if (!res.ok) throw new Error("The tag could not be reassigned.");
+      setTags((prev) => prev.filter((t) => t.id !== tagId));
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The tag could not be reassigned.");
+    } finally {
+      setActionId(null);
+    }
   }
 
   if (loading) return <div className="p-6 text-sm text-[var(--muted)]">Loading…</div>;
@@ -61,6 +90,7 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
         </Link>
       </div>
       <h1 className="text-2xl font-bold mb-6">Tag Review</h1>
+      {error && <div role="alert" className="mb-4 rounded-lg border border-[var(--destructive)] p-3 text-sm text-[var(--destructive)]">{error}</div>}
 
       {tags.length === 0 && <p className="text-sm text-[var(--muted)]">Nothing pending review.</p>}
 
@@ -75,12 +105,14 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
               <div className="flex gap-2">
                 <button
                   onClick={() => act(tag.id, "approve")}
+                  disabled={actionId !== null}
                   className="text-xs font-medium px-3 py-1 rounded bg-[var(--success)] text-white"
                 >
                   Approve
                 </button>
                 <button
                   onClick={() => act(tag.id, "reject")}
+                  disabled={actionId !== null}
                   className="text-xs font-medium px-3 py-1 rounded bg-[var(--destructive)] text-white"
                 >
                   Reject
@@ -105,7 +137,7 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
                 </select>
                 <button
                   onClick={() => reassign(tag.id)}
-                  disabled={!reassignChoice[tag.id]}
+                  disabled={!reassignChoice[tag.id] || actionId !== null}
                   className="text-xs font-medium px-3 py-1 rounded bg-[var(--accent)] text-white disabled:opacity-50"
                 >
                   Reassign

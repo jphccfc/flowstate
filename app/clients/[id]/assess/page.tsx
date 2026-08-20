@@ -174,6 +174,8 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   }, [id]);
 
   useEffect(() => {
+    // Remote assessment bootstrap intentionally updates state after the fetch resolves.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadOrg().then((data) => {
       if (data.domains?.[0]?.capabilities?.[0]) {
         setSelectedCapId(data.domains[0].capabilities[0].id);
@@ -187,7 +189,11 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   }, []);
 
   useEffect(() => {
-    if (selectedCapId) loadHistory(selectedCapId);
+    if (selectedCapId) {
+      // Remote history refresh intentionally updates state after the fetch resolves.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      loadHistory(selectedCapId);
+    }
   }, [selectedCapId, loadHistory]);
 
   async function saveAsIs(data: { locationTag: string | null; score: number; text: string }) {

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect, use } from "react";
+import Link from "next/link";
+import { buildRecommendationPrefill, recommendationHref } from "@/lib/recommendations/prefill";
 import {
   calculateDomainScore,
   getGapSeverity,
@@ -144,6 +146,7 @@ export default function ReportPage({ params }: { params: Promise<{ id: string }>
                       <div className={`text-xs font-semibold ${severity === "critical" ? "text-[var(--destructive)]" : severity === "high" ? "text-red-500" : severity === "medium" ? "text-amber-600" : "text-[var(--success)]"}`}>
                         Gap: {cap.gapScore?.toFixed(1)}
                       </div>
+                      <Link href={recommendationHref(id, buildRecommendationPrefill(cap.name, cap.domainName, cap.gapScore ?? 0, cap.asIsScore, cap.toBeScore))} className="text-xs font-medium text-[var(--accent)] hover:underline">Create recommendation</Link>
                     </div>
                   </div>
                 );

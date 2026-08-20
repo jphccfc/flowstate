@@ -11,6 +11,8 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import Link from "next/link";
+import { buildRecommendationPrefill, recommendationHref } from "@/lib/recommendations/prefill";
 import {
   buildRadarData,
   calculateDomainScore,
@@ -231,9 +233,12 @@ export default function AnalysisPage({ params }: { params: Promise<{ id: string 
                           </span>
                         </td>
                         <td className="py-2.5">
-                          <span className={`text-xs font-medium ${severity === "critical" ? "text-[var(--destructive)]" : severity === "high" ? "text-red-500" : severity === "medium" ? "text-amber-600" : "text-[var(--success)]"}`}>
-                            {severity.charAt(0).toUpperCase() + severity.slice(1)}
-                          </span>
+                          <div className="flex items-center gap-3">
+                            <span className={`text-xs font-medium ${severity === "critical" ? "text-[var(--destructive)]" : severity === "high" ? "text-red-500" : severity === "medium" ? "text-amber-600" : "text-[var(--success)]"}`}>
+                              {severity.charAt(0).toUpperCase() + severity.slice(1)}
+                            </span>
+                            <Link href={recommendationHref(id, buildRecommendationPrefill(cap.name, cap.domainName, cap.gapScore ?? 0, cap.asIsScore, cap.toBeScore))} className="text-xs font-medium text-[var(--accent)] hover:underline">Create recommendation</Link>
+                          </div>
                         </td>
                       </tr>
                     );
