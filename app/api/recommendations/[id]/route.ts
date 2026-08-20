@@ -44,6 +44,14 @@ export async function PATCH(
   if (action && !(action in ACTION_STATUS)) {
     return NextResponse.json({ error: "Invalid action" }, { status: 400 });
   }
+  if (action === "reject") {
+    if (typeof body.reason !== "string" || !body.reason.trim()) {
+      return NextResponse.json({ error: "A reason is required when rejecting a recommendation" }, { status: 400 });
+    }
+    if (body.reason.trim().length > 2000) {
+      return NextResponse.json({ error: "Rejection reason must be 2000 characters or fewer" }, { status: 400 });
+    }
+  }
 
   if (action) {
     const selectedAction = ACTION_STATUS[action as keyof typeof ACTION_STATUS];
