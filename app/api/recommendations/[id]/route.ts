@@ -14,6 +14,7 @@ const EDITABLE_FIELDS = [
 ] as const;
 
 const ACTION_STATUS = {
+  submit: { status: "PENDING_REVIEW", feedbackAction: "submitted" },
   approve: { status: "APPROVED", feedbackAction: "approved" },
   reject: { status: "REJECTED", feedbackAction: "rejected" },
 } as const;
@@ -46,15 +47,24 @@ export async function PATCH(
 
   if (action) {
     const selectedAction = ACTION_STATUS[action as keyof typeof ACTION_STATUS];
+    const allowedStates = action === "submit" ? ["DRAFT", "EDITED"] : ["PENDING_REVIEW"];
+    if (!allowedStates.includes(recommendation.status)) {
+      return NextResponse.json(
+        { error: `Recommendation must be in ${action === "submit" ? "DRAFT or EDITED" : "PENDING_REVIEW"} before it can be ${action === "submit" ? "submitted" : action === "approve" ? "approved" : "rejected"}` },
+        { status: 409 }
+      );
+    }
     const updated = await prisma.$transaction(async (tx) => {
-      const nextRecommendation = await tx.recommendation.update({
-        where: { id },
+      const transition = await tx.recommendation.updateMany({
+        where: { id, status: recommendation.status },
         data: {
           status: selectedAction.status,
           reviewedBy: user.email ?? null,
           reviewNotes: body.reason ?? recommendation.reviewNotes,
         },
       });
+      if (transition.count !== 1) return null;
+
       await tx.recommendationFeedback.create({
         data: {
           recommendationId: id,
@@ -63,8 +73,14 @@ export async function PATCH(
           actedBy: user.email ?? null,
         },
       });
-      return nextRecommendation;
+      return tx.recommendation.findUniqueOrThrow({ where: { id } });
     });
+    if (!updated) {
+      return NextResponse.json(
+        { error: "Recommendation changed before this action could be applied" },
+        { status: 409 }
+      );
+    }
     return NextResponse.json(updated);
   }
 

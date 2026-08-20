@@ -12,5 +12,7 @@ export default defineConfig({
     setupFiles: ["./tests/setup.ts"],
     testTimeout: 15000,
     hookTimeout: 15000,
+    // Schema tests share stable fixture users; run files serially to avoid cross-file upsert races.
+    fileParallelism: false,
   },
 });

@@ -178,6 +178,63 @@ describe("recommendation routes", () => {
     expect(feedback[0].actedBy).toBe("recommendation-advisor@test.com");
   });
 
+  it("submits a draft for review and records feedback", async () => {
+    const organization = await createOrganization("Recommendation Submit Org");
+    const recommendation = await prisma.recommendation.create({
+      data: {
+        organizationId: organization.id,
+        title: "Submit recommendation",
+        description: "Ready for advisor review",
+        status: "DRAFT",
+      },
+    });
+
+    const response = await patchRecommendation(
+      request(`/api/recommendations/${recommendation.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "submit", reason: "Ready for review" }),
+      }) as never,
+      { params: Promise.resolve({ id: recommendation.id }) }
+    );
+
+    expect(response.status).toBe(200);
+    expect((await response.json()).status).toBe("PENDING_REVIEW");
+
+    const feedback = await prisma.recommendationFeedback.findFirstOrThrow({
+      where: { recommendationId: recommendation.id },
+    });
+    expect(feedback).toMatchObject({
+      action: "submitted",
+      reason: "Ready for review",
+      actedBy: "recommendation-advisor@test.com",
+    });
+  });
+
+  it("rejects approval before a recommendation is submitted for review", async () => {
+    const organization = await createOrganization("Recommendation Workflow Org");
+    const recommendation = await prisma.recommendation.create({
+      data: {
+        organizationId: organization.id,
+        title: "Workflow recommendation",
+        description: "Must be submitted first",
+        status: "DRAFT",
+      },
+    });
+
+    const response = await patchRecommendation(
+      request(`/api/recommendations/${recommendation.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "approve" }),
+      }) as never,
+      { params: Promise.resolve({ id: recommendation.id }) }
+    );
+
+    expect(response.status).toBe(409);
+    expect((await response.json()).error).toContain("PENDING_REVIEW");
+  });
+
   it.each([
     ["approve", "APPROVED", "approved"],
     ["reject", "REJECTED", "rejected"],
