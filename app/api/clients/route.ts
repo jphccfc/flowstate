@@ -9,6 +9,7 @@ export async function GET() {
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const orgs = await prisma.organization.findMany({
+      where: { users: { some: { user: { email: user.email ?? undefined } } } },
       orderBy: { createdAt: "desc" },
       include: {
         _count: { select: { domains: true, sessions: true } },

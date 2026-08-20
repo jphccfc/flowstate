@@ -17,3 +17,9 @@ export async function isOrganizationMember(
 
   return membership !== null;
 }
+
+export async function hasOrganizationMembership(email: string | null | undefined): Promise<boolean> {
+  if (!email) return false;
+  const membership = await prisma.userOrganization.findFirst({ where: { user: { email } }, select: { id: true } });
+  return membership !== null;
+}

@@ -87,4 +87,26 @@ describe("GET /api/clients/[id]", () => {
     const updated = await res.json();
     expect(updated.engagementMotive).toBe("Liquidation");
   });
+
+  it("rejects access to an organization the authenticated user does not belong to", async () => {
+    const outsider = await prisma.organization.create({ data: { name: "Other Organization" } });
+    try {
+      const getRes = await getClient(new Request("http://localhost/api/clients/" + outsider.id) as never, {
+        params: Promise.resolve({ id: outsider.id }),
+      });
+      expect(getRes.status).toBe(403);
+
+      const patchRes = await patchClient(
+        new Request("http://localhost/api/clients/" + outsider.id, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: "Should Not Change" }),
+        }) as never,
+        { params: Promise.resolve({ id: outsider.id }) }
+      );
+      expect(patchRes.status).toBe(403);
+    } finally {
+      await cleanupOrganization(outsider.id);
+    }
+  });
 });

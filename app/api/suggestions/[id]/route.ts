@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
+import { isOrganizationMember } from "@/lib/auth/organization";
 
 const STATUS_BY_ACTION = {
   ask: "ASKED",
@@ -15,6 +16,12 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const { id } = await params;
   const body = await req.json();
   const { action } = body as { action: keyof typeof STATUS_BY_ACTION };
+  const existing = await prisma.followUpSuggestion.findUnique({
+    where: { id },
+    include: { session: { select: { organizationId: true } } },
+  });
+  if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (!(await isOrganizationMember(user.email, existing.session.organizationId))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   if (!(action in STATUS_BY_ACTION)) {
     return NextResponse.json({ error: "Invalid action" }, { status: 400 });
