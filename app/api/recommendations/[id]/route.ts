@@ -55,14 +55,16 @@ export async function PATCH(
       );
     }
     const updated = await prisma.$transaction(async (tx) => {
-      const nextRecommendation = await tx.recommendation.update({
-        where: { id },
+      const transition = await tx.recommendation.updateMany({
+        where: { id, status: recommendation.status },
         data: {
           status: selectedAction.status,
           reviewedBy: user.email ?? null,
           reviewNotes: body.reason ?? recommendation.reviewNotes,
         },
       });
+      if (transition.count !== 1) return null;
+
       await tx.recommendationFeedback.create({
         data: {
           recommendationId: id,
@@ -71,8 +73,14 @@ export async function PATCH(
           actedBy: user.email ?? null,
         },
       });
-      return nextRecommendation;
+      return tx.recommendation.findUniqueOrThrow({ where: { id } });
     });
+    if (!updated) {
+      return NextResponse.json(
+        { error: "Recommendation changed before this action could be applied" },
+        { status: 409 }
+      );
+    }
     return NextResponse.json(updated);
   }
 
