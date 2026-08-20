@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
+import { isOrganizationMember } from "@/lib/auth/organization";
 
 const RECOMMENDATION_STATUSES = [
   "DRAFT",
@@ -37,6 +38,9 @@ export async function POST(req: NextRequest) {
 
   const organization = await prisma.organization.findUnique({ where: { id: organizationId } });
   if (!organization) return NextResponse.json({ error: "Organization not found" }, { status: 404 });
+  if (!(await isOrganizationMember(user.email, organizationId))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
 
   const recommendation = await prisma.recommendation.create({
     data: {
@@ -66,6 +70,9 @@ export async function GET(req: NextRequest) {
 
   if (!organizationId) {
     return NextResponse.json({ error: "organizationId is required" }, { status: 400 });
+  }
+  if (!(await isOrganizationMember(user.email, organizationId))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   if (status && !isRecommendationStatus(status)) {
     return NextResponse.json({ error: "Invalid status" }, { status: 400 });

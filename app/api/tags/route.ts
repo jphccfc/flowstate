@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
+import { isOrganizationMember } from "@/lib/auth/organization";
 
 type CandidateType = "DOMAIN" | "CAPABILITY" | "KPI" | "STAKEHOLDER";
 
@@ -12,6 +13,9 @@ export async function GET(req: NextRequest) {
   const organizationId = new URL(req.url).searchParams.get("organizationId");
   if (!organizationId) {
     return NextResponse.json({ error: "organizationId is required" }, { status: 400 });
+  }
+  if (!(await isOrganizationMember(user.email, organizationId))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   const [tags, domains, kpis, stakeholders] = await Promise.all([

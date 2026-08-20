@@ -252,6 +252,45 @@ describe("recommendation routes", () => {
     expect(response.status).toBe(404);
   });
 
+  it("returns 403 for an authenticated user without organization membership", async () => {
+    const organization = await createOrganization("Recommendation Unauthorized Org");
+    await prisma.userOrganization.deleteMany({
+      where: { organizationId: organization.id, user: { email: "recommendation-advisor@test.com" } },
+    });
+    const recommendation = await prisma.recommendation.create({
+      data: {
+        organizationId: organization.id,
+        title: "Private recommendation",
+        description: "Must not be exposed cross-organization.",
+      },
+    });
+
+    const getResponse = await listRecommendations(
+      request(`/api/recommendations?organizationId=${organization.id}`) as never
+    );
+    const patchResponse = await patchRecommendation(
+      request(`/api/recommendations/${recommendation.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ action: "approve" }),
+      }) as never,
+      { params: Promise.resolve({ id: recommendation.id }) }
+    );
+    const postResponse = await createRecommendation(
+      request("/api/recommendations", {
+        method: "POST",
+        body: JSON.stringify({
+          organizationId: organization.id,
+          title: "Cross-org write",
+          description: "Must not be created.",
+        }),
+      }) as never
+    );
+
+    expect(getResponse.status).toBe(403);
+    expect(patchResponse.status).toBe(403);
+    expect(postResponse.status).toBe(403);
+  });
+
   it("returns 401 before accessing recommendation data when unauthenticated", async () => {
     auth.user = null;
 

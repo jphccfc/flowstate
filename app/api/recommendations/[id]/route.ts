@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
+import { isOrganizationMember } from "@/lib/auth/organization";
 
 const EDITABLE_FIELDS = [
   "title",
@@ -31,6 +32,9 @@ export async function PATCH(
   const recommendation = await prisma.recommendation.findUnique({ where: { id } });
   if (!recommendation) {
     return NextResponse.json({ error: "Recommendation not found" }, { status: 404 });
+  }
+  if (!(await isOrganizationMember(user.email, recommendation.organizationId))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   const body = await req.json();

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
+import { isOrganizationMember } from "@/lib/auth/organization";
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
@@ -11,6 +12,9 @@ export async function POST(req: NextRequest) {
   const { organizationId } = body;
   if (!organizationId) {
     return NextResponse.json({ error: "organizationId is required" }, { status: 400 });
+  }
+  if (!(await isOrganizationMember(user.email, organizationId))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   const dbUser = await prisma.user.upsert({

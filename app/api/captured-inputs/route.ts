@@ -2,6 +2,7 @@ import { NextRequest, NextResponse, after } from "next/server";
 import { put } from "@vercel/blob";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
+import { isOrganizationMember } from "@/lib/auth/organization";
 import { processCapturedInput } from "@/lib/ingestion/pipeline";
 import { InputType } from "@/app/generated/prisma/enums";
 
@@ -27,6 +28,9 @@ export async function POST(req: NextRequest) {
 
   if (typeof organizationId !== "string" || !organizationId || typeof type !== "string" || !type) {
     return NextResponse.json({ error: "organizationId and type are required" }, { status: 400 });
+  }
+  if (!(await isOrganizationMember(user.email, organizationId))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   if (!isInputType(type)) {
     return NextResponse.json({ error: `Unsupported type: ${type}` }, { status: 400 });
@@ -84,6 +88,9 @@ export async function GET(req: NextRequest) {
   const organizationId = new URL(req.url).searchParams.get("organizationId");
   if (!organizationId) {
     return NextResponse.json({ error: "organizationId is required" }, { status: 400 });
+  }
+  if (!(await isOrganizationMember(user.email, organizationId))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   const inputs = await prisma.capturedInput.findMany({
