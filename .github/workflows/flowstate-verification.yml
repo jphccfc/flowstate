@@ -1,0 +1,43 @@
+name: Flowstate verification
+
+on:
+  pull_request:
+  push:
+    branches: [claude/review-flowstate-platform-GPvI0]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: flowstate_test
+          POSTGRES_PASSWORD: flowstate_test
+          POSTGRES_DB: flowstate_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U flowstate_test -d flowstate_test"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+    env:
+      DATABASE_URL: postgresql://flowstate_test:flowstate_test@127.0.0.1:5432/flowstate_test
+      DIRECT_URL: postgresql://flowstate_test:flowstate_test@127.0.0.1:5432/flowstate_test
+      NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: test-anon-key
+      SUPABASE_SERVICE_ROLE_KEY: test-service-role-key
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx prisma db push
+      - run: npm test
+      - run: npx tsc --noEmit
+      - run: npm run lint
+      - run: npm run build
+      - run: git diff --check

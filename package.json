@@ -10,7 +10,12 @@
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
-    "test": "vitest run"
+    "test": "npm run test:preflight && vitest run",
+    "test:preflight": "node scripts/test-db-preflight.mjs",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "npm run test:preflight && vitest run tests/schema",
+    "db:test:start": "node scripts/start-test-db.mjs",
+    "db:test:stop": "node scripts/stop-test-db.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -53,11 +58,19 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "dotenv": "^17.4.2",
+    "embedded-postgres": "18.4.0-beta.17",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
     "tailwindcss": "^4",
     "tsx": "^4.22.0",
     "typescript": "^5",
     "vitest": "^4.1.10"
+  },
+  "allowScripts": {
+    "@embedded-postgres/linux-x64@18.4.0-beta.17": true,
+    "@prisma/engines@7.8.0": true,
+    "esbuild@0.28.0": true,
+    "sharp@0.34.5": true,
+    "unrs-resolver@1.11.1": true
   }
 }
