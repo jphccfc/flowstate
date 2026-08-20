@@ -39,18 +39,19 @@ export default async function ClientOverviewPage({
   );
 
   const cards = [
-    { href: `/clients/${id}/configure`, label: "Configure", icon: "⚙️", desc: "Set up domains, capabilities, KPIs, and target achievements", cta: "Configure" },
-    { href: `/clients/${id}/assess`, label: "Assess", icon: "📋", desc: "Run a live capability assessment interview", cta: "Start / Continue Assessment" },
-    { href: `/clients/${id}/analysis`, label: "Analysis", icon: "📊", desc: "View gap analysis, radar charts, and capability heatmaps", cta: "View Analysis" },
-    { href: `/clients/${id}/report`, label: "Report", icon: "📄", desc: "Generate an executive summary and growth plan", cta: "View Report" },
-    { href: `/clients/${id}/recommendations`, label: "Recommendations", icon: "💡", desc: "Create and review improvement recommendations", cta: "Review Recommendations" },
-    { href: `/clients/${id}/review`, label: "Tag Review", icon: "🏷️", desc: "Approve, reject, or reassign extracted tags", cta: "Review Tags" },
+    { href: `/clients/${id}/configure`, label: "Blueprint", icon: "02", desc: "Set up domains, capabilities, KPIs, and target achievements", cta: "Configure blueprint" },
+    { href: `/clients/${id}/assess`, label: "Assessment", icon: "03", desc: "Run a guided capability assessment interview", cta: "Start / continue assessment" },
+    { href: `/clients/${id}/analysis`, label: "Insights", icon: "04", desc: "View gaps, domain scores, and capability evidence", cta: "View insights" },
+    { href: `/clients/${id}/report`, label: "Reports", icon: "05", desc: "Generate an executive summary and growth plan", cta: "View reports" },
+    { href: `/clients/${id}/recommendations`, label: "Growth plan", icon: "06", desc: "Create, submit, and review improvement recommendations", cta: "Open growth plan" },
+    { href: `/clients/${id}/review`, label: "Review queue", icon: "07", desc: "Approve, reject, or reassign extracted tags", cta: "Open review queue" },
   ];
 
   return (
     <main className="max-w-5xl mx-auto w-full px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-[var(--foreground)]">{org.name}</h1>
+        <div className="workspace-eyebrow mb-2">Business capability workspace</div>
+        <h1 className="workspace-heading text-3xl font-bold text-[var(--foreground)]">{org.name}</h1>
         <div className="flex items-center gap-3 mt-1 text-sm text-[var(--muted)]">
           {org.industry && <span>{org.industry}</span>}
           {org.size && <><span>·</span><span>{org.size}</span></>}
@@ -64,7 +65,7 @@ export default async function ClientOverviewPage({
           { label: "Assessed", value: `${assessedCapabilities}/${totalCapabilities}` },
           { label: "KPIs", value: org._count.kpis },
         ].map((stat) => (
-          <div key={stat.label} className="bg-white rounded-xl border border-[var(--card-border)] p-4">
+          <div key={stat.label} className="workspace-card workspace-stat p-4">
             <div className="text-2xl font-bold text-[var(--primary)]">{stat.value}</div>
             <div className="text-xs text-[var(--muted)] mt-0.5">{stat.label}</div>
           </div>
@@ -76,9 +77,9 @@ export default async function ClientOverviewPage({
           <Link
             key={card.href}
             href={card.href}
-            className="bg-white rounded-xl border border-[var(--card-border)] p-6 hover:shadow-md transition-all hover:border-[var(--accent)] group"
+            className="workspace-card p-6 transition-all group"
           >
-            <div className="text-3xl mb-3">{card.icon}</div>
+            <div className="workspace-nav-icon mb-4 text-sm">{card.icon}</div>
             <div className="font-semibold text-[var(--foreground)] mb-1">{card.label}</div>
             <div className="text-sm text-[var(--muted)] mb-3">{card.desc}</div>
             <div className="text-sm font-medium text-[var(--accent)] group-hover:underline">{card.cta} →</div>
@@ -87,7 +88,7 @@ export default async function ClientOverviewPage({
       </div>
 
       {org.domains.length > 0 && (
-        <div className="bg-white rounded-xl border border-[var(--card-border)] p-6">
+        <div className="workspace-card p-6">
           <h2 className="font-semibold text-[var(--foreground)] mb-4">Domains Overview</h2>
           <div className="space-y-2">
             {org.domains.map((domain) => {
