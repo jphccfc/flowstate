@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
+import { isOrganizationMember } from "@/lib/auth/organization";
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient();
@@ -24,6 +25,9 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
   });
 
   if (!session) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (!(await isOrganizationMember(user.email, session.organizationId))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
   return NextResponse.json(session);
 }
 
@@ -40,6 +44,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
   const existing = await prisma.assessmentSession.findUnique({ where: { id } });
   if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (!(await isOrganizationMember(user.email, existing.organizationId))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
 
   const session = await prisma.assessmentSession.update({
     where: { id },

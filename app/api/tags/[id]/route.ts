@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
+import { isOrganizationMember } from "@/lib/auth/organization";
 
 const STATUS_BY_ACTION = {
   approve: "APPROVED",
@@ -22,6 +23,15 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   }
   if (action === "reassign" && !targetId) {
     return NextResponse.json({ error: "targetId is required for reassign" }, { status: 400 });
+  }
+
+  const existingTag = await prisma.tag.findUnique({
+    where: { id },
+    select: { segment: { select: { capturedInput: { select: { organizationId: true } } } } },
+  });
+  if (!existingTag) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (!(await isOrganizationMember(user.email, existingTag.segment.capturedInput.organizationId))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   const tag = await prisma.tag.update({
