@@ -79,6 +79,37 @@ export default function ReportPage({ params }: { params: Promise<{ id: string }>
         </button>
       </div>
 
+      <section className="report-examples workspace-card print:hidden" aria-labelledby="report-examples-title">
+        <div className="flex items-start justify-between gap-4 mb-4">
+          <div>
+            <div className="workspace-eyebrow">Example output</div>
+            <h2 id="report-examples-title" className="workspace-heading text-lg font-bold text-[var(--foreground)]">Report examples</h2>
+            <p className="text-sm text-[var(--muted)] mt-1">Use these formats to understand what Flowstate can produce from completed assessment data.</p>
+          </div>
+          <span className="text-xs px-2 py-1 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] font-semibold shrink-0">Preview formats</span>
+        </div>
+        <div className="report-example-grid">
+          <article className="report-example-card">
+            <div className="report-example-icon">01</div>
+            <h3 className="font-semibold text-[var(--foreground)]">Example: Executive snapshot</h3>
+            <p className="text-sm text-[var(--muted)]">A concise leadership view of maturity, priority gaps, themes, and recommended next moves.</p>
+            <div className="report-example-lines"><span>Overall maturity</span><span>Priority gaps</span><span>Next moves</span></div>
+          </article>
+          <article className="report-example-card">
+            <div className="report-example-icon">02</div>
+            <h3 className="font-semibold text-[var(--foreground)]">Example: Capability deep dive</h3>
+            <p className="text-sm text-[var(--muted)]">A domain and capability view showing current state, target state, evidence, and gap rationale.</p>
+            <div className="report-example-lines"><span>As-is evidence</span><span>To-be rationale</span><span>Gap analysis</span></div>
+          </article>
+          <article className="report-example-card">
+            <div className="report-example-icon">03</div>
+            <h3 className="font-semibold text-[var(--foreground)]">Example: Growth plan</h3>
+            <p className="text-sm text-[var(--muted)]">A practical action view connecting the largest evidence-backed gaps to recommendations and outcomes.</p>
+            <div className="report-example-lines"><span>Recommendations</span><span>Owners</span><span>Target outcomes</span></div>
+          </article>
+        </div>
+      </section>
+
       <div className="space-y-6 print:space-y-4" id="report">
         <div className="bg-[var(--primary)] text-white rounded-xl p-8 print:rounded-none">
           <div className="text-xs font-semibold uppercase tracking-widest text-white/60 mb-2">Capability Assessment Report</div>
