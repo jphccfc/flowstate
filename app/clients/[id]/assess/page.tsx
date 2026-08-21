@@ -311,10 +311,19 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   }
 
   return (
-    <div className="assessment-workspace flex overflow-hidden">
-      <aside className="assessment-capabilities w-64 bg-[var(--card)] border-r border-[var(--card-border)] flex flex-col overflow-hidden shrink-0">
+    <div className="assessment-workspace">
+      <header className="assessment-heading workspace-card">
+        <div>
+          <div className="workspace-eyebrow">Assessment workspace</div>
+          <h1 className="workspace-heading text-xl font-bold text-[var(--foreground)]">Capability assessment</h1>
+          <p className="text-sm text-[var(--muted)]">Select a capability, record the current state, and set a target state.</p>
+        </div>
+      </header>
+      <div className="assessment-layout">
+      <aside className="assessment-panel workspace-card">
         <div className="p-3 border-b border-[var(--card-border)]">
-          <div className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wider">Capabilities</div>
+          <div className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wider">Assessment navigator</div>
+          <div className="text-xs text-[var(--muted)] mt-1">Choose a capability to assess</div>
         </div>
         <div className="flex-1 overflow-y-auto">
           {org.domains.map((domain) => (
@@ -354,7 +363,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
         </div>
       </aside>
 
-      <main className="flex-1 overflow-y-auto">
+      <main className="assessment-content">
         {!selectedCap || !history ? (
           <div className="flex items-center justify-center h-full text-[var(--muted)]">
             {historyError ? (
@@ -456,6 +465,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
           </div>
         )}
       </main>
+      </div>
     </div>
   );
 }

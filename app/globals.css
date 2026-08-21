@@ -182,11 +182,22 @@ body {
 .workspace-theme-toggle:hover { background: rgba(40, 215, 250, 0.14); }
 .workspace-theme-toggle span:first-child { width: 1rem; color: var(--accent); text-align: center; }
 .workspace-signout { margin-top: 0; border-top: 0; }
-.assessment-workspace { height: calc(100vh - 0rem); min-height: 32rem; }
-.assessment-capabilities { min-height: 0; }
-.assessment-workspace > main { min-width: 0; min-height: 0; }
+.assessment-workspace { width: 100%; min-height: calc(100vh - 2rem); padding: 1.25rem; }
+.assessment-heading { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 1.25rem; margin-bottom: 1rem; }
+.assessment-layout { display: grid; grid-template-columns: minmax(15rem, 18rem) minmax(0, 1fr); gap: 1rem; align-items: start; }
+.assessment-panel { min-width: 0; min-height: 32rem; max-height: calc(100vh - 10rem); overflow: auto; }
+.assessment-content { min-width: 0; min-height: 32rem; }
+.report-examples { padding: 1.25rem; }
+.report-example-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; }
+.report-example-card { display: flex; min-height: 12rem; flex-direction: column; gap: 0.55rem; padding: 1rem; border: 1px solid var(--card-border); border-radius: 0.8rem; background: var(--muted-bg); }
+.report-example-icon { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 0.6rem; color: #071018; font-size: 0.7rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent-purple)); }
+.report-example-lines { display: grid; gap: 0.3rem; margin-top: auto; color: var(--muted); font-size: 0.72rem; }
+.report-example-lines span::before { content: "✓"; margin-right: 0.35rem; color: var(--success); font-weight: 800; }
 @media (max-width: 800px) {
-  .assessment-workspace { height: auto; min-height: calc(100vh - 4.5rem); display: block; overflow: visible; }
-  .assessment-capabilities { width: 100%; max-height: 14rem; border-right: 0; border-bottom: 1px solid var(--card-border); }
-  .assessment-workspace > main { min-height: 32rem; }
+  .assessment-workspace { min-height: auto; padding: 0.75rem; }
+  .assessment-heading { align-items: flex-start; padding: 1rem; }
+  .assessment-layout { display: block; }
+  .assessment-panel { min-height: auto; max-height: 18rem; margin-bottom: 1rem; }
+  .assessment-content { min-height: 32rem; }
+  .report-example-grid { grid-template-columns: 1fr; }
 }
