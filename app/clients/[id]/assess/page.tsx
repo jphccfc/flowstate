@@ -319,49 +319,47 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
           <p className="text-sm text-[var(--muted)]">Select a capability, record the current state, and set a target state.</p>
         </div>
       </header>
-      <div className="assessment-layout">
-      <aside className="assessment-panel workspace-card">
-        <div className="p-3 border-b border-[var(--card-border)]">
-          <div className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wider">Assessment navigator</div>
-          <div className="text-xs text-[var(--muted)] mt-1">Choose a capability to assess</div>
+      <section className="assessment-selector workspace-card" aria-labelledby="assessment-selector-title">
+        <div className="assessment-selector-heading">
+          <div>
+            <div id="assessment-selector-title" className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wider">Assessment navigator</div>
+            <div className="text-xs text-[var(--muted)] mt-1">Choose a capability to assess</div>
+          </div>
+          <div className="text-xs text-[var(--muted)]">{org.domains.reduce((count, domain) => count + domain.capabilities.length, 0)} capabilities</div>
         </div>
-        <div className="flex-1 overflow-y-auto">
+        <div className="assessment-selector-options">
           {org.domains.map((domain) => (
-            <div key={domain.id}>
-              <div className="flex items-center gap-2 px-3 py-2 bg-[var(--muted-bg)] sticky top-0 z-10">
+            <div key={domain.id} className="assessment-domain-group">
+              <div className="flex items-center gap-2 px-3 py-2 bg-[var(--muted-bg)] rounded-lg">
                 <div className="w-2 h-2 rounded-full shrink-0" style={{ background: domain.color ?? "#94a3b8" }} />
                 <span className="text-xs font-semibold text-[var(--foreground)] truncate">{domain.name}</span>
               </div>
-              {domain.capabilities.map((cap) => {
-                const gap = calculateGap(cap.currentAsIs, cap.currentToBe);
-                const severity = getGapSeverity(gap);
-                const isSelected = cap.id === selectedCapId;
-                return (
-                  <button
-                    type="button"
-                    key={cap.id}
-                    aria-pressed={isSelected}
-                    onClick={() => {
-                      setSelectedCapId(cap.id);
-                      setHistory(null);
-                    }}
-                    className={`w-full text-left px-3 py-2.5 flex items-center gap-2 transition-colors ${
-                      isSelected ? "bg-[var(--accent)]/10 border-r-2 border-[var(--accent)]" : "hover:bg-[var(--muted-bg)]"
-                    }`}
-                  >
-                    <div className="flex-1 min-w-0">
-                      <div className={`text-xs truncate ${isSelected ? "font-semibold text-[var(--accent)]" : "text-[var(--foreground)]"}`}>
-                        {cap.name}
-                      </div>
-                    </div>
-                    <div className="w-2 h-2 rounded-full shrink-0" style={{ background: getGapColor(severity) }} />
-                  </button>
-                );
-              })}
+              <div className="assessment-capability-options">
+                {domain.capabilities.map((cap) => {
+                  const gap = calculateGap(cap.currentAsIs, cap.currentToBe);
+                  const severity = getGapSeverity(gap);
+                  const isSelected = cap.id === selectedCapId;
+                  return (
+                    <button
+                      type="button"
+                      key={cap.id}
+                      aria-pressed={isSelected}
+                      onClick={() => {
+                        setSelectedCapId(cap.id);
+                        setHistory(null);
+                      }}
+                      className={`assessment-capability-option ${isSelected ? "is-selected" : ""}`}
+                    >
+                      <span className="truncate">{cap.name}</span>
+                      <span className="w-2 h-2 rounded-full shrink-0" style={{ background: getGapColor(severity) }} />
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           ))}
         </div>
-      </aside>
+      </section>
 
       <main className="assessment-content">
         {!selectedCap || !history ? (
@@ -465,7 +463,6 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
           </div>
         )}
       </main>
-      </div>
     </div>
   );
 }

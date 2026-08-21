@@ -38,9 +38,16 @@ describe("workspace responsive and theme contracts", () => {
 
   it("keeps assessment content inside the shared workspace shell", () => {
     expect(assess).not.toContain('className="assessment-workspace flex overflow-hidden"');
-    expect(assess).toContain('className="assessment-panel workspace-card"');
-    expect(css).toContain(".assessment-panel");
+    expect(assess).toContain('className="assessment-selector workspace-card"');
+    expect(css).toContain(".assessment-selector");
     expect(css).toContain(".assessment-content");
+  });
+
+  it("uses a compact assessment selector instead of a permanent third column", () => {
+    expect(assess).toContain('className="assessment-selector workspace-card"');
+    expect(assess).not.toContain('className="assessment-layout"');
+    expect(css).toContain(".assessment-selector");
+    expect(css).not.toContain("grid-template-columns: minmax(15rem, 18rem) minmax(0, 1fr)");
   });
 
   it("shows clearly labelled report examples", () => {
