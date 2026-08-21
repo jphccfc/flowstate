@@ -54,19 +54,16 @@ describe("processCapturedInput", () => {
 
     const mockFetch = vi.fn().mockImplementation(async (_url, options) => {
       const body = JSON.parse(options.body);
-      const segmentText: string = body.messages[0].content;
+      const segmentText: string = body.messages[1].content;
       const isSchedulingSegment = segmentText.includes("scheduling");
       return {
+        ok: true,
         json: async () => ({
-          content: [
-            {
-              text: JSON.stringify(
-                isSchedulingSegment
-                  ? [{ targetId: capability.id, confidence: 0.92 }]
-                  : []
-              ),
-            },
-          ],
+          choices: [{ message: { content: JSON.stringify(
+            isSchedulingSegment
+              ? [{ targetId: capability.id, confidence: 0.92 }]
+              : []
+          ) } }],
         }),
       };
     });
@@ -145,7 +142,7 @@ describe("processCapturedInput", () => {
     vi.mocked(transcribeAudio).mockResolvedValue("Night shift scheduling is a mess.");
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue({ json: async () => ({ content: [{ text: "[]" }] }) })
+      vi.fn().mockResolvedValue({ ok: true, json: async () => ({ choices: [{ message: { content: "[]" } }] }) })
     );
 
     await processCapturedInput(input.id);
@@ -201,7 +198,7 @@ describe("processCapturedInput", () => {
 
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue({ json: async () => ({ content: [{ text: "[]" }] }) })
+      vi.fn().mockResolvedValue({ ok: true, json: async () => ({ choices: [{ message: { content: "[]" } }] }) })
     );
     vi.mocked(generateFollowUpSuggestions).mockResolvedValue([
       "How does seasonal demand affect the night shift specifically?",
@@ -250,7 +247,7 @@ describe("processCapturedInput", () => {
 
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue({ json: async () => ({ content: [{ text: "[]" }] }) })
+      vi.fn().mockResolvedValue({ ok: true, json: async () => ({ choices: [{ message: { content: "[]" } }] }) })
     );
     vi.mocked(generateFollowUpSuggestions).mockRejectedValue(new Error("Claude unavailable"));
 
