@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap");
 @import "tailwindcss";
 
- :root {
+:root {
   --background: #f4f7fb;
   --foreground: #142033;
   --card: #ffffff;
@@ -24,7 +24,34 @@
   --workspace-muted: #b4c2d6;
   --radius-card: 1rem;
   --shadow-card: 0 12px 36px rgba(10, 15, 22, 0.08);
+  color-scheme: light;
 }
+
+:root[data-theme="dark"] {
+  --background: #0a0f16;
+  --foreground: #edf4fb;
+  --card: #111822;
+  --card-border: #29384a;
+  --primary: #071018;
+  --muted: #aab9cc;
+  --muted-bg: #182230;
+  --destructive: #ff8b97;
+  --success: #7ee2ad;
+  --warning: #ffbd78;
+  --shadow-card: 0 16px 42px rgba(0, 0, 0, 0.28);
+  color-scheme: dark;
+}
+
+:root[data-theme="dark"] body { background: var(--background) !important; color: var(--foreground); }
+:root[data-theme="dark"] .bg-white { background-color: var(--card) !important; }
+:root[data-theme="dark"] .bg-green-50 { background-color: #123424 !important; }
+:root[data-theme="dark"] .bg-red-50 { background-color: #3d1d25 !important; }
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] select { color: var(--foreground); background-color: var(--card); }
+:root[data-theme="dark"] input::placeholder,
+:root[data-theme="dark"] textarea::placeholder { color: #8292a8; }
+
 
 
 @theme inline {
@@ -130,3 +157,18 @@ body {
 .workspace-heading { font-family: "Poppins", "Inter", sans-serif; letter-spacing: -0.035em; }
 .workspace-stat { position: relative; overflow: hidden; }
 .workspace-stat::before { content: ""; position: absolute; inset: 0 auto auto 0; width: 100%; height: 0.2rem; background: linear-gradient(90deg, var(--accent), var(--accent-purple)); }
+
+
+.workspace-actions { margin-top: auto; display: grid; gap: 0.35rem; }
+.workspace-theme-toggle { display: flex; align-items: center; gap: 0.55rem; width: 100%; padding: 0.65rem 0.7rem; border: 1px solid var(--workspace-border); border-radius: 0.65rem; color: var(--workspace-text); background: rgba(24, 34, 48, 0.55); font-size: 0.78rem; text-align: left; }
+.workspace-theme-toggle:hover { background: rgba(40, 215, 250, 0.14); }
+.workspace-theme-toggle span:first-child { width: 1rem; color: var(--accent); text-align: center; }
+.workspace-signout { margin-top: 0; border-top: 0; }
+.assessment-workspace { height: calc(100vh - 0rem); min-height: 32rem; }
+.assessment-capabilities { min-height: 0; }
+.assessment-workspace > main { min-width: 0; min-height: 0; }
+@media (max-width: 800px) {
+  .assessment-workspace { height: auto; min-height: calc(100vh - 4.5rem); display: block; overflow: visible; }
+  .assessment-capabilities { width: 100%; max-height: 14rem; border-right: 0; border-bottom: 1px solid var(--card-border); }
+  .assessment-workspace > main { min-height: 32rem; }
+}
