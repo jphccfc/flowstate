@@ -44,7 +44,7 @@ describe("draft routes", () => {
     });
 
     const mockFetch = vi.fn().mockResolvedValue({
-      json: async () => ({ content: [{ text: JSON.stringify({ score: 2, evidence: "Ad hoc scheduling." }) }] }),
+      ok: true, json: async () => ({ choices: [{ message: { content: JSON.stringify({ score: 2, evidence: "Ad hoc scheduling." }) } }] }),
     });
     vi.stubGlobal("fetch", mockFetch);
 
@@ -59,8 +59,8 @@ describe("draft routes", () => {
     expect(body).toEqual({ score: 2, evidence: "Ad hoc scheduling." });
 
     const promptBody = JSON.parse(mockFetch.mock.calls[0][1].body);
-    expect(promptBody.messages[0].content).toContain("Night shift scheduling is a mess.");
-    expect(promptBody.messages[0].content).not.toContain("Unreviewed claim.");
+    expect(promptBody.messages[1].content).toContain("Night shift scheduling is a mess.");
+    expect(promptBody.messages[1].content).not.toContain("Unreviewed claim.");
   });
 
   it("draft-to-be includes engagementMotive and KPI targets from the capability's relations", async () => {
@@ -73,7 +73,7 @@ describe("draft routes", () => {
     await prisma.capabilityKPI.create({ data: { capabilityId: capability.id, kpiId: kpi.id } });
 
     const mockFetch = vi.fn().mockResolvedValue({
-      json: async () => ({ content: [{ text: JSON.stringify({ score: 4, rationale: "Deal-driven target." }) }] }),
+      ok: true, json: async () => ({ choices: [{ message: { content: JSON.stringify({ score: 4, rationale: "Deal-driven target." }) } }] }),
     });
     vi.stubGlobal("fetch", mockFetch);
 
@@ -86,8 +86,8 @@ describe("draft routes", () => {
     expect(body).toEqual({ score: 4, rationale: "Deal-driven target." });
 
     const promptBody = JSON.parse(mockFetch.mock.calls[0][1].body);
-    expect(promptBody.messages[0].content).toContain("Acquisition Recovery");
-    expect(promptBody.messages[0].content).toContain("On-time delivery: 95%");
+    expect(promptBody.messages[1].content).toContain("Acquisition Recovery");
+    expect(promptBody.messages[1].content).toContain("On-time delivery: 95%");
   });
 
   it("404s for a nonexistent capability on both routes", async () => {

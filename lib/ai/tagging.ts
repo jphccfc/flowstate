@@ -1,3 +1,5 @@
+import { requestChatCompletion } from "@/lib/ai/client";
+
 export type TaggableEntity = {
   targetType: "DOMAIN" | "CAPABILITY" | "KPI" | "STAKEHOLDER";
   targetId: string;
@@ -20,35 +22,20 @@ export async function generateTagSuggestions(
     .map((c) => `${c.targetId}: ${c.name} (${c.targetType})`)
     .join("\n");
 
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": process.env.ANTHROPIC_API_KEY ?? "",
-      "anthropic-version": "2023-06-01",
-    },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-6",
-      max_tokens: 1024,
-      messages: [
-        {
-          role: "user",
-          content: `You are tagging a segment of an interview transcript or document against a fixed list of candidate entities. Only suggest entities that are genuinely relevant to the segment text.
+  const text = await requestChatCompletion({
+    maxTokens: 1024,
+    system: "You tag evidence against a fixed candidate list. Return JSON only.",
+    user: `Only suggest entities genuinely relevant to this evidence.
 
-Segment:
+Evidence:
 "${segmentText}"
 
 Candidates (id: name (type)):
 ${candidateList}
 
-Return a JSON array of objects with exactly these fields: targetId (must be one of the candidate ids above, verbatim), confidence (0 to 1, how confident you are this segment relates to that entity). Only include entities with confidence >= 0.3. Return [] if nothing is relevant.`,
-        },
-      ],
-    }),
+Return a JSON array with exactly targetId and confidence (0 to 1). targetId must be one of the candidate ids. Only include confidence >= 0.3. Return [] if nothing is relevant.`,
   });
 
-  const data = await response.json();
-  const text = data.content?.[0]?.text ?? "[]";
   const jsonMatch = text.match(/\[[\s\S]*\]/);
   if (!jsonMatch) return [];
 
@@ -63,12 +50,9 @@ Return a JSON array of objects with exactly these fields: targetId (must be one 
   const suggestions: TagSuggestion[] = [];
   for (const item of raw) {
     const candidate = candidateById.get(item.targetId);
-    if (!candidate) continue;
-    suggestions.push({
-      targetType: candidate.targetType,
-      targetId: candidate.targetId,
-      confidence: item.confidence,
-    });
+    const confidence = Number(item.confidence);
+    if (!candidate || !Number.isFinite(confidence) || confidence < 0.3 || confidence > 1) continue;
+    suggestions.push({ targetType: candidate.targetType, targetId: candidate.targetId, confidence });
   }
   return suggestions;
 }

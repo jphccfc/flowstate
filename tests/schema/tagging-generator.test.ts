@@ -4,6 +4,7 @@ import { generateTagSuggestions, type TaggableEntity } from "../../lib/ai/taggin
 describe("generateTagSuggestions", () => {
   afterEach(() => {
     vi.unstubAllGlobals();
+    vi.unstubAllEnvs();
   });
 
   it("returns suggestions matched against the candidate list, dropping hallucinated ids", async () => {
@@ -12,16 +13,16 @@ describe("generateTagSuggestions", () => {
       { targetType: "KPI", targetId: "kpi-1", name: "On-time Delivery Rate" },
     ];
 
+    vi.stubEnv("LITELLM_BASE_URL", "http://litellm.test:4000");
+    vi.stubEnv("LITELLM_API_KEY", "gateway-test-key");
+    vi.stubEnv("AI_MODEL", "flowstate-test-model");
     const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
       json: async () => ({
-        content: [
-          {
-            text: JSON.stringify([
-              { targetId: "cap-1", confidence: 0.92 },
-              { targetId: "not-a-real-id", confidence: 0.7 },
-            ]),
-          },
-        ],
+        choices: [{ message: { content: JSON.stringify([
+          { targetId: "cap-1", confidence: 0.92 },
+          { targetId: "not-a-real-id", confidence: 0.7 },
+        ]) } }],
       }),
     });
     vi.stubGlobal("fetch", mockFetch);
@@ -35,7 +36,7 @@ describe("generateTagSuggestions", () => {
       { targetType: "CAPABILITY", targetId: "cap-1", confidence: 0.92 },
     ]);
     expect(mockFetch).toHaveBeenCalledWith(
-      "https://api.anthropic.com/v1/messages",
+      "http://litellm.test:4000/v1/chat/completions",
       expect.objectContaining({ method: "POST" })
     );
   });
