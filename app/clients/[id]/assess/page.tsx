@@ -164,6 +164,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   const [showAsIsHistory, setShowAsIsHistory] = useState(false);
   const [showToBeHistory, setShowToBeHistory] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [historyError, setHistoryError] = useState<string | null>(null);
 
   const loadOrg = useCallback(async () => {
     const res = await fetch(`/api/clients/${id}`);
@@ -184,8 +185,15 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   }, [loadOrg]);
 
   const loadHistory = useCallback(async (capId: string) => {
+    setHistoryError(null);
     const res = await fetch(`/api/capabilities/${capId}/assessment-history`);
-    setHistory(await res.json());
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      setHistory(null);
+      setHistoryError(typeof data.error === "string" ? data.error : "Unable to load this capability.");
+      return;
+    }
+    setHistory(data);
   }, []);
 
   useEffect(() => {
@@ -265,8 +273,8 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   }
 
   return (
-    <div className="flex-1 flex overflow-hidden" style={{ height: "calc(100vh - 3.5rem)" }}>
-      <aside className="w-64 bg-white border-r border-[var(--card-border)] flex flex-col overflow-hidden shrink-0">
+    <div className="assessment-workspace flex overflow-hidden">
+      <aside className="assessment-capabilities w-64 bg-[var(--card)] border-r border-[var(--card-border)] flex flex-col overflow-hidden shrink-0">
         <div className="p-3 border-b border-[var(--card-border)]">
           <div className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wider">Capabilities</div>
         </div>
@@ -283,8 +291,13 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
                 const isSelected = cap.id === selectedCapId;
                 return (
                   <button
+                    type="button"
                     key={cap.id}
-                    onClick={() => setSelectedCapId(cap.id)}
+                    aria-pressed={isSelected}
+                    onClick={() => {
+                      setSelectedCapId(cap.id);
+                      setHistory(null);
+                    }}
                     className={`w-full text-left px-3 py-2.5 flex items-center gap-2 transition-colors ${
                       isSelected ? "bg-[var(--accent)]/10 border-r-2 border-[var(--accent)]" : "hover:bg-[var(--muted-bg)]"
                     }`}
@@ -305,7 +318,14 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
 
       <main className="flex-1 overflow-y-auto">
         {!selectedCap || !history ? (
-          <div className="flex items-center justify-center h-full text-[var(--muted)]">Select a capability to begin</div>
+          <div className="flex items-center justify-center h-full text-[var(--muted)]">
+            {historyError ? (
+              <div className="max-w-sm px-6 text-center">
+                <p className="font-medium text-[var(--foreground)]">Capability could not be loaded</p>
+                <p className="mt-1 text-sm">{historyError}</p>
+              </div>
+            ) : "Select a capability to begin"}
+          </div>
         ) : (
           <div className="max-w-3xl mx-auto px-6 py-6">
             <div className="mb-6">

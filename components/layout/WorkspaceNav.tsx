@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
 type NavItem = { href: string; label: string; short: string };
 
@@ -62,7 +63,10 @@ export function WorkspaceNav({ clientId, clientName }: { clientId: string; clien
         })}
       </nav>
 
-      <button type="button" className="workspace-signout" onClick={signOut}>Sign out</button>
+      <div className="workspace-actions">
+        <ThemeToggle />
+        <button type="button" className="workspace-signout" onClick={signOut}>Sign out</button>
+      </div>
     </aside>
   );
 }
