@@ -8,6 +8,8 @@ const nav = readFileSync(resolve(process.cwd(), "components/layout/WorkspaceNav.
 const themeToggle = readFileSync(resolve(process.cwd(), "components/layout/ThemeToggle.tsx"), "utf8");
 const configure = readFileSync(resolve(process.cwd(), "app/clients/[id]/configure/page.tsx"), "utf8");
 const dialog = readFileSync(resolve(process.cwd(), "components/ui/FlowstateDialog.tsx"), "utf8");
+const assess = readFileSync(resolve(process.cwd(), "app/clients/[id]/assess/page.tsx"), "utf8");
+const report = readFileSync(resolve(process.cwd(), "app/clients/[id]/report/page.tsx"), "utf8");
 
 describe("workspace responsive and theme contracts", () => {
   it("uses theme tokens rather than a light-only overview card background", () => {
@@ -32,6 +34,19 @@ describe("workspace responsive and theme contracts", () => {
     expect(css).toContain(".workspace-rail.is-open .workspace-navigation-panel");
     expect(css.indexOf(".workspace-navigation-panel { display: flex")).toBeLessThan(css.indexOf("@media (max-width: 800px)"));
     expect(css).toContain(".workspace-menu-button { display: inline-flex !important;");
+  });
+
+  it("keeps assessment content inside the shared workspace shell", () => {
+    expect(assess).not.toContain('className="assessment-workspace flex overflow-hidden"');
+    expect(assess).toContain('className="assessment-panel workspace-card"');
+    expect(css).toContain(".assessment-panel");
+    expect(css).toContain(".assessment-content");
+  });
+
+  it("shows clearly labelled report examples", () => {
+    expect(report).toContain("Report examples");
+    expect(report).toContain("Example: Executive snapshot");
+    expect(report).toContain("Example output");
   });
 
   it("uses Flowstate dialogs instead of native browser prompts", () => {
