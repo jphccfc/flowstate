@@ -21,7 +21,11 @@ export async function GET(req: NextRequest) {
   const [tags, domains, kpis, stakeholders] = await Promise.all([
     prisma.tag.findMany({
       where: { status: "PENDING_REVIEW", segment: { capturedInput: { organizationId } } },
-      include: { segment: true },
+      include: {
+        segment: {
+          include: { capturedInput: true },
+        },
+      },
       orderBy: { createdAt: "asc" },
     }),
     prisma.businessDomain.findMany({ where: { organizationId }, include: { capabilities: true } }),
@@ -60,6 +64,22 @@ export async function GET(req: NextRequest) {
     targetName: nameById.get(tag.targetId) ?? "(unknown)",
     confidence: tag.confidence,
     segment: { text: tag.segment.text },
+    provenance: {
+      sourceType: tag.segment.capturedInput.type,
+      sourceRef: tag.segment.capturedInput.sourceRef,
+      locationTag: tag.segment.capturedInput.locationTag,
+      capturedAt: tag.segment.capturedInput.capturedAt,
+      capturedInputId: tag.segment.capturedInput.id,
+      segmentId: tag.segment.id,
+      segmentText: tag.segment.text,
+      aiConfidence: tag.confidence,
+      generatedAt: tag.createdAt,
+    },
+    decision: {
+      status: tag.status,
+      reviewedBy: tag.reviewedBy,
+      reviewedAt: tag.reviewedAt,
+    },
     candidates: candidatesByType[tag.targetType as CandidateType] ?? [],
   }));
 
