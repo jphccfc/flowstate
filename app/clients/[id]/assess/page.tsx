@@ -32,11 +32,14 @@ type HistoryData = {
 
 function ScorePicker({ value, onChange }: { value: number; onChange: (v: number) => void }) {
   return (
-    <div className="flex gap-1">
+    <div className="flex gap-1" role="radiogroup" aria-label="Maturity score from 0 to 5">
       {[0, 1, 2, 3, 4, 5].map((n) => (
         <button
           key={n}
           type="button"
+          role="radio"
+          aria-checked={value === n}
+          aria-label={`Score ${n} of 5`}
           onClick={() => onChange(n)}
           className={`w-8 h-8 rounded-lg text-sm font-bold border transition-colors ${
             value === n
@@ -75,8 +78,8 @@ function EntryForm({
       const draft = await onDraft();
       setScore(draft.score);
       setText(draft.text);
-    } catch {
-      setError("Failed to generate draft. Please try again.");
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Failed to generate draft. Please try again.");
     } finally {
       setDrafting(false);
     }
@@ -91,8 +94,8 @@ function EntryForm({
       setText("");
       setCommittedBy("");
       setScore(0);
-    } catch {
-      setError("Failed to save. Please try again.");
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Failed to save. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -137,6 +140,7 @@ function EntryForm({
       </div>
       <div className="flex gap-2">
         <button
+          type="button"
           onClick={handleSubmit}
           disabled={submitting}
           className="px-3 py-1.5 bg-[var(--accent)] text-white rounded-lg text-sm font-medium disabled:opacity-50"
@@ -144,6 +148,7 @@ function EntryForm({
           {submitting ? "Saving..." : "Save"}
         </button>
         <button
+          type="button"
           onClick={handleDraft}
           disabled={drafting}
           className="px-3 py-1.5 bg-[var(--muted-bg)] text-[var(--muted)] rounded-lg text-sm disabled:opacity-50"
@@ -165,20 +170,29 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   const [showToBeHistory, setShowToBeHistory] = useState(false);
   const [loading, setLoading] = useState(true);
   const [historyError, setHistoryError] = useState<string | null>(null);
+  const [orgError, setOrgError] = useState<string | null>(null);
 
   const loadOrg = useCallback(async () => {
+    setOrgError(null);
     const res = await fetch(`/api/clients/${id}`);
-    const data: Org = await res.json();
-    setOrg(data);
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !Array.isArray(data.domains)) {
+      const message = typeof data.error === "string" ? data.error : `Unable to load organisation (${res.status}).`;
+      setOrg(null);
+      setOrgError(message);
+      setLoading(false);
+      return null;
+    }
+    setOrg(data as Org);
     setLoading(false);
-    return data;
+    return data as Org;
   }, [id]);
 
   useEffect(() => {
     // Remote assessment bootstrap intentionally updates state after the fetch resolves.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     loadOrg().then((data) => {
-      if (data.domains?.[0]?.capabilities?.[0]) {
+      if (data?.domains?.[0]?.capabilities?.[0]) {
         setSelectedCapId(data.domains[0].capabilities[0].id);
       }
     });
@@ -211,7 +225,10 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ capabilityId: selectedCapId, locationTag: data.locationTag, score: data.score, evidence: data.text }),
     });
-    if (!res.ok) throw new Error("Failed to save as-is assessment");
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(typeof body.error === "string" ? body.error : `Save failed (${res.status}).`);
+    }
     await loadHistory(selectedCapId);
     await loadOrg();
   }
@@ -229,7 +246,10 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
         committedBy: data.committedBy,
       }),
     });
-    if (!res.ok) throw new Error("Failed to save to-be assessment");
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(typeof body.error === "string" ? body.error : `Save failed (${res.status}).`);
+    }
     await loadHistory(selectedCapId);
     await loadOrg();
   }
@@ -240,14 +260,20 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({}),
     });
-    if (!res.ok) throw new Error("Failed to draft as-is assessment");
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(typeof body.error === "string" ? body.error : `AI draft failed (${res.status}).`);
+    }
     const draft = await res.json();
     return { score: draft.score, text: draft.evidence };
   }
 
   async function draftToBe(): Promise<{ score: number; text: string }> {
     const res = await fetch(`/api/capabilities/${selectedCapId}/draft-to-be`, { method: "POST" });
-    if (!res.ok) throw new Error("Failed to draft to-be assessment");
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(typeof body.error === "string" ? body.error : `AI draft failed (${res.status}).`);
+    }
     const draft = await res.json();
     return { score: draft.score, text: draft.rationale };
   }
@@ -257,13 +283,25 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
 
   if (loading) return <div className="flex-1 flex items-center justify-center text-[var(--muted)]">Loading...</div>;
 
-  if (!org || org.domains.length === 0) {
+  if (orgError) {
+    return (
+      <div className="flex-1 flex items-center justify-center flex-col gap-4 text-center px-4">
+        <h2 className="font-semibold text-[var(--foreground)]">Assessment could not load</h2>
+        <p className="text-sm text-[var(--muted)] max-w-sm">{orgError}</p>
+        <Link href="/dashboard" className="px-4 py-2 bg-[var(--primary)] text-white rounded-lg text-sm font-medium">
+          Return to dashboard
+        </Link>
+      </div>
+    );
+  }
+
+  if (!org || org.domains.length === 0 || !org.domains.some((domain) => domain.capabilities.length > 0)) {
     return (
       <div className="flex-1 flex items-center justify-center flex-col gap-4 text-center px-4">
         <div className="text-4xl">⚙️</div>
-        <h2 className="font-semibold text-[var(--foreground)]">No domains configured</h2>
+        <h2 className="font-semibold text-[var(--foreground)]">No capabilities configured</h2>
         <p className="text-sm text-[var(--muted)] max-w-sm">
-          Configure business domains and capabilities before starting the assessment
+          Configure at least one business capability before starting the assessment
         </p>
         <Link href={`/clients/${id}/configure`} className="px-4 py-2 bg-[var(--primary)] text-white rounded-lg text-sm font-medium">
           Go to Configure
@@ -361,7 +399,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
                   ))
                 )}
               </div>
-              <EntryForm kind="asIs" onSubmit={saveAsIs} onDraft={draftAsIs} />
+              <EntryForm key={`${selectedCapId}-asIs`} kind="asIs" onSubmit={saveAsIs} onDraft={draftAsIs} />
               {history.asIsHistory.length > 0 && (
                 <button onClick={() => setShowAsIsHistory((v) => !v)} className="text-xs text-[var(--accent)] mt-3">
                   {showAsIsHistory ? "Hide" : "Show"} history ({history.asIsHistory.length})
@@ -392,7 +430,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
                   ))
                 )}
               </div>
-              <EntryForm kind="toBe" onSubmit={saveToBe} onDraft={draftToBe} />
+              <EntryForm key={`${selectedCapId}-toBe`} kind="toBe" onSubmit={saveToBe} onDraft={draftToBe} />
               {history.toBeHistory.length > 0 && (
                 <button onClick={() => setShowToBeHistory((v) => !v)} className="text-xs text-[var(--accent)] mt-3">
                   {showToBeHistory ? "Hide" : "Show"} history ({history.toBeHistory.length})
