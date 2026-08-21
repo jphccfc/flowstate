@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, use } from "react";
+import { FlowstateDialog } from "@/components/ui/FlowstateDialog";
 
 const DOMAIN_COLORS = [
   "#2563eb", "#16a34a", "#dc2626", "#9333ea", "#ea580c",
@@ -40,6 +41,10 @@ type KPI = { id: string; name: string; description: string | null; targetValue: 
 type Achievement = { id: string; description: string; priority: number | null; targetDate: string | null; successMetrics: string | null; status: string };
 type Stakeholder = { id: string; name: string; role: string | null; email: string | null };
 
+type DialogState =
+  | { kind: "input"; action: "domain" | "capability" | "kpi" | "achievement" | "stakeholderName" | "stakeholderRole"; title: string; placeholder: string; value: string; domainId?: string }
+  | { kind: "confirm"; action: "deleteDomain" | "deleteCapability"; title: string; message: string; domainId?: string; targetId: string };
+
 type Org = {
   id: string;
   name: string;
@@ -58,6 +63,7 @@ export default function ConfigurePage({ params }: { params: Promise<{ id: string
   const [tab, setTab] = useState<"domains" | "kpis" | "achievements" | "stakeholders">("domains");
   const [loading, setLoading] = useState(true);
   const [expandedDomain, setExpandedDomain] = useState<string | null>(null);
+  const [dialog, setDialog] = useState<DialogState | null>(null);
 
   useEffect(() => {
     fetch(`/api/clients/${id}`)
@@ -83,10 +89,9 @@ export default function ConfigurePage({ params }: { params: Promise<{ id: string
     }
   }
 
-  async function addDomain() {
-    const name = prompt("Domain name:");
-    if (!name?.trim()) return;
-    const color = DOMAIN_COLORS[org?.domains.length ?? 0 % DOMAIN_COLORS.length];
+  async function addDomain(name: string) {
+    if (!name.trim()) return;
+    const color = DOMAIN_COLORS[(org?.domains.length ?? 0) % DOMAIN_COLORS.length];
     const res = await fetch("/api/domains", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -98,14 +103,12 @@ export default function ConfigurePage({ params }: { params: Promise<{ id: string
   }
 
   async function deleteDomain(domainId: string) {
-    if (!confirm("Delete this domain and all its capabilities?")) return;
     await fetch(`/api/domains/${domainId}`, { method: "DELETE" });
     setOrg((prev) => prev ? { ...prev, domains: prev.domains.filter((d) => d.id !== domainId) } : prev);
   }
 
-  async function addCapability(domainId: string) {
-    const name = prompt("Capability name:");
-    if (!name?.trim()) return;
+  async function addCapability(domainId: string, name: string) {
+    if (!name.trim()) return;
     const domain = org?.domains.find((d) => d.id === domainId);
     const res = await fetch("/api/capabilities", {
       method: "POST",
@@ -125,7 +128,6 @@ export default function ConfigurePage({ params }: { params: Promise<{ id: string
   }
 
   async function deleteCapability(domainId: string, capId: string) {
-    if (!confirm("Delete this capability?")) return;
     await fetch(`/api/capabilities/${capId}`, { method: "DELETE" });
     setOrg((prev) => {
       if (!prev) return prev;
@@ -161,9 +163,8 @@ export default function ConfigurePage({ params }: { params: Promise<{ id: string
     });
   }
 
-  async function addKPI() {
-    const name = prompt("KPI name:");
-    if (!name?.trim()) return;
+  async function addKPI(name: string) {
+    if (!name.trim()) return;
     const res = await fetch("/api/kpis", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -178,9 +179,8 @@ export default function ConfigurePage({ params }: { params: Promise<{ id: string
     setOrg((prev) => prev ? { ...prev, kpis: prev.kpis.filter((k) => k.id !== kpiId) } : prev);
   }
 
-  async function addAchievement() {
-    const desc = prompt("Achievement / target outcome:");
-    if (!desc?.trim()) return;
+  async function addAchievement(desc: string) {
+    if (!desc.trim()) return;
     const res = await fetch("/api/achievements", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -195,10 +195,8 @@ export default function ConfigurePage({ params }: { params: Promise<{ id: string
     setOrg((prev) => prev ? { ...prev, achievements: prev.achievements.filter((a) => a.id !== achId) } : prev);
   }
 
-  async function addStakeholder() {
-    const name = prompt("Stakeholder name:");
-    if (!name?.trim()) return;
-    const role = prompt("Role / title (optional):") ?? "";
+  async function addStakeholder(name: string, role: string) {
+    if (!name.trim()) return;
     const res = await fetch("/api/stakeholders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -212,6 +210,36 @@ export default function ConfigurePage({ params }: { params: Promise<{ id: string
     await fetch(`/api/stakeholders/${shId}`, { method: "DELETE" });
     setOrg((prev) => prev ? { ...prev, stakeholders: prev.stakeholders.filter((s) => s.id !== shId) } : prev);
   }
+
+  function openInput(action: Extract<DialogState, { kind: "input" }>["action"], title: string, placeholder: string, domainId?: string) {
+    setDialog({ kind: "input", action, title, placeholder, value: "", domainId });
+  }
+
+  function openDelete(action: "deleteDomain" | "deleteCapability", targetId: string, message: string, domainId?: string) {
+    setDialog({ kind: "confirm", action, targetId, domainId, title: "Confirm deletion", message });
+  }
+
+  async function submitDialog() {
+    if (!dialog) return;
+    const current = dialog;
+    setDialog(null);
+    if (current.kind === "confirm") {
+      if (current.action === "deleteDomain") await deleteDomain(current.targetId);
+      else if (current.domainId) await deleteCapability(current.domainId, current.targetId);
+      return;
+    }
+    if (current.action === "domain") await addDomain(current.value);
+    if (current.action === "capability" && current.domainId) await addCapability(current.domainId, current.value);
+    if (current.action === "kpi") await addKPI(current.value);
+    if (current.action === "achievement") await addAchievement(current.value);
+    if (current.action === "stakeholderName" && current.value.trim()) {
+      setDialog({ kind: "input", action: "stakeholderRole", title: "Add stakeholder role", placeholder: "Role or title (optional)", value: "" });
+      setPendingStakeholderName(current.value.trim());
+    }
+    if (current.action === "stakeholderRole" && pendingStakeholderName) await addStakeholder(pendingStakeholderName, current.value);
+  }
+
+  const [pendingStakeholderName, setPendingStakeholderName] = useState("");
 
   if (loading) return <div className="flex-1 flex items-center justify-center text-[var(--muted)]">Loading...</div>;
   if (!org) return null;
@@ -275,7 +303,7 @@ export default function ConfigurePage({ params }: { params: Promise<{ id: string
                   <span className="font-medium text-[var(--foreground)] flex-1">{domain.name}</span>
                   <span className="text-xs text-[var(--muted)]">{domain.capabilities.length} capabilities</span>
                   <button
-                    onClick={(e) => { e.stopPropagation(); deleteDomain(domain.id); }}
+                    onClick={(e) => { e.stopPropagation(); openDelete("deleteDomain", domain.id, "Delete this domain and all its capabilities?"); }}
                     className="text-xs text-[var(--destructive)] hover:underline px-2"
                   >
                     Delete
@@ -323,7 +351,7 @@ export default function ConfigurePage({ params }: { params: Promise<{ id: string
                               </div>
                             </div>
                             <button
-                              onClick={() => deleteCapability(domain.id, cap.id)}
+                              onClick={() => openDelete("deleteCapability", cap.id, "Delete this capability?", domain.id)}
                               className="text-xs text-[var(--destructive)] hover:underline shrink-0"
                             >
                               Delete
@@ -333,7 +361,7 @@ export default function ConfigurePage({ params }: { params: Promise<{ id: string
                       )}
                     </div>
                     <button
-                      onClick={() => addCapability(domain.id)}
+                      onClick={() => { setExpandedDomain(domain.id); openInput("capability", "Add capability", "Capability name", domain.id); }}
                       className="text-sm text-[var(--accent)] hover:underline font-medium"
                     >
                       + Add Capability
@@ -345,7 +373,7 @@ export default function ConfigurePage({ params }: { params: Promise<{ id: string
           </div>
 
           <button
-            onClick={addDomain}
+            onClick={() => openInput("domain", "Add domain", "Domain name")}
             className="px-4 py-2 border border-dashed border-[var(--card-border)] text-sm text-[var(--muted)] rounded-lg hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors w-full"
           >
             + Add Custom Domain
@@ -378,7 +406,7 @@ export default function ConfigurePage({ params }: { params: Promise<{ id: string
             )}
           </div>
           <button
-            onClick={addKPI}
+            onClick={() => openInput("kpi", "Add KPI", "KPI name")}
             className="px-4 py-2 border border-dashed border-[var(--card-border)] text-sm text-[var(--muted)] rounded-lg hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors w-full"
           >
             + Add KPI
@@ -412,7 +440,7 @@ export default function ConfigurePage({ params }: { params: Promise<{ id: string
             )}
           </div>
           <button
-            onClick={addAchievement}
+            onClick={() => openInput("achievement", "Add target achievement", "Achievement or target outcome")}
             className="px-4 py-2 border border-dashed border-[var(--card-border)] text-sm text-[var(--muted)] rounded-lg hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors w-full"
           >
             + Add Target Achievement
@@ -446,12 +474,26 @@ export default function ConfigurePage({ params }: { params: Promise<{ id: string
             )}
           </div>
           <button
-            onClick={addStakeholder}
+            onClick={() => openInput("stakeholderName", "Add stakeholder", "Stakeholder name")}
             className="px-4 py-2 border border-dashed border-[var(--card-border)] text-sm text-[var(--muted)] rounded-lg hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors w-full"
           >
             + Add Stakeholder
           </button>
         </div>
+      )}
+      {dialog && (
+        <FlowstateDialog
+          kind={dialog.kind}
+          title={dialog.title}
+          message={dialog.kind === "confirm" ? dialog.message : undefined}
+          value={dialog.kind === "input" ? dialog.value : undefined}
+          placeholder={dialog.kind === "input" ? dialog.placeholder : undefined}
+          confirmLabel={dialog.kind === "confirm" ? "Delete" : "Continue"}
+          destructive={dialog.kind === "confirm"}
+          onChange={(value) => setDialog((current) => current?.kind === "input" ? { ...current, value } : current)}
+          onCancel={() => setDialog(null)}
+          onConfirm={submitDialog}
+        />
       )}
     </div>
   );
