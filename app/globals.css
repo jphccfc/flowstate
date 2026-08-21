@@ -145,7 +145,23 @@ body {
   .workspace-rail.is-open .workspace-navigation-panel { display: flex; }
 }
 
-.workspace-menu-button { display: none; border: 1px solid var(--workspace-border); border-radius: 0.55rem; padding: 0.45rem 0.65rem; color: var(--workspace-text); background: transparent; font-size: 0.75rem; }
+.workspace-menu-button { display: none; border: 1px solid var(--workspace-border); border-radius: 0.65rem; padding: 0.55rem 0.75rem; color: var(--workspace-text); background: var(--workspace-surface-raised); font-size: 0.78rem; font-weight: 700; line-height: 1; }
+.workspace-menu-button:hover, .workspace-menu-button:focus-visible { border-color: var(--accent); background: rgba(40, 215, 250, 0.14); outline: none; }
+
+.flowstate-dialog-backdrop { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 1rem; background: rgba(7, 16, 24, 0.7); backdrop-filter: blur(4px); }
+.flowstate-dialog { width: min(100%, 28rem); padding: 1.25rem; border: 1px solid var(--card-border); border-radius: 1rem; background: var(--card); color: var(--foreground); box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35); }
+.flowstate-dialog-mark { display: grid; place-items: center; width: 2rem; height: 2rem; margin-bottom: 0.8rem; border-radius: 0.65rem; color: #071018; font-size: 0.7rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent-purple)); }
+.flowstate-dialog-title { font-family: "Poppins", "Inter", sans-serif; font-size: 1.05rem; font-weight: 700; }
+.flowstate-dialog-message { margin-top: 0.45rem; color: var(--muted); font-size: 0.88rem; line-height: 1.45; }
+.flowstate-dialog-input { width: 100%; margin-top: 1rem; padding: 0.7rem 0.8rem; border: 1px solid var(--card-border); border-radius: 0.65rem; background: var(--background); color: var(--foreground); outline: none; }
+.flowstate-dialog-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(40, 215, 250, 0.16); }
+.flowstate-dialog-actions { display: flex; justify-content: flex-end; gap: 0.6rem; margin-top: 1.15rem; }
+.flowstate-dialog-cancel, .flowstate-dialog-confirm { min-height: 2.5rem; padding: 0.55rem 0.85rem; border-radius: 0.65rem; font-size: 0.82rem; font-weight: 700; }
+.flowstate-dialog-cancel { border: 1px solid var(--card-border); color: var(--foreground); background: transparent; }
+.flowstate-dialog-confirm { color: #071018; background: var(--accent); }
+.flowstate-dialog-confirm.is-destructive { color: white; background: var(--destructive); }
+
+@media (max-width: 800px) { .workspace-menu-button { display: inline-flex !important; align-items: center; justify-content: center; } }
 
 
 .workspace-card {
