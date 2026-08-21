@@ -35,37 +35,46 @@ export function WorkspaceNav({ clientId, clientName }: { clientId: string; clien
           <span className="workspace-brand-mark" aria-hidden="true">FS</span>
           <span className="workspace-brand-name">Flowstate</span>
         </Link>
-        <button type="button" className="workspace-menu-button" onClick={() => setOpen((value) => !value)} aria-expanded={open}>
+        <button
+          type="button"
+          className="workspace-menu-button"
+          onClick={() => setOpen((value) => !value)}
+          aria-expanded={open}
+          aria-controls="workspace-navigation-panel"
+          aria-label={open ? "Close workspace navigation" : "Open workspace navigation"}
+        >
           {open ? "Close" : "Menu"}
         </button>
       </div>
 
-      <div className="workspace-context">
-        <div className="workspace-context-label">Business workspace</div>
-        <div className="workspace-context-name" title={clientName}>{clientName}</div>
-      </div>
+      <div id="workspace-navigation-panel" className="workspace-navigation-panel">
+        <div className="workspace-context">
+          <div className="workspace-context-label">Business workspace</div>
+          <div className="workspace-context-name" title={clientName}>{clientName}</div>
+        </div>
 
-      <nav className="workspace-nav" aria-label="Workspace navigation">
-        {items.map((item) => {
-          const active = item.href === `/clients/${clientId}` ? pathname === item.href : pathname.startsWith(item.href);
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-current={active ? "page" : undefined}
-              className="workspace-nav-link"
-              onClick={() => setOpen(false)}
-            >
-              <span className="workspace-nav-icon" aria-hidden="true">{item.short}</span>
-              {item.label}
-            </Link>
-          );
-        })}
-      </nav>
+        <nav className="workspace-nav" aria-label="Workspace navigation">
+          {items.map((item) => {
+            const active = item.href === `/clients/${clientId}` ? pathname === item.href : pathname.startsWith(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                className="workspace-nav-link"
+                onClick={() => setOpen(false)}
+              >
+                <span className="workspace-nav-icon" aria-hidden="true">{item.short}</span>
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
 
-      <div className="workspace-actions">
-        <ThemeToggle />
-        <button type="button" className="workspace-signout" onClick={signOut}>Sign out</button>
+        <div className="workspace-actions">
+          <ThemeToggle />
+          <button type="button" className="workspace-signout" onClick={signOut}>Sign out</button>
+        </div>
       </div>
     </aside>
   );
