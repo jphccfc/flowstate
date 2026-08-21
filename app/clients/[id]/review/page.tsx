@@ -12,6 +12,18 @@ type PendingTag = {
   targetName: string;
   confidence: number;
   segment: { text: string };
+  provenance: {
+    sourceType: string;
+    sourceRef: string | null;
+    locationTag: string | null;
+    capturedAt: string;
+    capturedInputId: string;
+    segmentId: string;
+    segmentText: string;
+    aiConfidence: number;
+    generatedAt: string;
+  };
+  decision: { status: string; reviewedBy: string | null; reviewedAt: string | null };
   candidates: Candidate[];
 };
 
@@ -97,7 +109,23 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
       <div className="space-y-3">
         {tags.map((tag) => (
           <div key={tag.id} className="bg-[var(--card)] border border-[var(--card-border)] rounded-lg p-4">
-            <p className="text-sm mb-3">&ldquo;{tag.segment.text}&rdquo;</p>
+            <div className="mb-3 flex items-start justify-between gap-3">
+              <p className="text-sm">&ldquo;{tag.provenance.segmentText}&rdquo;</p>
+              <span className="shrink-0 rounded-full border border-[var(--card-border)] px-2 py-1 text-[10px] uppercase tracking-wide text-[var(--muted)]">AI suggestion</span>
+            </div>
+            <div className="mb-3 rounded-md bg-[var(--surface-muted)] p-3 text-xs text-[var(--muted)]">
+              <div className="flex flex-wrap gap-x-4 gap-y-1">
+                <span>Source: {tag.provenance.sourceType.replaceAll("_", " ")}</span>
+                <span>Confidence: {Math.round(tag.provenance.aiConfidence * 100)}%</span>
+                <span>Captured: {new Date(tag.provenance.capturedAt).toLocaleString()}</span>
+              </div>
+              {tag.provenance.locationTag && <div className="mt-1">Location: {tag.provenance.locationTag}</div>}
+              {tag.provenance.sourceRef && (
+                <a href={tag.provenance.sourceRef} target="_blank" rel="noreferrer" className="mt-1 block truncate text-[var(--accent)] underline">
+                  Open original source
+                </a>
+              )}
+            </div>
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs text-[var(--muted)]">
                 {tag.targetType}: {tag.targetName} &middot; {Math.round(tag.confidence * 100)}% confidence
