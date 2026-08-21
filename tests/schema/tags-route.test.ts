@@ -41,6 +41,15 @@ describe("tags routes", () => {
     const list = await listRes.json();
     expect(list).toHaveLength(1);
     expect(list[0].targetName).toBe("Shift Scheduling");
+    expect(list[0].provenance).toEqual(expect.objectContaining({
+      sourceType: "TEXT_NOTE",
+      sourceRef: null,
+      segmentId: segment.id,
+      capturedInputId: input.id,
+    }));
+    expect(list[0].provenance.segmentText).toBe("Night shift scheduling is a mess.");
+    expect(list[0].provenance.aiConfidence).toBe(0.6);
+    expect(list[0].decision).toEqual({ status: "PENDING_REVIEW", reviewedBy: null, reviewedAt: null });
     expect(list[0].candidates.map((c: { id: string }) => c.id).sort()).toEqual([capA.id, capB.id].sort());
 
     const approveRes = await patchTag(
