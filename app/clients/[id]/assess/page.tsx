@@ -227,6 +227,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   const [selectedCapId, setSelectedCapId] = useState<string | null>(null);
   const [history, setHistory] = useState<HistoryData | null>(null);
   const [perspectiveData, setPerspectiveData] = useState<PerspectiveData | null>(null);
+  const [perspectiveError, setPerspectiveError] = useState<string | null>(null);
   const [showAsIsHistory, setShowAsIsHistory] = useState(false);
   const [showToBeHistory, setShowToBeHistory] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -280,9 +281,15 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   }, [selectedCapId, loadHistory]);
 
   const loadPerspectives = useCallback(async (capId: string) => {
+    setPerspectiveError(null);
     const res = await fetch(`/api/capabilities/${capId}/perspectives`);
-    if (!res.ok) { setPerspectiveData(null); return; }
-    setPerspectiveData(await res.json());
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      setPerspectiveData(null);
+      setPerspectiveError(typeof data.error === "string" ? data.error : `Perspective data could not load (${res.status}).`);
+      return;
+    }
+    setPerspectiveData(data);
   }, []);
 
   useEffect(() => {
@@ -316,8 +323,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
       const body = await res.json().catch(() => ({}));
       throw new Error(typeof body.error === "string" ? body.error : `Save failed (${res.status}).`);
     }
-    await loadHistory(selectedCapId);
-    await loadOrg();
+    await Promise.all([loadHistory(selectedCapId), loadOrg(), loadPerspectives(selectedCapId)]);
   }
 
   async function saveToBe(data: { locationTag: string | null; score: number; text: string; committedBy?: string }) {
@@ -337,8 +343,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
       const body = await res.json().catch(() => ({}));
       throw new Error(typeof body.error === "string" ? body.error : `Save failed (${res.status}).`);
     }
-    await loadHistory(selectedCapId);
-    await loadOrg();
+    await Promise.all([loadHistory(selectedCapId), loadOrg(), loadPerspectives(selectedCapId)]);
   }
 
   async function draftAsIs(): Promise<{ score: number; text: string }> {
@@ -435,6 +440,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
                         setSelectedCapId(cap.id);
                         setHistory(null);
                         setPerspectiveData(null);
+                        setPerspectiveError(null);
                       }}
                       className={`assessment-capability-option ${isSelected ? "is-selected" : ""}`}
                     >
@@ -480,13 +486,20 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
               )}
             </div>
 
-            {perspectiveData && (
+            {(perspectiveData || perspectiveError) && (
               <section className="workspace-card p-5 mb-4" aria-labelledby="perspective-balance-title">
                 <div className="flex items-start justify-between gap-4 mb-3">
                   <div><div className="workspace-eyebrow">Evidence-led assessment</div><h3 id="perspective-balance-title" className="text-sm font-semibold text-[var(--foreground)]">Perspective balance</h3></div>
-                  <span className="text-xs text-[var(--muted)]">Rubric v{perspectiveData.rubric.version}</span>
+                  <span className="text-xs text-[var(--muted)]">Rubric v{perspectiveData?.rubric.version ?? "—"}</span>
                 </div>
-                {perspectiveData.perspectives.length === 0 ? (
+                {perspectiveError ? (
+                  <div className="rounded-lg border border-[var(--card-border)] bg-[var(--muted-bg)] p-3 text-sm">
+                    <div className="font-medium text-[var(--foreground)]">Perspective data could not load</div>
+                    <div className="mt-1 text-xs text-[var(--muted)]">{perspectiveError}</div>
+                  </div>
+                ) : !perspectiveData ? (
+                  <p className="text-sm text-[var(--muted)]">Loading perspective data...</p>
+                ) : perspectiveData.perspectives.length === 0 ? (
                   <p className="text-sm text-[var(--muted)]">No employee or expert perspectives have been recorded yet.</p>
                 ) : (
                   <>
@@ -495,8 +508,8 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
                     <div className="space-y-2">{perspectiveData.perspectives.map((perspective) => <div key={perspective.id} className="border-t border-[var(--card-border)] pt-2 text-sm"><div className="flex items-center justify-between gap-3"><span className="font-medium text-[var(--foreground)]">{perspective.stakeholderType === "expert_analyst" ? "Expert analyst" : perspective.stakeholderType}</span><span className="font-bold text-[var(--accent)]">{perspective.score}</span></div><p className="mt-1 text-xs text-[var(--muted)]">“{perspective.originalStatement}”</p></div>)}</div>
                   </>
                 )}
-                <details className="mt-4 text-xs text-[var(--muted)]"><summary className="cursor-pointer text-[var(--accent)]">Current maturity rubric</summary><div className="mt-2 space-y-1">{perspectiveData.rubric.anchors.map((anchor) => <div key={anchor.level}><strong className="text-[var(--foreground)]">{anchor.level} — {anchor.label}:</strong> {anchor.description}</div>)}</div></details>
-                <PerspectiveForm onSubmit={savePerspective} />
+                {perspectiveData && <details className="mt-4 text-xs text-[var(--muted)]"><summary className="cursor-pointer text-[var(--accent)]">Current maturity rubric</summary><div className="mt-2 space-y-1">{perspectiveData.rubric.anchors.map((anchor) => <div key={anchor.level}><strong className="text-[var(--foreground)]">{anchor.level} — {anchor.label}:</strong> {anchor.description}</div>)}</div></details>}
+                {perspectiveData && <PerspectiveForm onSubmit={savePerspective} />}
               </section>
             )}
 
@@ -562,12 +575,19 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
               )}
             </div>
 
-            <div className="bg-white rounded-xl border border-[var(--card-border)] p-5 mb-8 shadow-sm text-center">
-              <span className="text-xs text-[var(--muted)]">Gap: </span>
-              <span className="text-sm font-bold" style={{ color: getGapColor(getGapSeverity(calculateGap(history.currentAsIs, history.currentToBe))) }}>
-                {calculateGap(history.currentAsIs, history.currentToBe)?.toFixed(1) ?? "—"}
-              </span>
-            </div>
+            {(() => {
+              const gap = calculateGap(history.currentAsIs, history.currentToBe);
+              return (
+                <div className="bg-white rounded-xl border border-[var(--card-border)] p-5 mb-8 shadow-sm text-center">
+                  <span className="text-xs text-[var(--muted)]">Gap: </span>
+                  {gap == null ? (
+                    <span className="text-xs text-[var(--muted)]">Set both current and target scores to calculate the gap.</span>
+                  ) : (
+                    <span className="text-sm font-bold" style={{ color: getGapColor(getGapSeverity(gap)) }}>{gap.toFixed(1)}</span>
+                  )}
+                </div>
+              );
+            })()}
           </div>
         )}
       </main>
