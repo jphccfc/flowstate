@@ -593,7 +593,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
             </div>
 
             {(() => {
-              const gap = history.gap;
+              const gap = history.gap ?? calculateGap(history.currentAsIs, history.currentToBe);
               return (
                 <div className="bg-white rounded-xl border border-[var(--card-border)] p-5 mb-8 shadow-sm text-center">
                   <span className="text-xs text-[var(--muted)]">Gap: </span>
