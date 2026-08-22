@@ -66,7 +66,7 @@ export default async function ClientOverviewPage({
           { label: "KPIs", value: org._count.kpis },
         ].map((stat) => (
           <div key={stat.label} className="workspace-card workspace-stat p-4">
-            <div className="text-2xl font-bold text-[var(--primary)]">{stat.value}</div>
+            <div className="workspace-stat-value text-2xl font-bold">{stat.value}</div>
             <div className="text-xs text-[var(--muted)] mt-0.5">{stat.label}</div>
           </div>
         ))}
