@@ -48,6 +48,7 @@ model Organization {
   sessions       AssessmentSession[]
   capturedInputs CapturedInput[]
   recommendations Recommendation[]
+  maturityRubrics MaturityRubric[]
 }
 
 model UserOrganization {
@@ -99,6 +100,7 @@ model Capability {
   technologies CapabilityTechnology[]
   projects     ProjectCapability[]
   maturityAssessments MaturityAssessment[]
+  maturityPerspectives MaturityPerspective[]
   targetMaturities     TargetMaturity[]
   kpiCeilings          CapabilityKPIMaturityCeiling[]
   followUpSuggestions FollowUpSuggestion[]
@@ -116,6 +118,7 @@ model Stakeholder {
 
   organization  Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   capabilities  CapabilityStakeholder[]
+  perspectives  MaturityPerspective[]
   achievements  AchievementStakeholder[]
 }
 
@@ -356,6 +359,50 @@ model Tag {
   segment CapturedSegment @relation(fields: [segmentId], references: [id], onDelete: Cascade)
 
   @@index([targetType, targetId])
+}
+
+model MaturityRubric {
+  id             String   @id @default(cuid())
+  organizationId String?
+  name           String
+  version        Int
+  anchors        Json
+  isDefault      Boolean  @default(false)
+  effectiveFrom  DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, name, version])
+  @@index([organizationId, isDefault])
+}
+
+model MaturityPerspective {
+  id                String   @id @default(cuid())
+  capabilityId      String
+  stakeholderId     String?
+  assessorEmail     String?
+  stakeholderType   String
+  assessorRole      String?
+  locationTag       String?
+  score             Float
+  scoreRangeMin     Float?
+  scoreRangeMax     Float?
+  originalStatement String
+  rationale         String?
+  confidence        Float?
+  sourceEvidenceIds String[] @default([])
+  rubricVersion     Int?
+  status            String   @default("SUBMITTED")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  capability  Capability  @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+  stakeholder Stakeholder? @relation(fields: [stakeholderId], references: [id], onDelete: SetNull)
+
+  @@index([capabilityId, createdAt])
+  @@index([capabilityId, stakeholderType])
 }
 
 model MaturityAssessment {

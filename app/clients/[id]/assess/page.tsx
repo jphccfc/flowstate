@@ -29,6 +29,8 @@ type HistoryData = {
   asIsHistory: HistoryEntry[];
   toBeHistory: HistoryEntry[];
 };
+type Perspective = { id: string; stakeholderType: string; assessorRole: string | null; score: number; originalStatement: string; rationale: string | null; confidence: number | null };
+type PerspectiveData = { perspectives: Perspective[]; summary: { count: number; minimum: number | null; maximum: number | null; spread: number | null; stakeholderTypes: string[] }; rubric: { version: number; anchors: Array<{ level: number; label: string; description: string }> } };
 
 function ScorePicker({ value, onChange }: { value: number; onChange: (v: number) => void }) {
   return (
@@ -166,6 +168,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   const [org, setOrg] = useState<Org | null>(null);
   const [selectedCapId, setSelectedCapId] = useState<string | null>(null);
   const [history, setHistory] = useState<HistoryData | null>(null);
+  const [perspectiveData, setPerspectiveData] = useState<PerspectiveData | null>(null);
   const [showAsIsHistory, setShowAsIsHistory] = useState(false);
   const [showToBeHistory, setShowToBeHistory] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -217,6 +220,20 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
       loadHistory(selectedCapId);
     }
   }, [selectedCapId, loadHistory]);
+
+  const loadPerspectives = useCallback(async (capId: string) => {
+    const res = await fetch(`/api/capabilities/${capId}/perspectives`);
+    if (!res.ok) { setPerspectiveData(null); return; }
+    setPerspectiveData(await res.json());
+  }, []);
+
+  useEffect(() => {
+    if (selectedCapId) {
+      // Perspective refresh intentionally updates state after the fetch resolves.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      loadPerspectives(selectedCapId);
+    }
+  }, [selectedCapId, loadPerspectives]);
 
   async function saveAsIs(data: { locationTag: string | null; score: number; text: string }) {
     if (!selectedCapId) return;
@@ -347,6 +364,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
                       onClick={() => {
                         setSelectedCapId(cap.id);
                         setHistory(null);
+                        setPerspectiveData(null);
                       }}
                       className={`assessment-capability-option ${isSelected ? "is-selected" : ""}`}
                     >
@@ -391,6 +409,25 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
                 </div>
               )}
             </div>
+
+            {perspectiveData && (
+              <section className="workspace-card p-5 mb-4" aria-labelledby="perspective-balance-title">
+                <div className="flex items-start justify-between gap-4 mb-3">
+                  <div><div className="workspace-eyebrow">Evidence-led assessment</div><h3 id="perspective-balance-title" className="text-sm font-semibold text-[var(--foreground)]">Perspective balance</h3></div>
+                  <span className="text-xs text-[var(--muted)]">Rubric v{perspectiveData.rubric.version}</span>
+                </div>
+                {perspectiveData.perspectives.length === 0 ? (
+                  <p className="text-sm text-[var(--muted)]">No employee or expert perspectives have been recorded yet.</p>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-2 gap-3 mb-4"><div className="p-3 rounded-lg bg-[var(--muted-bg)]"><div className="text-xs text-[var(--muted)]">Employee perspectives</div><div className="text-lg font-bold text-[var(--foreground)]">{perspectiveData.perspectives.filter((p) => p.stakeholderType === "employee").length}</div></div><div className="p-3 rounded-lg bg-[var(--muted-bg)]"><div className="text-xs text-[var(--muted)]">Expert perspectives</div><div className="text-lg font-bold text-[var(--foreground)]">{perspectiveData.perspectives.filter((p) => p.stakeholderType === "expert_analyst").length}</div></div></div>
+                    <div className="flex items-center justify-between text-xs text-[var(--muted)] mb-3"><span>Reported range: <strong className="text-[var(--foreground)]">{perspectiveData.summary.minimum}–{perspectiveData.summary.maximum}</strong></span><span>Spread: <strong className="text-[var(--foreground)]">{perspectiveData.summary.spread}</strong></span></div>
+                    <div className="space-y-2">{perspectiveData.perspectives.map((perspective) => <div key={perspective.id} className="border-t border-[var(--card-border)] pt-2 text-sm"><div className="flex items-center justify-between gap-3"><span className="font-medium text-[var(--foreground)]">{perspective.stakeholderType === "expert_analyst" ? "Expert analyst" : perspective.stakeholderType}</span><span className="font-bold text-[var(--accent)]">{perspective.score}</span></div><p className="mt-1 text-xs text-[var(--muted)]">“{perspective.originalStatement}”</p></div>)}</div>
+                  </>
+                )}
+                <details className="mt-4 text-xs text-[var(--muted)]"><summary className="cursor-pointer text-[var(--accent)]">Current maturity rubric</summary><div className="mt-2 space-y-1">{perspectiveData.rubric.anchors.map((anchor) => <div key={anchor.level}><strong className="text-[var(--foreground)]">{anchor.level} — {anchor.label}:</strong> {anchor.description}</div>)}</div></details>
+              </section>
+            )}
 
             <div className="bg-white rounded-xl border border-[var(--card-border)] p-5 mb-4 shadow-sm">
               <h3 className="text-sm font-semibold text-[var(--foreground)] mb-3">Current State (As-Is)</h3>

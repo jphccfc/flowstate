@@ -50,6 +50,13 @@ describe("workspace responsive and theme contracts", () => {
     expect(css).not.toContain("grid-template-columns: minmax(15rem, 18rem) minmax(0, 1fr)");
   });
 
+  it("shows multi-perspective assessment balance and rubric context", () => {
+    expect(assess).toContain("Perspective balance");
+    expect(assess).toContain("Employee perspectives");
+    expect(assess).toContain("Expert perspectives");
+    expect(assess).toContain("Current maturity rubric");
+  });
+
   it("shows clearly labelled report examples", () => {
     expect(report).toContain("Report examples");
     expect(report).toContain("Example: Executive snapshot");
