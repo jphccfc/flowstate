@@ -46,6 +46,7 @@ describe("GET /api/capabilities/[id]/assessment-history", () => {
     expect(body.asIsHistory).toHaveLength(2);
     expect(body.asIsHistory[0].score).toBe(2); // desc order, most recent first
     expect(body.toBeHistory).toHaveLength(1);
+    expect(body.gap).toBe(2);
   });
 
   it("404s for a nonexistent capability", async () => {

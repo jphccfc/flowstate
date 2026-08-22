@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { isOrganizationMember } from "@/lib/auth/organization";
 import { getCurrentMaturity } from "@/lib/maturity/current";
 import { getCurrentTargetMaturity } from "@/lib/maturity/target";
+import { calculateGap } from "@/lib/scoring/engine";
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient();
@@ -23,5 +24,5 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
     prisma.targetMaturity.findMany({ where: { capabilityId: id }, orderBy: { setAt: "desc" } }),
   ]);
 
-  return NextResponse.json({ currentAsIs, currentToBe, asIsHistory, toBeHistory });
+  return NextResponse.json({ currentAsIs, currentToBe, gap: calculateGap(currentAsIs, currentToBe), asIsHistory, toBeHistory });
 }

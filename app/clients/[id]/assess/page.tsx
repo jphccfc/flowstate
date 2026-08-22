@@ -28,6 +28,7 @@ type HistoryData = {
   currentToBe: MaturitySnapshot[];
   asIsHistory: HistoryEntry[];
   toBeHistory: HistoryEntry[];
+  gap: number | null;
 };
 type Perspective = { id: string; stakeholderType: string; assessorRole: string | null; score: number; originalStatement: string; rationale: string | null; confidence: number | null };
 type PerspectiveData = { perspectives: Perspective[]; summary: { count: number; minimum: number | null; maximum: number | null; spread: number | null; stakeholderTypes: string[] }; rubric: { version: number; anchors: Array<{ level: number; label: string; description: string }> } };
@@ -576,7 +577,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
             </div>
 
             {(() => {
-              const gap = calculateGap(history.currentAsIs, history.currentToBe);
+              const gap = history.gap;
               return (
                 <div className="bg-white rounded-xl border border-[var(--card-border)] p-5 mb-8 shadow-sm text-center">
                   <span className="text-xs text-[var(--muted)]">Gap: </span>
