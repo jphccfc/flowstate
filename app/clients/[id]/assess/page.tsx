@@ -487,6 +487,22 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
               )}
             </div>
 
+
+            <section className="workspace-card p-4 mb-4" aria-label="Overall capability gap">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <div className="workspace-eyebrow">Saved assessment result</div>
+                  <h3 className="text-sm font-semibold text-[var(--foreground)]">Overall capability gap</h3>
+                  <p className="text-xs text-[var(--muted)]">Calculated from the saved current and target scores.</p>
+                </div>
+                {history.gap == null ? (
+                  <span className="text-xs text-[var(--muted)]">Enter both scores</span>
+                ) : (
+                  <span className="text-2xl font-bold" style={{ color: getGapColor(getGapSeverity(history.gap)) }}>{history.gap.toFixed(1)}</span>
+                )}
+              </div>
+            </section>
+
             {(perspectiveData || perspectiveError) && (
               <section className="workspace-card p-5 mb-4" aria-labelledby="perspective-balance-title">
                 <div className="flex items-start justify-between gap-4 mb-3">
