@@ -52,7 +52,14 @@ export function calculateGap(asIs: MaturitySnapshot[], toBe: MaturitySnapshot[])
     if (matched != null) matchedPairs.push({ asIsScore: a.score, toBeScore: matched });
   }
 
-  if (matchedPairs.length === 0) return null;
+  if (matchedPairs.length === 0) {
+    // Saved capability scores can be location-scoped independently. If there is
+    // no pairable location, still provide an overall capability gap rather than
+    // hiding a valid saved comparison.
+    const asIsAvg = asIs.reduce((sum, snapshot) => sum + snapshot.score, 0) / asIs.length;
+    const toBeAvg = toBe.reduce((sum, snapshot) => sum + snapshot.score, 0) / toBe.length;
+    return Math.max(0, Math.round((toBeAvg - asIsAvg) * 10) / 10);
+  }
 
   const asIsAvg = matchedPairs.reduce((sum, p) => sum + p.asIsScore, 0) / matchedPairs.length;
   const toBeAvg = matchedPairs.reduce((sum, p) => sum + p.toBeScore, 0) / matchedPairs.length;

@@ -45,11 +45,13 @@ describe("calculateGap", () => {
     expect(calculateGap([{ locationTag: null, score: 5 }], [{ locationTag: null, score: 2 }])).toBe(0);
   });
 
-  it("returns null when no as-is location matches any to-be target (no org-wide fallback exists either)", () => {
+  it("uses an overall capability gap when saved locations do not match", () => {
     const asIs = [{ locationTag: "Alexandria", score: 2 }];
     const toBe = [{ locationTag: "Brampton", score: 4 }];
-    expect(calculateGap(asIs, toBe)).toBeNull();
+    expect(calculateGap(asIs, toBe)).toBe(2);
   });
+
+
 
   it("excludes an as-is location from BOTH sides when it has no matching target and no org-wide fallback, rather than skewing the as-is average", () => {
     const asIs = [{ locationTag: "Alexandria", score: 2 }, { locationTag: "Brampton", score: 4 }];
