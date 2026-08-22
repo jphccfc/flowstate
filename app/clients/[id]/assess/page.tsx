@@ -73,6 +73,7 @@ function EntryForm({
   const [drafting, setDrafting] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
 
   async function handleDraft() {
     setDrafting(true);
@@ -91,12 +92,11 @@ function EntryForm({
   async function handleSubmit() {
     setSubmitting(true);
     setError(null);
+    setSaved(false);
     try {
       await onSubmit({ locationTag: locationTag.trim() || null, score, text, committedBy: committedBy.trim() || undefined });
-      setLocationTag("");
-      setText("");
-      setCommittedBy("");
-      setScore(0);
+      setSaved(true);
+      if (kind === "toBe") setScore(0);
     } catch (error) {
       setError(error instanceof Error ? error.message : "Failed to save. Please try again.");
     } finally {
@@ -159,6 +159,7 @@ function EntryForm({
           {drafting ? "Drafting..." : "Draft with AI"}
         </button>
       </div>
+      {saved && <p role="status" className="text-xs text-[var(--success)]">Assessment saved</p>}
       {error && <p className="text-xs text-red-600">{error}</p>}
     </div>
   );
