@@ -62,6 +62,7 @@ describe("workspace responsive and theme contracts", () => {
     expect(assess).toContain("Perspective data could not load");
     expect(assess).toContain("Set both current and target scores to calculate the gap");
     expect(assess).toContain("Overall capability gap");
+    expect(assess).toContain("history.gap ?? calculateGap");
   });
 
   it("shows clearly labelled report examples", () => {
