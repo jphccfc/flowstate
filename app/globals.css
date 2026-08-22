@@ -10,6 +10,7 @@
   --primary-soft: #111822;
   --accent: #28d7fa;
   --accent-strong: #0642bf;
+  --stat-value: #0642bf;
   --accent-purple: #b152e9;
   --muted: #64748b;
   --muted-bg: #eef3f8;
@@ -34,6 +35,7 @@
   --card-border: #29384a;
   --primary: #071018;
   --muted: #aab9cc;
+  --stat-value: var(--accent);
   --muted-bg: #182230;
   --destructive: #ff8b97;
   --success: #7ee2ad;
@@ -174,6 +176,7 @@ body {
 .workspace-eyebrow { color: var(--accent-strong); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
 .workspace-heading { font-family: "Poppins", "Inter", sans-serif; letter-spacing: -0.035em; }
 .workspace-stat { position: relative; overflow: hidden; }
+.workspace-stat-value { color: var(--stat-value); }
 .workspace-stat::before { content: ""; position: absolute; inset: 0 auto auto 0; width: 100%; height: 0.2rem; background: linear-gradient(90deg, var(--accent), var(--accent-purple)); }
 
 
