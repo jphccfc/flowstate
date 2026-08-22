@@ -55,6 +55,10 @@ describe("workspace responsive and theme contracts", () => {
     expect(assess).toContain("Employee perspectives");
     expect(assess).toContain("Expert perspectives");
     expect(assess).toContain("Current maturity rubric");
+    expect(assess).toContain("Add perspective");
+    expect(assess).toContain("Original statement");
+    expect(assess).toContain("stakeholderType");
+    expect(assess).toContain("/perspectives");
   });
 
   it("shows clearly labelled report examples", () => {

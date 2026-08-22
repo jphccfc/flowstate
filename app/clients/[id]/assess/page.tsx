@@ -163,6 +163,64 @@ function EntryForm({
   );
 }
 
+function PerspectiveForm({ onSubmit }: { onSubmit: (data: { stakeholderType: string; score: number; originalStatement: string; rationale: string; confidence: number }) => Promise<void> }) {
+  const [stakeholderType, setStakeholderType] = useState("employee");
+  const [score, setScore] = useState("0");
+  const [originalStatement, setOriginalStatement] = useState("");
+  const [rationale, setRationale] = useState("");
+  const [confidence, setConfidence] = useState("0.8");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function submit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSaving(true);
+    setError(null);
+    try {
+      await onSubmit({ stakeholderType, score: Number(score), originalStatement, rationale, confidence: Number(confidence) });
+      setOriginalStatement("");
+      setRationale("");
+    } catch (submissionError) {
+      setError(submissionError instanceof Error ? submissionError.message : "Unable to save perspective.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <form onSubmit={submit} className="mt-4 border-t border-[var(--card-border)] pt-4 space-y-3">
+      <div className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">Add perspective</div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <label className="text-xs text-[var(--muted)]">Perspective type
+          <select name="stakeholderType" value={stakeholderType} onChange={(event) => setStakeholderType(event.target.value)} className="mt-1 w-full px-2 py-1.5 border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] bg-[var(--card)]">
+            <option value="employee">Employee</option>
+            <option value="manager">Manager</option>
+            <option value="expert_analyst">Expert analyst</option>
+            <option value="stakeholder">Other stakeholder</option>
+          </select>
+        </label>
+        <label className="text-xs text-[var(--muted)]">Reported score
+          <input name="score" type="number" min="0" max="5" step="0.5" value={score} onChange={(event) => setScore(event.target.value)} className="mt-1 w-full px-2 py-1.5 border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] bg-[var(--card)]" />
+        </label>
+        <label className="text-xs text-[var(--muted)]">Confidence
+          <input name="confidence" type="number" min="0" max="1" step="0.1" value={confidence} onChange={(event) => setConfidence(event.target.value)} className="mt-1 w-full px-2 py-1.5 border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] bg-[var(--card)]" />
+        </label>
+      </div>
+      <label className="block text-xs text-[var(--muted)]">Original statement
+        <textarea name="originalStatement" required value={originalStatement} onChange={(event) => setOriginalStatement(event.target.value)} rows={3} placeholder="Record the stakeholder's words, not an AI summary" className="mt-1 w-full px-2 py-1.5 border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] bg-[var(--card)] resize-y" />
+      </label>
+      <label className="block text-xs text-[var(--muted)]">Rationale (optional)
+        <textarea name="rationale" value={rationale} onChange={(event) => setRationale(event.target.value)} rows={2} placeholder="Why does this perspective support the score?" className="mt-1 w-full px-2 py-1.5 border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] bg-[var(--card)] resize-y" />
+      </label>
+      <div className="flex items-center gap-3">
+        <button type="submit" disabled={saving} className="px-3 py-1.5 bg-[var(--accent)] text-white rounded-lg text-sm font-medium disabled:opacity-50">{saving ? "Saving..." : "Save perspective"}</button>
+        <span className="text-xs text-[var(--muted)]">Scores can use half-points, such as 0.5 or 1.5.</span>
+      </div>
+      {error && <p role="alert" className="text-xs text-red-600">{error}</p>}
+    </form>
+  );
+}
+
 export default function AssessPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const [org, setOrg] = useState<Org | null>(null);
@@ -234,6 +292,18 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
       loadPerspectives(selectedCapId);
     }
   }, [selectedCapId, loadPerspectives]);
+
+  async function savePerspective(data: { stakeholderType: string; score: number; originalStatement: string; rationale: string; confidence: number }) {
+    if (!selectedCapId) return;
+    const res = await fetch(`/api/capabilities/${selectedCapId}/perspectives`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...data, rubricVersion: perspectiveData?.rubric.version ?? 1 }),
+    });
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(typeof body.error === "string" ? body.error : `Perspective save failed (${res.status}).`);
+    await loadPerspectives(selectedCapId);
+  }
 
   async function saveAsIs(data: { locationTag: string | null; score: number; text: string }) {
     if (!selectedCapId) return;
@@ -426,6 +496,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
                   </>
                 )}
                 <details className="mt-4 text-xs text-[var(--muted)]"><summary className="cursor-pointer text-[var(--accent)]">Current maturity rubric</summary><div className="mt-2 space-y-1">{perspectiveData.rubric.anchors.map((anchor) => <div key={anchor.level}><strong className="text-[var(--foreground)]">{anchor.level} — {anchor.label}:</strong> {anchor.description}</div>)}</div></details>
+                <PerspectiveForm onSubmit={savePerspective} />
               </section>
             )}
 
