@@ -59,6 +59,8 @@ describe("workspace responsive and theme contracts", () => {
     expect(assess).toContain("Original statement");
     expect(assess).toContain("stakeholderType");
     expect(assess).toContain("/perspectives");
+    expect(assess).toContain("Perspective data could not load");
+    expect(assess).toContain("Set both current and target scores to calculate the gap");
   });
 
   it("shows clearly labelled report examples", () => {
