@@ -63,6 +63,8 @@ describe("workspace responsive and theme contracts", () => {
     expect(assess).toContain("Set both current and target scores to calculate the gap");
     expect(assess).toContain("Overall capability gap");
     expect(assess).toContain("history.gap ?? calculateGap");
+    expect(assess).toContain("Assessment saved");
+    expect(assess).toContain("setScore(0)");
   });
 
   it("shows clearly labelled report examples", () => {
