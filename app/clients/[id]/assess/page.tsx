@@ -28,15 +28,22 @@ type HistoryData = {
   currentToBe: MaturitySnapshot[];
   asIsHistory: HistoryEntry[];
   toBeHistory: HistoryEntry[];
+  gap: number | null;
 };
+type Perspective = { id: string; stakeholderType: string; assessorRole: string | null; score: number; originalStatement: string; rationale: string | null; confidence: number | null };
+type Proposal = { id: string; interpretation: string; suggestedScore: number | null; scoreRangeMin: number | null; scoreRangeMax: number | null; confidence: number | null; missingEvidence: string[]; conflictingEvidence: string[]; status: string; reviewNotes: string | null };
+type PerspectiveData = { perspectives: Perspective[]; summary: { count: number; minimum: number | null; maximum: number | null; spread: number | null; stakeholderTypes: string[]; materialVariance: boolean; evidenceCoverage: number; pendingReview: number; reviewState: string }; rubric: { version: number; anchors: Array<{ level: number; label: string; description: string }> } };
 
 function ScorePicker({ value, onChange }: { value: number; onChange: (v: number) => void }) {
   return (
-    <div className="flex gap-1">
+    <div className="flex gap-1" role="radiogroup" aria-label="Maturity score from 0 to 5">
       {[0, 1, 2, 3, 4, 5].map((n) => (
         <button
           key={n}
           type="button"
+          role="radio"
+          aria-checked={value === n}
+          aria-label={`Score ${n} of 5`}
           onClick={() => onChange(n)}
           className={`w-8 h-8 rounded-lg text-sm font-bold border transition-colors ${
             value === n
@@ -67,6 +74,7 @@ function EntryForm({
   const [drafting, setDrafting] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
 
   async function handleDraft() {
     setDrafting(true);
@@ -75,8 +83,8 @@ function EntryForm({
       const draft = await onDraft();
       setScore(draft.score);
       setText(draft.text);
-    } catch {
-      setError("Failed to generate draft. Please try again.");
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Failed to generate draft. Please try again.");
     } finally {
       setDrafting(false);
     }
@@ -85,14 +93,13 @@ function EntryForm({
   async function handleSubmit() {
     setSubmitting(true);
     setError(null);
+    setSaved(false);
     try {
       await onSubmit({ locationTag: locationTag.trim() || null, score, text, committedBy: committedBy.trim() || undefined });
-      setLocationTag("");
-      setText("");
-      setCommittedBy("");
-      setScore(0);
-    } catch {
-      setError("Failed to save. Please try again.");
+      setSaved(true);
+      if (kind === "toBe") setScore(0);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Failed to save. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -137,6 +144,7 @@ function EntryForm({
       </div>
       <div className="flex gap-2">
         <button
+          type="button"
           onClick={handleSubmit}
           disabled={submitting}
           className="px-3 py-1.5 bg-[var(--accent)] text-white rounded-lg text-sm font-medium disabled:opacity-50"
@@ -144,6 +152,7 @@ function EntryForm({
           {submitting ? "Saving..." : "Save"}
         </button>
         <button
+          type="button"
           onClick={handleDraft}
           disabled={drafting}
           className="px-3 py-1.5 bg-[var(--muted-bg)] text-[var(--muted)] rounded-lg text-sm disabled:opacity-50"
@@ -151,8 +160,67 @@ function EntryForm({
           {drafting ? "Drafting..." : "Draft with AI"}
         </button>
       </div>
+      {saved && <p role="status" className="text-xs text-[var(--success)]">Assessment saved</p>}
       {error && <p className="text-xs text-red-600">{error}</p>}
     </div>
+  );
+}
+
+function PerspectiveForm({ onSubmit }: { onSubmit: (data: { stakeholderType: string; score: number; originalStatement: string; rationale: string; confidence: number }) => Promise<void> }) {
+  const [stakeholderType, setStakeholderType] = useState("employee");
+  const [score, setScore] = useState("0");
+  const [originalStatement, setOriginalStatement] = useState("");
+  const [rationale, setRationale] = useState("");
+  const [confidence, setConfidence] = useState("0.8");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function submit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSaving(true);
+    setError(null);
+    try {
+      await onSubmit({ stakeholderType, score: Number(score), originalStatement, rationale, confidence: Number(confidence) });
+      setOriginalStatement("");
+      setRationale("");
+    } catch (submissionError) {
+      setError(submissionError instanceof Error ? submissionError.message : "Unable to save perspective.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <form onSubmit={submit} className="mt-4 border-t border-[var(--card-border)] pt-4 space-y-3">
+      <div className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">Add perspective</div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <label className="text-xs text-[var(--muted)]">Perspective type
+          <select name="stakeholderType" value={stakeholderType} onChange={(event) => setStakeholderType(event.target.value)} className="mt-1 w-full px-2 py-1.5 border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] bg-[var(--card)]">
+            <option value="employee">Employee</option>
+            <option value="manager">Manager</option>
+            <option value="expert_analyst">Expert analyst</option>
+            <option value="stakeholder">Other stakeholder</option>
+          </select>
+        </label>
+        <label className="text-xs text-[var(--muted)]">Reported score
+          <input name="score" type="number" min="0" max="5" step="0.5" value={score} onChange={(event) => setScore(event.target.value)} className="mt-1 w-full px-2 py-1.5 border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] bg-[var(--card)]" />
+        </label>
+        <label className="text-xs text-[var(--muted)]">Confidence
+          <input name="confidence" type="number" min="0" max="1" step="0.1" value={confidence} onChange={(event) => setConfidence(event.target.value)} className="mt-1 w-full px-2 py-1.5 border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] bg-[var(--card)]" />
+        </label>
+      </div>
+      <label className="block text-xs text-[var(--muted)]">Original statement
+        <textarea name="originalStatement" required value={originalStatement} onChange={(event) => setOriginalStatement(event.target.value)} rows={3} placeholder="Record the stakeholder's words, not an AI summary" className="mt-1 w-full px-2 py-1.5 border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] bg-[var(--card)] resize-y" />
+      </label>
+      <label className="block text-xs text-[var(--muted)]">Rationale (optional)
+        <textarea name="rationale" value={rationale} onChange={(event) => setRationale(event.target.value)} rows={2} placeholder="Why does this perspective support the score?" className="mt-1 w-full px-2 py-1.5 border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] bg-[var(--card)] resize-y" />
+      </label>
+      <div className="flex items-center gap-3">
+        <button type="submit" disabled={saving} className="px-3 py-1.5 bg-[var(--accent)] text-white rounded-lg text-sm font-medium disabled:opacity-50">{saving ? "Saving..." : "Save perspective"}</button>
+        <span className="text-xs text-[var(--muted)]">Scores can use half-points, such as 0.5 or 1.5.</span>
+      </div>
+      {error && <p role="alert" className="text-xs text-red-600">{error}</p>}
+    </form>
   );
 }
 
@@ -161,34 +229,119 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   const [org, setOrg] = useState<Org | null>(null);
   const [selectedCapId, setSelectedCapId] = useState<string | null>(null);
   const [history, setHistory] = useState<HistoryData | null>(null);
+  const [perspectiveData, setPerspectiveData] = useState<PerspectiveData | null>(null);
+  const [perspectiveError, setPerspectiveError] = useState<string | null>(null);
+  const [proposals, setProposals] = useState<Proposal[]>([]);
+  const [proposalBusy, setProposalBusy] = useState(false);
   const [showAsIsHistory, setShowAsIsHistory] = useState(false);
   const [showToBeHistory, setShowToBeHistory] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [historyError, setHistoryError] = useState<string | null>(null);
+  const [orgError, setOrgError] = useState<string | null>(null);
 
   const loadOrg = useCallback(async () => {
+    setOrgError(null);
     const res = await fetch(`/api/clients/${id}`);
-    const data: Org = await res.json();
-    setOrg(data);
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !Array.isArray(data.domains)) {
+      const message = typeof data.error === "string" ? data.error : `Unable to load organisation (${res.status}).`;
+      setOrg(null);
+      setOrgError(message);
+      setLoading(false);
+      return null;
+    }
+    setOrg(data as Org);
     setLoading(false);
-    return data;
+    return data as Org;
   }, [id]);
 
   useEffect(() => {
+    // Remote assessment bootstrap intentionally updates state after the fetch resolves.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadOrg().then((data) => {
-      if (data.domains?.[0]?.capabilities?.[0]) {
+      if (data?.domains?.[0]?.capabilities?.[0]) {
         setSelectedCapId(data.domains[0].capabilities[0].id);
       }
     });
   }, [loadOrg]);
 
   const loadHistory = useCallback(async (capId: string) => {
+    setHistoryError(null);
     const res = await fetch(`/api/capabilities/${capId}/assessment-history`);
-    setHistory(await res.json());
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      setHistory(null);
+      setHistoryError(typeof data.error === "string" ? data.error : "Unable to load this capability.");
+      return;
+    }
+    setHistory(data);
   }, []);
 
   useEffect(() => {
-    if (selectedCapId) loadHistory(selectedCapId);
+    if (selectedCapId) {
+      // Remote history refresh intentionally updates state after the fetch resolves.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      loadHistory(selectedCapId);
+    }
   }, [selectedCapId, loadHistory]);
+
+  const loadPerspectives = useCallback(async (capId: string) => {
+    setPerspectiveError(null);
+    const res = await fetch(`/api/capabilities/${capId}/perspectives`);
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      setPerspectiveData(null);
+      setPerspectiveError(typeof data.error === "string" ? data.error : `Perspective data could not load (${res.status}).`);
+      return;
+    }
+    setPerspectiveData(data);
+  }, []);
+
+  useEffect(() => {
+    if (selectedCapId) {
+      // Perspective refresh intentionally updates state after the fetch resolves.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      loadPerspectives(selectedCapId);
+    }
+  }, [selectedCapId, loadPerspectives]);
+
+  async function loadProposals(capId: string) {
+    const res = await fetch(`/api/capabilities/${capId}/proposals`);
+    if (res.ok) setProposals(await res.json());
+  }
+
+  useEffect(() => {
+    if (selectedCapId) {
+      // Proposal refresh intentionally updates state after the fetch resolves.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      loadProposals(selectedCapId);
+    }
+  }, [selectedCapId]);
+
+  async function generateProposal() {
+    if (!selectedCapId) return;
+    setProposalBusy(true);
+    const res = await fetch(`/api/capabilities/${selectedCapId}/proposals`, { method: "POST" });
+    if (res.ok) { const proposal = await res.json(); setProposals((current) => [proposal, ...current]); }
+    setProposalBusy(false);
+  }
+
+  async function reviewProposal(proposalId: string, action: "approve" | "reject") {
+    const res = await fetch(`/api/maturity-proposals/${proposalId}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action }) });
+    if (res.ok) { const updated = await res.json(); setProposals((current) => current.map((proposal) => proposal.id === proposalId ? updated : proposal)); }
+  }
+
+  async function savePerspective(data: { stakeholderType: string; score: number; originalStatement: string; rationale: string; confidence: number }) {
+    if (!selectedCapId) return;
+    const res = await fetch(`/api/capabilities/${selectedCapId}/perspectives`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...data, rubricVersion: perspectiveData?.rubric.version ?? 1 }),
+    });
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(typeof body.error === "string" ? body.error : `Perspective save failed (${res.status}).`);
+    await loadPerspectives(selectedCapId);
+  }
 
   async function saveAsIs(data: { locationTag: string | null; score: number; text: string }) {
     if (!selectedCapId) return;
@@ -197,9 +350,11 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ capabilityId: selectedCapId, locationTag: data.locationTag, score: data.score, evidence: data.text }),
     });
-    if (!res.ok) throw new Error("Failed to save as-is assessment");
-    await loadHistory(selectedCapId);
-    await loadOrg();
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(typeof body.error === "string" ? body.error : `Save failed (${res.status}).`);
+    }
+    await Promise.all([loadHistory(selectedCapId), loadOrg(), loadPerspectives(selectedCapId)]);
   }
 
   async function saveToBe(data: { locationTag: string | null; score: number; text: string; committedBy?: string }) {
@@ -215,9 +370,11 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
         committedBy: data.committedBy,
       }),
     });
-    if (!res.ok) throw new Error("Failed to save to-be assessment");
-    await loadHistory(selectedCapId);
-    await loadOrg();
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(typeof body.error === "string" ? body.error : `Save failed (${res.status}).`);
+    }
+    await Promise.all([loadHistory(selectedCapId), loadOrg(), loadPerspectives(selectedCapId)]);
   }
 
   async function draftAsIs(): Promise<{ score: number; text: string }> {
@@ -226,14 +383,20 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({}),
     });
-    if (!res.ok) throw new Error("Failed to draft as-is assessment");
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(typeof body.error === "string" ? body.error : `AI draft failed (${res.status}).`);
+    }
     const draft = await res.json();
     return { score: draft.score, text: draft.evidence };
   }
 
   async function draftToBe(): Promise<{ score: number; text: string }> {
     const res = await fetch(`/api/capabilities/${selectedCapId}/draft-to-be`, { method: "POST" });
-    if (!res.ok) throw new Error("Failed to draft to-be assessment");
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(typeof body.error === "string" ? body.error : `AI draft failed (${res.status}).`);
+    }
     const draft = await res.json();
     return { score: draft.score, text: draft.rationale };
   }
@@ -243,13 +406,25 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
 
   if (loading) return <div className="flex-1 flex items-center justify-center text-[var(--muted)]">Loading...</div>;
 
-  if (!org || org.domains.length === 0) {
+  if (orgError) {
+    return (
+      <div className="flex-1 flex items-center justify-center flex-col gap-4 text-center px-4">
+        <h2 className="font-semibold text-[var(--foreground)]">Assessment could not load</h2>
+        <p className="text-sm text-[var(--muted)] max-w-sm">{orgError}</p>
+        <Link href="/dashboard" className="px-4 py-2 bg-[var(--primary)] text-white rounded-lg text-sm font-medium">
+          Return to dashboard
+        </Link>
+      </div>
+    );
+  }
+
+  if (!org || org.domains.length === 0 || !org.domains.some((domain) => domain.capabilities.length > 0)) {
     return (
       <div className="flex-1 flex items-center justify-center flex-col gap-4 text-center px-4">
         <div className="text-4xl">⚙️</div>
-        <h2 className="font-semibold text-[var(--foreground)]">No domains configured</h2>
+        <h2 className="font-semibold text-[var(--foreground)]">No capabilities configured</h2>
         <p className="text-sm text-[var(--muted)] max-w-sm">
-          Configure business domains and capabilities before starting the assessment
+          Configure at least one business capability before starting the assessment
         </p>
         <Link href={`/clients/${id}/configure`} className="px-4 py-2 bg-[var(--primary)] text-white rounded-lg text-sm font-medium">
           Go to Configure
@@ -259,47 +434,68 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   }
 
   return (
-    <div className="flex-1 flex overflow-hidden" style={{ height: "calc(100vh - 3.5rem)" }}>
-      <aside className="w-64 bg-white border-r border-[var(--card-border)] flex flex-col overflow-hidden shrink-0">
-        <div className="p-3 border-b border-[var(--card-border)]">
-          <div className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wider">Capabilities</div>
+    <div className="assessment-workspace">
+      <header className="assessment-heading workspace-card">
+        <div>
+          <div className="workspace-eyebrow">Assessment workspace</div>
+          <h1 className="workspace-heading text-xl font-bold text-[var(--foreground)]">Capability assessment</h1>
+          <p className="text-sm text-[var(--muted)]">Select a capability, record the current state, and set a target state.</p>
         </div>
-        <div className="flex-1 overflow-y-auto">
+      </header>
+      <section className="assessment-selector workspace-card" aria-labelledby="assessment-selector-title">
+        <div className="assessment-selector-heading">
+          <div>
+            <div id="assessment-selector-title" className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wider">Assessment navigator</div>
+            <div className="text-xs text-[var(--muted)] mt-1">Choose a capability to assess</div>
+          </div>
+          <div className="text-xs text-[var(--muted)]">{org.domains.reduce((count, domain) => count + domain.capabilities.length, 0)} capabilities</div>
+        </div>
+        <div className="assessment-selector-options">
           {org.domains.map((domain) => (
-            <div key={domain.id}>
-              <div className="flex items-center gap-2 px-3 py-2 bg-[var(--muted-bg)] sticky top-0 z-10">
+            <div key={domain.id} className="assessment-domain-group">
+              <div className="flex items-center gap-2 px-3 py-2 bg-[var(--muted-bg)] rounded-lg">
                 <div className="w-2 h-2 rounded-full shrink-0" style={{ background: domain.color ?? "#94a3b8" }} />
                 <span className="text-xs font-semibold text-[var(--foreground)] truncate">{domain.name}</span>
               </div>
-              {domain.capabilities.map((cap) => {
-                const gap = calculateGap(cap.currentAsIs, cap.currentToBe);
-                const severity = getGapSeverity(gap);
-                const isSelected = cap.id === selectedCapId;
-                return (
-                  <button
-                    key={cap.id}
-                    onClick={() => setSelectedCapId(cap.id)}
-                    className={`w-full text-left px-3 py-2.5 flex items-center gap-2 transition-colors ${
-                      isSelected ? "bg-[var(--accent)]/10 border-r-2 border-[var(--accent)]" : "hover:bg-[var(--muted-bg)]"
-                    }`}
-                  >
-                    <div className="flex-1 min-w-0">
-                      <div className={`text-xs truncate ${isSelected ? "font-semibold text-[var(--accent)]" : "text-[var(--foreground)]"}`}>
-                        {cap.name}
-                      </div>
-                    </div>
-                    <div className="w-2 h-2 rounded-full shrink-0" style={{ background: getGapColor(severity) }} />
-                  </button>
-                );
-              })}
+              <div className="assessment-capability-options">
+                {domain.capabilities.map((cap) => {
+                  const gap = calculateGap(cap.currentAsIs, cap.currentToBe);
+                  const severity = getGapSeverity(gap);
+                  const isSelected = cap.id === selectedCapId;
+                  return (
+                    <button
+                      type="button"
+                      key={cap.id}
+                      aria-pressed={isSelected}
+                      onClick={() => {
+                        setSelectedCapId(cap.id);
+                        setHistory(null);
+                        setPerspectiveData(null);
+                        setPerspectiveError(null);
+                      }}
+                      className={`assessment-capability-option ${isSelected ? "is-selected" : ""}`}
+                    >
+                      <span className="truncate">{cap.name}</span>
+                      <span className="w-2 h-2 rounded-full shrink-0" style={{ background: getGapColor(severity) }} />
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           ))}
         </div>
-      </aside>
+      </section>
 
-      <main className="flex-1 overflow-y-auto">
+      <main className="assessment-content">
         {!selectedCap || !history ? (
-          <div className="flex items-center justify-center h-full text-[var(--muted)]">Select a capability to begin</div>
+          <div className="flex items-center justify-center h-full text-[var(--muted)]">
+            {historyError ? (
+              <div className="max-w-sm px-6 text-center">
+                <p className="font-medium text-[var(--foreground)]">Capability could not be loaded</p>
+                <p className="mt-1 text-sm">{historyError}</p>
+              </div>
+            ) : "Select a capability to begin"}
+          </div>
         ) : (
           <div className="max-w-3xl mx-auto px-6 py-6">
             <div className="mb-6">
@@ -321,6 +517,54 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
               )}
             </div>
 
+
+            <section className="workspace-card p-4 mb-4" aria-label="Overall capability gap">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <div className="workspace-eyebrow">Saved assessment result</div>
+                  <h3 className="text-sm font-semibold text-[var(--foreground)]">Overall capability gap</h3>
+                  <p className="text-xs text-[var(--muted)]">Calculated from the saved current and target scores.</p>
+                </div>
+                {history.gap == null ? (
+                  <span className="text-xs text-[var(--muted)]">Enter both scores</span>
+                ) : (
+                  <span className="text-2xl font-bold" style={{ color: getGapColor(getGapSeverity(history.gap)) }}>{history.gap.toFixed(1)}</span>
+                )}
+              </div>
+            </section>
+
+            {(perspectiveData || perspectiveError) && (
+              <section className="workspace-card p-5 mb-4" aria-labelledby="perspective-balance-title">
+                <div className="flex items-start justify-between gap-4 mb-3">
+                  <div><div className="workspace-eyebrow">Evidence-led assessment</div><h3 id="perspective-balance-title" className="text-sm font-semibold text-[var(--foreground)]">Perspective balance</h3></div>
+                  <span className="text-xs text-[var(--muted)]">Rubric v{perspectiveData?.rubric.version ?? "—"}</span>
+                </div>
+                {perspectiveError ? (
+                  <div className="rounded-lg border border-[var(--card-border)] bg-[var(--muted-bg)] p-3 text-sm">
+                    <div className="font-medium text-[var(--foreground)]">Perspective data could not load</div>
+                    <div className="mt-1 text-xs text-[var(--muted)]">{perspectiveError}</div>
+                  </div>
+                ) : !perspectiveData ? (
+                  <p className="text-sm text-[var(--muted)]">Loading perspective data...</p>
+                ) : perspectiveData.perspectives.length === 0 ? (
+                  <p className="text-sm text-[var(--muted)]">No employee or expert perspectives have been recorded yet.</p>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-2 gap-3 mb-4"><div className="p-3 rounded-lg bg-[var(--muted-bg)]"><div className="text-xs text-[var(--muted)]">Employee perspectives</div><div className="text-lg font-bold text-[var(--foreground)]">{perspectiveData.perspectives.filter((p) => p.stakeholderType === "employee").length}</div></div><div className="p-3 rounded-lg bg-[var(--muted-bg)]"><div className="text-xs text-[var(--muted)]">Expert perspectives</div><div className="text-lg font-bold text-[var(--foreground)]">{perspectiveData.perspectives.filter((p) => p.stakeholderType === "expert_analyst").length}</div></div></div>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3 text-xs"><div className="p-2 rounded-lg bg-[var(--muted-bg)]"><div className="text-[var(--muted)]">Evidence coverage</div><strong className="text-[var(--foreground)]">{Math.round(perspectiveData.summary.evidenceCoverage * 100)}%</strong></div><div className="p-2 rounded-lg bg-[var(--muted-bg)]"><div className="text-[var(--muted)]">Review state</div><strong className="text-[var(--foreground)]">{perspectiveData.summary.reviewState === "PENDING_REVIEW" ? "Pending review" : "Reviewed"}</strong></div><div className="p-2 rounded-lg bg-[var(--muted-bg)]"><div className="text-[var(--muted)]">Pending</div><strong className="text-[var(--foreground)]">{perspectiveData.summary.pendingReview}</strong></div><div className="p-2 rounded-lg bg-[var(--muted-bg)]"><div className="text-[var(--muted)]">Variance</div><strong className="text-[var(--foreground)]">{perspectiveData.summary.materialVariance ? "Material" : "Within range"}</strong></div></div><div className="flex items-center justify-between text-xs text-[var(--muted)] mb-3"><span>Reported range: <strong className="text-[var(--foreground)]">{perspectiveData.summary.minimum}–{perspectiveData.summary.maximum}</strong></span><span>Spread: <strong className="text-[var(--foreground)]">{perspectiveData.summary.spread}</strong></span></div>
+                    <div className="space-y-2">{perspectiveData.perspectives.map((perspective) => <div key={perspective.id} className="border-t border-[var(--card-border)] pt-2 text-sm"><div className="flex items-center justify-between gap-3"><span className="font-medium text-[var(--foreground)]">{perspective.stakeholderType === "expert_analyst" ? "Expert analyst" : perspective.stakeholderType}</span><span className="font-bold text-[var(--accent)]">{perspective.score}</span></div><p className="mt-1 text-xs text-[var(--muted)]">“{perspective.originalStatement}”</p></div>)}</div>
+                  </>
+                )}
+                {perspectiveData && <details className="mt-4 text-xs text-[var(--muted)]"><summary className="cursor-pointer text-[var(--accent)]">Current maturity rubric</summary><div className="mt-2 space-y-1">{perspectiveData.rubric.anchors.map((anchor) => <div key={anchor.level}><strong className="text-[var(--foreground)]">{anchor.level} — {anchor.label}:</strong> {anchor.description}</div>)}</div></details>}
+
+                {perspectiveData && <div className="mt-4 border-t border-[var(--card-border)] pt-4">
+                  <div className="flex items-center justify-between gap-3"><div><div className="text-xs font-semibold text-[var(--foreground)]">AI proposal</div><div className="text-xs text-[var(--muted)]">Provisional only; it cannot change the saved assessment.</div></div><button type="button" onClick={generateProposal} disabled={proposalBusy} className="px-3 py-1.5 rounded-lg bg-[var(--accent)] text-white text-xs disabled:opacity-50">{proposalBusy ? "Generating…" : "Generate proposal"}</button></div>
+                  {proposals.slice(0, 1).map((proposal) => <div key={proposal.id} className="mt-3 rounded-lg border border-[var(--card-border)] p-3 text-xs"><div className="flex items-center justify-between gap-3"><strong className="text-[var(--foreground)]">{proposal.status === "PENDING_REVIEW" ? "Pending human review" : proposal.status}</strong>{proposal.suggestedScore !== null && <span className="font-bold text-[var(--accent)]">Suggested {proposal.suggestedScore}</span>}</div><p className="mt-2 text-[var(--muted)]">{proposal.interpretation}</p>{proposal.missingEvidence.length > 0 && <p className="mt-2 text-[var(--muted)]">Missing evidence: {proposal.missingEvidence.join(", ")}</p>}{proposal.status === "PENDING_REVIEW" && <div className="mt-3 flex gap-2"><button type="button" onClick={() => reviewProposal(proposal.id, "approve")} className="px-2 py-1 rounded bg-[var(--success)] text-white">Approve proposal</button><button type="button" onClick={() => reviewProposal(proposal.id, "reject")} className="px-2 py-1 rounded bg-[var(--destructive)] text-white">Reject proposal</button></div>}</div>)}
+                </div>}
+                {perspectiveData && <PerspectiveForm onSubmit={savePerspective} />}
+              </section>
+            )}
+
             <div className="bg-white rounded-xl border border-[var(--card-border)] p-5 mb-4 shadow-sm">
               <h3 className="text-sm font-semibold text-[var(--foreground)] mb-3">Current State (As-Is)</h3>
               <div className="space-y-2 mb-4">
@@ -335,7 +579,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
                   ))
                 )}
               </div>
-              <EntryForm kind="asIs" onSubmit={saveAsIs} onDraft={draftAsIs} />
+              <EntryForm key={`${selectedCapId}-asIs`} kind="asIs" onSubmit={saveAsIs} onDraft={draftAsIs} />
               {history.asIsHistory.length > 0 && (
                 <button onClick={() => setShowAsIsHistory((v) => !v)} className="text-xs text-[var(--accent)] mt-3">
                   {showAsIsHistory ? "Hide" : "Show"} history ({history.asIsHistory.length})
@@ -366,7 +610,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
                   ))
                 )}
               </div>
-              <EntryForm kind="toBe" onSubmit={saveToBe} onDraft={draftToBe} />
+              <EntryForm key={`${selectedCapId}-toBe`} kind="toBe" onSubmit={saveToBe} onDraft={draftToBe} />
               {history.toBeHistory.length > 0 && (
                 <button onClick={() => setShowToBeHistory((v) => !v)} className="text-xs text-[var(--accent)] mt-3">
                   {showToBeHistory ? "Hide" : "Show"} history ({history.toBeHistory.length})
@@ -383,12 +627,19 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
               )}
             </div>
 
-            <div className="bg-white rounded-xl border border-[var(--card-border)] p-5 mb-8 shadow-sm text-center">
-              <span className="text-xs text-[var(--muted)]">Gap: </span>
-              <span className="text-sm font-bold" style={{ color: getGapColor(getGapSeverity(calculateGap(history.currentAsIs, history.currentToBe))) }}>
-                {calculateGap(history.currentAsIs, history.currentToBe)?.toFixed(1) ?? "—"}
-              </span>
-            </div>
+            {(() => {
+              const gap = history.gap ?? calculateGap(history.currentAsIs, history.currentToBe);
+              return (
+                <div className="bg-white rounded-xl border border-[var(--card-border)] p-5 mb-8 shadow-sm text-center">
+                  <span className="text-xs text-[var(--muted)]">Gap: </span>
+                  {gap == null ? (
+                    <span className="text-xs text-[var(--muted)]">Set both current and target scores to calculate the gap.</span>
+                  ) : (
+                    <span className="text-sm font-bold" style={{ color: getGapColor(getGapSeverity(gap)) }}>{gap.toFixed(1)}</span>
+                  )}
+                </div>
+              );
+            })()}
           </div>
         )}
       </main>
