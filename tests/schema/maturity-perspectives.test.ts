@@ -80,6 +80,7 @@ describe("multi-perspective capability assessments", () => {
     const body = await response.json();
     expect(body.perspectives).toHaveLength(2);
     expect(body.summary).toMatchObject({ count: 2, minimum: 0.5, maximum: 1, spread: 0.5 });
+    expect(body.summary).toMatchObject({ materialVariance: false, evidenceCoverage: 0, pendingReview: 2, reviewState: "PENDING_REVIEW" });
     expect(body.summary.stakeholderTypes).toEqual(expect.arrayContaining(["employee", "expert_analyst"]));
   });
 

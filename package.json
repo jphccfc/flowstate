@@ -15,7 +15,8 @@
     "test:unit": "vitest run tests/unit",
     "test:integration": "npm run test:preflight && vitest run tests/schema",
     "db:test:start": "node scripts/start-test-db.mjs",
-    "db:test:stop": "node scripts/stop-test-db.mjs"
+    "db:test:stop": "node scripts/stop-test-db.mjs",
+    "db:seed:local-qa": "tsx scripts/seed-local-qa.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
