@@ -31,6 +31,7 @@ type HistoryData = {
   gap: number | null;
 };
 type Perspective = { id: string; stakeholderType: string; assessorRole: string | null; score: number; originalStatement: string; rationale: string | null; confidence: number | null };
+type Proposal = { id: string; interpretation: string; suggestedScore: number | null; scoreRangeMin: number | null; scoreRangeMax: number | null; confidence: number | null; missingEvidence: string[]; conflictingEvidence: string[]; status: string; reviewNotes: string | null };
 type PerspectiveData = { perspectives: Perspective[]; summary: { count: number; minimum: number | null; maximum: number | null; spread: number | null; stakeholderTypes: string[]; materialVariance: boolean; evidenceCoverage: number; pendingReview: number; reviewState: string }; rubric: { version: number; anchors: Array<{ level: number; label: string; description: string }> } };
 
 function ScorePicker({ value, onChange }: { value: number; onChange: (v: number) => void }) {
@@ -230,6 +231,8 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   const [history, setHistory] = useState<HistoryData | null>(null);
   const [perspectiveData, setPerspectiveData] = useState<PerspectiveData | null>(null);
   const [perspectiveError, setPerspectiveError] = useState<string | null>(null);
+  const [proposals, setProposals] = useState<Proposal[]>([]);
+  const [proposalBusy, setProposalBusy] = useState(false);
   const [showAsIsHistory, setShowAsIsHistory] = useState(false);
   const [showToBeHistory, setShowToBeHistory] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -301,6 +304,32 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
       loadPerspectives(selectedCapId);
     }
   }, [selectedCapId, loadPerspectives]);
+
+  async function loadProposals(capId: string) {
+    const res = await fetch(`/api/capabilities/${capId}/proposals`);
+    if (res.ok) setProposals(await res.json());
+  }
+
+  useEffect(() => {
+    if (selectedCapId) {
+      // Proposal refresh intentionally updates state after the fetch resolves.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      loadProposals(selectedCapId);
+    }
+  }, [selectedCapId]);
+
+  async function generateProposal() {
+    if (!selectedCapId) return;
+    setProposalBusy(true);
+    const res = await fetch(`/api/capabilities/${selectedCapId}/proposals`, { method: "POST" });
+    if (res.ok) { const proposal = await res.json(); setProposals((current) => [proposal, ...current]); }
+    setProposalBusy(false);
+  }
+
+  async function reviewProposal(proposalId: string, action: "approve" | "reject") {
+    const res = await fetch(`/api/maturity-proposals/${proposalId}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action }) });
+    if (res.ok) { const updated = await res.json(); setProposals((current) => current.map((proposal) => proposal.id === proposalId ? updated : proposal)); }
+  }
 
   async function savePerspective(data: { stakeholderType: string; score: number; originalStatement: string; rationale: string; confidence: number }) {
     if (!selectedCapId) return;
@@ -527,6 +556,11 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
                   </>
                 )}
                 {perspectiveData && <details className="mt-4 text-xs text-[var(--muted)]"><summary className="cursor-pointer text-[var(--accent)]">Current maturity rubric</summary><div className="mt-2 space-y-1">{perspectiveData.rubric.anchors.map((anchor) => <div key={anchor.level}><strong className="text-[var(--foreground)]">{anchor.level} — {anchor.label}:</strong> {anchor.description}</div>)}</div></details>}
+
+                {perspectiveData && <div className="mt-4 border-t border-[var(--card-border)] pt-4">
+                  <div className="flex items-center justify-between gap-3"><div><div className="text-xs font-semibold text-[var(--foreground)]">AI proposal</div><div className="text-xs text-[var(--muted)]">Provisional only; it cannot change the saved assessment.</div></div><button type="button" onClick={generateProposal} disabled={proposalBusy} className="px-3 py-1.5 rounded-lg bg-[var(--accent)] text-white text-xs disabled:opacity-50">{proposalBusy ? "Generating…" : "Generate proposal"}</button></div>
+                  {proposals.slice(0, 1).map((proposal) => <div key={proposal.id} className="mt-3 rounded-lg border border-[var(--card-border)] p-3 text-xs"><div className="flex items-center justify-between gap-3"><strong className="text-[var(--foreground)]">{proposal.status === "PENDING_REVIEW" ? "Pending human review" : proposal.status}</strong>{proposal.suggestedScore !== null && <span className="font-bold text-[var(--accent)]">Suggested {proposal.suggestedScore}</span>}</div><p className="mt-2 text-[var(--muted)]">{proposal.interpretation}</p>{proposal.missingEvidence.length > 0 && <p className="mt-2 text-[var(--muted)]">Missing evidence: {proposal.missingEvidence.join(", ")}</p>}{proposal.status === "PENDING_REVIEW" && <div className="mt-3 flex gap-2"><button type="button" onClick={() => reviewProposal(proposal.id, "approve")} className="px-2 py-1 rounded bg-[var(--success)] text-white">Approve proposal</button><button type="button" onClick={() => reviewProposal(proposal.id, "reject")} className="px-2 py-1 rounded bg-[var(--destructive)] text-white">Reject proposal</button></div>}</div>)}
+                </div>}
                 {perspectiveData && <PerspectiveForm onSubmit={savePerspective} />}
               </section>
             )}
