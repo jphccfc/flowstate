@@ -32,12 +32,20 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
   const scores = perspectives.map((perspective) => perspective.score);
   const stakeholderTypes = [...new Set(perspectives.map((perspective) => perspective.stakeholderType))];
   const summary = summarisePerspectiveScores(scores);
+  const evidenceBackedCount = perspectives.filter((perspective) => perspective.sourceEvidenceIds.length > 0).length;
+  const pendingReview = perspectives.filter((perspective) => perspective.status === "SUBMITTED").length;
+  const materialVariance = summary.spread !== null && summary.spread >= 1;
+  const reviewState = perspectives.length === 0 ? "NO_PERSPECTIVES" : pendingReview > 0 ? "PENDING_REVIEW" : "REVIEWED";
 
   return NextResponse.json({
     perspectives,
     summary: {
       ...summary,
       stakeholderTypes,
+      materialVariance,
+      evidenceCoverage: perspectives.length === 0 ? 0 : evidenceBackedCount / perspectives.length,
+      pendingReview,
+      reviewState,
     },
     rubric: DEFAULT_MATURITY_RUBRIC,
   });
