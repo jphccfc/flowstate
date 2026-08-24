@@ -101,6 +101,7 @@ model Capability {
   projects     ProjectCapability[]
   maturityAssessments MaturityAssessment[]
   assessmentDecisions AssessmentDecision[]
+  approvedInsights ApprovedInsight[]
   maturityPerspectives MaturityPerspective[]
   maturityProposals    MaturityProposal[]
   targetMaturities     TargetMaturity[]
@@ -464,9 +465,32 @@ model AssessmentDecision {
   createdAt            DateTime @default(now())
 
   capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+  approvedInsights ApprovedInsight[]
 
   @@index([capabilityId, createdAt])
   @@index([supersedesId])
+}
+
+model ApprovedInsight {
+  id                   String   @id @default(cuid())
+  capabilityId         String
+  decisionId           String
+  type                 String
+  title                String
+  description          String
+  priority             Float?
+  status               String   @default("APPROVED")
+  sourceEvidenceIds    String[] @default([])
+  sourcePerspectiveIds String[] @default([])
+  createdBy            String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+  decision   AssessmentDecision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
+
+  @@index([capabilityId, createdAt])
+  @@index([decisionId])
 }
 
 model TargetMaturity {

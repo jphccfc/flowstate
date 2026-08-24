@@ -293,6 +293,7 @@ export type AssessmentDecisionWhereInput = {
   supersedesId?: Prisma.StringNullableFilter<"AssessmentDecision"> | string | null
   createdAt?: Prisma.DateTimeFilter<"AssessmentDecision"> | Date | string
   capability?: Prisma.XOR<Prisma.CapabilityScalarRelationFilter, Prisma.CapabilityWhereInput>
+  approvedInsights?: Prisma.ApprovedInsightListRelationFilter
 }
 
 export type AssessmentDecisionOrderByWithRelationInput = {
@@ -311,6 +312,7 @@ export type AssessmentDecisionOrderByWithRelationInput = {
   supersedesId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   capability?: Prisma.CapabilityOrderByWithRelationInput
+  approvedInsights?: Prisma.ApprovedInsightOrderByRelationAggregateInput
 }
 
 export type AssessmentDecisionWhereUniqueInput = Prisma.AtLeast<{
@@ -332,6 +334,7 @@ export type AssessmentDecisionWhereUniqueInput = Prisma.AtLeast<{
   supersedesId?: Prisma.StringNullableFilter<"AssessmentDecision"> | string | null
   createdAt?: Prisma.DateTimeFilter<"AssessmentDecision"> | Date | string
   capability?: Prisma.XOR<Prisma.CapabilityScalarRelationFilter, Prisma.CapabilityWhereInput>
+  approvedInsights?: Prisma.ApprovedInsightListRelationFilter
 }, "id">
 
 export type AssessmentDecisionOrderByWithAggregationInput = {
@@ -391,6 +394,7 @@ export type AssessmentDecisionCreateInput = {
   supersedesId?: string | null
   createdAt?: Date | string
   capability: Prisma.CapabilityCreateNestedOneWithoutAssessmentDecisionsInput
+  approvedInsights?: Prisma.ApprovedInsightCreateNestedManyWithoutDecisionInput
 }
 
 export type AssessmentDecisionUncheckedCreateInput = {
@@ -408,6 +412,7 @@ export type AssessmentDecisionUncheckedCreateInput = {
   decidedAt?: Date | string
   supersedesId?: string | null
   createdAt?: Date | string
+  approvedInsights?: Prisma.ApprovedInsightUncheckedCreateNestedManyWithoutDecisionInput
 }
 
 export type AssessmentDecisionUpdateInput = {
@@ -425,6 +430,7 @@ export type AssessmentDecisionUpdateInput = {
   supersedesId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capability?: Prisma.CapabilityUpdateOneRequiredWithoutAssessmentDecisionsNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUpdateManyWithoutDecisionNestedInput
 }
 
 export type AssessmentDecisionUncheckedUpdateInput = {
@@ -442,6 +448,7 @@ export type AssessmentDecisionUncheckedUpdateInput = {
   decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   supersedesId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  approvedInsights?: Prisma.ApprovedInsightUncheckedUpdateManyWithoutDecisionNestedInput
 }
 
 export type AssessmentDecisionCreateManyInput = {
@@ -565,6 +572,11 @@ export type AssessmentDecisionSumOrderByAggregateInput = {
   rubricVersion?: Prisma.SortOrder
 }
 
+export type AssessmentDecisionScalarRelationFilter = {
+  is?: Prisma.AssessmentDecisionWhereInput
+  isNot?: Prisma.AssessmentDecisionWhereInput
+}
+
 export type AssessmentDecisionCreateNestedManyWithoutCapabilityInput = {
   create?: Prisma.XOR<Prisma.AssessmentDecisionCreateWithoutCapabilityInput, Prisma.AssessmentDecisionUncheckedCreateWithoutCapabilityInput> | Prisma.AssessmentDecisionCreateWithoutCapabilityInput[] | Prisma.AssessmentDecisionUncheckedCreateWithoutCapabilityInput[]
   connectOrCreate?: Prisma.AssessmentDecisionCreateOrConnectWithoutCapabilityInput | Prisma.AssessmentDecisionCreateOrConnectWithoutCapabilityInput[]
@@ -625,6 +637,20 @@ export type AssessmentDecisionUpdatesourcePerspectiveIdsInput = {
   push?: string | string[]
 }
 
+export type AssessmentDecisionCreateNestedOneWithoutApprovedInsightsInput = {
+  create?: Prisma.XOR<Prisma.AssessmentDecisionCreateWithoutApprovedInsightsInput, Prisma.AssessmentDecisionUncheckedCreateWithoutApprovedInsightsInput>
+  connectOrCreate?: Prisma.AssessmentDecisionCreateOrConnectWithoutApprovedInsightsInput
+  connect?: Prisma.AssessmentDecisionWhereUniqueInput
+}
+
+export type AssessmentDecisionUpdateOneRequiredWithoutApprovedInsightsNestedInput = {
+  create?: Prisma.XOR<Prisma.AssessmentDecisionCreateWithoutApprovedInsightsInput, Prisma.AssessmentDecisionUncheckedCreateWithoutApprovedInsightsInput>
+  connectOrCreate?: Prisma.AssessmentDecisionCreateOrConnectWithoutApprovedInsightsInput
+  upsert?: Prisma.AssessmentDecisionUpsertWithoutApprovedInsightsInput
+  connect?: Prisma.AssessmentDecisionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AssessmentDecisionUpdateToOneWithWhereWithoutApprovedInsightsInput, Prisma.AssessmentDecisionUpdateWithoutApprovedInsightsInput>, Prisma.AssessmentDecisionUncheckedUpdateWithoutApprovedInsightsInput>
+}
+
 export type AssessmentDecisionCreateWithoutCapabilityInput = {
   id?: string
   status: string
@@ -639,6 +665,7 @@ export type AssessmentDecisionCreateWithoutCapabilityInput = {
   decidedAt?: Date | string
   supersedesId?: string | null
   createdAt?: Date | string
+  approvedInsights?: Prisma.ApprovedInsightCreateNestedManyWithoutDecisionInput
 }
 
 export type AssessmentDecisionUncheckedCreateWithoutCapabilityInput = {
@@ -655,6 +682,7 @@ export type AssessmentDecisionUncheckedCreateWithoutCapabilityInput = {
   decidedAt?: Date | string
   supersedesId?: string | null
   createdAt?: Date | string
+  approvedInsights?: Prisma.ApprovedInsightUncheckedCreateNestedManyWithoutDecisionInput
 }
 
 export type AssessmentDecisionCreateOrConnectWithoutCapabilityInput = {
@@ -703,6 +731,90 @@ export type AssessmentDecisionScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"AssessmentDecision"> | Date | string
 }
 
+export type AssessmentDecisionCreateWithoutApprovedInsightsInput = {
+  id?: string
+  status: string
+  score?: number | null
+  scoreRangeMin?: number | null
+  scoreRangeMax?: number | null
+  rationale?: string | null
+  rubricVersion?: number | null
+  sourceEvidenceIds?: Prisma.AssessmentDecisionCreatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.AssessmentDecisionCreatesourcePerspectiveIdsInput | string[]
+  decidedBy?: string | null
+  decidedAt?: Date | string
+  supersedesId?: string | null
+  createdAt?: Date | string
+  capability: Prisma.CapabilityCreateNestedOneWithoutAssessmentDecisionsInput
+}
+
+export type AssessmentDecisionUncheckedCreateWithoutApprovedInsightsInput = {
+  id?: string
+  capabilityId: string
+  status: string
+  score?: number | null
+  scoreRangeMin?: number | null
+  scoreRangeMax?: number | null
+  rationale?: string | null
+  rubricVersion?: number | null
+  sourceEvidenceIds?: Prisma.AssessmentDecisionCreatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.AssessmentDecisionCreatesourcePerspectiveIdsInput | string[]
+  decidedBy?: string | null
+  decidedAt?: Date | string
+  supersedesId?: string | null
+  createdAt?: Date | string
+}
+
+export type AssessmentDecisionCreateOrConnectWithoutApprovedInsightsInput = {
+  where: Prisma.AssessmentDecisionWhereUniqueInput
+  create: Prisma.XOR<Prisma.AssessmentDecisionCreateWithoutApprovedInsightsInput, Prisma.AssessmentDecisionUncheckedCreateWithoutApprovedInsightsInput>
+}
+
+export type AssessmentDecisionUpsertWithoutApprovedInsightsInput = {
+  update: Prisma.XOR<Prisma.AssessmentDecisionUpdateWithoutApprovedInsightsInput, Prisma.AssessmentDecisionUncheckedUpdateWithoutApprovedInsightsInput>
+  create: Prisma.XOR<Prisma.AssessmentDecisionCreateWithoutApprovedInsightsInput, Prisma.AssessmentDecisionUncheckedCreateWithoutApprovedInsightsInput>
+  where?: Prisma.AssessmentDecisionWhereInput
+}
+
+export type AssessmentDecisionUpdateToOneWithWhereWithoutApprovedInsightsInput = {
+  where?: Prisma.AssessmentDecisionWhereInput
+  data: Prisma.XOR<Prisma.AssessmentDecisionUpdateWithoutApprovedInsightsInput, Prisma.AssessmentDecisionUncheckedUpdateWithoutApprovedInsightsInput>
+}
+
+export type AssessmentDecisionUpdateWithoutApprovedInsightsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  score?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  scoreRangeMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  scoreRangeMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  rationale?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rubricVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sourceEvidenceIds?: Prisma.AssessmentDecisionUpdatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.AssessmentDecisionUpdatesourcePerspectiveIdsInput | string[]
+  decidedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  supersedesId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  capability?: Prisma.CapabilityUpdateOneRequiredWithoutAssessmentDecisionsNestedInput
+}
+
+export type AssessmentDecisionUncheckedUpdateWithoutApprovedInsightsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  capabilityId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  score?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  scoreRangeMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  scoreRangeMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  rationale?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rubricVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sourceEvidenceIds?: Prisma.AssessmentDecisionUpdatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.AssessmentDecisionUpdatesourcePerspectiveIdsInput | string[]
+  decidedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  supersedesId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type AssessmentDecisionCreateManyCapabilityInput = {
   id?: string
   status: string
@@ -733,6 +845,7 @@ export type AssessmentDecisionUpdateWithoutCapabilityInput = {
   decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   supersedesId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  approvedInsights?: Prisma.ApprovedInsightUpdateManyWithoutDecisionNestedInput
 }
 
 export type AssessmentDecisionUncheckedUpdateWithoutCapabilityInput = {
@@ -749,6 +862,7 @@ export type AssessmentDecisionUncheckedUpdateWithoutCapabilityInput = {
   decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   supersedesId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  approvedInsights?: Prisma.ApprovedInsightUncheckedUpdateManyWithoutDecisionNestedInput
 }
 
 export type AssessmentDecisionUncheckedUpdateManyWithoutCapabilityInput = {
@@ -768,6 +882,35 @@ export type AssessmentDecisionUncheckedUpdateManyWithoutCapabilityInput = {
 }
 
 
+/**
+ * Count Type AssessmentDecisionCountOutputType
+ */
+
+export type AssessmentDecisionCountOutputType = {
+  approvedInsights: number
+}
+
+export type AssessmentDecisionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  approvedInsights?: boolean | AssessmentDecisionCountOutputTypeCountApprovedInsightsArgs
+}
+
+/**
+ * AssessmentDecisionCountOutputType without action
+ */
+export type AssessmentDecisionCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AssessmentDecisionCountOutputType
+   */
+  select?: Prisma.AssessmentDecisionCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * AssessmentDecisionCountOutputType without action
+ */
+export type AssessmentDecisionCountOutputTypeCountApprovedInsightsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ApprovedInsightWhereInput
+}
+
 
 export type AssessmentDecisionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -785,6 +928,8 @@ export type AssessmentDecisionSelect<ExtArgs extends runtime.Types.Extensions.In
   supersedesId?: boolean
   createdAt?: boolean
   capability?: boolean | Prisma.CapabilityDefaultArgs<ExtArgs>
+  approvedInsights?: boolean | Prisma.AssessmentDecision$approvedInsightsArgs<ExtArgs>
+  _count?: boolean | Prisma.AssessmentDecisionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["assessmentDecision"]>
 
 export type AssessmentDecisionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -843,6 +988,8 @@ export type AssessmentDecisionSelectScalar = {
 export type AssessmentDecisionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "capabilityId" | "status" | "score" | "scoreRangeMin" | "scoreRangeMax" | "rationale" | "rubricVersion" | "sourceEvidenceIds" | "sourcePerspectiveIds" | "decidedBy" | "decidedAt" | "supersedesId" | "createdAt", ExtArgs["result"]["assessmentDecision"]>
 export type AssessmentDecisionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   capability?: boolean | Prisma.CapabilityDefaultArgs<ExtArgs>
+  approvedInsights?: boolean | Prisma.AssessmentDecision$approvedInsightsArgs<ExtArgs>
+  _count?: boolean | Prisma.AssessmentDecisionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AssessmentDecisionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   capability?: boolean | Prisma.CapabilityDefaultArgs<ExtArgs>
@@ -855,6 +1002,7 @@ export type $AssessmentDecisionPayload<ExtArgs extends runtime.Types.Extensions.
   name: "AssessmentDecision"
   objects: {
     capability: Prisma.$CapabilityPayload<ExtArgs>
+    approvedInsights: Prisma.$ApprovedInsightPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1266,6 +1414,7 @@ readonly fields: AssessmentDecisionFieldRefs;
 export interface Prisma__AssessmentDecisionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   capability<T extends Prisma.CapabilityDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapabilityDefaultArgs<ExtArgs>>): Prisma.Prisma__CapabilityClient<runtime.Types.Result.GetResult<Prisma.$CapabilityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  approvedInsights<T extends Prisma.AssessmentDecision$approvedInsightsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssessmentDecision$approvedInsightsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApprovedInsightPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1707,6 +1856,30 @@ export type AssessmentDecisionDeleteManyArgs<ExtArgs extends runtime.Types.Exten
    * Limit how many AssessmentDecisions to delete.
    */
   limit?: number
+}
+
+/**
+ * AssessmentDecision.approvedInsights
+ */
+export type AssessmentDecision$approvedInsightsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ApprovedInsight
+   */
+  select?: Prisma.ApprovedInsightSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ApprovedInsight
+   */
+  omit?: Prisma.ApprovedInsightOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ApprovedInsightInclude<ExtArgs> | null
+  where?: Prisma.ApprovedInsightWhereInput
+  orderBy?: Prisma.ApprovedInsightOrderByWithRelationInput | Prisma.ApprovedInsightOrderByWithRelationInput[]
+  cursor?: Prisma.ApprovedInsightWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ApprovedInsightScalarFieldEnum | Prisma.ApprovedInsightScalarFieldEnum[]
 }
 
 /**

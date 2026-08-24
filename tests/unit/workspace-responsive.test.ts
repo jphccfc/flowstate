@@ -75,6 +75,9 @@ describe("workspace responsive and theme contracts", () => {
     expect(assess).toContain("Append-only history");
     expect(assess).toContain("Request evidence");
     expect(assess).toContain("Sign off");
+    expect(assess).toContain("Approved insights and priorities");
+    expect(assess).toContain("Create insight");
+    expect(assess).toContain("Traceable to signed-off decision");
     expect(assess).toContain("Original statement");
     expect(assess).toContain("stakeholderType");
     expect(assess).toContain("/perspectives");
