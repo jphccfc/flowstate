@@ -409,6 +409,7 @@ export const ModelName = {
   MaturityPerspective: 'MaturityPerspective',
   MaturityProposal: 'MaturityProposal',
   MaturityAssessment: 'MaturityAssessment',
+  AssessmentDecision: 'AssessmentDecision',
   TargetMaturity: 'TargetMaturity',
   CapabilityKPIMaturityCeiling: 'CapabilityKPIMaturityCeiling',
   Dependency: 'Dependency',
@@ -432,7 +433,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob"
+    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2286,6 +2287,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AssessmentDecision: {
+      payload: Prisma.$AssessmentDecisionPayload<ExtArgs>
+      fields: Prisma.AssessmentDecisionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AssessmentDecisionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentDecisionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AssessmentDecisionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentDecisionPayload>
+        }
+        findFirst: {
+          args: Prisma.AssessmentDecisionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentDecisionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AssessmentDecisionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentDecisionPayload>
+        }
+        findMany: {
+          args: Prisma.AssessmentDecisionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentDecisionPayload>[]
+        }
+        create: {
+          args: Prisma.AssessmentDecisionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentDecisionPayload>
+        }
+        createMany: {
+          args: Prisma.AssessmentDecisionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AssessmentDecisionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentDecisionPayload>[]
+        }
+        delete: {
+          args: Prisma.AssessmentDecisionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentDecisionPayload>
+        }
+        update: {
+          args: Prisma.AssessmentDecisionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentDecisionPayload>
+        }
+        deleteMany: {
+          args: Prisma.AssessmentDecisionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AssessmentDecisionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AssessmentDecisionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentDecisionPayload>[]
+        }
+        upsert: {
+          args: Prisma.AssessmentDecisionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentDecisionPayload>
+        }
+        aggregate: {
+          args: Prisma.AssessmentDecisionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAssessmentDecision>
+        }
+        groupBy: {
+          args: Prisma.AssessmentDecisionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AssessmentDecisionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AssessmentDecisionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AssessmentDecisionCountAggregateOutputType> | number
+        }
+      }
+    }
     TargetMaturity: {
       payload: Prisma.$TargetMaturityPayload<ExtArgs>
       fields: Prisma.TargetMaturityFieldRefs
@@ -3264,6 +3339,26 @@ export const MaturityAssessmentScalarFieldEnum = {
 export type MaturityAssessmentScalarFieldEnum = (typeof MaturityAssessmentScalarFieldEnum)[keyof typeof MaturityAssessmentScalarFieldEnum]
 
 
+export const AssessmentDecisionScalarFieldEnum = {
+  id: 'id',
+  capabilityId: 'capabilityId',
+  status: 'status',
+  score: 'score',
+  scoreRangeMin: 'scoreRangeMin',
+  scoreRangeMax: 'scoreRangeMax',
+  rationale: 'rationale',
+  rubricVersion: 'rubricVersion',
+  sourceEvidenceIds: 'sourceEvidenceIds',
+  sourcePerspectiveIds: 'sourcePerspectiveIds',
+  decidedBy: 'decidedBy',
+  decidedAt: 'decidedAt',
+  supersedesId: 'supersedesId',
+  createdAt: 'createdAt'
+} as const
+
+export type AssessmentDecisionScalarFieldEnum = (typeof AssessmentDecisionScalarFieldEnum)[keyof typeof AssessmentDecisionScalarFieldEnum]
+
+
 export const TargetMaturityScalarFieldEnum = {
   id: 'id',
   capabilityId: 'capabilityId',
@@ -3789,6 +3884,7 @@ export type GlobalOmitConfig = {
   maturityPerspective?: Prisma.MaturityPerspectiveOmit
   maturityProposal?: Prisma.MaturityProposalOmit
   maturityAssessment?: Prisma.MaturityAssessmentOmit
+  assessmentDecision?: Prisma.AssessmentDecisionOmit
   targetMaturity?: Prisma.TargetMaturityOmit
   capabilityKPIMaturityCeiling?: Prisma.CapabilityKPIMaturityCeilingOmit
   dependency?: Prisma.DependencyOmit

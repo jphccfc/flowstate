@@ -100,6 +100,7 @@ model Capability {
   technologies CapabilityTechnology[]
   projects     ProjectCapability[]
   maturityAssessments MaturityAssessment[]
+  assessmentDecisions AssessmentDecision[]
   maturityPerspectives MaturityPerspective[]
   maturityProposals    MaturityProposal[]
   targetMaturities     TargetMaturity[]
@@ -444,6 +445,28 @@ model MaturityAssessment {
   capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
 
   @@index([capabilityId, locationTag, assessedAt])
+}
+
+model AssessmentDecision {
+  id                   String   @id @default(cuid())
+  capabilityId         String
+  status               String
+  score                Float?
+  scoreRangeMin        Float?
+  scoreRangeMax        Float?
+  rationale            String?
+  rubricVersion        Int?
+  sourceEvidenceIds    String[] @default([])
+  sourcePerspectiveIds String[] @default([])
+  decidedBy            String?
+  decidedAt            DateTime @default(now())
+  supersedesId         String?
+  createdAt            DateTime @default(now())
+
+  capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+
+  @@index([capabilityId, createdAt])
+  @@index([supersedesId])
 }
 
 model TargetMaturity {

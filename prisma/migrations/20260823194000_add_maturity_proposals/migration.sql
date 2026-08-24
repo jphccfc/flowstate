@@ -11,7 +11,7 @@ CREATE TABLE "MaturityProposal" (
     "missingEvidence" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "conflictingEvidence" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "sourceEvidenceIds" TEXT[] DEFAULT ARRAY[]::TEXT[],
-    "status" TEXT NOT NULL DEFAULT PENDING_REVIEW,
+    "status" TEXT NOT NULL DEFAULT 'PENDING_REVIEW',
     "reviewedBy" TEXT,
     "reviewNotes" TEXT,
     "reviewedAt" TIMESTAMP(3),
