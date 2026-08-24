@@ -12,6 +12,7 @@ const admin = readFileSync(resolve(process.cwd(), "app/admin/page.tsx"), "utf8")
 const navbar = readFileSync(resolve(process.cwd(), "components/layout/Navbar.tsx"), "utf8");
 const assess = readFileSync(resolve(process.cwd(), "app/clients/[id]/assess/page.tsx"), "utf8");
 const report = readFileSync(resolve(process.cwd(), "app/clients/[id]/report/page.tsx"), "utf8");
+const analysis = readFileSync(resolve(process.cwd(), "app/clients/[id]/analysis/page.tsx"), "utf8");
 
 describe("workspace responsive and theme contracts", () => {
   it("uses theme tokens rather than a light-only overview card background", () => {
@@ -89,6 +90,14 @@ describe("workspace responsive and theme contracts", () => {
     expect(assess).toContain("history.gap ?? calculateGap");
     expect(assess).toContain("Assessment saved");
     expect(assess).toContain("setScore(0)");
+  });
+
+  it("keeps overall maturity readable in dark-mode gap analysis", () => {
+    expect(analysis).toContain("Overall Maturity");
+    expect(analysis).toContain("text-[var(--stat-value)]");
+    expect(analysis).not.toContain("text-[var(--primary)]");
+    expect(css).toContain("--stat-value: #0642bf");
+    expect(css).toContain("--stat-value: var(--accent)");
   });
 
   it("shows clearly labelled report examples", () => {

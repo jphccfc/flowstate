@@ -84,7 +84,7 @@ export default function AnalysisPage({ params }: { params: Promise<{ id: string 
         <>
           <div className="grid grid-cols-4 gap-3 mb-6">
             <div className="bg-white rounded-xl border border-[var(--card-border)] p-4">
-              <div className="text-2xl font-bold text-[var(--primary)]">{overallMaturity}/5</div>
+              <div className="text-2xl font-bold text-[var(--stat-value)]">{overallMaturity}/5</div>
               <div className="text-xs text-[var(--muted)] mt-0.5">Overall Maturity</div>
             </div>
             <div className="bg-white rounded-xl border border-[var(--card-border)] p-4">
