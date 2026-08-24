@@ -70,3 +70,10 @@ export async function hasOrganizationMembership(email: string | null | undefined
   const membership = await prisma.userOrganization.findFirst({ where: { user: { email } }, select: { id: true } });
   return membership !== null;
 }
+
+
+export async function isSystemAdmin(email: string | null | undefined): Promise<boolean> {
+  if (!email) return false;
+  const user = await prisma.user.findUnique({ where: { email }, select: { role: true } });
+  return user?.role === "SYSTEM_ADMIN";
+}
