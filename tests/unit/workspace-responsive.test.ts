@@ -82,6 +82,10 @@ describe("workspace responsive and theme contracts", () => {
     expect(admin).toContain("admin-shell");
     expect(admin).toContain("ThemeToggle");
     expect(admin).toContain("workspace-card");
+    expect(admin).toContain("Search users and organisations");
+    expect(admin).toContain("filteredUsers");
+    expect(admin).toContain("filteredOrganizations");
+    expect(css).toContain(".admin-search-input");
     expect(admin).toContain("aria-label={`Global role for ${user.email}`}");
     expect(css).toContain(".admin-shell");
     expect(css).toContain("@media (max-width: 800px)");
