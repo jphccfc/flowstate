@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 interface NavbarProps {
@@ -11,6 +12,13 @@ interface NavbarProps {
 
 export function Navbar({ clientName, clientId }: NavbarProps) {
   const router = useRouter();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    fetch("/api/admin/users").then((response) => { if (active) setIsAdmin(response.ok); }).catch(() => { if (active) setIsAdmin(false); });
+    return () => { active = false; };
+  }, []);
   async function handleSignOut() {
     const supabase = createClient();
     await supabase.auth.signOut();
@@ -39,6 +47,10 @@ export function Navbar({ clientName, clientId }: NavbarProps) {
 
       <div className="ml-auto flex items-center gap-2">
         <span className="hidden md:block text-xs text-[var(--workspace-muted)]">Capability, readiness & growth</span>
+        {isAdmin && (
+          <Link href="/admin" className="px-3 py-1.5 rounded text-sm text-[var(--accent)] hover:text-white hover:bg-white/10 transition-colors">Platform admin</Link>
+        )}
+
         {clientId && (
           <nav className="flex items-center gap-1">
             {[
