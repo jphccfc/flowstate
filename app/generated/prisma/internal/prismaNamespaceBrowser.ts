@@ -581,7 +581,8 @@ export const RecommendationScalarFieldEnum = {
   reviewedBy: 'reviewedBy',
   reviewNotes: 'reviewNotes',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  sourceGrowthActionId: 'sourceGrowthActionId'
 } as const
 
 export type RecommendationScalarFieldEnum = (typeof RecommendationScalarFieldEnum)[keyof typeof RecommendationScalarFieldEnum]

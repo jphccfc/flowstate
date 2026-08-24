@@ -48,6 +48,7 @@ export type RecommendationMinAggregateOutputType = {
   reviewNotes: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  sourceGrowthActionId: string | null
 }
 
 export type RecommendationMaxAggregateOutputType = {
@@ -62,6 +63,7 @@ export type RecommendationMaxAggregateOutputType = {
   reviewNotes: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  sourceGrowthActionId: string | null
 }
 
 export type RecommendationCountAggregateOutputType = {
@@ -78,6 +80,7 @@ export type RecommendationCountAggregateOutputType = {
   reviewNotes: number
   createdAt: number
   updatedAt: number
+  sourceGrowthActionId: number
   _all: number
 }
 
@@ -104,6 +107,7 @@ export type RecommendationMinAggregateInputType = {
   reviewNotes?: true
   createdAt?: true
   updatedAt?: true
+  sourceGrowthActionId?: true
 }
 
 export type RecommendationMaxAggregateInputType = {
@@ -118,6 +122,7 @@ export type RecommendationMaxAggregateInputType = {
   reviewNotes?: true
   createdAt?: true
   updatedAt?: true
+  sourceGrowthActionId?: true
 }
 
 export type RecommendationCountAggregateInputType = {
@@ -134,6 +139,7 @@ export type RecommendationCountAggregateInputType = {
   reviewNotes?: true
   createdAt?: true
   updatedAt?: true
+  sourceGrowthActionId?: true
   _all?: true
 }
 
@@ -237,6 +243,7 @@ export type RecommendationGroupByOutputType = {
   reviewNotes: string | null
   createdAt: Date
   updatedAt: Date
+  sourceGrowthActionId: string | null
   _count: RecommendationCountAggregateOutputType | null
   _avg: RecommendationAvgAggregateOutputType | null
   _sum: RecommendationSumAggregateOutputType | null
@@ -276,8 +283,10 @@ export type RecommendationWhereInput = {
   reviewNotes?: Prisma.StringNullableFilter<"Recommendation"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Recommendation"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Recommendation"> | Date | string
+  sourceGrowthActionId?: Prisma.StringNullableFilter<"Recommendation"> | string | null
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   feedback?: Prisma.RecommendationFeedbackListRelationFilter
+  sourceGrowthAction?: Prisma.XOR<Prisma.GrowthActionNullableScalarRelationFilter, Prisma.GrowthActionWhereInput> | null
 }
 
 export type RecommendationOrderByWithRelationInput = {
@@ -294,12 +303,15 @@ export type RecommendationOrderByWithRelationInput = {
   reviewNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sourceGrowthActionId?: Prisma.SortOrderInput | Prisma.SortOrder
   organization?: Prisma.OrganizationOrderByWithRelationInput
   feedback?: Prisma.RecommendationFeedbackOrderByRelationAggregateInput
+  sourceGrowthAction?: Prisma.GrowthActionOrderByWithRelationInput
 }
 
 export type RecommendationWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  sourceGrowthActionId?: string
   AND?: Prisma.RecommendationWhereInput | Prisma.RecommendationWhereInput[]
   OR?: Prisma.RecommendationWhereInput[]
   NOT?: Prisma.RecommendationWhereInput | Prisma.RecommendationWhereInput[]
@@ -317,7 +329,8 @@ export type RecommendationWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Recommendation"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   feedback?: Prisma.RecommendationFeedbackListRelationFilter
-}, "id">
+  sourceGrowthAction?: Prisma.XOR<Prisma.GrowthActionNullableScalarRelationFilter, Prisma.GrowthActionWhereInput> | null
+}, "id" | "sourceGrowthActionId">
 
 export type RecommendationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -333,6 +346,7 @@ export type RecommendationOrderByWithAggregationInput = {
   reviewNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sourceGrowthActionId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.RecommendationCountOrderByAggregateInput
   _avg?: Prisma.RecommendationAvgOrderByAggregateInput
   _max?: Prisma.RecommendationMaxOrderByAggregateInput
@@ -357,6 +371,7 @@ export type RecommendationScalarWhereWithAggregatesInput = {
   reviewNotes?: Prisma.StringNullableWithAggregatesFilter<"Recommendation"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Recommendation"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Recommendation"> | Date | string
+  sourceGrowthActionId?: Prisma.StringNullableWithAggregatesFilter<"Recommendation"> | string | null
 }
 
 export type RecommendationCreateInput = {
@@ -374,6 +389,7 @@ export type RecommendationCreateInput = {
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutRecommendationsInput
   feedback?: Prisma.RecommendationFeedbackCreateNestedManyWithoutRecommendationInput
+  sourceGrowthAction?: Prisma.GrowthActionCreateNestedOneWithoutRecommendationInput
 }
 
 export type RecommendationUncheckedCreateInput = {
@@ -390,6 +406,7 @@ export type RecommendationUncheckedCreateInput = {
   reviewNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceGrowthActionId?: string | null
   feedback?: Prisma.RecommendationFeedbackUncheckedCreateNestedManyWithoutRecommendationInput
 }
 
@@ -408,6 +425,7 @@ export type RecommendationUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutRecommendationsNestedInput
   feedback?: Prisma.RecommendationFeedbackUpdateManyWithoutRecommendationNestedInput
+  sourceGrowthAction?: Prisma.GrowthActionUpdateOneWithoutRecommendationNestedInput
 }
 
 export type RecommendationUncheckedUpdateInput = {
@@ -424,6 +442,7 @@ export type RecommendationUncheckedUpdateInput = {
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceGrowthActionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feedback?: Prisma.RecommendationFeedbackUncheckedUpdateManyWithoutRecommendationNestedInput
 }
 
@@ -441,6 +460,7 @@ export type RecommendationCreateManyInput = {
   reviewNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceGrowthActionId?: string | null
 }
 
 export type RecommendationUpdateManyMutationInput = {
@@ -472,6 +492,7 @@ export type RecommendationUncheckedUpdateManyInput = {
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceGrowthActionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RecommendationListRelationFilter = {
@@ -482,6 +503,11 @@ export type RecommendationListRelationFilter = {
 
 export type RecommendationOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type RecommendationNullableScalarRelationFilter = {
+  is?: Prisma.RecommendationWhereInput | null
+  isNot?: Prisma.RecommendationWhereInput | null
 }
 
 export type RecommendationCountOrderByAggregateInput = {
@@ -498,6 +524,7 @@ export type RecommendationCountOrderByAggregateInput = {
   reviewNotes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sourceGrowthActionId?: Prisma.SortOrder
 }
 
 export type RecommendationAvgOrderByAggregateInput = {
@@ -517,6 +544,7 @@ export type RecommendationMaxOrderByAggregateInput = {
   reviewNotes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sourceGrowthActionId?: Prisma.SortOrder
 }
 
 export type RecommendationMinOrderByAggregateInput = {
@@ -531,6 +559,7 @@ export type RecommendationMinOrderByAggregateInput = {
   reviewNotes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sourceGrowthActionId?: Prisma.SortOrder
 }
 
 export type RecommendationSumOrderByAggregateInput = {
@@ -585,6 +614,38 @@ export type RecommendationUncheckedUpdateManyWithoutOrganizationNestedInput = {
   deleteMany?: Prisma.RecommendationScalarWhereInput | Prisma.RecommendationScalarWhereInput[]
 }
 
+export type RecommendationCreateNestedOneWithoutSourceGrowthActionInput = {
+  create?: Prisma.XOR<Prisma.RecommendationCreateWithoutSourceGrowthActionInput, Prisma.RecommendationUncheckedCreateWithoutSourceGrowthActionInput>
+  connectOrCreate?: Prisma.RecommendationCreateOrConnectWithoutSourceGrowthActionInput
+  connect?: Prisma.RecommendationWhereUniqueInput
+}
+
+export type RecommendationUncheckedCreateNestedOneWithoutSourceGrowthActionInput = {
+  create?: Prisma.XOR<Prisma.RecommendationCreateWithoutSourceGrowthActionInput, Prisma.RecommendationUncheckedCreateWithoutSourceGrowthActionInput>
+  connectOrCreate?: Prisma.RecommendationCreateOrConnectWithoutSourceGrowthActionInput
+  connect?: Prisma.RecommendationWhereUniqueInput
+}
+
+export type RecommendationUpdateOneWithoutSourceGrowthActionNestedInput = {
+  create?: Prisma.XOR<Prisma.RecommendationCreateWithoutSourceGrowthActionInput, Prisma.RecommendationUncheckedCreateWithoutSourceGrowthActionInput>
+  connectOrCreate?: Prisma.RecommendationCreateOrConnectWithoutSourceGrowthActionInput
+  upsert?: Prisma.RecommendationUpsertWithoutSourceGrowthActionInput
+  disconnect?: Prisma.RecommendationWhereInput | boolean
+  delete?: Prisma.RecommendationWhereInput | boolean
+  connect?: Prisma.RecommendationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RecommendationUpdateToOneWithWhereWithoutSourceGrowthActionInput, Prisma.RecommendationUpdateWithoutSourceGrowthActionInput>, Prisma.RecommendationUncheckedUpdateWithoutSourceGrowthActionInput>
+}
+
+export type RecommendationUncheckedUpdateOneWithoutSourceGrowthActionNestedInput = {
+  create?: Prisma.XOR<Prisma.RecommendationCreateWithoutSourceGrowthActionInput, Prisma.RecommendationUncheckedCreateWithoutSourceGrowthActionInput>
+  connectOrCreate?: Prisma.RecommendationCreateOrConnectWithoutSourceGrowthActionInput
+  upsert?: Prisma.RecommendationUpsertWithoutSourceGrowthActionInput
+  disconnect?: Prisma.RecommendationWhereInput | boolean
+  delete?: Prisma.RecommendationWhereInput | boolean
+  connect?: Prisma.RecommendationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RecommendationUpdateToOneWithWhereWithoutSourceGrowthActionInput, Prisma.RecommendationUpdateWithoutSourceGrowthActionInput>, Prisma.RecommendationUncheckedUpdateWithoutSourceGrowthActionInput>
+}
+
 export type RecommendationCreaterelatedCapabilityIdsInput = {
   set: string[]
 }
@@ -635,6 +696,7 @@ export type RecommendationCreateWithoutOrganizationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   feedback?: Prisma.RecommendationFeedbackCreateNestedManyWithoutRecommendationInput
+  sourceGrowthAction?: Prisma.GrowthActionCreateNestedOneWithoutRecommendationInput
 }
 
 export type RecommendationUncheckedCreateWithoutOrganizationInput = {
@@ -650,6 +712,7 @@ export type RecommendationUncheckedCreateWithoutOrganizationInput = {
   reviewNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceGrowthActionId?: string | null
   feedback?: Prisma.RecommendationFeedbackUncheckedCreateNestedManyWithoutRecommendationInput
 }
 
@@ -696,6 +759,91 @@ export type RecommendationScalarWhereInput = {
   reviewNotes?: Prisma.StringNullableFilter<"Recommendation"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Recommendation"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Recommendation"> | Date | string
+  sourceGrowthActionId?: Prisma.StringNullableFilter<"Recommendation"> | string | null
+}
+
+export type RecommendationCreateWithoutSourceGrowthActionInput = {
+  id?: string
+  title: string
+  description: string
+  relatedCapabilityIds?: Prisma.RecommendationCreaterelatedCapabilityIdsInput | string[]
+  relatedKPIIds?: Prisma.RecommendationCreaterelatedKPIIdsInput | string[]
+  estimatedValue?: number | null
+  priorityScore?: number | null
+  status?: $Enums.RecommendationStatus
+  reviewedBy?: string | null
+  reviewNotes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutRecommendationsInput
+  feedback?: Prisma.RecommendationFeedbackCreateNestedManyWithoutRecommendationInput
+}
+
+export type RecommendationUncheckedCreateWithoutSourceGrowthActionInput = {
+  id?: string
+  organizationId: string
+  title: string
+  description: string
+  relatedCapabilityIds?: Prisma.RecommendationCreaterelatedCapabilityIdsInput | string[]
+  relatedKPIIds?: Prisma.RecommendationCreaterelatedKPIIdsInput | string[]
+  estimatedValue?: number | null
+  priorityScore?: number | null
+  status?: $Enums.RecommendationStatus
+  reviewedBy?: string | null
+  reviewNotes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  feedback?: Prisma.RecommendationFeedbackUncheckedCreateNestedManyWithoutRecommendationInput
+}
+
+export type RecommendationCreateOrConnectWithoutSourceGrowthActionInput = {
+  where: Prisma.RecommendationWhereUniqueInput
+  create: Prisma.XOR<Prisma.RecommendationCreateWithoutSourceGrowthActionInput, Prisma.RecommendationUncheckedCreateWithoutSourceGrowthActionInput>
+}
+
+export type RecommendationUpsertWithoutSourceGrowthActionInput = {
+  update: Prisma.XOR<Prisma.RecommendationUpdateWithoutSourceGrowthActionInput, Prisma.RecommendationUncheckedUpdateWithoutSourceGrowthActionInput>
+  create: Prisma.XOR<Prisma.RecommendationCreateWithoutSourceGrowthActionInput, Prisma.RecommendationUncheckedCreateWithoutSourceGrowthActionInput>
+  where?: Prisma.RecommendationWhereInput
+}
+
+export type RecommendationUpdateToOneWithWhereWithoutSourceGrowthActionInput = {
+  where?: Prisma.RecommendationWhereInput
+  data: Prisma.XOR<Prisma.RecommendationUpdateWithoutSourceGrowthActionInput, Prisma.RecommendationUncheckedUpdateWithoutSourceGrowthActionInput>
+}
+
+export type RecommendationUpdateWithoutSourceGrowthActionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  relatedCapabilityIds?: Prisma.RecommendationUpdaterelatedCapabilityIdsInput | string[]
+  relatedKPIIds?: Prisma.RecommendationUpdaterelatedKPIIdsInput | string[]
+  estimatedValue?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  priorityScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumRecommendationStatusFieldUpdateOperationsInput | $Enums.RecommendationStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutRecommendationsNestedInput
+  feedback?: Prisma.RecommendationFeedbackUpdateManyWithoutRecommendationNestedInput
+}
+
+export type RecommendationUncheckedUpdateWithoutSourceGrowthActionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  relatedCapabilityIds?: Prisma.RecommendationUpdaterelatedCapabilityIdsInput | string[]
+  relatedKPIIds?: Prisma.RecommendationUpdaterelatedKPIIdsInput | string[]
+  estimatedValue?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  priorityScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumRecommendationStatusFieldUpdateOperationsInput | $Enums.RecommendationStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  feedback?: Prisma.RecommendationFeedbackUncheckedUpdateManyWithoutRecommendationNestedInput
 }
 
 export type RecommendationCreateWithoutFeedbackInput = {
@@ -712,6 +860,7 @@ export type RecommendationCreateWithoutFeedbackInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutRecommendationsInput
+  sourceGrowthAction?: Prisma.GrowthActionCreateNestedOneWithoutRecommendationInput
 }
 
 export type RecommendationUncheckedCreateWithoutFeedbackInput = {
@@ -728,6 +877,7 @@ export type RecommendationUncheckedCreateWithoutFeedbackInput = {
   reviewNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceGrowthActionId?: string | null
 }
 
 export type RecommendationCreateOrConnectWithoutFeedbackInput = {
@@ -760,6 +910,7 @@ export type RecommendationUpdateWithoutFeedbackInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutRecommendationsNestedInput
+  sourceGrowthAction?: Prisma.GrowthActionUpdateOneWithoutRecommendationNestedInput
 }
 
 export type RecommendationUncheckedUpdateWithoutFeedbackInput = {
@@ -776,6 +927,7 @@ export type RecommendationUncheckedUpdateWithoutFeedbackInput = {
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceGrowthActionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RecommendationCreateManyOrganizationInput = {
@@ -791,6 +943,7 @@ export type RecommendationCreateManyOrganizationInput = {
   reviewNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceGrowthActionId?: string | null
 }
 
 export type RecommendationUpdateWithoutOrganizationInput = {
@@ -807,6 +960,7 @@ export type RecommendationUpdateWithoutOrganizationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   feedback?: Prisma.RecommendationFeedbackUpdateManyWithoutRecommendationNestedInput
+  sourceGrowthAction?: Prisma.GrowthActionUpdateOneWithoutRecommendationNestedInput
 }
 
 export type RecommendationUncheckedUpdateWithoutOrganizationInput = {
@@ -822,6 +976,7 @@ export type RecommendationUncheckedUpdateWithoutOrganizationInput = {
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceGrowthActionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feedback?: Prisma.RecommendationFeedbackUncheckedUpdateManyWithoutRecommendationNestedInput
 }
 
@@ -838,6 +993,7 @@ export type RecommendationUncheckedUpdateManyWithoutOrganizationInput = {
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceGrowthActionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -885,8 +1041,10 @@ export type RecommendationSelect<ExtArgs extends runtime.Types.Extensions.Intern
   reviewNotes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  sourceGrowthActionId?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   feedback?: boolean | Prisma.Recommendation$feedbackArgs<ExtArgs>
+  sourceGrowthAction?: boolean | Prisma.Recommendation$sourceGrowthActionArgs<ExtArgs>
   _count?: boolean | Prisma.RecommendationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["recommendation"]>
 
@@ -904,7 +1062,9 @@ export type RecommendationSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   reviewNotes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  sourceGrowthActionId?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  sourceGrowthAction?: boolean | Prisma.Recommendation$sourceGrowthActionArgs<ExtArgs>
 }, ExtArgs["result"]["recommendation"]>
 
 export type RecommendationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -921,7 +1081,9 @@ export type RecommendationSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   reviewNotes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  sourceGrowthActionId?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  sourceGrowthAction?: boolean | Prisma.Recommendation$sourceGrowthActionArgs<ExtArgs>
 }, ExtArgs["result"]["recommendation"]>
 
 export type RecommendationSelectScalar = {
@@ -938,19 +1100,23 @@ export type RecommendationSelectScalar = {
   reviewNotes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  sourceGrowthActionId?: boolean
 }
 
-export type RecommendationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "title" | "description" | "relatedCapabilityIds" | "relatedKPIIds" | "estimatedValue" | "priorityScore" | "status" | "reviewedBy" | "reviewNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["recommendation"]>
+export type RecommendationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "title" | "description" | "relatedCapabilityIds" | "relatedKPIIds" | "estimatedValue" | "priorityScore" | "status" | "reviewedBy" | "reviewNotes" | "createdAt" | "updatedAt" | "sourceGrowthActionId", ExtArgs["result"]["recommendation"]>
 export type RecommendationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   feedback?: boolean | Prisma.Recommendation$feedbackArgs<ExtArgs>
+  sourceGrowthAction?: boolean | Prisma.Recommendation$sourceGrowthActionArgs<ExtArgs>
   _count?: boolean | Prisma.RecommendationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type RecommendationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  sourceGrowthAction?: boolean | Prisma.Recommendation$sourceGrowthActionArgs<ExtArgs>
 }
 export type RecommendationIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  sourceGrowthAction?: boolean | Prisma.Recommendation$sourceGrowthActionArgs<ExtArgs>
 }
 
 export type $RecommendationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -958,6 +1124,7 @@ export type $RecommendationPayload<ExtArgs extends runtime.Types.Extensions.Inte
   objects: {
     organization: Prisma.$OrganizationPayload<ExtArgs>
     feedback: Prisma.$RecommendationFeedbackPayload<ExtArgs>[]
+    sourceGrowthAction: Prisma.$GrowthActionPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -973,6 +1140,7 @@ export type $RecommendationPayload<ExtArgs extends runtime.Types.Extensions.Inte
     reviewNotes: string | null
     createdAt: Date
     updatedAt: Date
+    sourceGrowthActionId: string | null
   }, ExtArgs["result"]["recommendation"]>
   composites: {}
 }
@@ -1369,6 +1537,7 @@ export interface Prisma__RecommendationClient<T, Null = never, ExtArgs extends r
   readonly [Symbol.toStringTag]: "PrismaPromise"
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   feedback<T extends Prisma.Recommendation$feedbackArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Recommendation$feedbackArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecommendationFeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sourceGrowthAction<T extends Prisma.Recommendation$sourceGrowthActionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Recommendation$sourceGrowthActionArgs<ExtArgs>>): Prisma.Prisma__GrowthActionClient<runtime.Types.Result.GetResult<Prisma.$GrowthActionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1411,6 +1580,7 @@ export interface RecommendationFieldRefs {
   readonly reviewNotes: Prisma.FieldRef<"Recommendation", 'String'>
   readonly createdAt: Prisma.FieldRef<"Recommendation", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Recommendation", 'DateTime'>
+  readonly sourceGrowthActionId: Prisma.FieldRef<"Recommendation", 'String'>
 }
 
 
@@ -1833,6 +2003,25 @@ export type Recommendation$feedbackArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.RecommendationFeedbackScalarFieldEnum | Prisma.RecommendationFeedbackScalarFieldEnum[]
+}
+
+/**
+ * Recommendation.sourceGrowthAction
+ */
+export type Recommendation$sourceGrowthActionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the GrowthAction
+   */
+  select?: Prisma.GrowthActionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the GrowthAction
+   */
+  omit?: Prisma.GrowthActionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GrowthActionInclude<ExtArgs> | null
+  where?: Prisma.GrowthActionWhereInput
 }
 
 /**
