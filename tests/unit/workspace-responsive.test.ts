@@ -10,6 +10,7 @@ const configure = readFileSync(resolve(process.cwd(), "app/clients/[id]/configur
 const dialog = readFileSync(resolve(process.cwd(), "components/ui/FlowstateDialog.tsx"), "utf8");
 const assess = readFileSync(resolve(process.cwd(), "app/clients/[id]/assess/page.tsx"), "utf8");
 const report = readFileSync(resolve(process.cwd(), "app/clients/[id]/report/page.tsx"), "utf8");
+const analysis = readFileSync(resolve(process.cwd(), "app/clients/[id]/analysis/page.tsx"), "utf8");
 
 describe("workspace responsive and theme contracts", () => {
   it("uses theme tokens rather than a light-only overview card background", () => {
@@ -69,6 +70,11 @@ describe("workspace responsive and theme contracts", () => {
     expect(assess).toContain("history.gap ?? calculateGap");
     expect(assess).toContain("Assessment saved");
     expect(assess).toContain("setScore(0)");
+  });
+
+  it("uses the readable stat token for overall maturity", () => {
+    expect(analysis).toContain("text-[var(--stat-value)]");
+    expect(analysis).not.toContain('text-[var(--primary)]>{overallMaturity}/5');
   });
 
   it("shows clearly labelled report examples", () => {
