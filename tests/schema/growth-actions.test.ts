@@ -22,6 +22,11 @@ describe("growth actions", () => {
     expect(body).toMatchObject({ insightId, ownerEmail: "owner@example.com", status: "PLANNED", priority: 8 });
   });
 
+  it("requires an owner and due date", async () => {
+    const response = await POST(new Request("http://test", { method: "POST", body: JSON.stringify({ title: "Missing assignment", description: "Must be rejected" }) }) as never, { params: Promise.resolve({ id: insightId }) });
+    expect(response.status).toBe(400);
+  });
+
   it("allows an authorised member to update action status without losing provenance", async () => {
     const response = await PATCH(new Request("http://test", { method: "PATCH", body: JSON.stringify({ status: "IN_PROGRESS" }) }) as never, { params: Promise.resolve({ id: actionId }) });
     expect(response.status).toBe(200); expect(await response.json()).toMatchObject({ id: actionId, status: "IN_PROGRESS", insightId });
