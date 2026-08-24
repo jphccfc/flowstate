@@ -157,6 +157,11 @@ export type MaturityRubric = Prisma.MaturityRubricModel
  */
 export type MaturityPerspective = Prisma.MaturityPerspectiveModel
 /**
+ * Model MaturityProposal
+ *
+ */
+export type MaturityProposal = Prisma.MaturityProposalModel
+/**
  * Model MaturityAssessment
  *
  */

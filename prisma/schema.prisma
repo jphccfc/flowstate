@@ -101,6 +101,7 @@ model Capability {
   projects     ProjectCapability[]
   maturityAssessments MaturityAssessment[]
   maturityPerspectives MaturityPerspective[]
+  maturityProposals    MaturityProposal[]
   targetMaturities     TargetMaturity[]
   kpiCeilings          CapabilityKPIMaturityCeiling[]
   followUpSuggestions FollowUpSuggestion[]
@@ -403,6 +404,30 @@ model MaturityPerspective {
 
   @@index([capabilityId, createdAt])
   @@index([capabilityId, stakeholderType])
+}
+
+model MaturityProposal {
+  id                  String   @id @default(cuid())
+  capabilityId        String
+  proposalType        String
+  interpretation      String
+  suggestedScore      Float?
+  scoreRangeMin       Float?
+  scoreRangeMax       Float?
+  confidence          Float?
+  missingEvidence     String[] @default([])
+  conflictingEvidence String[] @default([])
+  sourceEvidenceIds   String[] @default([])
+  status              String   @default("PENDING_REVIEW")
+  reviewedBy          String?
+  reviewNotes         String?
+  reviewedAt          DateTime?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+
+  @@index([capabilityId, status, createdAt])
 }
 
 model MaturityAssessment {
