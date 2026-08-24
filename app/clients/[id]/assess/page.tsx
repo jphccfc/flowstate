@@ -32,6 +32,7 @@ type HistoryData = {
 };
 type Perspective = { id: string; stakeholderType: string; assessorRole: string | null; score: number; originalStatement: string; rationale: string | null; confidence: number | null };
 type Proposal = { id: string; interpretation: string; suggestedScore: number | null; scoreRangeMin: number | null; scoreRangeMax: number | null; confidence: number | null; missingEvidence: string[]; conflictingEvidence: string[]; status: string; reviewNotes: string | null };
+type Decision = { id: string; status: string; score: number | null; rationale: string | null; decidedBy: string | null; decidedAt: string; supersedesId: string | null };
 type PerspectiveData = { perspectives: Perspective[]; summary: { count: number; minimum: number | null; maximum: number | null; spread: number | null; stakeholderTypes: string[]; materialVariance: boolean; evidenceCoverage: number; pendingReview: number; reviewState: string }; rubric: { version: number; anchors: Array<{ level: number; label: string; description: string }> } };
 
 function ScorePicker({ value, onChange }: { value: number; onChange: (v: number) => void }) {
@@ -233,6 +234,8 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   const [perspectiveError, setPerspectiveError] = useState<string | null>(null);
   const [proposals, setProposals] = useState<Proposal[]>([]);
   const [proposalBusy, setProposalBusy] = useState(false);
+  const [decisions, setDecisions] = useState<Decision[]>([]);
+  const [decisionBusy, setDecisionBusy] = useState(false);
   const [showAsIsHistory, setShowAsIsHistory] = useState(false);
   const [showToBeHistory, setShowToBeHistory] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -317,6 +320,37 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
       loadProposals(selectedCapId);
     }
   }, [selectedCapId]);
+
+  async function loadDecisions(capId: string) {
+    const res = await fetch(`/api/capabilities/${capId}/decisions`);
+    if (res.ok) setDecisions(await res.json());
+  }
+
+  useEffect(() => {
+    if (selectedCapId) {
+      // Decision refresh intentionally updates state after the fetch resolves.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      loadDecisions(selectedCapId);
+    }
+  }, [selectedCapId]);
+
+  async function createDecision(status: "APPROVED" | "EVIDENCE_REQUESTED") {
+    if (!selectedCapId) return;
+    setDecisionBusy(true);
+    const score = history?.currentAsIs?.[0]?.score;
+    const res = await fetch(`/api/capabilities/${selectedCapId}/decisions`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status, score, rationale: status === "APPROVED" ? "Reviewed by authorised human reviewer." : "Additional evidence requested." }) });
+    if (res.ok) { const decision = await res.json(); setDecisions((current) => [decision, ...current]); }
+    setDecisionBusy(false);
+  }
+
+  async function updateDecision(action: "REJECT" | "REOPEN" | "SIGN_OFF") {
+    const current = decisions[0];
+    if (!current) return;
+    setDecisionBusy(true);
+    const res = await fetch(`/api/maturity-decisions/${current.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action, rationale: `Decision marked ${action.toLowerCase().replaceAll("_", " ")}.` }) });
+    if (res.ok) { const decision = await res.json(); setDecisions((items) => [decision, ...items]); }
+    setDecisionBusy(false);
+  }
 
   async function generateProposal() {
     if (!selectedCapId) return;
@@ -532,6 +566,12 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
                 )}
               </div>
             </section>
+
+            {selectedCapId && <section className="workspace-card p-5 mb-4" aria-labelledby="decision-title">
+              <div className="flex items-start justify-between gap-4 mb-3"><div><div className="workspace-eyebrow">Human control</div><h3 id="decision-title" className="text-sm font-semibold text-[var(--foreground)]">Assessment decision and sign-off</h3></div><span className="text-xs text-[var(--muted)]">Append-only history</span></div>
+              {decisions.length === 0 ? <p className="text-sm text-[var(--muted)]">No human decision recorded yet. AI proposals remain provisional.</p> : <div className="space-y-2">{decisions.slice(0, 3).map((decision) => <div key={decision.id} className="rounded-lg border border-[var(--card-border)] p-3 text-xs"><div className="flex items-center justify-between gap-3"><strong className="text-[var(--foreground)]">{decision.status.replaceAll("_", " ")}</strong><span className="text-[var(--muted)]">{decision.score ?? "No score"}</span></div><div className="mt-1 text-[var(--muted)]">{decision.decidedBy ?? "Unknown reviewer"} · {new Date(decision.decidedAt).toLocaleString()}</div>{decision.rationale && <p className="mt-1 text-[var(--muted)]">{decision.rationale}</p>}</div>)}</div>}
+              <div className="mt-3 flex flex-wrap gap-2"><button type="button" onClick={() => createDecision("APPROVED")} disabled={decisionBusy} className="px-3 py-1.5 rounded-lg bg-[var(--success)] text-white text-xs disabled:opacity-50">Approve assessment</button><button type="button" onClick={() => createDecision("EVIDENCE_REQUESTED")} disabled={decisionBusy} className="px-3 py-1.5 rounded-lg border border-[var(--card-border)] text-xs disabled:opacity-50">Request evidence</button>{decisions[0] && <><button type="button" onClick={() => updateDecision("REOPEN")} disabled={decisionBusy} className="px-3 py-1.5 rounded-lg border border-[var(--card-border)] text-xs disabled:opacity-50">Reopen</button><button type="button" onClick={() => updateDecision("SIGN_OFF")} disabled={decisionBusy} className="px-3 py-1.5 rounded-lg bg-[var(--accent)] text-white text-xs disabled:opacity-50">Sign off</button></>}</div>
+            </section>}
 
             {(perspectiveData || perspectiveError) && (
               <section className="workspace-card p-5 mb-4" aria-labelledby="perspective-balance-title">

@@ -76,6 +76,7 @@ export const ModelName = {
   MaturityPerspective: 'MaturityPerspective',
   MaturityProposal: 'MaturityProposal',
   MaturityAssessment: 'MaturityAssessment',
+  AssessmentDecision: 'AssessmentDecision',
   TargetMaturity: 'TargetMaturity',
   CapabilityKPIMaturityCeiling: 'CapabilityKPIMaturityCeiling',
   Dependency: 'Dependency',
@@ -447,6 +448,26 @@ export const MaturityAssessmentScalarFieldEnum = {
 } as const
 
 export type MaturityAssessmentScalarFieldEnum = (typeof MaturityAssessmentScalarFieldEnum)[keyof typeof MaturityAssessmentScalarFieldEnum]
+
+
+export const AssessmentDecisionScalarFieldEnum = {
+  id: 'id',
+  capabilityId: 'capabilityId',
+  status: 'status',
+  score: 'score',
+  scoreRangeMin: 'scoreRangeMin',
+  scoreRangeMax: 'scoreRangeMax',
+  rationale: 'rationale',
+  rubricVersion: 'rubricVersion',
+  sourceEvidenceIds: 'sourceEvidenceIds',
+  sourcePerspectiveIds: 'sourcePerspectiveIds',
+  decidedBy: 'decidedBy',
+  decidedAt: 'decidedAt',
+  supersedesId: 'supersedesId',
+  createdAt: 'createdAt'
+} as const
+
+export type AssessmentDecisionScalarFieldEnum = (typeof AssessmentDecisionScalarFieldEnum)[keyof typeof AssessmentDecisionScalarFieldEnum]
 
 
 export const TargetMaturityScalarFieldEnum = {
