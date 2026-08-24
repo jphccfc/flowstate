@@ -18,7 +18,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   if (!allowed) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   const body = await req.json().catch(() => ({}));
   if (typeof body.title !== "string" || !body.title.trim() || typeof body.description !== "string" || !body.description.trim()) return NextResponse.json({ error: "title and description are required" }, { status: 400 });
-  const action = await prisma.growthAction.create({ data: { insightId: id, title: body.title.trim(), description: body.description.trim(), ownerEmail: typeof body.ownerEmail === "string" ? body.ownerEmail.trim() : undefined, dueDate: typeof body.dueDate === "string" ? new Date(body.dueDate) : undefined, priority: typeof body.priority === "number" ? body.priority : undefined, createdBy: user.email } });
+  if (typeof body.ownerEmail !== "string" || !body.ownerEmail.trim() || typeof body.dueDate !== "string" || !body.dueDate.trim() || Number.isNaN(new Date(body.dueDate).getTime())) return NextResponse.json({ error: "ownerEmail and a valid dueDate are required" }, { status: 400 });
+  const action = await prisma.growthAction.create({ data: { insightId: id, title: body.title.trim(), description: body.description.trim(), ownerEmail: body.ownerEmail.trim(), dueDate: new Date(body.dueDate), priority: typeof body.priority === "number" ? body.priority : undefined, createdBy: user.email } });
   return NextResponse.json(action, { status: 201 });
 }
 
