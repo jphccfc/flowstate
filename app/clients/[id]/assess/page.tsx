@@ -34,6 +34,7 @@ type Perspective = { id: string; stakeholderType: string; assessorRole: string |
 type Proposal = { id: string; interpretation: string; suggestedScore: number | null; scoreRangeMin: number | null; scoreRangeMax: number | null; confidence: number | null; missingEvidence: string[]; conflictingEvidence: string[]; status: string; reviewNotes: string | null };
 type Decision = { id: string; status: string; score: number | null; rationale: string | null; decidedBy: string | null; decidedAt: string; supersedesId: string | null };
 type Insight = { id: string; decisionId: string; type: string; title: string; description: string; priority: number | null; sourcePerspectiveIds: string[] };
+type GrowthAction = { id: string; insightId: string; title: string; description: string; ownerEmail: string | null; dueDate: string | null; priority: number | null; status: string };
 type PerspectiveData = { perspectives: Perspective[]; summary: { count: number; minimum: number | null; maximum: number | null; spread: number | null; stakeholderTypes: string[]; materialVariance: boolean; evidenceCoverage: number; pendingReview: number; reviewState: string }; rubric: { version: number; anchors: Array<{ level: number; label: string; description: string }> } };
 
 function ScorePicker({ value, onChange }: { value: number; onChange: (v: number) => void }) {
@@ -239,6 +240,8 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   const [decisionBusy, setDecisionBusy] = useState(false);
   const [insights, setInsights] = useState<Insight[]>([]);
   const [insightBusy, setInsightBusy] = useState(false);
+  const [growthActions, setGrowthActions] = useState<GrowthAction[]>([]);
+  const [growthBusy, setGrowthBusy] = useState(false);
   const [showAsIsHistory, setShowAsIsHistory] = useState(false);
   const [showToBeHistory, setShowToBeHistory] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -326,7 +329,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
 
   async function loadInsights(capId: string) {
     const res = await fetch(`/api/capabilities/${capId}/insights`);
-    if (res.ok) setInsights(await res.json());
+    if (res.ok) { const data = await res.json(); setInsights(data); if (data[0]) loadGrowthActions(data[0].id); }
   }
 
   async function loadDecisions(capId: string) {
@@ -341,6 +344,8 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
       loadDecisions(selectedCapId);
       loadInsights(selectedCapId);
     }
+    // Remote insight refresh intentionally updates state after the fetch resolves.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCapId]);
 
   async function createDecision(status: "APPROVED" | "EVIDENCE_REQUESTED") {
@@ -352,12 +357,26 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
     setDecisionBusy(false);
   }
 
+  async function loadGrowthActions(insightId: string) {
+    const res = await fetch(`/api/approved-insights/${insightId}/actions`);
+    if (res.ok) setGrowthActions(await res.json());
+  }
+
+  async function createGrowthAction() {
+    const insight = insights[0];
+    if (!insight) return;
+    setGrowthBusy(true);
+    const res = await fetch(`/api/approved-insights/${insight.id}/actions`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ title: "Document and adopt the capability workflow", description: "Assign an owner and complete the first improvement action linked to this approved insight.", ownerEmail: "", priority: insight.priority ?? 5 }) });
+    if (res.ok) { const action = await res.json(); setGrowthActions((items) => [action, ...items]); }
+    setGrowthBusy(false);
+  }
+
   async function createInsight() {
     const decision = decisions[0];
     if (!selectedCapId || decision?.status !== "SIGNED_OFF") return;
     setInsightBusy(true);
     const res = await fetch(`/api/capabilities/${selectedCapId}/insights`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ decisionId: decision.id, type: "MATURITY_GAP", title: "Approved capability gap", description: decision.rationale ?? "Approved assessment identifies a capability gap requiring prioritisation.", priority: 7 }) });
-    if (res.ok) { const insight = await res.json(); setInsights((items) => [insight, ...items]); }
+    if (res.ok) { const insight = await res.json(); setInsights((items) => [insight, ...items]); await loadGrowthActions(insight.id); }
     setInsightBusy(false);
   }
 
@@ -592,6 +611,8 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
             </section>}
 
             {decisions[0]?.status === "SIGNED_OFF" && <section className="workspace-card p-5 mb-4" aria-labelledby="insights-title"><div className="flex items-start justify-between gap-4 mb-3"><div><div className="workspace-eyebrow">Approved output</div><h3 id="insights-title" className="text-sm font-semibold text-[var(--foreground)]">Approved insights and priorities</h3></div><button type="button" onClick={createInsight} disabled={insightBusy} className="px-3 py-1.5 rounded-lg bg-[var(--accent)] text-white text-xs disabled:opacity-50">{insightBusy ? "Creating…" : "Create insight"}</button></div>{insights.length === 0 ? <p className="text-sm text-[var(--muted)]">No approved insight has been created from this signed-off decision.</p> : <div className="space-y-2">{insights.map((insight) => <div key={insight.id} className="rounded-lg border border-[var(--card-border)] p-3 text-sm"><div className="flex items-center justify-between gap-3"><strong>{insight.title}</strong><span className="text-xs text-[var(--muted)]">Priority {insight.priority ?? "—"}</span></div><p className="mt-1 text-xs text-[var(--muted)]">{insight.description}</p><div className="mt-1 text-[10px] text-[var(--muted)]">Traceable to signed-off decision · {insight.sourcePerspectiveIds.length} perspective sources</div></div>)}</div>}</section>}
+
+            {decisions[0]?.status === "SIGNED_OFF" && insights.length > 0 && <div className="mt-4 border-t border-[var(--card-border)] pt-4"><div className="flex items-center justify-between gap-3"><div><div className="text-xs font-semibold text-[var(--foreground)]">Growth actions</div><div className="text-xs text-[var(--muted)]">Actions remain linked to the approved insight.</div></div><button type="button" onClick={createGrowthAction} disabled={growthBusy || insights.length === 0} className="px-3 py-1.5 rounded-lg border border-[var(--card-border)] text-xs disabled:opacity-50">{growthBusy ? "Creating…" : "Add growth action"}</button></div>{growthActions.length > 0 && <div className="mt-3 space-y-2">{growthActions.map((action) => <div key={action.id} className="rounded-lg bg-[var(--muted-bg)] p-3 text-xs"><div className="flex items-center justify-between gap-3"><strong>{action.title}</strong><span>{action.status.replaceAll("_", " ")}</span></div><p className="mt-1 text-[var(--muted)]">{action.description}</p>{action.dueDate && <div className="mt-1 text-[var(--muted)]">Due {new Date(action.dueDate).toLocaleDateString()}</div>}</div>)}</div>}</div>}
 
             {(perspectiveData || perspectiveError) && (
               <section className="workspace-card p-5 mb-4" aria-labelledby="perspective-balance-title">

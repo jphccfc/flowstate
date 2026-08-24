@@ -411,6 +411,7 @@ export const ModelName = {
   MaturityAssessment: 'MaturityAssessment',
   AssessmentDecision: 'AssessmentDecision',
   ApprovedInsight: 'ApprovedInsight',
+  GrowthAction: 'GrowthAction',
   TargetMaturity: 'TargetMaturity',
   CapabilityKPIMaturityCeiling: 'CapabilityKPIMaturityCeiling',
   Dependency: 'Dependency',
@@ -434,7 +435,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob"
+    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "growthAction" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2436,6 +2437,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    GrowthAction: {
+      payload: Prisma.$GrowthActionPayload<ExtArgs>
+      fields: Prisma.GrowthActionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GrowthActionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthActionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GrowthActionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthActionPayload>
+        }
+        findFirst: {
+          args: Prisma.GrowthActionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthActionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GrowthActionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthActionPayload>
+        }
+        findMany: {
+          args: Prisma.GrowthActionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthActionPayload>[]
+        }
+        create: {
+          args: Prisma.GrowthActionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthActionPayload>
+        }
+        createMany: {
+          args: Prisma.GrowthActionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GrowthActionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthActionPayload>[]
+        }
+        delete: {
+          args: Prisma.GrowthActionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthActionPayload>
+        }
+        update: {
+          args: Prisma.GrowthActionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthActionPayload>
+        }
+        deleteMany: {
+          args: Prisma.GrowthActionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GrowthActionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GrowthActionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthActionPayload>[]
+        }
+        upsert: {
+          args: Prisma.GrowthActionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GrowthActionPayload>
+        }
+        aggregate: {
+          args: Prisma.GrowthActionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGrowthAction>
+        }
+        groupBy: {
+          args: Prisma.GrowthActionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GrowthActionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GrowthActionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GrowthActionCountAggregateOutputType> | number
+        }
+      }
+    }
     TargetMaturity: {
       payload: Prisma.$TargetMaturityPayload<ExtArgs>
       fields: Prisma.TargetMaturityFieldRefs
@@ -3453,6 +3528,23 @@ export const ApprovedInsightScalarFieldEnum = {
 export type ApprovedInsightScalarFieldEnum = (typeof ApprovedInsightScalarFieldEnum)[keyof typeof ApprovedInsightScalarFieldEnum]
 
 
+export const GrowthActionScalarFieldEnum = {
+  id: 'id',
+  insightId: 'insightId',
+  title: 'title',
+  description: 'description',
+  ownerEmail: 'ownerEmail',
+  dueDate: 'dueDate',
+  priority: 'priority',
+  status: 'status',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GrowthActionScalarFieldEnum = (typeof GrowthActionScalarFieldEnum)[keyof typeof GrowthActionScalarFieldEnum]
+
+
 export const TargetMaturityScalarFieldEnum = {
   id: 'id',
   capabilityId: 'capabilityId',
@@ -3980,6 +4072,7 @@ export type GlobalOmitConfig = {
   maturityAssessment?: Prisma.MaturityAssessmentOmit
   assessmentDecision?: Prisma.AssessmentDecisionOmit
   approvedInsight?: Prisma.ApprovedInsightOmit
+  growthAction?: Prisma.GrowthActionOmit
   targetMaturity?: Prisma.TargetMaturityOmit
   capabilityKPIMaturityCeiling?: Prisma.CapabilityKPIMaturityCeilingOmit
   dependency?: Prisma.DependencyOmit

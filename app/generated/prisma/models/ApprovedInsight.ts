@@ -274,6 +274,7 @@ export type ApprovedInsightWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"ApprovedInsight"> | Date | string
   capability?: Prisma.XOR<Prisma.CapabilityScalarRelationFilter, Prisma.CapabilityWhereInput>
   decision?: Prisma.XOR<Prisma.AssessmentDecisionScalarRelationFilter, Prisma.AssessmentDecisionWhereInput>
+  growthActions?: Prisma.GrowthActionListRelationFilter
 }
 
 export type ApprovedInsightOrderByWithRelationInput = {
@@ -292,6 +293,7 @@ export type ApprovedInsightOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   capability?: Prisma.CapabilityOrderByWithRelationInput
   decision?: Prisma.AssessmentDecisionOrderByWithRelationInput
+  growthActions?: Prisma.GrowthActionOrderByRelationAggregateInput
 }
 
 export type ApprovedInsightWhereUniqueInput = Prisma.AtLeast<{
@@ -313,6 +315,7 @@ export type ApprovedInsightWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"ApprovedInsight"> | Date | string
   capability?: Prisma.XOR<Prisma.CapabilityScalarRelationFilter, Prisma.CapabilityWhereInput>
   decision?: Prisma.XOR<Prisma.AssessmentDecisionScalarRelationFilter, Prisma.AssessmentDecisionWhereInput>
+  growthActions?: Prisma.GrowthActionListRelationFilter
 }, "id">
 
 export type ApprovedInsightOrderByWithAggregationInput = {
@@ -369,6 +372,7 @@ export type ApprovedInsightCreateInput = {
   updatedAt?: Date | string
   capability: Prisma.CapabilityCreateNestedOneWithoutApprovedInsightsInput
   decision: Prisma.AssessmentDecisionCreateNestedOneWithoutApprovedInsightsInput
+  growthActions?: Prisma.GrowthActionCreateNestedManyWithoutInsightInput
 }
 
 export type ApprovedInsightUncheckedCreateInput = {
@@ -385,6 +389,7 @@ export type ApprovedInsightUncheckedCreateInput = {
   createdBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  growthActions?: Prisma.GrowthActionUncheckedCreateNestedManyWithoutInsightInput
 }
 
 export type ApprovedInsightUpdateInput = {
@@ -401,6 +406,7 @@ export type ApprovedInsightUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capability?: Prisma.CapabilityUpdateOneRequiredWithoutApprovedInsightsNestedInput
   decision?: Prisma.AssessmentDecisionUpdateOneRequiredWithoutApprovedInsightsNestedInput
+  growthActions?: Prisma.GrowthActionUpdateManyWithoutInsightNestedInput
 }
 
 export type ApprovedInsightUncheckedUpdateInput = {
@@ -417,6 +423,7 @@ export type ApprovedInsightUncheckedUpdateInput = {
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  growthActions?: Prisma.GrowthActionUncheckedUpdateManyWithoutInsightNestedInput
 }
 
 export type ApprovedInsightCreateManyInput = {
@@ -527,6 +534,11 @@ export type ApprovedInsightSumOrderByAggregateInput = {
   priority?: Prisma.SortOrder
 }
 
+export type ApprovedInsightScalarRelationFilter = {
+  is?: Prisma.ApprovedInsightWhereInput
+  isNot?: Prisma.ApprovedInsightWhereInput
+}
+
 export type ApprovedInsightCreateNestedManyWithoutCapabilityInput = {
   create?: Prisma.XOR<Prisma.ApprovedInsightCreateWithoutCapabilityInput, Prisma.ApprovedInsightUncheckedCreateWithoutCapabilityInput> | Prisma.ApprovedInsightCreateWithoutCapabilityInput[] | Prisma.ApprovedInsightUncheckedCreateWithoutCapabilityInput[]
   connectOrCreate?: Prisma.ApprovedInsightCreateOrConnectWithoutCapabilityInput | Prisma.ApprovedInsightCreateOrConnectWithoutCapabilityInput[]
@@ -629,6 +641,20 @@ export type ApprovedInsightUpdatesourcePerspectiveIdsInput = {
   push?: string | string[]
 }
 
+export type ApprovedInsightCreateNestedOneWithoutGrowthActionsInput = {
+  create?: Prisma.XOR<Prisma.ApprovedInsightCreateWithoutGrowthActionsInput, Prisma.ApprovedInsightUncheckedCreateWithoutGrowthActionsInput>
+  connectOrCreate?: Prisma.ApprovedInsightCreateOrConnectWithoutGrowthActionsInput
+  connect?: Prisma.ApprovedInsightWhereUniqueInput
+}
+
+export type ApprovedInsightUpdateOneRequiredWithoutGrowthActionsNestedInput = {
+  create?: Prisma.XOR<Prisma.ApprovedInsightCreateWithoutGrowthActionsInput, Prisma.ApprovedInsightUncheckedCreateWithoutGrowthActionsInput>
+  connectOrCreate?: Prisma.ApprovedInsightCreateOrConnectWithoutGrowthActionsInput
+  upsert?: Prisma.ApprovedInsightUpsertWithoutGrowthActionsInput
+  connect?: Prisma.ApprovedInsightWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ApprovedInsightUpdateToOneWithWhereWithoutGrowthActionsInput, Prisma.ApprovedInsightUpdateWithoutGrowthActionsInput>, Prisma.ApprovedInsightUncheckedUpdateWithoutGrowthActionsInput>
+}
+
 export type ApprovedInsightCreateWithoutCapabilityInput = {
   id?: string
   type: string
@@ -642,6 +668,7 @@ export type ApprovedInsightCreateWithoutCapabilityInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   decision: Prisma.AssessmentDecisionCreateNestedOneWithoutApprovedInsightsInput
+  growthActions?: Prisma.GrowthActionCreateNestedManyWithoutInsightInput
 }
 
 export type ApprovedInsightUncheckedCreateWithoutCapabilityInput = {
@@ -657,6 +684,7 @@ export type ApprovedInsightUncheckedCreateWithoutCapabilityInput = {
   createdBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  growthActions?: Prisma.GrowthActionUncheckedCreateNestedManyWithoutInsightInput
 }
 
 export type ApprovedInsightCreateOrConnectWithoutCapabilityInput = {
@@ -717,6 +745,7 @@ export type ApprovedInsightCreateWithoutDecisionInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   capability: Prisma.CapabilityCreateNestedOneWithoutApprovedInsightsInput
+  growthActions?: Prisma.GrowthActionCreateNestedManyWithoutInsightInput
 }
 
 export type ApprovedInsightUncheckedCreateWithoutDecisionInput = {
@@ -732,6 +761,7 @@ export type ApprovedInsightUncheckedCreateWithoutDecisionInput = {
   createdBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  growthActions?: Prisma.GrowthActionUncheckedCreateNestedManyWithoutInsightInput
 }
 
 export type ApprovedInsightCreateOrConnectWithoutDecisionInput = {
@@ -758,6 +788,86 @@ export type ApprovedInsightUpdateWithWhereUniqueWithoutDecisionInput = {
 export type ApprovedInsightUpdateManyWithWhereWithoutDecisionInput = {
   where: Prisma.ApprovedInsightScalarWhereInput
   data: Prisma.XOR<Prisma.ApprovedInsightUpdateManyMutationInput, Prisma.ApprovedInsightUncheckedUpdateManyWithoutDecisionInput>
+}
+
+export type ApprovedInsightCreateWithoutGrowthActionsInput = {
+  id?: string
+  type: string
+  title: string
+  description: string
+  priority?: number | null
+  status?: string
+  sourceEvidenceIds?: Prisma.ApprovedInsightCreatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.ApprovedInsightCreatesourcePerspectiveIdsInput | string[]
+  createdBy?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  capability: Prisma.CapabilityCreateNestedOneWithoutApprovedInsightsInput
+  decision: Prisma.AssessmentDecisionCreateNestedOneWithoutApprovedInsightsInput
+}
+
+export type ApprovedInsightUncheckedCreateWithoutGrowthActionsInput = {
+  id?: string
+  capabilityId: string
+  decisionId: string
+  type: string
+  title: string
+  description: string
+  priority?: number | null
+  status?: string
+  sourceEvidenceIds?: Prisma.ApprovedInsightCreatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.ApprovedInsightCreatesourcePerspectiveIdsInput | string[]
+  createdBy?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ApprovedInsightCreateOrConnectWithoutGrowthActionsInput = {
+  where: Prisma.ApprovedInsightWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApprovedInsightCreateWithoutGrowthActionsInput, Prisma.ApprovedInsightUncheckedCreateWithoutGrowthActionsInput>
+}
+
+export type ApprovedInsightUpsertWithoutGrowthActionsInput = {
+  update: Prisma.XOR<Prisma.ApprovedInsightUpdateWithoutGrowthActionsInput, Prisma.ApprovedInsightUncheckedUpdateWithoutGrowthActionsInput>
+  create: Prisma.XOR<Prisma.ApprovedInsightCreateWithoutGrowthActionsInput, Prisma.ApprovedInsightUncheckedCreateWithoutGrowthActionsInput>
+  where?: Prisma.ApprovedInsightWhereInput
+}
+
+export type ApprovedInsightUpdateToOneWithWhereWithoutGrowthActionsInput = {
+  where?: Prisma.ApprovedInsightWhereInput
+  data: Prisma.XOR<Prisma.ApprovedInsightUpdateWithoutGrowthActionsInput, Prisma.ApprovedInsightUncheckedUpdateWithoutGrowthActionsInput>
+}
+
+export type ApprovedInsightUpdateWithoutGrowthActionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  priority?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceEvidenceIds?: Prisma.ApprovedInsightUpdatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.ApprovedInsightUpdatesourcePerspectiveIdsInput | string[]
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  capability?: Prisma.CapabilityUpdateOneRequiredWithoutApprovedInsightsNestedInput
+  decision?: Prisma.AssessmentDecisionUpdateOneRequiredWithoutApprovedInsightsNestedInput
+}
+
+export type ApprovedInsightUncheckedUpdateWithoutGrowthActionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  capabilityId?: Prisma.StringFieldUpdateOperationsInput | string
+  decisionId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  priority?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceEvidenceIds?: Prisma.ApprovedInsightUpdatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.ApprovedInsightUpdatesourcePerspectiveIdsInput | string[]
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ApprovedInsightCreateManyCapabilityInput = {
@@ -788,6 +898,7 @@ export type ApprovedInsightUpdateWithoutCapabilityInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   decision?: Prisma.AssessmentDecisionUpdateOneRequiredWithoutApprovedInsightsNestedInput
+  growthActions?: Prisma.GrowthActionUpdateManyWithoutInsightNestedInput
 }
 
 export type ApprovedInsightUncheckedUpdateWithoutCapabilityInput = {
@@ -803,6 +914,7 @@ export type ApprovedInsightUncheckedUpdateWithoutCapabilityInput = {
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  growthActions?: Prisma.GrowthActionUncheckedUpdateManyWithoutInsightNestedInput
 }
 
 export type ApprovedInsightUncheckedUpdateManyWithoutCapabilityInput = {
@@ -848,6 +960,7 @@ export type ApprovedInsightUpdateWithoutDecisionInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capability?: Prisma.CapabilityUpdateOneRequiredWithoutApprovedInsightsNestedInput
+  growthActions?: Prisma.GrowthActionUpdateManyWithoutInsightNestedInput
 }
 
 export type ApprovedInsightUncheckedUpdateWithoutDecisionInput = {
@@ -863,6 +976,7 @@ export type ApprovedInsightUncheckedUpdateWithoutDecisionInput = {
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  growthActions?: Prisma.GrowthActionUncheckedUpdateManyWithoutInsightNestedInput
 }
 
 export type ApprovedInsightUncheckedUpdateManyWithoutDecisionInput = {
@@ -881,6 +995,35 @@ export type ApprovedInsightUncheckedUpdateManyWithoutDecisionInput = {
 }
 
 
+/**
+ * Count Type ApprovedInsightCountOutputType
+ */
+
+export type ApprovedInsightCountOutputType = {
+  growthActions: number
+}
+
+export type ApprovedInsightCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  growthActions?: boolean | ApprovedInsightCountOutputTypeCountGrowthActionsArgs
+}
+
+/**
+ * ApprovedInsightCountOutputType without action
+ */
+export type ApprovedInsightCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ApprovedInsightCountOutputType
+   */
+  select?: Prisma.ApprovedInsightCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ApprovedInsightCountOutputType without action
+ */
+export type ApprovedInsightCountOutputTypeCountGrowthActionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GrowthActionWhereInput
+}
+
 
 export type ApprovedInsightSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -898,6 +1041,8 @@ export type ApprovedInsightSelect<ExtArgs extends runtime.Types.Extensions.Inter
   updatedAt?: boolean
   capability?: boolean | Prisma.CapabilityDefaultArgs<ExtArgs>
   decision?: boolean | Prisma.AssessmentDecisionDefaultArgs<ExtArgs>
+  growthActions?: boolean | Prisma.ApprovedInsight$growthActionsArgs<ExtArgs>
+  _count?: boolean | Prisma.ApprovedInsightCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["approvedInsight"]>
 
 export type ApprovedInsightSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -956,6 +1101,8 @@ export type ApprovedInsightOmit<ExtArgs extends runtime.Types.Extensions.Interna
 export type ApprovedInsightInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   capability?: boolean | Prisma.CapabilityDefaultArgs<ExtArgs>
   decision?: boolean | Prisma.AssessmentDecisionDefaultArgs<ExtArgs>
+  growthActions?: boolean | Prisma.ApprovedInsight$growthActionsArgs<ExtArgs>
+  _count?: boolean | Prisma.ApprovedInsightCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ApprovedInsightIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   capability?: boolean | Prisma.CapabilityDefaultArgs<ExtArgs>
@@ -971,6 +1118,7 @@ export type $ApprovedInsightPayload<ExtArgs extends runtime.Types.Extensions.Int
   objects: {
     capability: Prisma.$CapabilityPayload<ExtArgs>
     decision: Prisma.$AssessmentDecisionPayload<ExtArgs>
+    growthActions: Prisma.$GrowthActionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1382,6 +1530,7 @@ export interface Prisma__ApprovedInsightClient<T, Null = never, ExtArgs extends 
   readonly [Symbol.toStringTag]: "PrismaPromise"
   capability<T extends Prisma.CapabilityDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapabilityDefaultArgs<ExtArgs>>): Prisma.Prisma__CapabilityClient<runtime.Types.Result.GetResult<Prisma.$CapabilityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   decision<T extends Prisma.AssessmentDecisionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssessmentDecisionDefaultArgs<ExtArgs>>): Prisma.Prisma__AssessmentDecisionClient<runtime.Types.Result.GetResult<Prisma.$AssessmentDecisionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  growthActions<T extends Prisma.ApprovedInsight$growthActionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApprovedInsight$growthActionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GrowthActionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1822,6 +1971,30 @@ export type ApprovedInsightDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many ApprovedInsights to delete.
    */
   limit?: number
+}
+
+/**
+ * ApprovedInsight.growthActions
+ */
+export type ApprovedInsight$growthActionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the GrowthAction
+   */
+  select?: Prisma.GrowthActionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the GrowthAction
+   */
+  omit?: Prisma.GrowthActionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GrowthActionInclude<ExtArgs> | null
+  where?: Prisma.GrowthActionWhereInput
+  orderBy?: Prisma.GrowthActionOrderByWithRelationInput | Prisma.GrowthActionOrderByWithRelationInput[]
+  cursor?: Prisma.GrowthActionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GrowthActionScalarFieldEnum | Prisma.GrowthActionScalarFieldEnum[]
 }
 
 /**
