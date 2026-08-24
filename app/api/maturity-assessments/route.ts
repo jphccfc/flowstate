@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
-import { isOrganizationMember } from "@/lib/auth/organization";
+import { hasOrganizationPermission } from "@/lib/auth/organization";
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     include: { domain: { select: { organizationId: true } } },
   });
   if (!capability) return NextResponse.json({ error: "Capability not found" }, { status: 404 });
-  if (!(await isOrganizationMember(user.email, capability.domain.organizationId))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!(await hasOrganizationPermission(user.email, capability.domain.organizationId, "assessment.submit"))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const assessment = await prisma.maturityAssessment.create({
     data: {

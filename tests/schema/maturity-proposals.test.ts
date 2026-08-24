@@ -25,6 +25,15 @@ describe("persisted AI maturity proposals", () => {
     expect(body).toMatchObject({ capabilityId: capability.id, status: "PENDING_REVIEW", suggestedScore: 1, scoreRangeMin: 0.5, scoreRangeMax: 1.5, confidence: 0.82, sourceEvidenceIds: [tag.id] });
     expect((await prisma.maturityAssessment.findFirst({ where: { capabilityId: capability.id } }))?.score).toBe(1);
   });
+  it("blocks a client stakeholder from approving an AI proposal", async () => {
+    const organization = await createTestOrganization({ name: "Maturity Role Org" }); organizationId = organization.id;
+    await prisma.userOrganization.updateMany({ where: { organizationId: organization.id, user: { email: "advisor@test.com" } }, data: { role: "CLIENT_STAKEHOLDER" } });
+    const domain = await prisma.businessDomain.create({ data: { organizationId: organization.id, name: "Operations" } });
+    const capability = await prisma.capability.create({ data: { domainId: domain.id, name: "Production planning" } });
+    const proposal = await prisma.maturityProposal.create({ data: { capabilityId: capability.id, proposalType: "MATURITY_RATING", interpretation: "Ad hoc practice", suggestedScore: 1, confidence: 0.7, sourceEvidenceIds: [], missingEvidence: [], conflictingEvidence: [], status: "PENDING_REVIEW" } });
+    const response = await PATCH(req({ action: "approve" }, "PATCH"), { params: Promise.resolve({ id: proposal.id }) });
+    expect(response.status).toBe(403);
+  });
   it("requires an explicit human review action and records the reviewer", async () => {
     const organization = await createTestOrganization({ name: "Maturity Review Org" }); organizationId = organization.id;
     const domain = await prisma.businessDomain.create({ data: { organizationId: organization.id, name: "Operations" } });

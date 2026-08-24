@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
-import { isOrganizationMember } from "@/lib/auth/organization";
+import { hasOrganizationPermission } from "@/lib/auth/organization";
 
 const EDITABLE_FIELDS = [
   "title",
@@ -34,7 +34,7 @@ export async function PATCH(
   if (!recommendation) {
     return NextResponse.json({ error: "Recommendation not found" }, { status: 404 });
   }
-  if (!(await isOrganizationMember(user.email, recommendation.organizationId))) {
+  if (!(await hasOrganizationPermission(user.email, recommendation.organizationId, "recommendation.manage"))) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

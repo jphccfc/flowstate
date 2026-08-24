@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, use } from "react";
+import Link from "next/link";
 import { FlowstateDialog } from "@/components/ui/FlowstateDialog";
 
 const DOMAIN_COLORS = [
@@ -256,6 +257,7 @@ export default function ConfigurePage({ params }: { params: Promise<{ id: string
       <div className="mb-6">
         <h1 className="text-xl font-bold text-[var(--foreground)]">Configure</h1>
         <p className="text-sm text-[var(--muted)]">Set up the assessment framework for {org.name}</p>
+        <Link href={`/clients/${id}/members`} className="mt-3 inline-block text-sm font-medium text-[var(--accent)] hover:underline">Manage organisation members and roles →</Link>
       </div>
 
       <div className="flex gap-1 mb-6 bg-[var(--muted-bg)] p-1 rounded-lg w-fit">
