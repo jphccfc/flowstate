@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
-import { isOrganizationMember } from "@/lib/auth/organization";
+import { hasOrganizationPermission } from "@/lib/auth/organization";
 import { getCurrentMaturityForOrganization } from "@/lib/maturity/current";
 import { getCurrentTargetMaturityForOrganization } from "@/lib/maturity/target";
 
@@ -29,7 +29,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
   });
 
   if (!org) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if (!(await isOrganizationMember(user.email, org.id))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!(await hasOrganizationPermission(user.email, org.id, "client.read"))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const [currentAsIs, currentToBe] = await Promise.all([
     getCurrentMaturityForOrganization(id),
@@ -74,7 +74,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
   const existing = await prisma.organization.findUnique({ where: { id }, select: { id: true } });
   if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if (!(await isOrganizationMember(user.email, existing.id))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!(await hasOrganizationPermission(user.email, existing.id, "client.configure"))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const org = await prisma.organization.update({
     where: { id },

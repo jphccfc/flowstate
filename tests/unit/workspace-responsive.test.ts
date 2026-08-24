@@ -30,6 +30,15 @@ describe("workspace responsive and theme contracts", () => {
     expect(themeToggle).toContain('return "light";');
   });
 
+  it("provides workspace switching and admin tenant links", () => {
+    expect(nav).toContain("Business workspace");
+    expect(nav).toContain("/api/clients");
+    expect(nav).toContain("workspace-switcher");
+    expect(admin).toContain("Manage members →");
+    expect(admin).toContain("/clients/${org.id}");
+    expect(admin).toContain("/clients/${org.id}/members");
+  });
+
   it("uses an explicitly controlled mobile navigation panel", () => {
     expect(nav).toContain('aria-controls="workspace-navigation-panel"');
     expect(nav).toContain('id="workspace-navigation-panel"');
