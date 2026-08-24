@@ -268,6 +268,7 @@ export type CapabilityWhereInput = {
   projects?: Prisma.ProjectCapabilityListRelationFilter
   maturityAssessments?: Prisma.MaturityAssessmentListRelationFilter
   assessmentDecisions?: Prisma.AssessmentDecisionListRelationFilter
+  approvedInsights?: Prisma.ApprovedInsightListRelationFilter
   maturityPerspectives?: Prisma.MaturityPerspectiveListRelationFilter
   maturityProposals?: Prisma.MaturityProposalListRelationFilter
   targetMaturities?: Prisma.TargetMaturityListRelationFilter
@@ -296,6 +297,7 @@ export type CapabilityOrderByWithRelationInput = {
   projects?: Prisma.ProjectCapabilityOrderByRelationAggregateInput
   maturityAssessments?: Prisma.MaturityAssessmentOrderByRelationAggregateInput
   assessmentDecisions?: Prisma.AssessmentDecisionOrderByRelationAggregateInput
+  approvedInsights?: Prisma.ApprovedInsightOrderByRelationAggregateInput
   maturityPerspectives?: Prisma.MaturityPerspectiveOrderByRelationAggregateInput
   maturityProposals?: Prisma.MaturityProposalOrderByRelationAggregateInput
   targetMaturities?: Prisma.TargetMaturityOrderByRelationAggregateInput
@@ -327,6 +329,7 @@ export type CapabilityWhereUniqueInput = Prisma.AtLeast<{
   projects?: Prisma.ProjectCapabilityListRelationFilter
   maturityAssessments?: Prisma.MaturityAssessmentListRelationFilter
   assessmentDecisions?: Prisma.AssessmentDecisionListRelationFilter
+  approvedInsights?: Prisma.ApprovedInsightListRelationFilter
   maturityPerspectives?: Prisma.MaturityPerspectiveListRelationFilter
   maturityProposals?: Prisma.MaturityProposalListRelationFilter
   targetMaturities?: Prisma.TargetMaturityListRelationFilter
@@ -392,6 +395,7 @@ export type CapabilityCreateInput = {
   projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityCreateNestedManyWithoutCapabilityInput
@@ -419,6 +423,7 @@ export type CapabilityUncheckedCreateInput = {
   projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalUncheckedCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityUncheckedCreateNestedManyWithoutCapabilityInput
@@ -446,6 +451,7 @@ export type CapabilityUpdateInput = {
   projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUpdateManyWithoutCapabilityNestedInput
@@ -473,6 +479,7 @@ export type CapabilityUncheckedUpdateInput = {
   projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUncheckedUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUncheckedUpdateManyWithoutCapabilityNestedInput
@@ -811,6 +818,20 @@ export type CapabilityUpdateOneRequiredWithoutAssessmentDecisionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CapabilityUpdateToOneWithWhereWithoutAssessmentDecisionsInput, Prisma.CapabilityUpdateWithoutAssessmentDecisionsInput>, Prisma.CapabilityUncheckedUpdateWithoutAssessmentDecisionsInput>
 }
 
+export type CapabilityCreateNestedOneWithoutApprovedInsightsInput = {
+  create?: Prisma.XOR<Prisma.CapabilityCreateWithoutApprovedInsightsInput, Prisma.CapabilityUncheckedCreateWithoutApprovedInsightsInput>
+  connectOrCreate?: Prisma.CapabilityCreateOrConnectWithoutApprovedInsightsInput
+  connect?: Prisma.CapabilityWhereUniqueInput
+}
+
+export type CapabilityUpdateOneRequiredWithoutApprovedInsightsNestedInput = {
+  create?: Prisma.XOR<Prisma.CapabilityCreateWithoutApprovedInsightsInput, Prisma.CapabilityUncheckedCreateWithoutApprovedInsightsInput>
+  connectOrCreate?: Prisma.CapabilityCreateOrConnectWithoutApprovedInsightsInput
+  upsert?: Prisma.CapabilityUpsertWithoutApprovedInsightsInput
+  connect?: Prisma.CapabilityWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CapabilityUpdateToOneWithWhereWithoutApprovedInsightsInput, Prisma.CapabilityUpdateWithoutApprovedInsightsInput>, Prisma.CapabilityUncheckedUpdateWithoutApprovedInsightsInput>
+}
+
 export type CapabilityCreateNestedOneWithoutTargetMaturitiesInput = {
   create?: Prisma.XOR<Prisma.CapabilityCreateWithoutTargetMaturitiesInput, Prisma.CapabilityUncheckedCreateWithoutTargetMaturitiesInput>
   connectOrCreate?: Prisma.CapabilityCreateOrConnectWithoutTargetMaturitiesInput
@@ -874,6 +895,7 @@ export type CapabilityCreateWithoutDomainInput = {
   projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityCreateNestedManyWithoutCapabilityInput
@@ -900,6 +922,7 @@ export type CapabilityUncheckedCreateWithoutDomainInput = {
   projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalUncheckedCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityUncheckedCreateNestedManyWithoutCapabilityInput
@@ -970,6 +993,7 @@ export type CapabilityCreateWithoutStakeholdersInput = {
   projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityCreateNestedManyWithoutCapabilityInput
@@ -996,6 +1020,7 @@ export type CapabilityUncheckedCreateWithoutStakeholdersInput = {
   projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalUncheckedCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityUncheckedCreateNestedManyWithoutCapabilityInput
@@ -1038,6 +1063,7 @@ export type CapabilityUpdateWithoutStakeholdersInput = {
   projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUpdateManyWithoutCapabilityNestedInput
@@ -1064,6 +1090,7 @@ export type CapabilityUncheckedUpdateWithoutStakeholdersInput = {
   projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUncheckedUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUncheckedUpdateManyWithoutCapabilityNestedInput
@@ -1090,6 +1117,7 @@ export type CapabilityCreateWithoutKpisInput = {
   projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityCreateNestedManyWithoutCapabilityInput
@@ -1116,6 +1144,7 @@ export type CapabilityUncheckedCreateWithoutKpisInput = {
   projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalUncheckedCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityUncheckedCreateNestedManyWithoutCapabilityInput
@@ -1158,6 +1187,7 @@ export type CapabilityUpdateWithoutKpisInput = {
   projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUpdateManyWithoutCapabilityNestedInput
@@ -1184,6 +1214,7 @@ export type CapabilityUncheckedUpdateWithoutKpisInput = {
   projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUncheckedUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUncheckedUpdateManyWithoutCapabilityNestedInput
@@ -1210,6 +1241,7 @@ export type CapabilityCreateWithoutProcessesInput = {
   projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityCreateNestedManyWithoutCapabilityInput
@@ -1236,6 +1268,7 @@ export type CapabilityUncheckedCreateWithoutProcessesInput = {
   projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalUncheckedCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityUncheckedCreateNestedManyWithoutCapabilityInput
@@ -1278,6 +1311,7 @@ export type CapabilityUpdateWithoutProcessesInput = {
   projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUpdateManyWithoutCapabilityNestedInput
@@ -1304,6 +1338,7 @@ export type CapabilityUncheckedUpdateWithoutProcessesInput = {
   projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUncheckedUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUncheckedUpdateManyWithoutCapabilityNestedInput
@@ -1330,6 +1365,7 @@ export type CapabilityCreateWithoutTechnologiesInput = {
   projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityCreateNestedManyWithoutCapabilityInput
@@ -1356,6 +1392,7 @@ export type CapabilityUncheckedCreateWithoutTechnologiesInput = {
   projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalUncheckedCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityUncheckedCreateNestedManyWithoutCapabilityInput
@@ -1398,6 +1435,7 @@ export type CapabilityUpdateWithoutTechnologiesInput = {
   projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUpdateManyWithoutCapabilityNestedInput
@@ -1424,6 +1462,7 @@ export type CapabilityUncheckedUpdateWithoutTechnologiesInput = {
   projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUncheckedUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUncheckedUpdateManyWithoutCapabilityNestedInput
@@ -1450,6 +1489,7 @@ export type CapabilityCreateWithoutProjectsInput = {
   technologies?: Prisma.CapabilityTechnologyCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityCreateNestedManyWithoutCapabilityInput
@@ -1476,6 +1516,7 @@ export type CapabilityUncheckedCreateWithoutProjectsInput = {
   technologies?: Prisma.CapabilityTechnologyUncheckedCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalUncheckedCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityUncheckedCreateNestedManyWithoutCapabilityInput
@@ -1518,6 +1559,7 @@ export type CapabilityUpdateWithoutProjectsInput = {
   technologies?: Prisma.CapabilityTechnologyUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUpdateManyWithoutCapabilityNestedInput
@@ -1544,6 +1586,7 @@ export type CapabilityUncheckedUpdateWithoutProjectsInput = {
   technologies?: Prisma.CapabilityTechnologyUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUncheckedUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUncheckedUpdateManyWithoutCapabilityNestedInput
@@ -1571,6 +1614,7 @@ export type CapabilityCreateWithoutMaturityPerspectivesInput = {
   projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityCreateNestedManyWithoutCapabilityInput
   kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingCreateNestedManyWithoutCapabilityInput
@@ -1597,6 +1641,7 @@ export type CapabilityUncheckedCreateWithoutMaturityPerspectivesInput = {
   projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalUncheckedCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityUncheckedCreateNestedManyWithoutCapabilityInput
   kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedCreateNestedManyWithoutCapabilityInput
@@ -1639,6 +1684,7 @@ export type CapabilityUpdateWithoutMaturityPerspectivesInput = {
   projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUpdateManyWithoutCapabilityNestedInput
   kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUpdateManyWithoutCapabilityNestedInput
@@ -1665,6 +1711,7 @@ export type CapabilityUncheckedUpdateWithoutMaturityPerspectivesInput = {
   projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUncheckedUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUncheckedUpdateManyWithoutCapabilityNestedInput
   kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedUpdateManyWithoutCapabilityNestedInput
@@ -1691,6 +1738,7 @@ export type CapabilityCreateWithoutMaturityProposalsInput = {
   projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityCreateNestedManyWithoutCapabilityInput
   kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingCreateNestedManyWithoutCapabilityInput
@@ -1717,6 +1765,7 @@ export type CapabilityUncheckedCreateWithoutMaturityProposalsInput = {
   projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityUncheckedCreateNestedManyWithoutCapabilityInput
   kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedCreateNestedManyWithoutCapabilityInput
@@ -1759,6 +1808,7 @@ export type CapabilityUpdateWithoutMaturityProposalsInput = {
   projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUpdateManyWithoutCapabilityNestedInput
   kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUpdateManyWithoutCapabilityNestedInput
@@ -1785,6 +1835,7 @@ export type CapabilityUncheckedUpdateWithoutMaturityProposalsInput = {
   projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUncheckedUpdateManyWithoutCapabilityNestedInput
   kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedUpdateManyWithoutCapabilityNestedInput
@@ -1810,6 +1861,7 @@ export type CapabilityCreateWithoutMaturityAssessmentsInput = {
   technologies?: Prisma.CapabilityTechnologyCreateNestedManyWithoutCapabilityInput
   projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityCreateNestedManyWithoutCapabilityInput
@@ -1836,6 +1888,7 @@ export type CapabilityUncheckedCreateWithoutMaturityAssessmentsInput = {
   technologies?: Prisma.CapabilityTechnologyUncheckedCreateNestedManyWithoutCapabilityInput
   projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalUncheckedCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityUncheckedCreateNestedManyWithoutCapabilityInput
@@ -1878,6 +1931,7 @@ export type CapabilityUpdateWithoutMaturityAssessmentsInput = {
   technologies?: Prisma.CapabilityTechnologyUpdateManyWithoutCapabilityNestedInput
   projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUpdateManyWithoutCapabilityNestedInput
@@ -1904,6 +1958,7 @@ export type CapabilityUncheckedUpdateWithoutMaturityAssessmentsInput = {
   technologies?: Prisma.CapabilityTechnologyUncheckedUpdateManyWithoutCapabilityNestedInput
   projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUncheckedUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUncheckedUpdateManyWithoutCapabilityNestedInput
@@ -1930,6 +1985,7 @@ export type CapabilityCreateWithoutAssessmentDecisionsInput = {
   technologies?: Prisma.CapabilityTechnologyCreateNestedManyWithoutCapabilityInput
   projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityCreateNestedManyWithoutCapabilityInput
@@ -1956,6 +2012,7 @@ export type CapabilityUncheckedCreateWithoutAssessmentDecisionsInput = {
   technologies?: Prisma.CapabilityTechnologyUncheckedCreateNestedManyWithoutCapabilityInput
   projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalUncheckedCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityUncheckedCreateNestedManyWithoutCapabilityInput
@@ -1998,6 +2055,7 @@ export type CapabilityUpdateWithoutAssessmentDecisionsInput = {
   technologies?: Prisma.CapabilityTechnologyUpdateManyWithoutCapabilityNestedInput
   projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUpdateManyWithoutCapabilityNestedInput
@@ -2024,6 +2082,131 @@ export type CapabilityUncheckedUpdateWithoutAssessmentDecisionsInput = {
   technologies?: Prisma.CapabilityTechnologyUncheckedUpdateManyWithoutCapabilityNestedInput
   projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedUpdateManyWithoutCapabilityNestedInput
+  maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutCapabilityNestedInput
+  maturityProposals?: Prisma.MaturityProposalUncheckedUpdateManyWithoutCapabilityNestedInput
+  targetMaturities?: Prisma.TargetMaturityUncheckedUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedUpdateManyWithoutCapabilityNestedInput
+}
+
+export type CapabilityCreateWithoutApprovedInsightsInput = {
+  id?: string
+  name: string
+  aliases?: Prisma.CapabilityCreatealiasesInput | string[]
+  description?: string | null
+  dimensions?: Prisma.CapabilityCreatedimensionsInput | string[]
+  metrics?: Prisma.CapabilityCreatemetricsInput | string[]
+  tags?: Prisma.CapabilityCreatetagsInput | string[]
+  importanceScore?: number | null
+  order?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  domain: Prisma.BusinessDomainCreateNestedOneWithoutCapabilitiesInput
+  stakeholders?: Prisma.CapabilityStakeholderCreateNestedManyWithoutCapabilityInput
+  kpis?: Prisma.CapabilityKPICreateNestedManyWithoutCapabilityInput
+  processes?: Prisma.CapabilityProcessCreateNestedManyWithoutCapabilityInput
+  technologies?: Prisma.CapabilityTechnologyCreateNestedManyWithoutCapabilityInput
+  projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
+  assessmentDecisions?: Prisma.AssessmentDecisionCreateNestedManyWithoutCapabilityInput
+  maturityPerspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutCapabilityInput
+  maturityProposals?: Prisma.MaturityProposalCreateNestedManyWithoutCapabilityInput
+  targetMaturities?: Prisma.TargetMaturityCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionCreateNestedManyWithoutCapabilityInput
+}
+
+export type CapabilityUncheckedCreateWithoutApprovedInsightsInput = {
+  id?: string
+  domainId: string
+  name: string
+  aliases?: Prisma.CapabilityCreatealiasesInput | string[]
+  description?: string | null
+  dimensions?: Prisma.CapabilityCreatedimensionsInput | string[]
+  metrics?: Prisma.CapabilityCreatemetricsInput | string[]
+  tags?: Prisma.CapabilityCreatetagsInput | string[]
+  importanceScore?: number | null
+  order?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  stakeholders?: Prisma.CapabilityStakeholderUncheckedCreateNestedManyWithoutCapabilityInput
+  kpis?: Prisma.CapabilityKPIUncheckedCreateNestedManyWithoutCapabilityInput
+  processes?: Prisma.CapabilityProcessUncheckedCreateNestedManyWithoutCapabilityInput
+  technologies?: Prisma.CapabilityTechnologyUncheckedCreateNestedManyWithoutCapabilityInput
+  projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
+  assessmentDecisions?: Prisma.AssessmentDecisionUncheckedCreateNestedManyWithoutCapabilityInput
+  maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutCapabilityInput
+  maturityProposals?: Prisma.MaturityProposalUncheckedCreateNestedManyWithoutCapabilityInput
+  targetMaturities?: Prisma.TargetMaturityUncheckedCreateNestedManyWithoutCapabilityInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedCreateNestedManyWithoutCapabilityInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUncheckedCreateNestedManyWithoutCapabilityInput
+}
+
+export type CapabilityCreateOrConnectWithoutApprovedInsightsInput = {
+  where: Prisma.CapabilityWhereUniqueInput
+  create: Prisma.XOR<Prisma.CapabilityCreateWithoutApprovedInsightsInput, Prisma.CapabilityUncheckedCreateWithoutApprovedInsightsInput>
+}
+
+export type CapabilityUpsertWithoutApprovedInsightsInput = {
+  update: Prisma.XOR<Prisma.CapabilityUpdateWithoutApprovedInsightsInput, Prisma.CapabilityUncheckedUpdateWithoutApprovedInsightsInput>
+  create: Prisma.XOR<Prisma.CapabilityCreateWithoutApprovedInsightsInput, Prisma.CapabilityUncheckedCreateWithoutApprovedInsightsInput>
+  where?: Prisma.CapabilityWhereInput
+}
+
+export type CapabilityUpdateToOneWithWhereWithoutApprovedInsightsInput = {
+  where?: Prisma.CapabilityWhereInput
+  data: Prisma.XOR<Prisma.CapabilityUpdateWithoutApprovedInsightsInput, Prisma.CapabilityUncheckedUpdateWithoutApprovedInsightsInput>
+}
+
+export type CapabilityUpdateWithoutApprovedInsightsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  aliases?: Prisma.CapabilityUpdatealiasesInput | string[]
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dimensions?: Prisma.CapabilityUpdatedimensionsInput | string[]
+  metrics?: Prisma.CapabilityUpdatemetricsInput | string[]
+  tags?: Prisma.CapabilityUpdatetagsInput | string[]
+  importanceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  domain?: Prisma.BusinessDomainUpdateOneRequiredWithoutCapabilitiesNestedInput
+  stakeholders?: Prisma.CapabilityStakeholderUpdateManyWithoutCapabilityNestedInput
+  kpis?: Prisma.CapabilityKPIUpdateManyWithoutCapabilityNestedInput
+  processes?: Prisma.CapabilityProcessUpdateManyWithoutCapabilityNestedInput
+  technologies?: Prisma.CapabilityTechnologyUpdateManyWithoutCapabilityNestedInput
+  projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
+  assessmentDecisions?: Prisma.AssessmentDecisionUpdateManyWithoutCapabilityNestedInput
+  maturityPerspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutCapabilityNestedInput
+  maturityProposals?: Prisma.MaturityProposalUpdateManyWithoutCapabilityNestedInput
+  targetMaturities?: Prisma.TargetMaturityUpdateManyWithoutCapabilityNestedInput
+  kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUpdateManyWithoutCapabilityNestedInput
+  followUpSuggestions?: Prisma.FollowUpSuggestionUpdateManyWithoutCapabilityNestedInput
+}
+
+export type CapabilityUncheckedUpdateWithoutApprovedInsightsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  domainId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  aliases?: Prisma.CapabilityUpdatealiasesInput | string[]
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dimensions?: Prisma.CapabilityUpdatedimensionsInput | string[]
+  metrics?: Prisma.CapabilityUpdatemetricsInput | string[]
+  tags?: Prisma.CapabilityUpdatetagsInput | string[]
+  importanceScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stakeholders?: Prisma.CapabilityStakeholderUncheckedUpdateManyWithoutCapabilityNestedInput
+  kpis?: Prisma.CapabilityKPIUncheckedUpdateManyWithoutCapabilityNestedInput
+  processes?: Prisma.CapabilityProcessUncheckedUpdateManyWithoutCapabilityNestedInput
+  technologies?: Prisma.CapabilityTechnologyUncheckedUpdateManyWithoutCapabilityNestedInput
+  projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
+  maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
+  assessmentDecisions?: Prisma.AssessmentDecisionUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUncheckedUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUncheckedUpdateManyWithoutCapabilityNestedInput
@@ -2051,6 +2234,7 @@ export type CapabilityCreateWithoutTargetMaturitiesInput = {
   projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalCreateNestedManyWithoutCapabilityInput
   kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingCreateNestedManyWithoutCapabilityInput
@@ -2077,6 +2261,7 @@ export type CapabilityUncheckedCreateWithoutTargetMaturitiesInput = {
   projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalUncheckedCreateNestedManyWithoutCapabilityInput
   kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedCreateNestedManyWithoutCapabilityInput
@@ -2119,6 +2304,7 @@ export type CapabilityUpdateWithoutTargetMaturitiesInput = {
   projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUpdateManyWithoutCapabilityNestedInput
   kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUpdateManyWithoutCapabilityNestedInput
@@ -2145,6 +2331,7 @@ export type CapabilityUncheckedUpdateWithoutTargetMaturitiesInput = {
   projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUncheckedUpdateManyWithoutCapabilityNestedInput
   kpiCeilings?: Prisma.CapabilityKPIMaturityCeilingUncheckedUpdateManyWithoutCapabilityNestedInput
@@ -2171,6 +2358,7 @@ export type CapabilityCreateWithoutKpiCeilingsInput = {
   projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityCreateNestedManyWithoutCapabilityInput
@@ -2197,6 +2385,7 @@ export type CapabilityUncheckedCreateWithoutKpiCeilingsInput = {
   projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalUncheckedCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityUncheckedCreateNestedManyWithoutCapabilityInput
@@ -2239,6 +2428,7 @@ export type CapabilityUpdateWithoutKpiCeilingsInput = {
   projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUpdateManyWithoutCapabilityNestedInput
@@ -2265,6 +2455,7 @@ export type CapabilityUncheckedUpdateWithoutKpiCeilingsInput = {
   projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUncheckedUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUncheckedUpdateManyWithoutCapabilityNestedInput
@@ -2291,6 +2482,7 @@ export type CapabilityCreateWithoutFollowUpSuggestionsInput = {
   projects?: Prisma.ProjectCapabilityCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityCreateNestedManyWithoutCapabilityInput
@@ -2317,6 +2509,7 @@ export type CapabilityUncheckedCreateWithoutFollowUpSuggestionsInput = {
   projects?: Prisma.ProjectCapabilityUncheckedCreateNestedManyWithoutCapabilityInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedCreateNestedManyWithoutCapabilityInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedCreateNestedManyWithoutCapabilityInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedCreateNestedManyWithoutCapabilityInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutCapabilityInput
   maturityProposals?: Prisma.MaturityProposalUncheckedCreateNestedManyWithoutCapabilityInput
   targetMaturities?: Prisma.TargetMaturityUncheckedCreateNestedManyWithoutCapabilityInput
@@ -2359,6 +2552,7 @@ export type CapabilityUpdateWithoutFollowUpSuggestionsInput = {
   projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUpdateManyWithoutCapabilityNestedInput
@@ -2385,6 +2579,7 @@ export type CapabilityUncheckedUpdateWithoutFollowUpSuggestionsInput = {
   projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUncheckedUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUncheckedUpdateManyWithoutCapabilityNestedInput
@@ -2424,6 +2619,7 @@ export type CapabilityUpdateWithoutDomainInput = {
   projects?: Prisma.ProjectCapabilityUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUpdateManyWithoutCapabilityNestedInput
@@ -2450,6 +2646,7 @@ export type CapabilityUncheckedUpdateWithoutDomainInput = {
   projects?: Prisma.ProjectCapabilityUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityAssessments?: Prisma.MaturityAssessmentUncheckedUpdateManyWithoutCapabilityNestedInput
   assessmentDecisions?: Prisma.AssessmentDecisionUncheckedUpdateManyWithoutCapabilityNestedInput
+  approvedInsights?: Prisma.ApprovedInsightUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityPerspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutCapabilityNestedInput
   maturityProposals?: Prisma.MaturityProposalUncheckedUpdateManyWithoutCapabilityNestedInput
   targetMaturities?: Prisma.TargetMaturityUncheckedUpdateManyWithoutCapabilityNestedInput
@@ -2484,6 +2681,7 @@ export type CapabilityCountOutputType = {
   projects: number
   maturityAssessments: number
   assessmentDecisions: number
+  approvedInsights: number
   maturityPerspectives: number
   maturityProposals: number
   targetMaturities: number
@@ -2499,6 +2697,7 @@ export type CapabilityCountOutputTypeSelect<ExtArgs extends runtime.Types.Extens
   projects?: boolean | CapabilityCountOutputTypeCountProjectsArgs
   maturityAssessments?: boolean | CapabilityCountOutputTypeCountMaturityAssessmentsArgs
   assessmentDecisions?: boolean | CapabilityCountOutputTypeCountAssessmentDecisionsArgs
+  approvedInsights?: boolean | CapabilityCountOutputTypeCountApprovedInsightsArgs
   maturityPerspectives?: boolean | CapabilityCountOutputTypeCountMaturityPerspectivesArgs
   maturityProposals?: boolean | CapabilityCountOutputTypeCountMaturityProposalsArgs
   targetMaturities?: boolean | CapabilityCountOutputTypeCountTargetMaturitiesArgs
@@ -2568,6 +2767,13 @@ export type CapabilityCountOutputTypeCountAssessmentDecisionsArgs<ExtArgs extend
 /**
  * CapabilityCountOutputType without action
  */
+export type CapabilityCountOutputTypeCountApprovedInsightsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ApprovedInsightWhereInput
+}
+
+/**
+ * CapabilityCountOutputType without action
+ */
 export type CapabilityCountOutputTypeCountMaturityPerspectivesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.MaturityPerspectiveWhereInput
 }
@@ -2622,6 +2828,7 @@ export type CapabilitySelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   projects?: boolean | Prisma.Capability$projectsArgs<ExtArgs>
   maturityAssessments?: boolean | Prisma.Capability$maturityAssessmentsArgs<ExtArgs>
   assessmentDecisions?: boolean | Prisma.Capability$assessmentDecisionsArgs<ExtArgs>
+  approvedInsights?: boolean | Prisma.Capability$approvedInsightsArgs<ExtArgs>
   maturityPerspectives?: boolean | Prisma.Capability$maturityPerspectivesArgs<ExtArgs>
   maturityProposals?: boolean | Prisma.Capability$maturityProposalsArgs<ExtArgs>
   targetMaturities?: boolean | Prisma.Capability$targetMaturitiesArgs<ExtArgs>
@@ -2687,6 +2894,7 @@ export type CapabilityInclude<ExtArgs extends runtime.Types.Extensions.InternalA
   projects?: boolean | Prisma.Capability$projectsArgs<ExtArgs>
   maturityAssessments?: boolean | Prisma.Capability$maturityAssessmentsArgs<ExtArgs>
   assessmentDecisions?: boolean | Prisma.Capability$assessmentDecisionsArgs<ExtArgs>
+  approvedInsights?: boolean | Prisma.Capability$approvedInsightsArgs<ExtArgs>
   maturityPerspectives?: boolean | Prisma.Capability$maturityPerspectivesArgs<ExtArgs>
   maturityProposals?: boolean | Prisma.Capability$maturityProposalsArgs<ExtArgs>
   targetMaturities?: boolean | Prisma.Capability$targetMaturitiesArgs<ExtArgs>
@@ -2712,6 +2920,7 @@ export type $CapabilityPayload<ExtArgs extends runtime.Types.Extensions.Internal
     projects: Prisma.$ProjectCapabilityPayload<ExtArgs>[]
     maturityAssessments: Prisma.$MaturityAssessmentPayload<ExtArgs>[]
     assessmentDecisions: Prisma.$AssessmentDecisionPayload<ExtArgs>[]
+    approvedInsights: Prisma.$ApprovedInsightPayload<ExtArgs>[]
     maturityPerspectives: Prisma.$MaturityPerspectivePayload<ExtArgs>[]
     maturityProposals: Prisma.$MaturityProposalPayload<ExtArgs>[]
     targetMaturities: Prisma.$TargetMaturityPayload<ExtArgs>[]
@@ -3133,6 +3342,7 @@ export interface Prisma__CapabilityClient<T, Null = never, ExtArgs extends runti
   projects<T extends Prisma.Capability$projectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Capability$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectCapabilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   maturityAssessments<T extends Prisma.Capability$maturityAssessmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Capability$maturityAssessmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaturityAssessmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assessmentDecisions<T extends Prisma.Capability$assessmentDecisionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Capability$assessmentDecisionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentDecisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  approvedInsights<T extends Prisma.Capability$approvedInsightsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Capability$approvedInsightsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApprovedInsightPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   maturityPerspectives<T extends Prisma.Capability$maturityPerspectivesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Capability$maturityPerspectivesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaturityPerspectivePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   maturityProposals<T extends Prisma.Capability$maturityProposalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Capability$maturityProposalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaturityProposalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   targetMaturities<T extends Prisma.Capability$targetMaturitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Capability$targetMaturitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TargetMaturityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3745,6 +3955,30 @@ export type Capability$assessmentDecisionsArgs<ExtArgs extends runtime.Types.Ext
   take?: number
   skip?: number
   distinct?: Prisma.AssessmentDecisionScalarFieldEnum | Prisma.AssessmentDecisionScalarFieldEnum[]
+}
+
+/**
+ * Capability.approvedInsights
+ */
+export type Capability$approvedInsightsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ApprovedInsight
+   */
+  select?: Prisma.ApprovedInsightSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ApprovedInsight
+   */
+  omit?: Prisma.ApprovedInsightOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ApprovedInsightInclude<ExtArgs> | null
+  where?: Prisma.ApprovedInsightWhereInput
+  orderBy?: Prisma.ApprovedInsightOrderByWithRelationInput | Prisma.ApprovedInsightOrderByWithRelationInput[]
+  cursor?: Prisma.ApprovedInsightWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ApprovedInsightScalarFieldEnum | Prisma.ApprovedInsightScalarFieldEnum[]
 }
 
 /**

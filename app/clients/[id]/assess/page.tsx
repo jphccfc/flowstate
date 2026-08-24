@@ -33,6 +33,7 @@ type HistoryData = {
 type Perspective = { id: string; stakeholderType: string; assessorRole: string | null; score: number; originalStatement: string; rationale: string | null; confidence: number | null };
 type Proposal = { id: string; interpretation: string; suggestedScore: number | null; scoreRangeMin: number | null; scoreRangeMax: number | null; confidence: number | null; missingEvidence: string[]; conflictingEvidence: string[]; status: string; reviewNotes: string | null };
 type Decision = { id: string; status: string; score: number | null; rationale: string | null; decidedBy: string | null; decidedAt: string; supersedesId: string | null };
+type Insight = { id: string; decisionId: string; type: string; title: string; description: string; priority: number | null; sourcePerspectiveIds: string[] };
 type PerspectiveData = { perspectives: Perspective[]; summary: { count: number; minimum: number | null; maximum: number | null; spread: number | null; stakeholderTypes: string[]; materialVariance: boolean; evidenceCoverage: number; pendingReview: number; reviewState: string }; rubric: { version: number; anchors: Array<{ level: number; label: string; description: string }> } };
 
 function ScorePicker({ value, onChange }: { value: number; onChange: (v: number) => void }) {
@@ -236,6 +237,8 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   const [proposalBusy, setProposalBusy] = useState(false);
   const [decisions, setDecisions] = useState<Decision[]>([]);
   const [decisionBusy, setDecisionBusy] = useState(false);
+  const [insights, setInsights] = useState<Insight[]>([]);
+  const [insightBusy, setInsightBusy] = useState(false);
   const [showAsIsHistory, setShowAsIsHistory] = useState(false);
   const [showToBeHistory, setShowToBeHistory] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -321,6 +324,11 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
     }
   }, [selectedCapId]);
 
+  async function loadInsights(capId: string) {
+    const res = await fetch(`/api/capabilities/${capId}/insights`);
+    if (res.ok) setInsights(await res.json());
+  }
+
   async function loadDecisions(capId: string) {
     const res = await fetch(`/api/capabilities/${capId}/decisions`);
     if (res.ok) setDecisions(await res.json());
@@ -331,6 +339,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
       // Decision refresh intentionally updates state after the fetch resolves.
       // eslint-disable-next-line react-hooks/set-state-in-effect
       loadDecisions(selectedCapId);
+      loadInsights(selectedCapId);
     }
   }, [selectedCapId]);
 
@@ -341,6 +350,15 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
     const res = await fetch(`/api/capabilities/${selectedCapId}/decisions`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status, score, rationale: status === "APPROVED" ? "Reviewed by authorised human reviewer." : "Additional evidence requested." }) });
     if (res.ok) { const decision = await res.json(); setDecisions((current) => [decision, ...current]); }
     setDecisionBusy(false);
+  }
+
+  async function createInsight() {
+    const decision = decisions[0];
+    if (!selectedCapId || decision?.status !== "SIGNED_OFF") return;
+    setInsightBusy(true);
+    const res = await fetch(`/api/capabilities/${selectedCapId}/insights`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ decisionId: decision.id, type: "MATURITY_GAP", title: "Approved capability gap", description: decision.rationale ?? "Approved assessment identifies a capability gap requiring prioritisation.", priority: 7 }) });
+    if (res.ok) { const insight = await res.json(); setInsights((items) => [insight, ...items]); }
+    setInsightBusy(false);
   }
 
   async function updateDecision(action: "REJECT" | "REOPEN" | "SIGN_OFF") {
@@ -572,6 +590,8 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
               {decisions.length === 0 ? <p className="text-sm text-[var(--muted)]">No human decision recorded yet. AI proposals remain provisional.</p> : <div className="space-y-2">{decisions.slice(0, 3).map((decision) => <div key={decision.id} className="rounded-lg border border-[var(--card-border)] p-3 text-xs"><div className="flex items-center justify-between gap-3"><strong className="text-[var(--foreground)]">{decision.status.replaceAll("_", " ")}</strong><span className="text-[var(--muted)]">{decision.score ?? "No score"}</span></div><div className="mt-1 text-[var(--muted)]">{decision.decidedBy ?? "Unknown reviewer"} · {new Date(decision.decidedAt).toLocaleString()}</div>{decision.rationale && <p className="mt-1 text-[var(--muted)]">{decision.rationale}</p>}</div>)}</div>}
               <div className="mt-3 flex flex-wrap gap-2"><button type="button" onClick={() => createDecision("APPROVED")} disabled={decisionBusy} className="px-3 py-1.5 rounded-lg bg-[var(--success)] text-white text-xs disabled:opacity-50">Approve assessment</button><button type="button" onClick={() => createDecision("EVIDENCE_REQUESTED")} disabled={decisionBusy} className="px-3 py-1.5 rounded-lg border border-[var(--card-border)] text-xs disabled:opacity-50">Request evidence</button>{decisions[0] && <><button type="button" onClick={() => updateDecision("REOPEN")} disabled={decisionBusy} className="px-3 py-1.5 rounded-lg border border-[var(--card-border)] text-xs disabled:opacity-50">Reopen</button><button type="button" onClick={() => updateDecision("SIGN_OFF")} disabled={decisionBusy} className="px-3 py-1.5 rounded-lg bg-[var(--accent)] text-white text-xs disabled:opacity-50">Sign off</button></>}</div>
             </section>}
+
+            {decisions[0]?.status === "SIGNED_OFF" && <section className="workspace-card p-5 mb-4" aria-labelledby="insights-title"><div className="flex items-start justify-between gap-4 mb-3"><div><div className="workspace-eyebrow">Approved output</div><h3 id="insights-title" className="text-sm font-semibold text-[var(--foreground)]">Approved insights and priorities</h3></div><button type="button" onClick={createInsight} disabled={insightBusy} className="px-3 py-1.5 rounded-lg bg-[var(--accent)] text-white text-xs disabled:opacity-50">{insightBusy ? "Creating…" : "Create insight"}</button></div>{insights.length === 0 ? <p className="text-sm text-[var(--muted)]">No approved insight has been created from this signed-off decision.</p> : <div className="space-y-2">{insights.map((insight) => <div key={insight.id} className="rounded-lg border border-[var(--card-border)] p-3 text-sm"><div className="flex items-center justify-between gap-3"><strong>{insight.title}</strong><span className="text-xs text-[var(--muted)]">Priority {insight.priority ?? "—"}</span></div><p className="mt-1 text-xs text-[var(--muted)]">{insight.description}</p><div className="mt-1 text-[10px] text-[var(--muted)]">Traceable to signed-off decision · {insight.sourcePerspectiveIds.length} perspective sources</div></div>)}</div>}</section>}
 
             {(perspectiveData || perspectiveError) && (
               <section className="workspace-card p-5 mb-4" aria-labelledby="perspective-balance-title">

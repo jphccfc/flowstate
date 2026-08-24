@@ -410,6 +410,7 @@ export const ModelName = {
   MaturityProposal: 'MaturityProposal',
   MaturityAssessment: 'MaturityAssessment',
   AssessmentDecision: 'AssessmentDecision',
+  ApprovedInsight: 'ApprovedInsight',
   TargetMaturity: 'TargetMaturity',
   CapabilityKPIMaturityCeiling: 'CapabilityKPIMaturityCeiling',
   Dependency: 'Dependency',
@@ -433,7 +434,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob"
+    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2361,6 +2362,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ApprovedInsight: {
+      payload: Prisma.$ApprovedInsightPayload<ExtArgs>
+      fields: Prisma.ApprovedInsightFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ApprovedInsightFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovedInsightPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ApprovedInsightFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovedInsightPayload>
+        }
+        findFirst: {
+          args: Prisma.ApprovedInsightFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovedInsightPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ApprovedInsightFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovedInsightPayload>
+        }
+        findMany: {
+          args: Prisma.ApprovedInsightFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovedInsightPayload>[]
+        }
+        create: {
+          args: Prisma.ApprovedInsightCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovedInsightPayload>
+        }
+        createMany: {
+          args: Prisma.ApprovedInsightCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ApprovedInsightCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovedInsightPayload>[]
+        }
+        delete: {
+          args: Prisma.ApprovedInsightDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovedInsightPayload>
+        }
+        update: {
+          args: Prisma.ApprovedInsightUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovedInsightPayload>
+        }
+        deleteMany: {
+          args: Prisma.ApprovedInsightDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ApprovedInsightUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ApprovedInsightUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovedInsightPayload>[]
+        }
+        upsert: {
+          args: Prisma.ApprovedInsightUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovedInsightPayload>
+        }
+        aggregate: {
+          args: Prisma.ApprovedInsightAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApprovedInsight>
+        }
+        groupBy: {
+          args: Prisma.ApprovedInsightGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApprovedInsightGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ApprovedInsightCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApprovedInsightCountAggregateOutputType> | number
+        }
+      }
+    }
     TargetMaturity: {
       payload: Prisma.$TargetMaturityPayload<ExtArgs>
       fields: Prisma.TargetMaturityFieldRefs
@@ -3359,6 +3434,25 @@ export const AssessmentDecisionScalarFieldEnum = {
 export type AssessmentDecisionScalarFieldEnum = (typeof AssessmentDecisionScalarFieldEnum)[keyof typeof AssessmentDecisionScalarFieldEnum]
 
 
+export const ApprovedInsightScalarFieldEnum = {
+  id: 'id',
+  capabilityId: 'capabilityId',
+  decisionId: 'decisionId',
+  type: 'type',
+  title: 'title',
+  description: 'description',
+  priority: 'priority',
+  status: 'status',
+  sourceEvidenceIds: 'sourceEvidenceIds',
+  sourcePerspectiveIds: 'sourcePerspectiveIds',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ApprovedInsightScalarFieldEnum = (typeof ApprovedInsightScalarFieldEnum)[keyof typeof ApprovedInsightScalarFieldEnum]
+
+
 export const TargetMaturityScalarFieldEnum = {
   id: 'id',
   capabilityId: 'capabilityId',
@@ -3885,6 +3979,7 @@ export type GlobalOmitConfig = {
   maturityProposal?: Prisma.MaturityProposalOmit
   maturityAssessment?: Prisma.MaturityAssessmentOmit
   assessmentDecision?: Prisma.AssessmentDecisionOmit
+  approvedInsight?: Prisma.ApprovedInsightOmit
   targetMaturity?: Prisma.TargetMaturityOmit
   capabilityKPIMaturityCeiling?: Prisma.CapabilityKPIMaturityCeilingOmit
   dependency?: Prisma.DependencyOmit
