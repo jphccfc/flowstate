@@ -31,6 +31,7 @@ type HistoryData = {
   gap: number | null;
 };
 type Perspective = { id: string; stakeholderType: string; assessorRole: string | null; score: number; originalStatement: string; rationale: string | null; confidence: number | null };
+type Decision = { id: string; action: string; status: string; approvedScore: number | null; rationale: string; reviewerEmail: string; createdAt: string };
 type Proposal = { id: string; interpretation: string; suggestedScore: number | null; scoreRangeMin: number | null; scoreRangeMax: number | null; confidence: number | null; missingEvidence: string[]; conflictingEvidence: string[]; status: string; reviewNotes: string | null };
 type PerspectiveData = { perspectives: Perspective[]; summary: { count: number; minimum: number | null; maximum: number | null; spread: number | null; stakeholderTypes: string[]; materialVariance: boolean; evidenceCoverage: number; pendingReview: number; reviewState: string }; rubric: { version: number; anchors: Array<{ level: number; label: string; description: string }> } };
 
@@ -233,6 +234,8 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   const [perspectiveError, setPerspectiveError] = useState<string | null>(null);
   const [proposals, setProposals] = useState<Proposal[]>([]);
   const [proposalBusy, setProposalBusy] = useState(false);
+  const [decisions, setDecisions] = useState<Decision[]>([]);
+  const [decisionBusy, setDecisionBusy] = useState(false);
   const [showAsIsHistory, setShowAsIsHistory] = useState(false);
   const [showToBeHistory, setShowToBeHistory] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -315,8 +318,23 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
       // Proposal refresh intentionally updates state after the fetch resolves.
       // eslint-disable-next-line react-hooks/set-state-in-effect
       loadProposals(selectedCapId);
+      loadDecisions(selectedCapId);
     }
   }, [selectedCapId]);
+
+  async function loadDecisions(capId: string) {
+    const res = await fetch(`/api/capabilities/${capId}/assessment-decisions`);
+    if (res.ok) setDecisions((await res.json()).decisions ?? []);
+  }
+
+  async function recordDecision(action: string) {
+    if (!selectedCapId) return;
+    setDecisionBusy(true);
+    const current = history?.currentAsIs[0];
+    const res = await fetch(`/api/capabilities/${selectedCapId}/assessment-decisions`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action, approvedScore: current?.score, rationale: action === "SIGN_OFF" ? "Assessment reviewed and signed off." : "Assessment requires further human review." }) });
+    if (res.ok) await loadDecisions(selectedCapId);
+    setDecisionBusy(false);
+  }
 
   async function generateProposal() {
     if (!selectedCapId) return;
@@ -560,6 +578,10 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
                 {perspectiveData && <div className="mt-4 border-t border-[var(--card-border)] pt-4">
                   <div className="flex items-center justify-between gap-3"><div><div className="text-xs font-semibold text-[var(--foreground)]">AI proposal</div><div className="text-xs text-[var(--muted)]">Provisional only; it cannot change the saved assessment.</div></div><button type="button" onClick={generateProposal} disabled={proposalBusy} className="px-3 py-1.5 rounded-lg bg-[var(--accent)] text-white text-xs disabled:opacity-50">{proposalBusy ? "Generating…" : "Generate proposal"}</button></div>
                   {proposals.slice(0, 1).map((proposal) => <div key={proposal.id} className="mt-3 rounded-lg border border-[var(--card-border)] p-3 text-xs"><div className="flex items-center justify-between gap-3"><strong className="text-[var(--foreground)]">{proposal.status === "PENDING_REVIEW" ? "Pending human review" : proposal.status}</strong>{proposal.suggestedScore !== null && <span className="font-bold text-[var(--accent)]">Suggested {proposal.suggestedScore}</span>}</div><p className="mt-2 text-[var(--muted)]">{proposal.interpretation}</p>{proposal.missingEvidence.length > 0 && <p className="mt-2 text-[var(--muted)]">Missing evidence: {proposal.missingEvidence.join(", ")}</p>}{proposal.status === "PENDING_REVIEW" && <div className="mt-3 flex gap-2"><button type="button" onClick={() => reviewProposal(proposal.id, "approve")} className="px-2 py-1 rounded bg-[var(--success)] text-white">Approve proposal</button><button type="button" onClick={() => reviewProposal(proposal.id, "reject")} className="px-2 py-1 rounded bg-[var(--destructive)] text-white">Reject proposal</button></div>}</div>)}
+                </div>}
+                {perspectiveData && <div className="mt-4 border-t border-[var(--card-border)] pt-4">
+                  <div className="flex items-center justify-between gap-3"><div><div className="text-xs font-semibold text-[var(--foreground)]">Human decision and sign-off</div><div className="text-xs text-[var(--muted)]">Decisions are append-only and never overwrite assessment history.</div></div><div className="flex gap-2"><button type="button" disabled={decisionBusy} onClick={() => recordDecision("REQUEST_EVIDENCE")} className="px-2 py-1 rounded border border-[var(--card-border)] text-xs">Request evidence</button><button type="button" disabled={decisionBusy} onClick={() => recordDecision("SIGN_OFF")} className="px-2 py-1 rounded bg-[var(--success)] text-white text-xs">Sign off</button></div></div>
+                  {decisions.length > 0 && <div className="mt-3 space-y-1">{decisions.slice(-3).reverse().map((decision) => <div key={decision.id} className="flex items-center justify-between text-xs"><span className="text-[var(--muted)]">{decision.action} · {new Date(decision.createdAt).toLocaleDateString()}</span><strong className="text-[var(--foreground)]">{decision.status}</strong></div>)}</div>}
                 </div>}
                 {perspectiveData && <PerspectiveForm onSubmit={savePerspective} />}
               </section>

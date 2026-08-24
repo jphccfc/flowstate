@@ -138,6 +138,11 @@ export type MaturityPerspective = Prisma.MaturityPerspectiveModel
  */
 export type MaturityProposal = Prisma.MaturityProposalModel
 /**
+ * Model MaturityDecision
+ *
+ */
+export type MaturityDecision = Prisma.MaturityDecisionModel
+/**
  * Model MaturityAssessment
  *
  */

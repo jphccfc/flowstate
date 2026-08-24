@@ -102,6 +102,7 @@ model Capability {
   maturityAssessments MaturityAssessment[]
   maturityPerspectives MaturityPerspective[]
   maturityProposals    MaturityProposal[]
+  maturityDecisions    MaturityDecision[]
   targetMaturities     TargetMaturity[]
   kpiCeilings          CapabilityKPIMaturityCeiling[]
   followUpSuggestions FollowUpSuggestion[]
@@ -428,6 +429,32 @@ model MaturityProposal {
   capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
 
   @@index([capabilityId, status, createdAt])
+}
+
+model MaturityDecision {
+  id                       String   @id @default(cuid())
+  capabilityId             String
+  locationTag              String?
+  action                   String
+  status                   String
+  approvedScore            Float?
+  scoreRangeMin            Float?
+  scoreRangeMax            Float?
+  rationale                String
+  supportingPerspectiveIds String[] @default([])
+  conflictingPerspectiveIds String[] @default([])
+  supportingEvidenceIds    String[] @default([])
+  reviewerEmail            String
+  approverEmail            String?
+  supersedesDecisionId     String?
+  followUpOwner            String?
+  followUpDueAt            DateTime?
+  createdAt                DateTime @default(now())
+
+  capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+
+  @@index([capabilityId, locationTag, createdAt])
+  @@index([supersedesDecisionId])
 }
 
 model MaturityAssessment {
