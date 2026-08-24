@@ -78,6 +78,7 @@ export const ModelName = {
   MaturityAssessment: 'MaturityAssessment',
   AssessmentDecision: 'AssessmentDecision',
   ApprovedInsight: 'ApprovedInsight',
+  GrowthAction: 'GrowthAction',
   TargetMaturity: 'TargetMaturity',
   CapabilityKPIMaturityCeiling: 'CapabilityKPIMaturityCeiling',
   Dependency: 'Dependency',
@@ -488,6 +489,23 @@ export const ApprovedInsightScalarFieldEnum = {
 } as const
 
 export type ApprovedInsightScalarFieldEnum = (typeof ApprovedInsightScalarFieldEnum)[keyof typeof ApprovedInsightScalarFieldEnum]
+
+
+export const GrowthActionScalarFieldEnum = {
+  id: 'id',
+  insightId: 'insightId',
+  title: 'title',
+  description: 'description',
+  ownerEmail: 'ownerEmail',
+  dueDate: 'dueDate',
+  priority: 'priority',
+  status: 'status',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GrowthActionScalarFieldEnum = (typeof GrowthActionScalarFieldEnum)[keyof typeof GrowthActionScalarFieldEnum]
 
 
 export const TargetMaturityScalarFieldEnum = {

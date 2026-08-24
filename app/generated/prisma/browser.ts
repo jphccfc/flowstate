@@ -153,6 +153,11 @@ export type AssessmentDecision = Prisma.AssessmentDecisionModel
  */
 export type ApprovedInsight = Prisma.ApprovedInsightModel
 /**
+ * Model GrowthAction
+ *
+ */
+export type GrowthAction = Prisma.GrowthActionModel
+/**
  * Model TargetMaturity
  *
  */
