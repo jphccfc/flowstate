@@ -2,16 +2,29 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
 type NavItem = { href: string; label: string; short: string };
+type Workspace = { id: string; name: string; industry: string | null };
 
 export function WorkspaceNav({ clientId, clientName }: { clientId: string; clientName: string }) {
   const pathname = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
+  const [workspacePickerOpen, setWorkspacePickerOpen] = useState(false);
+  useEffect(() => {
+    let active = true;
+    fetch("/api/clients").then(async (response) => {
+      if (!response.ok) return;
+      const data = await response.json();
+      if (active) setWorkspaces(data);
+    }).catch(() => undefined);
+    return () => { active = false; };
+  }, []);
+
   const items: NavItem[] = [
     { href: `/clients/${clientId}`, label: "Overview", short: "01" },
     { href: `/clients/${clientId}/configure`, label: "Blueprint", short: "02" },
@@ -49,8 +62,12 @@ export function WorkspaceNav({ clientId, clientName }: { clientId: string; clien
 
       <div id="workspace-navigation-panel" className="workspace-navigation-panel">
         <div className="workspace-context">
-          <div className="workspace-context-label">Business workspace</div>
-          <div className="workspace-context-name" title={clientName}>{clientName}</div>
+          <button type="button" className="workspace-context-button" onClick={() => setWorkspacePickerOpen((value) => !value)} aria-expanded={workspacePickerOpen} aria-controls="workspace-switcher">
+            <span className="workspace-context-label">Business workspace</span>
+            <span className="workspace-context-name" title={clientName}>{clientName}</span>
+            <span className="workspace-context-chevron" aria-hidden="true">{workspacePickerOpen ? "⌃" : "⌄"}</span>
+          </button>
+          {workspacePickerOpen && <div id="workspace-switcher" className="workspace-switcher">{workspaces.map((workspace) => <Link key={workspace.id} href={`/clients/${workspace.id}`} className="workspace-switcher-link" aria-current={workspace.id === clientId ? "page" : undefined} onClick={() => { setWorkspacePickerOpen(false); setOpen(false); }}><span className="workspace-switcher-mark" aria-hidden="true">{workspace.name.slice(0, 2).toUpperCase()}</span><span><strong>{workspace.name}</strong><small>{workspace.industry ?? "Business workspace"}</small></span></Link>)}</div>}
         </div>
 
         <nav className="workspace-nav" aria-label="Workspace navigation">

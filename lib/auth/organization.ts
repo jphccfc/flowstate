@@ -57,6 +57,7 @@ export async function hasOrganizationPermission(
   organizationId: string,
   permission: OrganizationPermission
 ): Promise<boolean> {
+  if (await isSystemAdmin(email)) return true;
   const membership = await getOrganizationMembership(email, organizationId);
   return membership ? hasPermission(membership.role as OrganizationRole, permission) : false;
 }
