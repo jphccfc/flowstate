@@ -96,6 +96,8 @@ describe("workspace responsive and theme contracts", () => {
     expect(admin).toContain("filteredUsers");
     expect(admin).toContain("filteredOrganizations");
     expect(css).toContain(".admin-search-input");
+    expect(css).toContain(".workspace-context-button .workspace-context-label, .workspace-context-button .workspace-context-name { display: block;");
+    expect(css).toContain("overflow-x: hidden");
     expect(navbar).toContain("Platform admin");
     expect(navbar).toContain("/api/admin/users");
     expect(admin).toContain("aria-label={`Global role for ${user.email}`}");
