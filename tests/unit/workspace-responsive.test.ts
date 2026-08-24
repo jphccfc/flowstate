@@ -8,6 +8,8 @@ const nav = readFileSync(resolve(process.cwd(), "components/layout/WorkspaceNav.
 const themeToggle = readFileSync(resolve(process.cwd(), "components/layout/ThemeToggle.tsx"), "utf8");
 const configure = readFileSync(resolve(process.cwd(), "app/clients/[id]/configure/page.tsx"), "utf8");
 const dialog = readFileSync(resolve(process.cwd(), "components/ui/FlowstateDialog.tsx"), "utf8");
+const admin = readFileSync(resolve(process.cwd(), "app/admin/page.tsx"), "utf8");
+const navbar = readFileSync(resolve(process.cwd(), "components/layout/Navbar.tsx"), "utf8");
 const assess = readFileSync(resolve(process.cwd(), "app/clients/[id]/assess/page.tsx"), "utf8");
 const report = readFileSync(resolve(process.cwd(), "app/clients/[id]/report/page.tsx"), "utf8");
 
@@ -75,6 +77,22 @@ describe("workspace responsive and theme contracts", () => {
     expect(report).toContain("Report examples");
     expect(report).toContain("Example: Executive snapshot");
     expect(report).toContain("Example output");
+  });
+
+  it("keeps platform administration inside the responsive Flowstate theme", () => {
+    expect(admin).toContain("admin-shell");
+    expect(admin).toContain("ThemeToggle");
+    expect(admin).toContain("workspace-card");
+    expect(admin).toContain("Search users and organisations");
+    expect(admin).toContain("filteredUsers");
+    expect(admin).toContain("filteredOrganizations");
+    expect(css).toContain(".admin-search-input");
+    expect(navbar).toContain("Platform admin");
+    expect(navbar).toContain("/api/admin/users");
+    expect(admin).toContain("aria-label={`Global role for ${user.email}`}");
+    expect(css).toContain(".admin-shell");
+    expect(css).toContain("@media (max-width: 800px)");
+    expect(css).toContain(".admin-summary-grid");
   });
 
   it("uses Flowstate dialogs instead of native browser prompts", () => {
