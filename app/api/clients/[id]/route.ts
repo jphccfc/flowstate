@@ -18,7 +18,22 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
       domains: {
         orderBy: { order: "asc" },
         include: {
-          capabilities: { orderBy: { order: "asc" } },
+          capabilities: {
+            orderBy: { order: "asc" },
+            include: {
+              approvedInsights: {
+                where: { status: "APPROVED" },
+                orderBy: { priority: "desc" },
+                include: {
+                  decision: { select: { id: true, status: true, score: true, rationale: true, decidedAt: true } },
+                  growthActions: {
+                    orderBy: { createdAt: "desc" },
+                    include: { recommendation: { select: { id: true, title: true, status: true } } },
+                  },
+                },
+              },
+            },
+          },
         },
       },
       stakeholders: { orderBy: { name: "asc" } },

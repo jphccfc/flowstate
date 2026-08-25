@@ -18,6 +18,16 @@ type Capability = {
   tags: string[];
   currentAsIs: MaturitySnapshot[];
   currentToBe: MaturitySnapshot[];
+  approvedInsights: TraceableInsight[];
+};
+
+type TraceableInsight = {
+  id: string;
+  title: string;
+  description: string;
+  priority: number | null;
+  decision: { id: string; status: string; score: number | null; rationale: string | null; decidedAt: string };
+  growthActions: { id: string; title: string; description: string; status: string; recommendation: { id: string; title: string; status: string } | null }[];
 };
 
 type Domain = { id: string; name: string; color: string | null; capabilities: Capability[] };
@@ -64,6 +74,7 @@ export default function ReportPage({ params }: { params: Promise<{ id: string }>
   const tagCounts = new Map<string, number>();
   for (const tag of allTags) tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
   const topTags = Array.from(tagCounts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  const traceability = org.domains.flatMap((domain) => domain.capabilities.flatMap((capability) => capability.approvedInsights.map((insight) => ({ ...insight, capabilityName: capability.name, domainName: domain.name }))));
 
   const today = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 
@@ -156,6 +167,21 @@ export default function ReportPage({ params }: { params: Promise<{ id: string }>
           </div>
           {org.notes && <p className="text-sm text-[var(--muted)] italic border-l-4 border-[var(--accent)] pl-4">{org.notes}</p>}
         </div>
+
+        <section className="workspace-card p-6" aria-labelledby="traceability-title">
+          <div className="flex items-start justify-between gap-4 mb-4">
+            <div>
+              <div className="workspace-eyebrow">Decision to action</div>
+              <h3 id="traceability-title" className="font-bold text-[var(--foreground)] text-lg">Decision traceability</h3>
+              <p className="text-sm text-[var(--muted)] mt-1">Approved insight → Growth Plan action → Recommendation. Human approval remains visible at each step.</p>
+            </div>
+            <span className="text-xs rounded-full bg-[var(--accent)]/10 text-[var(--accent)] px-2 py-1">{traceability.length} approved insights</span>
+          </div>
+          {traceability.length === 0 ? <p className="text-sm text-[var(--muted)]">No approved insights are available for this report yet.</p> : <div className="space-y-3">{traceability.map((insight) => <article key={insight.id} className="border border-[var(--card-border)] rounded-lg p-4">
+            <div className="flex items-start justify-between gap-3"><div><div className="text-xs text-[var(--muted)]">{insight.domainName} · {insight.capabilityName}</div><h4 className="font-semibold text-[var(--foreground)]">{insight.title}</h4><p className="text-sm text-[var(--muted)] mt-1">{insight.description}</p></div><span className="text-xs font-medium text-[var(--success)]">{insight.decision.status}</span></div>
+            <div className="mt-3 pl-3 border-l-2 border-[var(--accent)] space-y-2">{insight.growthActions.length === 0 ? <p className="text-sm text-[var(--muted)]">No Growth Plan action linked yet.</p> : insight.growthActions.map((action) => <div key={action.id} className="text-sm"><div className="font-medium text-[var(--foreground)]">Growth Plan: {action.title}</div><div className="text-[var(--muted)]">{action.status}{action.recommendation ? ` · Recommendation: ${action.recommendation.title} (${action.recommendation.status})` : " · No recommendation linked yet"}</div></div>)}</div>
+          </article>)}</div>}
+        </section>
 
         {topGaps.length > 0 && (
           <div className="bg-white rounded-xl border border-[var(--card-border)] p-6 shadow-sm">
