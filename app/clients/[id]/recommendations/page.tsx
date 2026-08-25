@@ -27,10 +27,10 @@ function formatDate(value: string) {
 }
 
 function statusClass(status: Status) {
-  if (status === "APPROVED") return "bg-[var(--success)] text-white";
+  if (status === "APPROVED") return "flowstate-success-button text-white";
   if (status === "REJECTED") return "bg-[var(--destructive)] text-white";
   if (status === "DRAFT") return "bg-[var(--muted-bg)] text-[var(--muted)]";
-  return "bg-[var(--accent)] text-white";
+  return "flowstate-accent-button text-white";
 }
 
 export default function RecommendationsPage({ params }: { params: Promise<{ id: string }> }) {
@@ -187,10 +187,10 @@ export default function RecommendationsPage({ params }: { params: Promise<{ id: 
               </div>
               <div className="flex flex-wrap items-center gap-2 mt-5">
                 {(recommendation.status === "DRAFT" || recommendation.status === "EDITED") && <button onClick={() => startEdit(recommendation)} className="px-3 py-1.5 rounded-lg border border-[var(--card-border)] text-xs font-medium">Edit</button>}
-                {(recommendation.status === "DRAFT" || recommendation.status === "EDITED") && <button onClick={() => review(recommendation.id, "submit")} disabled={saving} className="px-3 py-1.5 rounded-lg bg-[var(--accent)] text-white text-xs font-medium">Submit for review</button>}
-                {recommendation.status === "PENDING_REVIEW" && <button onClick={() => { setActionId(recommendation.id); setReason(""); }} className="px-3 py-1.5 rounded-lg bg-[var(--success)] text-white text-xs font-medium">Review</button>}
+                {(recommendation.status === "DRAFT" || recommendation.status === "EDITED") && <button onClick={() => review(recommendation.id, "submit")} disabled={saving} className="px-3 py-1.5 rounded-lg flowstate-accent-button text-white text-xs font-medium">Submit for review</button>}
+                {recommendation.status === "PENDING_REVIEW" && <button onClick={() => { setActionId(recommendation.id); setReason(""); }} className="px-3 py-1.5 rounded-lg flowstate-success-button text-white text-xs font-medium">Review</button>}
               </div>
-              {actionId === recommendation.id && <div className="mt-4 p-3 rounded-lg bg-[var(--muted-bg)]"><textarea value={reason} onChange={(event) => setReason(event.target.value)} placeholder="Reason (required for rejection)" rows={2} className="w-full border border-[var(--card-border)] rounded-lg px-3 py-2 text-sm bg-white" /><div className="flex gap-2 mt-2"><button onClick={() => review(recommendation.id, "approve")} disabled={saving} className="px-3 py-1.5 rounded-lg bg-[var(--success)] text-white text-xs font-medium">Approve</button><button onClick={() => review(recommendation.id, "reject")} disabled={saving} className="px-3 py-1.5 rounded-lg bg-[var(--destructive)] text-white text-xs font-medium">Reject</button><button onClick={() => setActionId(null)} className="px-3 py-1.5 rounded-lg border border-[var(--card-border)] text-xs">Cancel</button></div></div>}
+              {actionId === recommendation.id && <div className="mt-4 p-3 rounded-lg bg-[var(--muted-bg)]"><textarea value={reason} onChange={(event) => setReason(event.target.value)} placeholder="Reason (required for rejection)" rows={2} className="w-full border border-[var(--card-border)] rounded-lg px-3 py-2 text-sm bg-white" /><div className="flex gap-2 mt-2"><button onClick={() => review(recommendation.id, "approve")} disabled={saving} className="px-3 py-1.5 rounded-lg flowstate-success-button text-white text-xs font-medium">Approve</button><button onClick={() => review(recommendation.id, "reject")} disabled={saving} className="px-3 py-1.5 rounded-lg bg-[var(--destructive)] text-white text-xs font-medium">Reject</button><button onClick={() => setActionId(null)} className="px-3 py-1.5 rounded-lg border border-[var(--card-border)] text-xs">Cancel</button></div></div>}
               {recommendation.feedback.length > 0 && <div className="border-t border-[var(--card-border)] mt-5 pt-4"><h3 className="text-xs font-semibold uppercase tracking-wide text-[var(--muted)] mb-2">Review history</h3><div className="space-y-2">{recommendation.feedback.map((item) => <div key={item.id} className="text-xs text-[var(--muted)]"><strong>{item.action}</strong> · {item.reason ?? "No reason provided"} · {item.actedBy ?? "Unknown reviewer"} · {formatDate(item.actedAt)}</div>)}</div></div>}
             </article>
           ))}

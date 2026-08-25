@@ -17,6 +17,8 @@
   --destructive: #b42335;
   --success: #237a52;
   --warning: #a25d22;
+  --button-success-bg: #166534;
+  --button-accent-bg: #075985;
   --workspace-bg: #0a0f16;
   --workspace-surface: #111822;
   --workspace-surface-raised: #182230;
@@ -40,9 +42,16 @@
   --destructive: #ff8b97;
   --success: #7ee2ad;
   --warning: #ffbd78;
+  --button-success-bg: #166534;
+  --button-accent-bg: #075985;
   --shadow-card: 0 16px 42px rgba(0, 0, 0, 0.28);
   color-scheme: dark;
 }
+
+.flowstate-success-button { background: var(--button-success-bg); color: #fff; }
+.flowstate-success-button:hover { background: #14532d; }
+.flowstate-accent-button { background: var(--button-accent-bg); color: #fff; }
+.flowstate-accent-button:hover { background: #0c4a6e; }
 
 .dashboard-card { background: var(--card); border-color: var(--card-border); color: var(--foreground); }
 .dashboard-input { background: var(--card); border: 1px solid var(--card-border); color: var(--foreground); }

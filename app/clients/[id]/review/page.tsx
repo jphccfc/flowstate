@@ -134,7 +134,7 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
                 <button
                   onClick={() => act(tag.id, "approve")}
                   disabled={actionId !== null}
-                  className="text-xs font-medium px-3 py-1 rounded bg-[var(--success)] text-white"
+                  className="text-xs font-medium px-3 py-1 rounded flowstate-success-button text-white"
                 >
                   Approve
                 </button>
@@ -166,7 +166,7 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
                 <button
                   onClick={() => reassign(tag.id)}
                   disabled={!reassignChoice[tag.id] || actionId !== null}
-                  className="text-xs font-medium px-3 py-1 rounded bg-[var(--accent)] text-white disabled:opacity-50"
+                  className="text-xs font-medium px-3 py-1 rounded flowstate-accent-button text-white disabled:opacity-50"
                 >
                   Reassign
                 </button>
