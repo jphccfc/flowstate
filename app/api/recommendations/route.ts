@@ -32,8 +32,10 @@ export async function POST(req: NextRequest) {
   if (typeof body.growthActionId === "string" && body.growthActionId) {
     const action = await prisma.growthAction.findUnique({ where: { id: body.growthActionId }, include: { insight: { include: { capability: { include: { domain: true } } } } } });
     if (!action) return NextResponse.json({ error: "Growth action not found" }, { status: 404 });
+    const actionOrganizationId = action.insight.capability.domain.organizationId;
+    if (!(await hasOrganizationPermission(user.email, actionOrganizationId, "recommendation.manage"))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     if (!action.ownerEmail || !action.dueDate) return NextResponse.json({ error: "Growth action must have an owner and due date before it can become a recommendation" }, { status: 400 });
-    organizationId = action.insight.capability.domain.organizationId;
+    organizationId = actionOrganizationId;
     title = action.title;
     description = action.description;
     sourceGrowthActionId = action.id;
