@@ -87,9 +87,14 @@ A specialist agent has:
 
 Base agents are platform-defined. Workspace variants are scoped copies/configurations, not uncontrolled prompt overrides. Custom agents and industry-expert review are later subscription capabilities.
 
-### 2.6 Tasks and work items
+### 2.6 Growth Plan and assessment tasks
 
-Growth actions, evidence requests, follow-ups and analysis work should converge into a future **WorkItem** model and board. The current `GrowthAction` remains the immediate, actionable planning object and must not be duplicated by a parallel task system now.
+The Growth Plan and assessment tasks are separate product concepts.
+
+- **Growth Plan:** strategic projects, initiatives, capability builds and enhancements intended to improve the approved business outcome: profitable growth, sale/acquisition recovery, liquidation/restructuring or multiplier improvement. `GrowthAction` remains the current actionable planning object for one Growth Plan initiative.
+- **Assessment tasks:** operational work required during an assessment: evidence requests, interviews, follow-ups, validation, conflict resolution, AI review, sign-off and report preparation. These require their own task model and workflow.
+
+Do not use `GrowthAction` for assessment tasks. A future shared technical base may reuse common fields, but the product must preserve separate types, permissions, lifecycle rules and user experiences.
 
 ## 3. Duplication removed from the Week 35 scope
 
