@@ -508,6 +508,7 @@ model GrowthAction {
   updatedAt   DateTime @updatedAt
 
   insight ApprovedInsight @relation(fields: [insightId], references: [id], onDelete: Cascade)
+  recommendation Recommendation?
 
   @@index([insightId, status])
   @@index([ownerEmail, status])
@@ -610,7 +611,9 @@ model Recommendation {
   updatedAt             DateTime              @updatedAt
 
   organization Organization             @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  feedback     RecommendationFeedback[]
+  feedback          RecommendationFeedback[]
+  sourceGrowthActionId String? @unique
+  sourceGrowthAction GrowthAction? @relation(fields: [sourceGrowthActionId], references: [id], onDelete: SetNull)
 }
 
 model RecommendationFeedback {

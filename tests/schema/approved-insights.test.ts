@@ -40,6 +40,15 @@ describe("approved capability insights", () => {
     await prisma.assessmentDecision.delete({ where: { id: provisional.id } });
   });
 
+  it("rejects insight creation by a member without assessment approval permission", async () => {
+    const membership = await prisma.userOrganization.findFirst({ where: { organizationId, user: { email: "advisor@test.com" } } });
+    expect(membership).not.toBeNull();
+    await prisma.userOrganization.update({ where: { id: membership!.id }, data: { role: "CLIENT_STAKEHOLDER" } });
+    const response = await POST(new Request("http://test", { method: "POST", body: JSON.stringify({ decisionId, type: "MATURITY_GAP", title: "Denied", description: "Must not be created" }) }) as never, { params: Promise.resolve({ id: capabilityId }) });
+    expect(response.status).toBe(403);
+    await prisma.userOrganization.update({ where: { id: membership!.id }, data: { role: "ADVISOR" } });
+  });
+
   it("lists only insights for an authorised capability", async () => {
     const response = await GET(new Request("http://test") as never, { params: Promise.resolve({ id: capabilityId }) });
     expect(response.status).toBe(200);

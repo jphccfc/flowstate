@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
-import { isOrganizationMember } from "@/lib/auth/organization";
+import { hasOrganizationPermission, isOrganizationMember } from "@/lib/auth/organization";
 
 const RECOMMENDATION_STATUSES = [
   "DRAFT",
@@ -23,37 +23,35 @@ export async function POST(req: NextRequest) {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await req.json();
-  const { organizationId, title, description } = body;
+  let organizationId = body.organizationId as string | undefined;
+  let title = body.title as string | undefined;
+  let description = body.description as string | undefined;
+  let sourceGrowthActionId: string | undefined;
+  let relatedCapabilityIds = Array.isArray(body.relatedCapabilityIds) ? body.relatedCapabilityIds : [];
 
-  if (
-    typeof organizationId !== "string" || !organizationId ||
-    typeof title !== "string" || !title.trim() ||
-    typeof description !== "string" || !description.trim()
-  ) {
-    return NextResponse.json(
-      { error: "organizationId, title, and description are required" },
-      { status: 400 }
-    );
+  if (typeof body.growthActionId === "string" && body.growthActionId) {
+    const action = await prisma.growthAction.findUnique({ where: { id: body.growthActionId }, include: { insight: { include: { capability: { include: { domain: true } } } } } });
+    if (!action) return NextResponse.json({ error: "Growth action not found" }, { status: 404 });
+    const actionOrganizationId = action.insight.capability.domain.organizationId;
+    if (!(await hasOrganizationPermission(user.email, actionOrganizationId, "recommendation.manage"))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    if (!action.ownerEmail || !action.dueDate) return NextResponse.json({ error: "Growth action must have an owner and due date before it can become a recommendation" }, { status: 400 });
+    organizationId = actionOrganizationId;
+    title = action.title;
+    description = action.description;
+    sourceGrowthActionId = action.id;
+    relatedCapabilityIds = [action.insight.capabilityId];
+  }
+
+  if (typeof organizationId !== "string" || !organizationId || typeof title !== "string" || !title.trim() || typeof description !== "string" || !description.trim()) {
+    return NextResponse.json({ error: "organizationId, title, and description are required" }, { status: 400 });
   }
 
   const organization = await prisma.organization.findUnique({ where: { id: organizationId } });
   if (!organization) return NextResponse.json({ error: "Organization not found" }, { status: 404 });
-  if (!(await isOrganizationMember(user.email, organizationId))) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
+  if (!(await hasOrganizationPermission(user.email, organizationId, "recommendation.manage"))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const recommendation = await prisma.recommendation.create({
-    data: {
-      organizationId,
-      title: title.trim(),
-      description: description.trim(),
-      relatedCapabilityIds: Array.isArray(body.relatedCapabilityIds) ? body.relatedCapabilityIds : [],
-      relatedKPIIds: Array.isArray(body.relatedKPIIds) ? body.relatedKPIIds : [],
-      estimatedValue: body.estimatedValue ?? null,
-      priorityScore: body.priorityScore ?? null,
-      reviewNotes: body.reviewNotes ?? null,
-      status: "DRAFT",
-    },
+    data: { organizationId, title: title.trim(), description: description.trim(), sourceGrowthActionId, relatedCapabilityIds, relatedKPIIds: Array.isArray(body.relatedKPIIds) ? body.relatedKPIIds : [], estimatedValue: body.estimatedValue ?? null, priorityScore: body.priorityScore ?? null, reviewNotes: body.reviewNotes ?? null, status: "DRAFT" },
   });
 
   return NextResponse.json(recommendation, { status: 201 });

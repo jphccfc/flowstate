@@ -85,6 +85,10 @@ describe("workspace responsive and theme contracts", () => {
     expect(assess).toContain("Due date");
     expect(assess).toContain("ownerEmail");
     expect(assess).toContain("dueDate");
+    expect(assess).toContain("Create recommendation");
+    expect(assess).toContain("growthActionId");
+    expect(assess).toContain("Recommendation created");
+    expect(assess).toContain("Recommendation could not be created");
     expect(assess).toContain("Original statement");
     expect(assess).toContain("stakeholderType");
     expect(assess).toContain("/perspectives");

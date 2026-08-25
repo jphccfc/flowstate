@@ -265,6 +265,7 @@ export type GrowthActionWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"GrowthAction"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"GrowthAction"> | Date | string
   insight?: Prisma.XOR<Prisma.ApprovedInsightScalarRelationFilter, Prisma.ApprovedInsightWhereInput>
+  recommendation?: Prisma.XOR<Prisma.RecommendationNullableScalarRelationFilter, Prisma.RecommendationWhereInput> | null
 }
 
 export type GrowthActionOrderByWithRelationInput = {
@@ -280,6 +281,7 @@ export type GrowthActionOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   insight?: Prisma.ApprovedInsightOrderByWithRelationInput
+  recommendation?: Prisma.RecommendationOrderByWithRelationInput
 }
 
 export type GrowthActionWhereUniqueInput = Prisma.AtLeast<{
@@ -298,6 +300,7 @@ export type GrowthActionWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"GrowthAction"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"GrowthAction"> | Date | string
   insight?: Prisma.XOR<Prisma.ApprovedInsightScalarRelationFilter, Prisma.ApprovedInsightWhereInput>
+  recommendation?: Prisma.XOR<Prisma.RecommendationNullableScalarRelationFilter, Prisma.RecommendationWhereInput> | null
 }, "id">
 
 export type GrowthActionOrderByWithAggregationInput = {
@@ -348,6 +351,7 @@ export type GrowthActionCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   insight: Prisma.ApprovedInsightCreateNestedOneWithoutGrowthActionsInput
+  recommendation?: Prisma.RecommendationCreateNestedOneWithoutSourceGrowthActionInput
 }
 
 export type GrowthActionUncheckedCreateInput = {
@@ -362,6 +366,7 @@ export type GrowthActionUncheckedCreateInput = {
   createdBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  recommendation?: Prisma.RecommendationUncheckedCreateNestedOneWithoutSourceGrowthActionInput
 }
 
 export type GrowthActionUpdateInput = {
@@ -376,6 +381,7 @@ export type GrowthActionUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   insight?: Prisma.ApprovedInsightUpdateOneRequiredWithoutGrowthActionsNestedInput
+  recommendation?: Prisma.RecommendationUpdateOneWithoutSourceGrowthActionNestedInput
 }
 
 export type GrowthActionUncheckedUpdateInput = {
@@ -390,6 +396,7 @@ export type GrowthActionUncheckedUpdateInput = {
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recommendation?: Prisma.RecommendationUncheckedUpdateOneWithoutSourceGrowthActionNestedInput
 }
 
 export type GrowthActionCreateManyInput = {
@@ -493,6 +500,11 @@ export type GrowthActionSumOrderByAggregateInput = {
   priority?: Prisma.SortOrder
 }
 
+export type GrowthActionNullableScalarRelationFilter = {
+  is?: Prisma.GrowthActionWhereInput | null
+  isNot?: Prisma.GrowthActionWhereInput | null
+}
+
 export type GrowthActionCreateNestedManyWithoutInsightInput = {
   create?: Prisma.XOR<Prisma.GrowthActionCreateWithoutInsightInput, Prisma.GrowthActionUncheckedCreateWithoutInsightInput> | Prisma.GrowthActionCreateWithoutInsightInput[] | Prisma.GrowthActionUncheckedCreateWithoutInsightInput[]
   connectOrCreate?: Prisma.GrowthActionCreateOrConnectWithoutInsightInput | Prisma.GrowthActionCreateOrConnectWithoutInsightInput[]
@@ -535,6 +547,22 @@ export type GrowthActionUncheckedUpdateManyWithoutInsightNestedInput = {
   deleteMany?: Prisma.GrowthActionScalarWhereInput | Prisma.GrowthActionScalarWhereInput[]
 }
 
+export type GrowthActionCreateNestedOneWithoutRecommendationInput = {
+  create?: Prisma.XOR<Prisma.GrowthActionCreateWithoutRecommendationInput, Prisma.GrowthActionUncheckedCreateWithoutRecommendationInput>
+  connectOrCreate?: Prisma.GrowthActionCreateOrConnectWithoutRecommendationInput
+  connect?: Prisma.GrowthActionWhereUniqueInput
+}
+
+export type GrowthActionUpdateOneWithoutRecommendationNestedInput = {
+  create?: Prisma.XOR<Prisma.GrowthActionCreateWithoutRecommendationInput, Prisma.GrowthActionUncheckedCreateWithoutRecommendationInput>
+  connectOrCreate?: Prisma.GrowthActionCreateOrConnectWithoutRecommendationInput
+  upsert?: Prisma.GrowthActionUpsertWithoutRecommendationInput
+  disconnect?: Prisma.GrowthActionWhereInput | boolean
+  delete?: Prisma.GrowthActionWhereInput | boolean
+  connect?: Prisma.GrowthActionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.GrowthActionUpdateToOneWithWhereWithoutRecommendationInput, Prisma.GrowthActionUpdateWithoutRecommendationInput>, Prisma.GrowthActionUncheckedUpdateWithoutRecommendationInput>
+}
+
 export type GrowthActionCreateWithoutInsightInput = {
   id?: string
   title: string
@@ -546,6 +574,7 @@ export type GrowthActionCreateWithoutInsightInput = {
   createdBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  recommendation?: Prisma.RecommendationCreateNestedOneWithoutSourceGrowthActionInput
 }
 
 export type GrowthActionUncheckedCreateWithoutInsightInput = {
@@ -559,6 +588,7 @@ export type GrowthActionUncheckedCreateWithoutInsightInput = {
   createdBy?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  recommendation?: Prisma.RecommendationUncheckedCreateNestedOneWithoutSourceGrowthActionInput
 }
 
 export type GrowthActionCreateOrConnectWithoutInsightInput = {
@@ -604,6 +634,78 @@ export type GrowthActionScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"GrowthAction"> | Date | string
 }
 
+export type GrowthActionCreateWithoutRecommendationInput = {
+  id?: string
+  title: string
+  description: string
+  ownerEmail?: string | null
+  dueDate?: Date | string | null
+  priority?: number | null
+  status?: string
+  createdBy?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  insight: Prisma.ApprovedInsightCreateNestedOneWithoutGrowthActionsInput
+}
+
+export type GrowthActionUncheckedCreateWithoutRecommendationInput = {
+  id?: string
+  insightId: string
+  title: string
+  description: string
+  ownerEmail?: string | null
+  dueDate?: Date | string | null
+  priority?: number | null
+  status?: string
+  createdBy?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type GrowthActionCreateOrConnectWithoutRecommendationInput = {
+  where: Prisma.GrowthActionWhereUniqueInput
+  create: Prisma.XOR<Prisma.GrowthActionCreateWithoutRecommendationInput, Prisma.GrowthActionUncheckedCreateWithoutRecommendationInput>
+}
+
+export type GrowthActionUpsertWithoutRecommendationInput = {
+  update: Prisma.XOR<Prisma.GrowthActionUpdateWithoutRecommendationInput, Prisma.GrowthActionUncheckedUpdateWithoutRecommendationInput>
+  create: Prisma.XOR<Prisma.GrowthActionCreateWithoutRecommendationInput, Prisma.GrowthActionUncheckedCreateWithoutRecommendationInput>
+  where?: Prisma.GrowthActionWhereInput
+}
+
+export type GrowthActionUpdateToOneWithWhereWithoutRecommendationInput = {
+  where?: Prisma.GrowthActionWhereInput
+  data: Prisma.XOR<Prisma.GrowthActionUpdateWithoutRecommendationInput, Prisma.GrowthActionUncheckedUpdateWithoutRecommendationInput>
+}
+
+export type GrowthActionUpdateWithoutRecommendationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priority?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  insight?: Prisma.ApprovedInsightUpdateOneRequiredWithoutGrowthActionsNestedInput
+}
+
+export type GrowthActionUncheckedUpdateWithoutRecommendationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  insightId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  priority?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type GrowthActionCreateManyInsightInput = {
   id?: string
   title: string
@@ -628,6 +730,7 @@ export type GrowthActionUpdateWithoutInsightInput = {
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recommendation?: Prisma.RecommendationUpdateOneWithoutSourceGrowthActionNestedInput
 }
 
 export type GrowthActionUncheckedUpdateWithoutInsightInput = {
@@ -641,6 +744,7 @@ export type GrowthActionUncheckedUpdateWithoutInsightInput = {
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recommendation?: Prisma.RecommendationUncheckedUpdateOneWithoutSourceGrowthActionNestedInput
 }
 
 export type GrowthActionUncheckedUpdateManyWithoutInsightInput = {
@@ -671,6 +775,7 @@ export type GrowthActionSelect<ExtArgs extends runtime.Types.Extensions.Internal
   createdAt?: boolean
   updatedAt?: boolean
   insight?: boolean | Prisma.ApprovedInsightDefaultArgs<ExtArgs>
+  recommendation?: boolean | Prisma.GrowthAction$recommendationArgs<ExtArgs>
 }, ExtArgs["result"]["growthAction"]>
 
 export type GrowthActionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -720,6 +825,7 @@ export type GrowthActionSelectScalar = {
 export type GrowthActionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "insightId" | "title" | "description" | "ownerEmail" | "dueDate" | "priority" | "status" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["growthAction"]>
 export type GrowthActionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   insight?: boolean | Prisma.ApprovedInsightDefaultArgs<ExtArgs>
+  recommendation?: boolean | Prisma.GrowthAction$recommendationArgs<ExtArgs>
 }
 export type GrowthActionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   insight?: boolean | Prisma.ApprovedInsightDefaultArgs<ExtArgs>
@@ -732,6 +838,7 @@ export type $GrowthActionPayload<ExtArgs extends runtime.Types.Extensions.Intern
   name: "GrowthAction"
   objects: {
     insight: Prisma.$ApprovedInsightPayload<ExtArgs>
+    recommendation: Prisma.$RecommendationPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1140,6 +1247,7 @@ readonly fields: GrowthActionFieldRefs;
 export interface Prisma__GrowthActionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   insight<T extends Prisma.ApprovedInsightDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApprovedInsightDefaultArgs<ExtArgs>>): Prisma.Prisma__ApprovedInsightClient<runtime.Types.Result.GetResult<Prisma.$ApprovedInsightPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  recommendation<T extends Prisma.GrowthAction$recommendationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GrowthAction$recommendationArgs<ExtArgs>>): Prisma.Prisma__RecommendationClient<runtime.Types.Result.GetResult<Prisma.$RecommendationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1578,6 +1686,25 @@ export type GrowthActionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many GrowthActions to delete.
    */
   limit?: number
+}
+
+/**
+ * GrowthAction.recommendation
+ */
+export type GrowthAction$recommendationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Recommendation
+   */
+  select?: Prisma.RecommendationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Recommendation
+   */
+  omit?: Prisma.RecommendationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecommendationInclude<ExtArgs> | null
+  where?: Prisma.RecommendationWhereInput
 }
 
 /**
