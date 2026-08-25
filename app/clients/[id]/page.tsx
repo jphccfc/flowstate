@@ -42,8 +42,8 @@ export default async function ClientOverviewPage({
     { href: `/clients/${id}/configure`, label: "Blueprint", icon: "02", desc: "Set up domains, capabilities, KPIs, and target achievements", cta: "Configure blueprint" },
     { href: `/clients/${id}/assess`, label: "Assessment", icon: "03", desc: "Run a guided capability assessment interview", cta: "Start / continue assessment" },
     { href: `/clients/${id}/analysis`, label: "Insights", icon: "04", desc: "View gaps, domain scores, and capability evidence", cta: "View insights" },
-    { href: `/clients/${id}/report`, label: "Reports", icon: "05", desc: "Generate an executive summary and growth plan", cta: "View reports" },
-    { href: `/clients/${id}/recommendations`, label: "Growth plan", icon: "06", desc: "Create, submit, and review improvement recommendations", cta: "Open growth plan" },
+    { href: `/clients/${id}/report`, label: "Reports", icon: "05", desc: "Read executive outcomes, evidence, and approved priorities", cta: "View reports" },
+    { href: `/clients/${id}/recommendations`, label: "Growth plan", icon: "06", desc: "Manage strategic initiatives and their reviewed recommendations", cta: "Open growth plan" },
     { href: `/clients/${id}/review`, label: "Review queue", icon: "07", desc: "Approve, reject, or reassign extracted tags", cta: "Open review queue" },
   ];
 
@@ -86,6 +86,36 @@ export default async function ClientOverviewPage({
           </Link>
         ))}
       </div>
+
+      <section className="workspace-card p-6 mb-8" aria-labelledby="flowstate-process-title">
+        <div className="workspace-eyebrow mb-2">Flowstate methodology</div>
+        <h2 id="flowstate-process-title" className="font-semibold text-[var(--foreground)] mb-3">Evidence to outcome</h2>
+        <p className="text-sm text-[var(--muted)] mb-4">Evidence is reviewed into assessment decisions, then translated into strategic Growth Plan initiatives and measurable business outcomes.</p>
+        <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-[var(--foreground)]" aria-label="Flowstate process">
+          {"Evidence → Assessment → Decision → Growth Plan → Outcome".split(" → ").map((step, index, steps) => (
+            <span key={step} className="flex items-center gap-2">
+              <span className="rounded-full border border-[var(--card-border)] bg-[var(--muted-bg)] px-3 py-1.5">{step}</span>
+              {index < steps.length - 1 && <span className="text-[var(--muted)]" aria-hidden="true">→</span>}
+            </span>
+          ))}
+        </div>
+        <p className="text-xs text-[var(--muted)] mt-4">Outcome scenarios: Profit / sale / liquidation</p>
+      </section>
+
+      <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8" aria-label="Planning workstreams">
+        <div className="workspace-card p-6">
+          <div className="workspace-nav-icon mb-4 text-sm">08</div>
+          <h2 className="font-semibold text-[var(--foreground)] mb-1">Assessment tasks</h2>
+          <p className="text-sm text-[var(--muted)] mb-3">Operational work required to complete the assessment: evidence requests, interviews, validation, review, sign-off, and report preparation.</p>
+          <Link href={`/clients/${id}/assess`} className="text-sm font-medium text-[var(--accent)] hover:underline">Open assessment →</Link>
+        </div>
+        <div className="workspace-card p-6">
+          <div className="workspace-nav-icon mb-4 text-sm">09</div>
+          <h2 className="font-semibold text-[var(--foreground)] mb-1">Growth plan</h2>
+          <p className="text-sm text-[var(--muted)] mb-3">Strategic initiatives to improve the business outcome through capability, process, technology, profitability, sale, or restructuring work.</p>
+          <Link href={`/clients/${id}/recommendations`} className="text-sm font-medium text-[var(--accent)] hover:underline">Open growth plan →</Link>
+        </div>
+      </section>
 
       {org.domains.length > 0 && (
         <div className="workspace-card p-6">

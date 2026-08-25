@@ -25,6 +25,18 @@ describe("workspace responsive and theme contracts", () => {
     expect(overview).toContain('className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8"');
   });
 
+  it("separates assessment tasks from the strategic growth plan", () => {
+    expect(overview).toContain('>Assessment tasks</h2>');
+    expect(overview).toContain('>Growth plan</h2>');
+    expect(overview).toContain("Operational work required to complete the assessment");
+    expect(overview).toContain("Strategic initiatives to improve the business outcome");
+  });
+
+  it("shows the Flowstate process on the workspace overview", () => {
+    expect(overview).toContain("Evidence → Assessment → Decision → Growth Plan → Outcome");
+    expect(overview).toContain("Profit / sale / liquidation");
+  });
+
   it("avoids a persisted-theme hydration mismatch", () => {
     expect(themeToggle).toContain("useSyncExternalStore");
     expect(themeToggle).toContain("function getServerSnapshot(): Theme");
