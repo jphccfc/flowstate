@@ -1,0 +1,7 @@
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/db";
+import { createClient } from "@/lib/supabase/server";
+
+async function current() { return (await (await createClient()).auth.getUser()).data.user; }
+export async function GET() { const auth = await current(); if (!auth || !auth.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); const user = await prisma.user.findUnique({ where: { email: auth.email }, select: { id: true, email: true, name: true, role: true, preferences: true } }); return NextResponse.json(user ?? { email: auth.email, name: auth.user_metadata?.name ?? null, preferences: null }); }
+export async function PATCH(req: NextRequest) { const auth = await current(); if (!auth || !auth.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); const body = await req.json(); const name = typeof body.name === "string" ? body.name.trim() : ""; if (name.length > 120) return NextResponse.json({ error: "Name must be 120 characters or fewer" }, { status: 400 }); const preferences = body.preferences && typeof body.preferences === "object" && !Array.isArray(body.preferences) ? body.preferences : undefined; const user = await prisma.user.upsert({ where: { email: auth.email }, update: { name: name || null, ...(preferences === undefined ? {} : { preferences }) }, create: { email: auth.email, name: name || null, preferences: preferences ?? undefined }, select: { id: true, email: true, name: true, role: true, preferences: true } }); return NextResponse.json(user); }

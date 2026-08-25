@@ -197,3 +197,8 @@ export type FollowUpSuggestion = Prisma.FollowUpSuggestionModel
  *
  */
 export type ProcessingJob = Prisma.ProcessingJobModel
+/**
+ * Model AssessmentTask
+ *
+ */
+export type AssessmentTask = Prisma.AssessmentTaskModel

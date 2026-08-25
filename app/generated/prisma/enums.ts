@@ -110,3 +110,38 @@ export const JobStatus = {
 } as const
 
 export type JobStatus = (typeof JobStatus)[keyof typeof JobStatus]
+
+
+export const AssessmentTaskType = {
+  EVIDENCE_REQUEST: 'EVIDENCE_REQUEST',
+  INTERVIEW: 'INTERVIEW',
+  FOLLOW_UP: 'FOLLOW_UP',
+  VALIDATION: 'VALIDATION',
+  REVIEW: 'REVIEW',
+  SIGN_OFF: 'SIGN_OFF',
+  REPORT_PREPARATION: 'REPORT_PREPARATION'
+} as const
+
+export type AssessmentTaskType = (typeof AssessmentTaskType)[keyof typeof AssessmentTaskType]
+
+
+export const AssessmentTaskStatus = {
+  OPEN: 'OPEN',
+  AWAITING_INPUT: 'AWAITING_INPUT',
+  IN_PROGRESS: 'IN_PROGRESS',
+  BLOCKED: 'BLOCKED',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type AssessmentTaskStatus = (typeof AssessmentTaskStatus)[keyof typeof AssessmentTaskStatus]
+
+
+export const AssessmentTaskReviewState = {
+  NOT_REQUIRED: 'NOT_REQUIRED',
+  PENDING_HUMAN_REVIEW: 'PENDING_HUMAN_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type AssessmentTaskReviewState = (typeof AssessmentTaskReviewState)[keyof typeof AssessmentTaskReviewState]

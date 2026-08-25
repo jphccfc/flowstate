@@ -41,10 +41,11 @@ export default async function ClientOverviewPage({
   const cards = [
     { href: `/clients/${id}/configure`, label: "Blueprint", icon: "02", desc: "Set up domains, capabilities, KPIs, and target achievements", cta: "Configure blueprint" },
     { href: `/clients/${id}/assess`, label: "Assessment", icon: "03", desc: "Run a guided capability assessment interview", cta: "Start / continue assessment" },
+    { href: `/clients/${id}/tasks`, label: "Assessment tasks", icon: "04", desc: "Raise and manage the operational work needed to complete this assessment", cta: "Open assessment tasks" },
     { href: `/clients/${id}/analysis`, label: "Insights", icon: "04", desc: "View gaps, domain scores, and capability evidence", cta: "View insights" },
     { href: `/clients/${id}/report`, label: "Reports", icon: "05", desc: "Read executive outcomes, evidence, and approved priorities", cta: "View reports" },
-    { href: `/clients/${id}/recommendations`, label: "Growth plan", icon: "06", desc: "Manage strategic initiatives and their reviewed recommendations", cta: "Open growth plan" },
-    { href: `/clients/${id}/review`, label: "Review queue", icon: "07", desc: "Approve, reject, or reassign extracted tags", cta: "Open review queue" },
+    { href: `/clients/${id}/recommendations`, label: "Growth plan", icon: "07", desc: "Manage strategic initiatives and their reviewed recommendations", cta: "Open growth plan" },
+    { href: `/clients/${id}/review`, label: "Review queue", icon: "08", desc: "Approve, reject, or reassign extracted tags", cta: "Open review queue" },
   ];
 
   return (
@@ -107,7 +108,7 @@ export default async function ClientOverviewPage({
           <div className="workspace-nav-icon mb-4 text-sm">08</div>
           <h2 className="font-semibold text-[var(--foreground)] mb-1">Assessment tasks</h2>
           <p className="text-sm text-[var(--muted)] mb-3">Operational work required to complete the assessment: evidence requests, interviews, validation, review, sign-off, and report preparation.</p>
-          <Link href={`/clients/${id}/assess`} className="text-sm font-medium text-[var(--accent)] hover:underline">Open assessment →</Link>
+          <Link href={`/clients/${id}/tasks`} className="text-sm font-medium text-[var(--accent)] hover:underline">Raise assessment task →</Link>
         </div>
         <div className="workspace-card p-6">
           <div className="workspace-nav-icon mb-4 text-sm">09</div>

@@ -22,9 +22,13 @@ model User {
   role      UserRole @default(ADVISOR)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  preferences Json?
 
   organizations   UserOrganization[]
   sessions        AssessmentSession[]
+  requestedAssessmentTasks AssessmentTask[] @relation("TaskRequester")
+  assignedAssessmentTasks AssessmentTask[] @relation("TaskAssignee")
+  completedAssessmentTasks AssessmentTask[] @relation("TaskCompleter")
 }
 
 model Organization {
@@ -49,6 +53,7 @@ model Organization {
   capturedInputs CapturedInput[]
   recommendations Recommendation[]
   maturityRubrics MaturityRubric[]
+  assessmentTasks AssessmentTask[]
 }
 
 model UserOrganization {
@@ -665,4 +670,63 @@ model ProcessingJob {
   error     String?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+}
+
+
+enum AssessmentTaskType {
+  EVIDENCE_REQUEST
+  INTERVIEW
+  FOLLOW_UP
+  VALIDATION
+  REVIEW
+  SIGN_OFF
+  REPORT_PREPARATION
+}
+
+enum AssessmentTaskStatus {
+  OPEN
+  AWAITING_INPUT
+  IN_PROGRESS
+  BLOCKED
+  COMPLETED
+  CANCELLED
+}
+
+enum AssessmentTaskReviewState {
+  NOT_REQUIRED
+  PENDING_HUMAN_REVIEW
+  APPROVED
+  REJECTED
+}
+
+model AssessmentTask {
+  id              String                    @id @default(cuid())
+  organizationId  String
+  requesterId     String
+  assigneeId      String
+  type            AssessmentTaskType
+  title           String
+  description     String
+  context         String?
+  dueDate         DateTime
+  priority        Int                       @default(3)
+  status          AssessmentTaskStatus      @default(OPEN)
+  humanReviewState AssessmentTaskReviewState @default(NOT_REQUIRED)
+  linkedEvidenceId String?
+  linkedCapabilityId String?
+  linkedDecisionId String?
+  linkedReportSection String?
+  completedAt     DateTime?
+  completedById   String?
+  completionNote  String?
+  createdAt       DateTime                  @default(now())
+  updatedAt       DateTime                  @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  requester User @relation("TaskRequester", fields: [requesterId], references: [id])
+  assignee User @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  completedBy User? @relation("TaskCompleter", fields: [completedById], references: [id])
+
+  @@index([organizationId, status, dueDate])
+  @@index([assigneeId, status])
 }
