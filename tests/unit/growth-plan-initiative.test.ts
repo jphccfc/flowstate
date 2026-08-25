@@ -10,6 +10,8 @@ describe("Growth Plan strategic initiative contract", () => {
   it("keeps outcome scenario and accountable planning fields on GrowthAction", () => {
     const growthAction = schema.slice(schema.indexOf("model GrowthAction"), schema.indexOf("model TargetMaturity"));
     expect(growthAction).toContain("outcomeScenario");
+    expect(growthAction).toContain("expectedValue");
+    expect(growthAction).toContain("valueAssumptions");
     expect(growthAction).toContain("ownerEmail");
     expect(growthAction).toContain("dueDate");
   });
@@ -18,5 +20,6 @@ describe("Growth Plan strategic initiative contract", () => {
     expect(assess).toContain("Growth actions");
     expect(assess).toContain("owner");
     expect(assess).toContain("due date");
+    expect(assess).toContain("Value assumptions");
   });
 });

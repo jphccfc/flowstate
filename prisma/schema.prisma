@@ -505,6 +505,8 @@ model GrowthAction {
   title       String
   description String
   outcomeScenario String @default("PROFIT_GROWTH")
+  expectedValue Float?
+  valueAssumptions String?
   ownerEmail  String?
   dueDate     DateTime?
   priority    Int?     @default(5)

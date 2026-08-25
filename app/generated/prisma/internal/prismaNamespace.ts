@@ -3610,6 +3610,8 @@ export const GrowthActionScalarFieldEnum = {
   title: 'title',
   description: 'description',
   outcomeScenario: 'outcomeScenario',
+  expectedValue: 'expectedValue',
+  valueAssumptions: 'valueAssumptions',
   ownerEmail: 'ownerEmail',
   dueDate: 'dueDate',
   priority: 'priority',
