@@ -39,6 +39,7 @@ export type GrowthActionMinAggregateOutputType = {
   insightId: string | null
   title: string | null
   description: string | null
+  outcomeScenario: string | null
   ownerEmail: string | null
   dueDate: Date | null
   priority: number | null
@@ -53,6 +54,7 @@ export type GrowthActionMaxAggregateOutputType = {
   insightId: string | null
   title: string | null
   description: string | null
+  outcomeScenario: string | null
   ownerEmail: string | null
   dueDate: Date | null
   priority: number | null
@@ -67,6 +69,7 @@ export type GrowthActionCountAggregateOutputType = {
   insightId: number
   title: number
   description: number
+  outcomeScenario: number
   ownerEmail: number
   dueDate: number
   priority: number
@@ -91,6 +94,7 @@ export type GrowthActionMinAggregateInputType = {
   insightId?: true
   title?: true
   description?: true
+  outcomeScenario?: true
   ownerEmail?: true
   dueDate?: true
   priority?: true
@@ -105,6 +109,7 @@ export type GrowthActionMaxAggregateInputType = {
   insightId?: true
   title?: true
   description?: true
+  outcomeScenario?: true
   ownerEmail?: true
   dueDate?: true
   priority?: true
@@ -119,6 +124,7 @@ export type GrowthActionCountAggregateInputType = {
   insightId?: true
   title?: true
   description?: true
+  outcomeScenario?: true
   ownerEmail?: true
   dueDate?: true
   priority?: true
@@ -220,6 +226,7 @@ export type GrowthActionGroupByOutputType = {
   insightId: string
   title: string
   description: string
+  outcomeScenario: string
   ownerEmail: string | null
   dueDate: Date | null
   priority: number | null
@@ -257,6 +264,7 @@ export type GrowthActionWhereInput = {
   insightId?: Prisma.StringFilter<"GrowthAction"> | string
   title?: Prisma.StringFilter<"GrowthAction"> | string
   description?: Prisma.StringFilter<"GrowthAction"> | string
+  outcomeScenario?: Prisma.StringFilter<"GrowthAction"> | string
   ownerEmail?: Prisma.StringNullableFilter<"GrowthAction"> | string | null
   dueDate?: Prisma.DateTimeNullableFilter<"GrowthAction"> | Date | string | null
   priority?: Prisma.IntNullableFilter<"GrowthAction"> | number | null
@@ -273,6 +281,7 @@ export type GrowthActionOrderByWithRelationInput = {
   insightId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  outcomeScenario?: Prisma.SortOrder
   ownerEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   priority?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -292,6 +301,7 @@ export type GrowthActionWhereUniqueInput = Prisma.AtLeast<{
   insightId?: Prisma.StringFilter<"GrowthAction"> | string
   title?: Prisma.StringFilter<"GrowthAction"> | string
   description?: Prisma.StringFilter<"GrowthAction"> | string
+  outcomeScenario?: Prisma.StringFilter<"GrowthAction"> | string
   ownerEmail?: Prisma.StringNullableFilter<"GrowthAction"> | string | null
   dueDate?: Prisma.DateTimeNullableFilter<"GrowthAction"> | Date | string | null
   priority?: Prisma.IntNullableFilter<"GrowthAction"> | number | null
@@ -308,6 +318,7 @@ export type GrowthActionOrderByWithAggregationInput = {
   insightId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  outcomeScenario?: Prisma.SortOrder
   ownerEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   priority?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -330,6 +341,7 @@ export type GrowthActionScalarWhereWithAggregatesInput = {
   insightId?: Prisma.StringWithAggregatesFilter<"GrowthAction"> | string
   title?: Prisma.StringWithAggregatesFilter<"GrowthAction"> | string
   description?: Prisma.StringWithAggregatesFilter<"GrowthAction"> | string
+  outcomeScenario?: Prisma.StringWithAggregatesFilter<"GrowthAction"> | string
   ownerEmail?: Prisma.StringNullableWithAggregatesFilter<"GrowthAction"> | string | null
   dueDate?: Prisma.DateTimeNullableWithAggregatesFilter<"GrowthAction"> | Date | string | null
   priority?: Prisma.IntNullableWithAggregatesFilter<"GrowthAction"> | number | null
@@ -343,6 +355,7 @@ export type GrowthActionCreateInput = {
   id?: string
   title: string
   description: string
+  outcomeScenario?: string
   ownerEmail?: string | null
   dueDate?: Date | string | null
   priority?: number | null
@@ -359,6 +372,7 @@ export type GrowthActionUncheckedCreateInput = {
   insightId: string
   title: string
   description: string
+  outcomeScenario?: string
   ownerEmail?: string | null
   dueDate?: Date | string | null
   priority?: number | null
@@ -373,6 +387,7 @@ export type GrowthActionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  outcomeScenario?: Prisma.StringFieldUpdateOperationsInput | string
   ownerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priority?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -389,6 +404,7 @@ export type GrowthActionUncheckedUpdateInput = {
   insightId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  outcomeScenario?: Prisma.StringFieldUpdateOperationsInput | string
   ownerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priority?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -404,6 +420,7 @@ export type GrowthActionCreateManyInput = {
   insightId: string
   title: string
   description: string
+  outcomeScenario?: string
   ownerEmail?: string | null
   dueDate?: Date | string | null
   priority?: number | null
@@ -417,6 +434,7 @@ export type GrowthActionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  outcomeScenario?: Prisma.StringFieldUpdateOperationsInput | string
   ownerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priority?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -431,6 +449,7 @@ export type GrowthActionUncheckedUpdateManyInput = {
   insightId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  outcomeScenario?: Prisma.StringFieldUpdateOperationsInput | string
   ownerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priority?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -455,6 +474,7 @@ export type GrowthActionCountOrderByAggregateInput = {
   insightId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  outcomeScenario?: Prisma.SortOrder
   ownerEmail?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   priority?: Prisma.SortOrder
@@ -473,6 +493,7 @@ export type GrowthActionMaxOrderByAggregateInput = {
   insightId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  outcomeScenario?: Prisma.SortOrder
   ownerEmail?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   priority?: Prisma.SortOrder
@@ -487,6 +508,7 @@ export type GrowthActionMinOrderByAggregateInput = {
   insightId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  outcomeScenario?: Prisma.SortOrder
   ownerEmail?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   priority?: Prisma.SortOrder
@@ -567,6 +589,7 @@ export type GrowthActionCreateWithoutInsightInput = {
   id?: string
   title: string
   description: string
+  outcomeScenario?: string
   ownerEmail?: string | null
   dueDate?: Date | string | null
   priority?: number | null
@@ -581,6 +604,7 @@ export type GrowthActionUncheckedCreateWithoutInsightInput = {
   id?: string
   title: string
   description: string
+  outcomeScenario?: string
   ownerEmail?: string | null
   dueDate?: Date | string | null
   priority?: number | null
@@ -625,6 +649,7 @@ export type GrowthActionScalarWhereInput = {
   insightId?: Prisma.StringFilter<"GrowthAction"> | string
   title?: Prisma.StringFilter<"GrowthAction"> | string
   description?: Prisma.StringFilter<"GrowthAction"> | string
+  outcomeScenario?: Prisma.StringFilter<"GrowthAction"> | string
   ownerEmail?: Prisma.StringNullableFilter<"GrowthAction"> | string | null
   dueDate?: Prisma.DateTimeNullableFilter<"GrowthAction"> | Date | string | null
   priority?: Prisma.IntNullableFilter<"GrowthAction"> | number | null
@@ -638,6 +663,7 @@ export type GrowthActionCreateWithoutRecommendationInput = {
   id?: string
   title: string
   description: string
+  outcomeScenario?: string
   ownerEmail?: string | null
   dueDate?: Date | string | null
   priority?: number | null
@@ -653,6 +679,7 @@ export type GrowthActionUncheckedCreateWithoutRecommendationInput = {
   insightId: string
   title: string
   description: string
+  outcomeScenario?: string
   ownerEmail?: string | null
   dueDate?: Date | string | null
   priority?: number | null
@@ -682,6 +709,7 @@ export type GrowthActionUpdateWithoutRecommendationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  outcomeScenario?: Prisma.StringFieldUpdateOperationsInput | string
   ownerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priority?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -697,6 +725,7 @@ export type GrowthActionUncheckedUpdateWithoutRecommendationInput = {
   insightId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  outcomeScenario?: Prisma.StringFieldUpdateOperationsInput | string
   ownerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priority?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -710,6 +739,7 @@ export type GrowthActionCreateManyInsightInput = {
   id?: string
   title: string
   description: string
+  outcomeScenario?: string
   ownerEmail?: string | null
   dueDate?: Date | string | null
   priority?: number | null
@@ -723,6 +753,7 @@ export type GrowthActionUpdateWithoutInsightInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  outcomeScenario?: Prisma.StringFieldUpdateOperationsInput | string
   ownerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priority?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -737,6 +768,7 @@ export type GrowthActionUncheckedUpdateWithoutInsightInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  outcomeScenario?: Prisma.StringFieldUpdateOperationsInput | string
   ownerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priority?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -751,6 +783,7 @@ export type GrowthActionUncheckedUpdateManyWithoutInsightInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  outcomeScenario?: Prisma.StringFieldUpdateOperationsInput | string
   ownerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   priority?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -767,6 +800,7 @@ export type GrowthActionSelect<ExtArgs extends runtime.Types.Extensions.Internal
   insightId?: boolean
   title?: boolean
   description?: boolean
+  outcomeScenario?: boolean
   ownerEmail?: boolean
   dueDate?: boolean
   priority?: boolean
@@ -783,6 +817,7 @@ export type GrowthActionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   insightId?: boolean
   title?: boolean
   description?: boolean
+  outcomeScenario?: boolean
   ownerEmail?: boolean
   dueDate?: boolean
   priority?: boolean
@@ -798,6 +833,7 @@ export type GrowthActionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   insightId?: boolean
   title?: boolean
   description?: boolean
+  outcomeScenario?: boolean
   ownerEmail?: boolean
   dueDate?: boolean
   priority?: boolean
@@ -813,6 +849,7 @@ export type GrowthActionSelectScalar = {
   insightId?: boolean
   title?: boolean
   description?: boolean
+  outcomeScenario?: boolean
   ownerEmail?: boolean
   dueDate?: boolean
   priority?: boolean
@@ -822,7 +859,7 @@ export type GrowthActionSelectScalar = {
   updatedAt?: boolean
 }
 
-export type GrowthActionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "insightId" | "title" | "description" | "ownerEmail" | "dueDate" | "priority" | "status" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["growthAction"]>
+export type GrowthActionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "insightId" | "title" | "description" | "outcomeScenario" | "ownerEmail" | "dueDate" | "priority" | "status" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["growthAction"]>
 export type GrowthActionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   insight?: boolean | Prisma.ApprovedInsightDefaultArgs<ExtArgs>
   recommendation?: boolean | Prisma.GrowthAction$recommendationArgs<ExtArgs>
@@ -845,6 +882,7 @@ export type $GrowthActionPayload<ExtArgs extends runtime.Types.Extensions.Intern
     insightId: string
     title: string
     description: string
+    outcomeScenario: string
     ownerEmail: string | null
     dueDate: Date | null
     priority: number | null
@@ -1281,6 +1319,7 @@ export interface GrowthActionFieldRefs {
   readonly insightId: Prisma.FieldRef<"GrowthAction", 'String'>
   readonly title: Prisma.FieldRef<"GrowthAction", 'String'>
   readonly description: Prisma.FieldRef<"GrowthAction", 'String'>
+  readonly outcomeScenario: Prisma.FieldRef<"GrowthAction", 'String'>
   readonly ownerEmail: Prisma.FieldRef<"GrowthAction", 'String'>
   readonly dueDate: Prisma.FieldRef<"GrowthAction", 'DateTime'>
   readonly priority: Prisma.FieldRef<"GrowthAction", 'Int'>

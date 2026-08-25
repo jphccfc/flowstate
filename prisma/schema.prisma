@@ -504,6 +504,7 @@ model GrowthAction {
   insightId   String
   title       String
   description String
+  outcomeScenario String @default("PROFIT_GROWTH")
   ownerEmail  String?
   dueDate     DateTime?
   priority    Int?     @default(5)
