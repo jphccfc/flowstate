@@ -21,7 +21,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   if (typeof body.title !== "string" || !body.title.trim() || typeof body.description !== "string" || !body.description.trim()) return NextResponse.json({ error: "title and description are required" }, { status: 400 });
   if (typeof body.ownerEmail !== "string" || !body.ownerEmail.trim() || typeof body.dueDate !== "string" || !body.dueDate.trim() || Number.isNaN(new Date(body.dueDate).getTime())) return NextResponse.json({ error: "ownerEmail and a valid dueDate are required" }, { status: 400 });
   if (!(await isOrganizationMember(body.ownerEmail.trim(), insight.capability.domain.organizationId))) return NextResponse.json({ error: "ownerEmail must belong to an organisation member" }, { status: 400 });
-  const action = await prisma.growthAction.create({ data: { insightId: id, title: body.title.trim(), description: body.description.trim(), ownerEmail: body.ownerEmail.trim(), dueDate: new Date(body.dueDate), priority: typeof body.priority === "number" ? body.priority : undefined, createdBy: user.email } });
+  const outcomeScenarios = new Set(["PROFIT_GROWTH", "SALE_READINESS", "RESTRUCTURING", "MULTIPLIER_IMPROVEMENT"]);
+  const outcomeScenario = body.outcomeScenario ?? "PROFIT_GROWTH";
+  if (typeof outcomeScenario !== "string" || !outcomeScenarios.has(outcomeScenario)) return NextResponse.json({ error: "A valid outcomeScenario is required" }, { status: 400 });
+  const action = await prisma.growthAction.create({ data: { insightId: id, title: body.title.trim(), description: body.description.trim(), outcomeScenario, ownerEmail: body.ownerEmail.trim(), dueDate: new Date(body.dueDate), priority: typeof body.priority === "number" ? body.priority : undefined, createdBy: user.email } });
   return NextResponse.json(action, { status: 201 });
 }
 

@@ -3609,6 +3609,7 @@ export const GrowthActionScalarFieldEnum = {
   insightId: 'insightId',
   title: 'title',
   description: 'description',
+  outcomeScenario: 'outcomeScenario',
   ownerEmail: 'ownerEmail',
   dueDate: 'dueDate',
   priority: 'priority',
