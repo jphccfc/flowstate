@@ -243,6 +243,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   const [growthActions, setGrowthActions] = useState<GrowthAction[]>([]);
   const [growthBusy, setGrowthBusy] = useState(false);
   const [recommendationBusy, setRecommendationBusy] = useState<string | null>(null);
+  const [recommendationState, setRecommendationState] = useState<Record<string, "created" | "error">>({});
   const [growthOwner, setGrowthOwner] = useState("");
   const [growthDueDate, setGrowthDueDate] = useState("");
   const [showAsIsHistory, setShowAsIsHistory] = useState(false);
@@ -332,7 +333,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
 
   async function loadInsights(capId: string) {
     const res = await fetch(`/api/capabilities/${capId}/insights`);
-    if (res.ok) { const data = await res.json(); setInsights(data); if (data[0]) loadGrowthActions(data[0].id); }
+    if (res.ok) { const data = await res.json(); setInsights(data); await loadGrowthActions(data); }
   }
 
   async function loadDecisions(capId: string) {
@@ -360,9 +361,12 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
     setDecisionBusy(false);
   }
 
-  async function loadGrowthActions(insightId: string) {
-    const res = await fetch(`/api/approved-insights/${insightId}/actions`);
-    if (res.ok) setGrowthActions(await res.json());
+  async function loadGrowthActions(insightList: Insight[]) {
+    const actionLists = await Promise.all(insightList.map(async (insight) => {
+      const res = await fetch(`/api/approved-insights/${insight.id}/actions`);
+      return res.ok ? await res.json() as GrowthAction[] : [];
+    }));
+    setGrowthActions(actionLists.flat());
   }
 
   async function createGrowthAction() {
@@ -376,7 +380,8 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
 
   async function createRecommendation(actionId: string) {
     setRecommendationBusy(actionId);
-    await fetch("/api/recommendations", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ growthActionId: actionId }) });
+    const res = await fetch("/api/recommendations", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ growthActionId: actionId }) });
+    setRecommendationState((current) => ({ ...current, [actionId]: res.ok ? "created" : "error" }));
     setRecommendationBusy(null);
   }
 
@@ -385,7 +390,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
     if (!selectedCapId || decision?.status !== "SIGNED_OFF") return;
     setInsightBusy(true);
     const res = await fetch(`/api/capabilities/${selectedCapId}/insights`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ decisionId: decision.id, type: "MATURITY_GAP", title: "Approved capability gap", description: decision.rationale ?? "Approved assessment identifies a capability gap requiring prioritisation.", priority: 7 }) });
-    if (res.ok) { const insight = await res.json(); setInsights((items) => [insight, ...items]); await loadGrowthActions(insight.id); }
+    if (res.ok) { const insight = await res.json(); const nextInsights = [insight, ...insights]; setInsights(nextInsights); await loadGrowthActions(nextInsights); }
     setInsightBusy(false);
   }
 
@@ -621,7 +626,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
 
             {decisions[0]?.status === "SIGNED_OFF" && <section className="workspace-card p-5 mb-4" aria-labelledby="insights-title"><div className="flex items-start justify-between gap-4 mb-3"><div><div className="workspace-eyebrow">Approved output</div><h3 id="insights-title" className="text-sm font-semibold text-[var(--foreground)]">Approved insights and priorities</h3></div><button type="button" onClick={createInsight} disabled={insightBusy} className="px-3 py-1.5 rounded-lg bg-[var(--accent)] text-white text-xs disabled:opacity-50">{insightBusy ? "Creating…" : "Create insight"}</button></div>{insights.length === 0 ? <p className="text-sm text-[var(--muted)]">No approved insight has been created from this signed-off decision.</p> : <div className="space-y-2">{insights.map((insight) => <div key={insight.id} className="rounded-lg border border-[var(--card-border)] p-3 text-sm"><div className="flex items-center justify-between gap-3"><strong>{insight.title}</strong><span className="text-xs text-[var(--muted)]">Priority {insight.priority ?? "—"}</span></div><p className="mt-1 text-xs text-[var(--muted)]">{insight.description}</p><div className="mt-1 text-[10px] text-[var(--muted)]">Traceable to signed-off decision · {insight.sourcePerspectiveIds.length} perspective sources</div></div>)}</div>}</section>}
 
-            {decisions[0]?.status === "SIGNED_OFF" && insights.length > 0 && <div className="mt-4 border-t border-[var(--card-border)] pt-4"><div className="flex items-center justify-between gap-3"><div><div className="text-xs font-semibold text-[var(--foreground)]">Growth actions</div><div className="text-xs text-[var(--muted)]">Assign an owner and due date before creating the action.</div></div><button type="button" onClick={createGrowthAction} disabled={growthBusy || insights.length === 0 || !growthOwner.trim() || !growthDueDate} className="px-3 py-1.5 rounded-lg border border-[var(--card-border)] text-xs disabled:opacity-50">{growthBusy ? "Creating…" : "Add growth action"}</button></div><div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3"><label className="text-xs text-[var(--muted)]">Action owner<input required type="email" value={growthOwner} onChange={(event) => setGrowthOwner(event.target.value)} placeholder="owner@example.com" className="mt-1 w-full px-2 py-1.5 border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] bg-[var(--card)]" /></label><label className="text-xs text-[var(--muted)]">Due date<input required type="date" value={growthDueDate} onChange={(event) => setGrowthDueDate(event.target.value)} className="mt-1 w-full px-2 py-1.5 border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] bg-[var(--card)]" /></label></div>{growthActions.length > 0 && <div className="mt-3 space-y-2">{growthActions.map((action) => <div key={action.id} className="rounded-lg bg-[var(--muted-bg)] p-3 text-xs"><div className="flex items-center justify-between gap-3"><strong>{action.title}</strong><span>{action.status.replaceAll("_", " ")}</span></div><p className="mt-1 text-[var(--muted)]">{action.description}</p><div className="mt-1 text-[var(--muted)]">Owner: {action.ownerEmail ?? "Unassigned"}</div>{action.dueDate && <div className="mt-1 text-[var(--muted)]">Due {new Date(action.dueDate).toLocaleDateString()}</div>}<button type="button" onClick={() => createRecommendation(action.id)} disabled={recommendationBusy === action.id || !action.ownerEmail || !action.dueDate} className="mt-2 px-2 py-1 rounded border border-[var(--card-border)] text-[var(--accent)] disabled:opacity-50">{recommendationBusy === action.id ? "Creating…" : "Create recommendation"}</button></div>)}</div>}</div>}
+            {decisions[0]?.status === "SIGNED_OFF" && insights.length > 0 && <div className="mt-4 border-t border-[var(--card-border)] pt-4"><div className="flex items-center justify-between gap-3"><div><div className="text-xs font-semibold text-[var(--foreground)]">Growth actions</div><div className="text-xs text-[var(--muted)]">Assign an owner and due date before creating the action.</div></div><button type="button" onClick={createGrowthAction} disabled={growthBusy || insights.length === 0 || !growthOwner.trim() || !growthDueDate} className="px-3 py-1.5 rounded-lg border border-[var(--card-border)] text-xs disabled:opacity-50">{growthBusy ? "Creating…" : "Add growth action"}</button></div><div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3"><label className="text-xs text-[var(--muted)]">Action owner<input required type="email" value={growthOwner} onChange={(event) => setGrowthOwner(event.target.value)} placeholder="owner@example.com" className="mt-1 w-full px-2 py-1.5 border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] bg-[var(--card)]" /></label><label className="text-xs text-[var(--muted)]">Due date<input required type="date" value={growthDueDate} onChange={(event) => setGrowthDueDate(event.target.value)} className="mt-1 w-full px-2 py-1.5 border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] bg-[var(--card)]" /></label></div>{growthActions.length > 0 && <div className="mt-3 space-y-2">{growthActions.map((action) => <div key={action.id} className="rounded-lg bg-[var(--muted-bg)] p-3 text-xs"><div className="flex items-center justify-between gap-3"><strong>{action.title}</strong><span>{action.status.replaceAll("_", " ")}</span></div><p className="mt-1 text-[var(--muted)]">{action.description}</p><div className="mt-1 text-[var(--muted)]">Owner: {action.ownerEmail ?? "Unassigned"}</div>{action.dueDate && <div className="mt-1 text-[var(--muted)]">Due {new Date(action.dueDate).toLocaleDateString()}</div>}<button type="button" onClick={() => createRecommendation(action.id)} disabled={recommendationBusy === action.id || !action.ownerEmail || !action.dueDate} className="mt-2 px-2 py-1 rounded border border-[var(--card-border)] text-[var(--accent)] disabled:opacity-50">{recommendationBusy === action.id ? "Creating…" : recommendationState[action.id] === "created" ? "Recommendation created" : "Create recommendation"}</button>{recommendationState[action.id] === "error" && <div className="mt-1 text-[var(--destructive)]">Recommendation could not be created.</div>}</div>)}</div>}</div>}
 
             {(perspectiveData || perspectiveError) && (
               <section className="workspace-card p-5 mb-4" aria-labelledby="perspective-balance-title">

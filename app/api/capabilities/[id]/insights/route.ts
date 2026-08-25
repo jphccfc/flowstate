@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
-import { isOrganizationMember } from "@/lib/auth/organization";
+import { hasOrganizationPermission, isOrganizationMember } from "@/lib/auth/organization";
 
 async function authorizedCapability(id: string, email: string) {
   const capability = await prisma.capability.findUnique({ where: { id }, include: { domain: { select: { organizationId: true } } } });
@@ -27,6 +27,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   const { capability, allowed } = await authorizedCapability(id, user.email);
   if (!capability) return NextResponse.json({ error: "Capability not found" }, { status: 404 });
   if (!allowed) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!(await hasOrganizationPermission(user.email, capability.domain.organizationId, "assessment.approve"))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   if (typeof body.decisionId !== "string" || typeof body.type !== "string" || typeof body.title !== "string" || typeof body.description !== "string" || !body.title.trim() || !body.description.trim()) return NextResponse.json({ error: "decisionId, type, title, and description are required" }, { status: 400 });
   const decision = await prisma.assessmentDecision.findUnique({ where: { id: body.decisionId } });
   if (!decision || decision.capabilityId !== id) return NextResponse.json({ error: "Decision not found for capability" }, { status: 404 });
