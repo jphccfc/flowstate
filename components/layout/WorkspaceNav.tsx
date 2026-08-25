@@ -29,10 +29,11 @@ export function WorkspaceNav({ clientId, clientName }: { clientId: string; clien
     { href: `/clients/${clientId}`, label: "Overview", short: "01" },
     { href: `/clients/${clientId}/configure`, label: "Blueprint", short: "02" },
     { href: `/clients/${clientId}/assess`, label: "Assessment", short: "03" },
-    { href: `/clients/${clientId}/analysis`, label: "Insights", short: "04" },
-    { href: `/clients/${clientId}/report`, label: "Reports", short: "05" },
-    { href: `/clients/${clientId}/recommendations`, label: "Growth plan", short: "06" },
-    { href: `/clients/${clientId}/review`, label: "Review queue", short: "07" },
+    { href: `/clients/${clientId}/tasks`, label: "Assessment tasks", short: "04" },
+    { href: `/clients/${clientId}/analysis`, label: "Insights", short: "05" },
+    { href: `/clients/${clientId}/report`, label: "Reports", short: "06" },
+    { href: `/clients/${clientId}/recommendations`, label: "Growth plan", short: "07" },
+    { href: `/clients/${clientId}/review`, label: "Review queue", short: "08" },
   ];
 
   async function signOut() {
@@ -89,6 +90,7 @@ export function WorkspaceNav({ clientId, clientName }: { clientId: string; clien
         </nav>
 
         <div className="workspace-actions">
+          <Link href="/profile" className="workspace-signout" onClick={() => setOpen(false)}>Profile</Link>
           <ThemeToggle />
           <button type="button" className="workspace-signout" onClick={signOut}>Sign out</button>
         </div>

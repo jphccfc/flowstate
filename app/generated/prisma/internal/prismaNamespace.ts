@@ -419,7 +419,8 @@ export const ModelName = {
   Recommendation: 'Recommendation',
   RecommendationFeedback: 'RecommendationFeedback',
   FollowUpSuggestion: 'FollowUpSuggestion',
-  ProcessingJob: 'ProcessingJob'
+  ProcessingJob: 'ProcessingJob',
+  AssessmentTask: 'AssessmentTask'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -435,7 +436,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "growthAction" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob"
+    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "growthAction" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob" | "assessmentTask"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3103,6 +3104,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AssessmentTask: {
+      payload: Prisma.$AssessmentTaskPayload<ExtArgs>
+      fields: Prisma.AssessmentTaskFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AssessmentTaskFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTaskPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AssessmentTaskFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTaskPayload>
+        }
+        findFirst: {
+          args: Prisma.AssessmentTaskFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTaskPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AssessmentTaskFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTaskPayload>
+        }
+        findMany: {
+          args: Prisma.AssessmentTaskFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTaskPayload>[]
+        }
+        create: {
+          args: Prisma.AssessmentTaskCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTaskPayload>
+        }
+        createMany: {
+          args: Prisma.AssessmentTaskCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AssessmentTaskCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTaskPayload>[]
+        }
+        delete: {
+          args: Prisma.AssessmentTaskDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTaskPayload>
+        }
+        update: {
+          args: Prisma.AssessmentTaskUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTaskPayload>
+        }
+        deleteMany: {
+          args: Prisma.AssessmentTaskDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AssessmentTaskUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AssessmentTaskUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTaskPayload>[]
+        }
+        upsert: {
+          args: Prisma.AssessmentTaskUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTaskPayload>
+        }
+        aggregate: {
+          args: Prisma.AssessmentTaskAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAssessmentTask>
+        }
+        groupBy: {
+          args: Prisma.AssessmentTaskGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AssessmentTaskGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AssessmentTaskCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AssessmentTaskCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3148,7 +3223,8 @@ export const UserScalarFieldEnum = {
   name: 'name',
   role: 'role',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  preferences: 'preferences'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -3666,19 +3742,39 @@ export const ProcessingJobScalarFieldEnum = {
 export type ProcessingJobScalarFieldEnum = (typeof ProcessingJobScalarFieldEnum)[keyof typeof ProcessingJobScalarFieldEnum]
 
 
+export const AssessmentTaskScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  requesterId: 'requesterId',
+  assigneeId: 'assigneeId',
+  type: 'type',
+  title: 'title',
+  description: 'description',
+  context: 'context',
+  dueDate: 'dueDate',
+  priority: 'priority',
+  status: 'status',
+  humanReviewState: 'humanReviewState',
+  linkedEvidenceId: 'linkedEvidenceId',
+  linkedCapabilityId: 'linkedCapabilityId',
+  linkedDecisionId: 'linkedDecisionId',
+  linkedReportSection: 'linkedReportSection',
+  completedAt: 'completedAt',
+  completedById: 'completedById',
+  completionNote: 'completionNote',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AssessmentTaskScalarFieldEnum = (typeof AssessmentTaskScalarFieldEnum)[keyof typeof AssessmentTaskScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
-
-
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullableJsonNullValueInput = {
@@ -3689,20 +3785,19 @@ export const NullableJsonNullValueInput = {
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
-
-
-export const NullsOrder = {
-  first: 'first',
-  last: 'last'
-} as const
-
-export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 export const JsonNullValueFilter = {
@@ -3712,6 +3807,14 @@ export const JsonNullValueFilter = {
 } as const
 
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 
@@ -3759,6 +3862,20 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
 
 
 
@@ -3847,20 +3964,6 @@ export type ListEnumTagStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
 
 
 /**
- * Reference to a field of type 'Json'
- */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-
-
-
-/**
- * Reference to a field of type 'QueryMode'
- */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-
-
-
-/**
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
@@ -3934,6 +4037,48 @@ export type EnumJobStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
  * Reference to a field of type 'JobStatus[]'
  */
 export type ListEnumJobStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'JobStatus[]'>
+
+
+
+/**
+ * Reference to a field of type 'AssessmentTaskType'
+ */
+export type EnumAssessmentTaskTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AssessmentTaskType'>
+
+
+
+/**
+ * Reference to a field of type 'AssessmentTaskType[]'
+ */
+export type ListEnumAssessmentTaskTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AssessmentTaskType[]'>
+
+
+
+/**
+ * Reference to a field of type 'AssessmentTaskStatus'
+ */
+export type EnumAssessmentTaskStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AssessmentTaskStatus'>
+
+
+
+/**
+ * Reference to a field of type 'AssessmentTaskStatus[]'
+ */
+export type ListEnumAssessmentTaskStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AssessmentTaskStatus[]'>
+
+
+
+/**
+ * Reference to a field of type 'AssessmentTaskReviewState'
+ */
+export type EnumAssessmentTaskReviewStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AssessmentTaskReviewState'>
+
+
+
+/**
+ * Reference to a field of type 'AssessmentTaskReviewState[]'
+ */
+export type ListEnumAssessmentTaskReviewStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AssessmentTaskReviewState[]'>
 
 
 /**
@@ -4082,6 +4227,7 @@ export type GlobalOmitConfig = {
   recommendationFeedback?: Prisma.RecommendationFeedbackOmit
   followUpSuggestion?: Prisma.FollowUpSuggestionOmit
   processingJob?: Prisma.ProcessingJobOmit
+  assessmentTask?: Prisma.AssessmentTaskOmit
 }
 
 /* Types for Logging */

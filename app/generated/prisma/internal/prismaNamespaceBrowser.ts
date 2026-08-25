@@ -86,7 +86,8 @@ export const ModelName = {
   Recommendation: 'Recommendation',
   RecommendationFeedback: 'RecommendationFeedback',
   FollowUpSuggestion: 'FollowUpSuggestion',
-  ProcessingJob: 'ProcessingJob'
+  ProcessingJob: 'ProcessingJob',
+  AssessmentTask: 'AssessmentTask'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -111,7 +112,8 @@ export const UserScalarFieldEnum = {
   name: 'name',
   role: 'role',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  preferences: 'preferences'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -629,19 +631,39 @@ export const ProcessingJobScalarFieldEnum = {
 export type ProcessingJobScalarFieldEnum = (typeof ProcessingJobScalarFieldEnum)[keyof typeof ProcessingJobScalarFieldEnum]
 
 
+export const AssessmentTaskScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  requesterId: 'requesterId',
+  assigneeId: 'assigneeId',
+  type: 'type',
+  title: 'title',
+  description: 'description',
+  context: 'context',
+  dueDate: 'dueDate',
+  priority: 'priority',
+  status: 'status',
+  humanReviewState: 'humanReviewState',
+  linkedEvidenceId: 'linkedEvidenceId',
+  linkedCapabilityId: 'linkedCapabilityId',
+  linkedDecisionId: 'linkedDecisionId',
+  linkedReportSection: 'linkedReportSection',
+  completedAt: 'completedAt',
+  completedById: 'completedById',
+  completionNote: 'completionNote',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AssessmentTaskScalarFieldEnum = (typeof AssessmentTaskScalarFieldEnum)[keyof typeof AssessmentTaskScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
-
-
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullableJsonNullValueInput = {
@@ -652,20 +674,19 @@ export const NullableJsonNullValueInput = {
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
-
-
-export const NullsOrder = {
-  first: 'first',
-  last: 'last'
-} as const
-
-export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 export const JsonNullValueFilter = {
@@ -675,4 +696,12 @@ export const JsonNullValueFilter = {
 } as const
 
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
