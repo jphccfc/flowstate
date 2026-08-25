@@ -6,6 +6,8 @@
 **Depends on:** Project Ewok foundation and existing capture, review, assessment, provenance, and recommendation workflows  
 **Enables:** Project Wookiee collaboration and Project Holocron document/message integrations
 
+> **Roadmap alignment (2026-08-25):** This specification remains the authoritative assessment and provenance contract. The consolidated Week 35 roadmap in `docs/superpowers/specs/2026-08-25-flowstate-product-roadmap-week-35.md` places the delivered decision → insight → growth action → recommendation chain in Project Yoda, executive reporting immediately after it, and the proposed negative-to-positive Flowstate Score, governed Agent View, Work Hub, and industry-factor multiplier in later dependent phases. The existing 0–5 maturity rubric is intentionally retained as a diagnostic layer rather than replaced by the Flowstate Score.
+
 ## 1. Purpose
 
 Project Yoda establishes a transparent, evidence-led AI workflow for turning captured information into reviewed assessments and recommendations.
@@ -196,7 +198,19 @@ Production connectors for every platform; automatic approval; fully autonomous r
 8. Deliver Project Wookiee collaboration.
 9. Deliver Project Holocron connectors into the normalised evidence intake.
 
-## 10. Acceptance criteria
+## 10. Current delivery status and next boundary
+
+The evidence-led assessment, human sign-off, approved-insight, owned/dated growth-action and recommendation-traceability slices are delivered in the current platform. The next boundary is the executive analysis/report read model that presents the complete chain without turning provisional AI content into approved business output.
+
+The following remain downstream of this specification and must not bypass its review contract:
+
+- Flowstate opportunity score and multiplier.
+- Specialist Agent View and workspace agent customization.
+- Unified WorkItem/task orchestration.
+- Industry/economic research factors.
+- Additional production integrations.
+
+## 11. Acceptance criteria
 
 Project Yoda's multi-perspective assessment slice is complete when:
 
