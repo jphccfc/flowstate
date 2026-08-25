@@ -44,6 +44,19 @@
   color-scheme: dark;
 }
 
+.dashboard-card { background: var(--card); border-color: var(--card-border); color: var(--foreground); }
+.dashboard-input { background: var(--card); border: 1px solid var(--card-border); color: var(--foreground); }
+.dashboard-input::placeholder { color: var(--muted); }
+.dashboard-primary-button { background: var(--primary); color: #fff; }
+.dashboard-primary-button:hover { background: var(--primary-soft); }
+.dashboard-avatar { background: color-mix(in srgb, var(--accent-strong) 12%, transparent); }
+.dashboard-error { background: color-mix(in srgb, var(--destructive) 12%, transparent); border-color: color-mix(in srgb, var(--destructive) 35%, transparent); }
+
+:root[data-theme="dark"] .dashboard-card { background: var(--card); border-color: var(--card-border); }
+:root[data-theme="dark"] .dashboard-input { background: var(--card); border-color: var(--card-border); }
+:root[data-theme="dark"] .dashboard-primary-button { background: var(--accent-strong); }
+:root[data-theme="dark"] .dashboard-primary-button:hover { background: #0b58e0; }
+
 :root[data-theme="dark"] body { background: var(--background) !important; color: var(--foreground); }
 :root[data-theme="dark"] .bg-white { background-color: var(--card) !important; }
 :root[data-theme="dark"] .bg-green-50 { background-color: #123424 !important; }
