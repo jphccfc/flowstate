@@ -100,7 +100,7 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
         <button
           onClick={startLiveSession}
           disabled={startingSession}
-          className="text-xs font-medium px-3 py-1 rounded bg-[var(--accent)] text-white disabled:opacity-50"
+          className="text-xs font-medium px-3 py-1 rounded flowstate-accent-button text-white disabled:opacity-50"
         >
           {startingSession ? "Starting…" : "Start Live Session"}
         </button>
@@ -160,7 +160,7 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
         <button
           type="submit"
           disabled={submitting || (isFileType ? !file : !rawText.trim())}
-          className="bg-[var(--accent)] text-white text-sm font-medium px-4 py-2 rounded disabled:opacity-50"
+          className="flowstate-accent-button text-white text-sm font-medium px-4 py-2 rounded disabled:opacity-50"
         >
           {submitting ? "Submitting…" : "Capture"}
         </button>

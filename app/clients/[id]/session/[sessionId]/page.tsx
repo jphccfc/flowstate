@@ -115,7 +115,7 @@ export default function SessionPage({ params }: { params: Promise<{ id: string; 
                   <div className="flex gap-2">
                     <button
                       onClick={() => actOnSuggestion(s.id, "ask")}
-                      className="text-xs font-medium px-2 py-1 rounded bg-[var(--accent)] text-white"
+                      className="text-xs font-medium px-2 py-1 rounded flowstate-accent-button text-white"
                     >
                       Ask
                     </button>
@@ -165,7 +165,7 @@ export default function SessionPage({ params }: { params: Promise<{ id: string; 
           <button
             type="submit"
             disabled={submitting || !noteText.trim()}
-            className="bg-[var(--accent)] text-white text-sm font-medium px-4 py-2 rounded disabled:opacity-50"
+            className="flowstate-accent-button text-white text-sm font-medium px-4 py-2 rounded disabled:opacity-50"
           >
             {submitting ? "Submitting…" : "Submit note"}
           </button>

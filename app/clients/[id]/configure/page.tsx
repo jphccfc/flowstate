@@ -287,7 +287,7 @@ export default function ConfigurePage({ params }: { params: Promise<{ id: string
               </p>
               <button
                 onClick={addDefaultDomains}
-                className="px-4 py-2 bg-[var(--accent)] text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+                className="px-4 py-2 flowstate-accent-button text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
               >
                 Load Standard Domains
               </button>
