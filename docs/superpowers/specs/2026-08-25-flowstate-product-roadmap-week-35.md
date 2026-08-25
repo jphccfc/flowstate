@@ -358,7 +358,7 @@ Every new route must update the Blueprint so the process flow remains coherent.
 3. **Phase 0 hardening:** finish role/permission coverage, append-only history protections and audit events before agent customization.
 4. **Phase 4 design spike:** write and review the Flowstate Score/multiplier formula, scenario model, evidence requirements and historical snapshot model before changing Prisma.
 5. **Phase 5 authority spike:** define base-agent contracts, workspace override rules, run provenance, review queues and subscription boundaries.
-6. **Phase 6 task consolidation:** map `GrowthAction`, `FollowUpSuggestion`, evidence requests and processing jobs into a WorkItem proposal; do not implement until the map is accepted.
+6. **Phase 6 assessment-task design:** define the separate assessment-task model for evidence requests, follow-ups, reviews, sign-off and report preparation. Evolve `GrowthAction` independently as the strategic Growth Plan initiative object; do not merge these into one generic WorkItem.
 7. **Phase 7 research prototype:** create reviewed industry-factor records without wiring them into production scoring until Phase 4’s contract is approved.
 
 ## 8. Product acceptance principles
