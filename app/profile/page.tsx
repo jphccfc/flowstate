@@ -1,11 +1,21 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Navbar } from "@/components/layout/Navbar";
+
+type Profile = { email: string; name: string | null; role?: string; preferences?: Record<string, unknown> | null };
 
 export default function ProfilePage() {
-  const [profile, setProfile] = useState<{ email: string; name: string | null; role?: string; preferences?: Record<string, unknown> | null }>({ email: "", name: "", preferences: {} });
-  const [saved, setSaved] = useState(false); const [error, setError] = useState("");
+  const [profile, setProfile] = useState<Profile>({ email: "", name: "", preferences: {} });
+  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState("");
   useEffect(() => { fetch("/api/profile").then((response) => response.json()).then(setProfile).catch(() => setError("Could not load profile")); }, []);
-  async function save(event: React.FormEvent) { event.preventDefault(); setSaved(false); setError(""); const response = await fetch("/api/profile", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: profile.name, preferences: profile.preferences ?? {} }) }); const data = await response.json(); if (!response.ok) setError(data.error ?? "Could not save profile"); else { setProfile(data); setSaved(true); } }
-  return <main className="max-w-3xl mx-auto w-full px-4 py-8"><div className="workspace-eyebrow mb-2">Account</div><h1 className="workspace-heading text-3xl font-bold text-[var(--foreground)]">Profile and preferences</h1><p className="text-sm text-[var(--muted)] mt-2 mb-8">Manage your personal details. Preference controls will expand here as Flowstate adds personal workspace settings.</p><form onSubmit={save} className="workspace-card p-6 space-y-5"><label className="block text-sm text-[var(--muted)]">Name<input value={profile.name ?? ""} onChange={(e) => setProfile({ ...profile, name: e.target.value })} className="dashboard-input mt-1 w-full px-3 py-2 rounded-lg text-sm" placeholder="Your name" /></label><label className="block text-sm text-[var(--muted)]">Email<input value={profile.email} disabled className="dashboard-input mt-1 w-full px-3 py-2 rounded-lg text-sm opacity-70" /></label><div className="rounded-lg border border-[var(--card-border)] bg-[var(--muted-bg)] p-4"><h2 className="font-medium text-[var(--foreground)]">Preferences</h2><p className="text-sm text-[var(--muted)] mt-1">Theme is currently available in the workspace navigation. Notification, default workspace and assessment preferences can be added here without changing your account identity.</p></div>{error && <p className="text-sm text-[var(--destructive)]">{error}</p>}{saved && <p className="text-sm text-[var(--accent)]">Profile saved.</p>}<button className="dashboard-primary-button px-4 py-2 rounded-lg text-sm font-medium">Save details</button></form></main>;
+  async function save(event: React.FormEvent) {
+    event.preventDefault(); setSaved(false); setError("");
+    const response = await fetch("/api/profile", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: profile.name, preferences: profile.preferences ?? {} }) });
+    const data = await response.json();
+    if (!response.ok) setError(data.error ?? "Could not save profile"); else { setProfile(data); setSaved(true); }
+  }
+  return <div className="min-h-screen flex flex-col"><Navbar /><main className="flex-1 max-w-3xl mx-auto w-full px-4 py-8"><div className="mb-6"><Link href="/dashboard" className="text-sm text-[var(--accent)] hover:underline">← Back to main menu</Link></div><div className="workspace-eyebrow mb-2">Account</div><h1 className="workspace-heading text-3xl font-bold text-[var(--foreground)]">Profile and preferences</h1><p className="text-sm text-[var(--muted)] mt-2 mb-8">Manage your personal details. Preference controls will expand here as Flowstate adds personal workspace settings.</p><form onSubmit={save} className="workspace-card p-6 space-y-5"><label className="block text-sm text-[var(--muted)]">Name<input value={profile.name ?? ""} onChange={(e) => setProfile({ ...profile, name: e.target.value })} className="dashboard-input mt-1 w-full px-3 py-2 rounded-lg text-sm" placeholder="Your name" /></label><label className="block text-sm text-[var(--muted)]">Email<input value={profile.email} disabled className="dashboard-input mt-1 w-full px-3 py-2 rounded-lg text-sm opacity-70" /></label><div className="rounded-lg border border-[var(--card-border)] bg-[var(--muted-bg)] p-4"><h2 className="font-medium text-[var(--foreground)]">Preferences</h2><p className="text-sm text-[var(--muted)] mt-1">Theme is currently available in the workspace navigation. Notification, default workspace and assessment preferences can be added here without changing your account identity.</p></div>{error && <p className="text-sm text-[var(--destructive)]">{error}</p>}{saved && <p className="text-sm text-[var(--accent)]">Profile saved.</p>}<button className="dashboard-primary-button px-4 py-2 rounded-lg text-sm font-medium">Save details</button></form></main></div>;
 }
