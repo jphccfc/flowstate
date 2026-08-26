@@ -432,6 +432,7 @@ model MaturityProposal {
   missingEvidence     String[] @default([])
   conflictingEvidence String[] @default([])
   sourceEvidenceIds   String[] @default([])
+  sourcePerspectiveIds String[] @default([])
   status              String   @default("PENDING_REVIEW")
   reviewedBy          String?
   reviewNotes         String?

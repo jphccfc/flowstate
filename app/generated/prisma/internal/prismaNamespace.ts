@@ -3764,6 +3764,7 @@ export const MaturityProposalScalarFieldEnum = {
   missingEvidence: 'missingEvidence',
   conflictingEvidence: 'conflictingEvidence',
   sourceEvidenceIds: 'sourceEvidenceIds',
+  sourcePerspectiveIds: 'sourcePerspectiveIds',
   status: 'status',
   reviewedBy: 'reviewedBy',
   reviewNotes: 'reviewNotes',
