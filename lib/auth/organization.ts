@@ -17,3 +17,11 @@ export async function isOrganizationMember(
 
   return membership !== null;
 }
+
+/** Return true only when the authenticated user can view this client. */
+export async function canAccessClient(
+  email: string | null | undefined,
+  clientId: string
+): Promise<boolean> {
+  return isOrganizationMember(email, clientId);
+}

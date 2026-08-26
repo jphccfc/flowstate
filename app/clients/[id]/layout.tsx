@@ -1,8 +1,10 @@
 export const dynamic = "force-dynamic";
 
+import { createClient } from "@/lib/supabase/server";
+import { canAccessClient } from "@/lib/auth/organization";
 import { prisma } from "@/lib/db";
 import { Navbar } from "@/components/layout/Navbar";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export default async function ClientLayout({
   children,
@@ -12,6 +14,11 @@ export default async function ClientLayout({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/auth/login");
+  if (!(await canAccessClient(user.email, id))) notFound();
+
   const org = await prisma.organization.findUnique({ where: { id }, select: { name: true } });
   if (!org) notFound();
 

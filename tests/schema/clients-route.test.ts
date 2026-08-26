@@ -1,4 +1,5 @@
 import { afterAll, describe, expect, it, vi } from "vitest";
+import { canAccessClient } from "../../lib/auth/organization";
 import { cleanupOrganization, createTestOrganization, prisma } from "../helpers/db";
 
 vi.mock("@/lib/supabase/server", () => ({
@@ -86,5 +87,40 @@ describe("GET /api/clients/[id]", () => {
     expect(res.status).toBe(200);
     const updated = await res.json();
     expect(updated.engagementMotive).toBe("Liquidation");
+  });
+
+  it("rejects cross-organization client reads and updates", async () => {
+    const outsider = await prisma.organization.create({ data: { name: "Hidden Organization" } });
+    try {
+      const getRes = await getClient(new Request(`http://localhost/api/clients/${outsider.id}`) as never, {
+        params: Promise.resolve({ id: outsider.id }),
+      });
+      expect(getRes.status).toBe(403);
+      expect(await getRes.json()).toEqual({ error: "Forbidden" });
+
+      const patchRes = await patchClient(
+        new Request(`http://localhost/api/clients/${outsider.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: "Must Not Change" }),
+        }) as never,
+        { params: Promise.resolve({ id: outsider.id }) }
+      );
+      expect(patchRes.status).toBe(403);
+      expect(await prisma.organization.findUnique({ where: { id: outsider.id }, select: { name: true } })).toEqual({ name: "Hidden Organization" });
+    } finally {
+      await cleanupOrganization(outsider.id);
+    }
+  });
+  it("reports client visibility only for the authenticated user's organization", async () => {
+    const memberOrg = await createTestOrganization({ name: "Visible Organization" });
+    const outsiderOrg = await prisma.organization.create({ data: { name: "Hidden Organization" } });
+    try {
+      expect(await canAccessClient("advisor@test.com", memberOrg.id)).toBe(true);
+      expect(await canAccessClient("advisor@test.com", outsiderOrg.id)).toBe(false);
+    } finally {
+      await cleanupOrganization(memberOrg.id);
+      await cleanupOrganization(outsiderOrg.id);
+    }
   });
 });
