@@ -22,6 +22,12 @@ describe("PlanningItem contract", () => {
     expect(page).toContain("Add planning item");
     expect(page).toContain("/members");
     expect(page).toContain("member.email");
+    expect(page).toContain("editingItem");
+    expect(page).toContain("method: \"PATCH\"");
+    expect(route).toContain("data.title");
+    expect(route).toContain("data.ownerEmail");
+    expect(page).toContain("lifecycleStatus");
+    expect(page).toContain("humanApprovalState");
     expect(members).toContain("members.read");
     expect(page).toContain("No planning items yet");
   });
