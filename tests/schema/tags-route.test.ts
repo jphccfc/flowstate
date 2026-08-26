@@ -12,9 +12,11 @@ import { PATCH as patchTag } from "../../app/api/tags/[id]/route";
 
 describe("tags routes", () => {
   let orgId: string;
+  const additionalOrgIds: string[] = [];
 
   afterAll(async () => {
     if (orgId) await cleanupOrganization(orgId);
+    for (const id of additionalOrgIds) await cleanupOrganization(id);
     await prisma.$disconnect();
   });
 
@@ -93,5 +95,42 @@ describe("tags routes", () => {
     const updated = await res.json();
     expect(updated.status).toBe("REASSIGNED");
     expect(updated.targetId).toBe(capB.id);
+  });
+
+  it("denies reassigning an evidence tag to a target in another organization", async () => {
+    const org = await createTestOrganization({ name: "Tags Authorization Test Org" });
+    orgId = org.id;
+    const otherOrg = await createTestOrganization({ name: "Other Tags Authorization Org" });
+    additionalOrgIds.push(otherOrg.id);
+
+    const localDomain = await prisma.businessDomain.create({ data: { organizationId: org.id, name: "Operations" } });
+    const localCapability = await prisma.capability.create({ data: { domainId: localDomain.id, name: "Local Capability" } });
+    const foreignDomain = await prisma.businessDomain.create({ data: { organizationId: otherOrg.id, name: "Other Operations" } });
+    const foreignCapability = await prisma.capability.create({ data: { domainId: foreignDomain.id, name: "Foreign Capability" } });
+    const input = await prisma.capturedInput.create({
+      data: { organizationId: org.id, type: "TEXT_NOTE", rawText: "text", status: "TAGGED" },
+    });
+    const segment = await prisma.capturedSegment.create({
+      data: { capturedInputId: input.id, order: 0, text: "Evidence." },
+    });
+    const tag = await prisma.tag.create({
+      data: { segmentId: segment.id, targetType: "CAPABILITY", targetId: localCapability.id, confidence: 0.5, status: "PENDING_REVIEW" },
+    });
+
+    const res = await patchTag(
+      new Request("http://localhost/api/tags/" + tag.id, {
+        method: "PATCH",
+        body: JSON.stringify({ action: "reassign", targetId: foreignCapability.id }),
+      }) as never,
+      { params: Promise.resolve({ id: tag.id }) }
+    );
+
+    expect(res.status).toBe(403);
+    expect(await prisma.tag.findUniqueOrThrow({ where: { id: tag.id } })).toMatchObject({
+      targetId: localCapability.id,
+      status: "PENDING_REVIEW",
+      reviewedBy: null,
+      reviewedAt: null,
+    });
   });
 });

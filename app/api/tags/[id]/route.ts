@@ -27,11 +27,25 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
   const existingTag = await prisma.tag.findUnique({
     where: { id },
-    select: { segment: { select: { capturedInput: { select: { organizationId: true } } } } },
+    select: {
+      targetType: true,
+      segment: { select: { capturedInput: { select: { organizationId: true } } } },
+    },
   });
   if (!existingTag) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if (!(await isOrganizationMember(user.email, existingTag.segment.capturedInput.organizationId))) {
+  const organizationId = existingTag.segment.capturedInput.organizationId;
+  if (!(await isOrganizationMember(user.email, organizationId))) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  if (action === "reassign") {
+    const targetOrganizationId = await getTargetOrganizationId(existingTag.targetType, targetId!);
+    if (!targetOrganizationId) {
+      return NextResponse.json({ error: "Invalid targetId for tag type" }, { status: 400 });
+    }
+    if (targetOrganizationId !== organizationId) {
+      return NextResponse.json({ error: "Target belongs to another organization" }, { status: 403 });
+    }
   }
 
   const tag = await prisma.tag.update({
@@ -45,4 +59,31 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   });
 
   return NextResponse.json(tag);
+}
+
+
+async function getTargetOrganizationId(targetType: string, targetId: string): Promise<string | null> {
+  switch (targetType) {
+    case "DOMAIN": {
+      const target = await prisma.businessDomain.findUnique({ where: { id: targetId }, select: { organizationId: true } });
+      return target?.organizationId ?? null;
+    }
+    case "CAPABILITY": {
+      const target = await prisma.capability.findUnique({
+        where: { id: targetId },
+        select: { domain: { select: { organizationId: true } } },
+      });
+      return target?.domain.organizationId ?? null;
+    }
+    case "KPI": {
+      const target = await prisma.kPI.findUnique({ where: { id: targetId }, select: { organizationId: true } });
+      return target?.organizationId ?? null;
+    }
+    case "STAKEHOLDER": {
+      const target = await prisma.stakeholder.findUnique({ where: { id: targetId }, select: { organizationId: true } });
+      return target?.organizationId ?? null;
+    }
+    default:
+      return null;
+  }
 }
