@@ -41,6 +41,10 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   if (typeof body.planningItemId !== "string") return NextResponse.json({ error: "planningItemId is required" }, { status: 400 });
   const existing = await prisma.planningItem.findFirst({ where: { id: body.planningItemId, organizationId: id } }); if (!existing) return NextResponse.json({ error: "Planning item not found" }, { status: 404 });
   const data: Record<string, unknown> = {};
+  if (typeof body.title === "string" && body.title.trim()) data.title = body.title.trim();
+  if (typeof body.description === "string" && body.description.trim()) data.description = body.description.trim();
+  if (typeof body.ownerEmail === "string" && body.ownerEmail.trim()) { if (!(await getOrganizationMembership(body.ownerEmail.trim(), id))) return NextResponse.json({ error: "ownerEmail must belong to an organisation member" }, { status: 400 }); data.ownerEmail = body.ownerEmail.trim(); }
+  if (typeof body.targetDate === "string") { const targetDate = new Date(body.targetDate); if (Number.isNaN(targetDate.getTime())) return NextResponse.json({ error: "targetDate must be a valid date" }, { status: 400 }); data.targetDate = targetDate; }
   if (valid(body.lifecycleStatus, statuses)) data.lifecycleStatus = body.lifecycleStatus;
   if (valid(body.humanApprovalState, approvals)) { if (!(await hasOrganizationPermission(current.email, id, "assessment.review"))) return NextResponse.json({ error: "Human review permission required" }, { status: 403 }); data.humanApprovalState = body.humanApprovalState; if (body.humanApprovalState === "APPROVED") { data.approvedBy = current.email; data.approvedAt = new Date(); } }
   if (!Object.keys(data).length) return NextResponse.json({ error: "A valid update is required" }, { status: 400 });
