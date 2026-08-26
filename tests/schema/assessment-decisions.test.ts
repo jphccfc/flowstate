@@ -35,6 +35,25 @@ describe("assessment decisions", () => {
     expect(await response.json()).toMatchObject({ error: "assessment already has an approved decision; reopen it before approving again" });
   });
 
+  it("supports evidence request, sign-off, and governed approval revocation", async () => {
+    const evidence = await PATCH(request({ action: "REQUEST_EVIDENCE", rationale: "Need current operating evidence." }, "PATCH"), { params: Promise.resolve({ id: decisionId }) });
+    expect(evidence.status).toBe(200);
+    expect((await evidence.json()).status).toBe("EVIDENCE_REQUESTED");
+
+    const approved = await POST(request({ status: "APPROVED", score: 3, rationale: "Re-reviewed after evidence." }), { params: Promise.resolve({ id: capabilityId }) });
+    expect(approved.status).toBe(201);
+    const approvedBody = await approved.json();
+
+    const signoff = await PATCH(request({ action: "SIGN_OFF", rationale: "Authorised final sign-off." }, "PATCH"), { params: Promise.resolve({ id: approvedBody.id }) });
+    expect(signoff.status).toBe(200);
+    const signoffBody = await signoff.json();
+    expect(signoffBody.status).toBe("SIGNED_OFF");
+
+    const revoke = await PATCH(request({ action: "REVOKE", rationale: "Approval withdrawn pending correction." }, "PATCH"), { params: Promise.resolve({ id: signoffBody.id }) });
+    expect(revoke.status).toBe(200);
+    expect((await revoke.json()).status).toBe("REVOKED");
+  });
+
   it("records a new decision version instead of mutating the prior decision", async () => {
     const response = await PATCH(request({ action: "REOPEN", rationale: "New evidence requires review." }, "PATCH"), { params: Promise.resolve({ id: decisionId }) });
     expect(response.status).toBe(200); const body = await response.json(); expect(body.status).toBe("REOPENED"); expect(body.supersedesId).toBe(decisionId); expect(body.id).not.toBe(decisionId);
@@ -46,6 +65,6 @@ describe("assessment decisions", () => {
   });
 
   it("lists the decision history for an authorised organisation", async () => {
-    const response = await GET(new Request("http://localhost") as never, { params: Promise.resolve({ id: capabilityId }) }); expect(response.status).toBe(200); const body = await response.json(); expect(body).toHaveLength(2); expect(body.map((item: { status: string }) => item.status)).toEqual(["REOPENED", "APPROVED"]);
+    const response = await GET(new Request("http://localhost") as never, { params: Promise.resolve({ id: capabilityId }) }); expect(response.status).toBe(200); const body = await response.json(); expect(body).toHaveLength(6); expect(body.map((item: { status: string }) => item.status)).toEqual(["REOPENED", "REVOKED", "SIGNED_OFF", "APPROVED", "EVIDENCE_REQUESTED", "APPROVED"]);
   });
 });
