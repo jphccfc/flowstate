@@ -32,7 +32,7 @@ type HistoryData = {
 };
 type Perspective = { id: string; stakeholderType: string; assessorRole: string | null; score: number; originalStatement: string; rationale: string | null; confidence: number | null };
 type Proposal = { id: string; interpretation: string; suggestedScore: number | null; scoreRangeMin: number | null; scoreRangeMax: number | null; confidence: number | null; missingEvidence: string[]; conflictingEvidence: string[]; status: string; reviewNotes: string | null };
-type Decision = { id: string; status: string; score: number | null; rationale: string | null; decidedBy: string | null; decidedAt: string; supersedesId: string | null };
+type Decision = { id: string; status: string; score: number | null; rationale: string | null; decidedBy: string | null; decidedAt: string; supersedesId: string | null; canDelete?: boolean };
 type Insight = { id: string; decisionId: string; type: string; title: string; description: string; priority: number | null; sourcePerspectiveIds: string[] };
 type GrowthAction = { id: string; insightId: string; title: string; description: string; outcomeScenario: string; expectedValue: number | null; valueAssumptions: string | null; ownerEmail: string | null; dueDate: string | null; priority: number | null; status: string };
 type PerspectiveData = { perspectives: Perspective[]; summary: { count: number; minimum: number | null; maximum: number | null; spread: number | null; stakeholderTypes: string[]; materialVariance: boolean; evidenceCoverage: number; pendingReview: number; reviewState: string }; rubric: { version: number; anchors: Array<{ level: number; label: string; description: string }> } };
@@ -238,6 +238,8 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   const [proposalBusy, setProposalBusy] = useState(false);
   const [decisions, setDecisions] = useState<Decision[]>([]);
   const [decisionBusy, setDecisionBusy] = useState(false);
+  const [selectedDecisionId, setSelectedDecisionId] = useState<string | null>(null);
+  const [pendingDeleteDecisionId, setPendingDeleteDecisionId] = useState<string | null>(null);
   const [insights, setInsights] = useState<Insight[]>([]);
   const [insightBusy, setInsightBusy] = useState(false);
   const [growthActions, setGrowthActions] = useState<GrowthAction[]>([]);
@@ -395,6 +397,18 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
     const res = await fetch(`/api/capabilities/${selectedCapId}/insights`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ decisionId: decision.id, type: "MATURITY_GAP", title: "Approved capability gap", description: decision.rationale ?? "Approved assessment identifies a capability gap requiring prioritisation.", priority: 7 }) });
     if (res.ok) { const insight = await res.json(); const nextInsights = [insight, ...insights]; setInsights(nextInsights); await loadGrowthActions(nextInsights); }
     setInsightBusy(false);
+  }
+
+  async function deleteDecision(decisionId: string) {
+    setDecisionBusy(true);
+    const res = await fetch(`/api/maturity-decisions/${decisionId}`, { method: "DELETE" });
+    if (res.ok) {
+      const deleted = await res.json();
+      setDecisions((items) => [deleted, ...items.filter((item) => item.id !== decisionId)]);
+      setSelectedDecisionId(null);
+      setPendingDeleteDecisionId(null);
+    }
+    setDecisionBusy(false);
   }
 
   async function updateDecision(action: "REJECT" | "REOPEN" | "SIGN_OFF" | "REVOKE") {
@@ -613,7 +627,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
 
             {selectedCapId && <section className="workspace-card p-5 mb-4" aria-labelledby="decision-title">
               <div className="flex items-start justify-between gap-4 mb-3"><div><div className="workspace-eyebrow">Human control</div><h3 id="decision-title" className="text-sm font-semibold text-[var(--foreground)]">Assessment decision and sign-off</h3></div><span className="text-xs text-[var(--muted)]">Append-only history</span></div>
-              {decisions.length === 0 ? <p className="text-sm text-[var(--muted)]">No human decision recorded yet. AI proposals remain provisional.</p> : <div className="space-y-2">{decisions.slice(0, 3).map((decision) => <div key={decision.id} className="rounded-lg border border-[var(--card-border)] p-3 text-xs"><div className="flex items-center justify-between gap-3"><strong className="text-[var(--foreground)]">{decision.status.replaceAll("_", " ")}</strong><span className="text-[var(--muted)]">{decision.score ?? "No score"}</span></div><div className="mt-1 text-[var(--muted)]">{decision.decidedBy ?? "Unknown reviewer"} · {new Date(decision.decidedAt).toLocaleString()}</div>{decision.rationale && <p className="mt-1 text-[var(--muted)]">{decision.rationale}</p>}</div>)}</div>}
+              {decisions.length === 0 ? <p className="text-sm text-[var(--muted)]">No human decision recorded yet. AI proposals remain provisional.</p> : <div className="space-y-2">{decisions.slice(0, 3).map((decision) => <div key={decision.id} role="button" tabIndex={0} aria-pressed={selectedDecisionId === decision.id} onClick={() => setSelectedDecisionId(decision.id)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") setSelectedDecisionId(decision.id); }} className={`rounded-lg border p-3 text-xs cursor-pointer ${selectedDecisionId === decision.id ? "border-[var(--accent)] bg-[var(--muted-bg)]" : "border-[var(--card-border)]"}`}><div className="flex items-center justify-between gap-3"><strong className="text-[var(--foreground)]">{decision.status.replaceAll("_", " ")}</strong><span className="text-[var(--muted)]">{decision.score ?? "No score"}</span></div><div className="mt-1 text-[var(--muted)]">{decision.decidedBy ?? "Unknown reviewer"} · {new Date(decision.decidedAt).toLocaleString()}</div>{decision.rationale && <p className="mt-1 text-[var(--muted)]">{decision.rationale}</p>}{selectedDecisionId === decision.id && decision.canDelete && <div className="mt-3 flex flex-wrap gap-2">{pendingDeleteDecisionId === decision.id ? <><span className="text-[var(--destructive)]">Delete this decision?</span><button type="button" onClick={(event) => { event.stopPropagation(); deleteDecision(decision.id); }} disabled={decisionBusy} className="px-2 py-1 rounded border border-[var(--destructive)] text-[var(--destructive)]">Confirm delete</button><button type="button" onClick={(event) => { event.stopPropagation(); setPendingDeleteDecisionId(null); }} className="px-2 py-1 rounded border border-[var(--card-border)]">Cancel</button></> : <button type="button" onClick={(event) => { event.stopPropagation(); setPendingDeleteDecisionId(decision.id); }} className="px-2 py-1 rounded border border-[var(--card-border)] text-[var(--destructive)]">Delete my decision</button>}</div>}</div>)}</div>}
               <div className="mt-3 flex flex-wrap gap-2"><button type="button" onClick={() => createDecision("APPROVED")} disabled={decisionBusy || ["APPROVED", "SIGNED_OFF"].includes(decisions[0]?.status ?? "")} className="px-3 py-1.5 rounded-lg flowstate-success-button text-white text-xs disabled:opacity-50">{["APPROVED", "SIGNED_OFF"].includes(decisions[0]?.status ?? "") ? "Assessment already approved — Reopen to amend" : "Approve assessment"}</button><button type="button" onClick={() => createDecision("EVIDENCE_REQUESTED")} disabled={decisionBusy} className="px-3 py-1.5 rounded-lg border border-[var(--card-border)] text-xs disabled:opacity-50">Request evidence</button>{decisions[0] && <><button type="button" onClick={() => updateDecision("REOPEN")} disabled={decisionBusy} className="px-3 py-1.5 rounded-lg border border-[var(--card-border)] text-xs disabled:opacity-50">Reopen</button><button type="button" onClick={() => updateDecision("SIGN_OFF")} disabled={decisionBusy || decisions[0]?.status !== "APPROVED"} className="px-3 py-1.5 rounded-lg flowstate-accent-button text-white text-xs disabled:opacity-50">Sign off</button><button type="button" onClick={() => updateDecision("REVOKE")} disabled={decisionBusy || !["APPROVED", "SIGNED_OFF"].includes(decisions[0]?.status ?? "")} className="px-3 py-1.5 rounded-lg border border-[var(--destructive)] text-[var(--destructive)] text-xs disabled:opacity-50">Revoke approval</button></>}</div>
             </section>}
 

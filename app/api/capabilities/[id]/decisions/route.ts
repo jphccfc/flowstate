@@ -19,7 +19,8 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
   const capability = await capabilityOrganisation(id);
   if (!capability) return NextResponse.json({ error: "Capability not found" }, { status: 404 });
   if (!(await hasOrganizationPermission(user.email, capability.domain.organizationId, "assessment.review"))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  return NextResponse.json(await prisma.assessmentDecision.findMany({ where: { capabilityId: id }, orderBy: { createdAt: "desc" } }));
+  const decisions = await prisma.assessmentDecision.findMany({ where: { capabilityId: id }, orderBy: { createdAt: "desc" } });
+  return NextResponse.json(decisions.map((decision) => ({ ...decision, canDelete: decision.decidedBy === user.email })));
 }
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
