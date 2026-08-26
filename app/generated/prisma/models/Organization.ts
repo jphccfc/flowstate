@@ -219,6 +219,7 @@ export type OrganizationWhereInput = {
   recommendations?: Prisma.RecommendationListRelationFilter
   maturityRubrics?: Prisma.MaturityRubricListRelationFilter
   assessmentTasks?: Prisma.AssessmentTaskListRelationFilter
+  planningItems?: Prisma.PlanningItemListRelationFilter
 }
 
 export type OrganizationOrderByWithRelationInput = {
@@ -243,6 +244,7 @@ export type OrganizationOrderByWithRelationInput = {
   recommendations?: Prisma.RecommendationOrderByRelationAggregateInput
   maturityRubrics?: Prisma.MaturityRubricOrderByRelationAggregateInput
   assessmentTasks?: Prisma.AssessmentTaskOrderByRelationAggregateInput
+  planningItems?: Prisma.PlanningItemOrderByRelationAggregateInput
 }
 
 export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
@@ -270,6 +272,7 @@ export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
   recommendations?: Prisma.RecommendationListRelationFilter
   maturityRubrics?: Prisma.MaturityRubricListRelationFilter
   assessmentTasks?: Prisma.AssessmentTaskListRelationFilter
+  planningItems?: Prisma.PlanningItemListRelationFilter
 }, "id">
 
 export type OrganizationOrderByWithAggregationInput = {
@@ -322,6 +325,7 @@ export type OrganizationCreateInput = {
   recommendations?: Prisma.RecommendationCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateInput = {
@@ -346,6 +350,7 @@ export type OrganizationUncheckedCreateInput = {
   recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUpdateInput = {
@@ -370,6 +375,7 @@ export type OrganizationUpdateInput = {
   recommendations?: Prisma.RecommendationUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateInput = {
@@ -394,6 +400,7 @@ export type OrganizationUncheckedUpdateInput = {
   recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateManyInput = {
@@ -628,6 +635,20 @@ export type OrganizationUpdateOneWithoutMaturityRubricsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutMaturityRubricsInput, Prisma.OrganizationUpdateWithoutMaturityRubricsInput>, Prisma.OrganizationUncheckedUpdateWithoutMaturityRubricsInput>
 }
 
+export type OrganizationCreateNestedOneWithoutPlanningItemsInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutPlanningItemsInput, Prisma.OrganizationUncheckedCreateWithoutPlanningItemsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutPlanningItemsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+}
+
+export type OrganizationUpdateOneRequiredWithoutPlanningItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutPlanningItemsInput, Prisma.OrganizationUncheckedCreateWithoutPlanningItemsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutPlanningItemsInput
+  upsert?: Prisma.OrganizationUpsertWithoutPlanningItemsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutPlanningItemsInput, Prisma.OrganizationUpdateWithoutPlanningItemsInput>, Prisma.OrganizationUncheckedUpdateWithoutPlanningItemsInput>
+}
+
 export type OrganizationCreateNestedOneWithoutRecommendationsInput = {
   create?: Prisma.XOR<Prisma.OrganizationCreateWithoutRecommendationsInput, Prisma.OrganizationUncheckedCreateWithoutRecommendationsInput>
   connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutRecommendationsInput
@@ -677,6 +698,7 @@ export type OrganizationCreateWithoutUsersInput = {
   recommendations?: Prisma.RecommendationCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutUsersInput = {
@@ -700,6 +722,7 @@ export type OrganizationUncheckedCreateWithoutUsersInput = {
   recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutUsersInput = {
@@ -739,6 +762,7 @@ export type OrganizationUpdateWithoutUsersInput = {
   recommendations?: Prisma.RecommendationUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutUsersInput = {
@@ -762,6 +786,7 @@ export type OrganizationUncheckedUpdateWithoutUsersInput = {
   recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutDomainsInput = {
@@ -785,6 +810,7 @@ export type OrganizationCreateWithoutDomainsInput = {
   recommendations?: Prisma.RecommendationCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutDomainsInput = {
@@ -808,6 +834,7 @@ export type OrganizationUncheckedCreateWithoutDomainsInput = {
   recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutDomainsInput = {
@@ -847,6 +874,7 @@ export type OrganizationUpdateWithoutDomainsInput = {
   recommendations?: Prisma.RecommendationUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutDomainsInput = {
@@ -870,6 +898,7 @@ export type OrganizationUncheckedUpdateWithoutDomainsInput = {
   recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutStakeholdersInput = {
@@ -893,6 +922,7 @@ export type OrganizationCreateWithoutStakeholdersInput = {
   recommendations?: Prisma.RecommendationCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutStakeholdersInput = {
@@ -916,6 +946,7 @@ export type OrganizationUncheckedCreateWithoutStakeholdersInput = {
   recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutStakeholdersInput = {
@@ -955,6 +986,7 @@ export type OrganizationUpdateWithoutStakeholdersInput = {
   recommendations?: Prisma.RecommendationUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutStakeholdersInput = {
@@ -978,6 +1010,7 @@ export type OrganizationUncheckedUpdateWithoutStakeholdersInput = {
   recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutKpisInput = {
@@ -1001,6 +1034,7 @@ export type OrganizationCreateWithoutKpisInput = {
   recommendations?: Prisma.RecommendationCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutKpisInput = {
@@ -1024,6 +1058,7 @@ export type OrganizationUncheckedCreateWithoutKpisInput = {
   recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutKpisInput = {
@@ -1063,6 +1098,7 @@ export type OrganizationUpdateWithoutKpisInput = {
   recommendations?: Prisma.RecommendationUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutKpisInput = {
@@ -1086,6 +1122,7 @@ export type OrganizationUncheckedUpdateWithoutKpisInput = {
   recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutProcessesInput = {
@@ -1109,6 +1146,7 @@ export type OrganizationCreateWithoutProcessesInput = {
   recommendations?: Prisma.RecommendationCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutProcessesInput = {
@@ -1132,6 +1170,7 @@ export type OrganizationUncheckedCreateWithoutProcessesInput = {
   recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutProcessesInput = {
@@ -1171,6 +1210,7 @@ export type OrganizationUpdateWithoutProcessesInput = {
   recommendations?: Prisma.RecommendationUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutProcessesInput = {
@@ -1194,6 +1234,7 @@ export type OrganizationUncheckedUpdateWithoutProcessesInput = {
   recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutTechnologiesInput = {
@@ -1217,6 +1258,7 @@ export type OrganizationCreateWithoutTechnologiesInput = {
   recommendations?: Prisma.RecommendationCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutTechnologiesInput = {
@@ -1240,6 +1282,7 @@ export type OrganizationUncheckedCreateWithoutTechnologiesInput = {
   recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutTechnologiesInput = {
@@ -1279,6 +1322,7 @@ export type OrganizationUpdateWithoutTechnologiesInput = {
   recommendations?: Prisma.RecommendationUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutTechnologiesInput = {
@@ -1302,6 +1346,7 @@ export type OrganizationUncheckedUpdateWithoutTechnologiesInput = {
   recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutProjectsInput = {
@@ -1325,6 +1370,7 @@ export type OrganizationCreateWithoutProjectsInput = {
   recommendations?: Prisma.RecommendationCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutProjectsInput = {
@@ -1348,6 +1394,7 @@ export type OrganizationUncheckedCreateWithoutProjectsInput = {
   recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutProjectsInput = {
@@ -1387,6 +1434,7 @@ export type OrganizationUpdateWithoutProjectsInput = {
   recommendations?: Prisma.RecommendationUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutProjectsInput = {
@@ -1410,6 +1458,7 @@ export type OrganizationUncheckedUpdateWithoutProjectsInput = {
   recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutAchievementsInput = {
@@ -1433,6 +1482,7 @@ export type OrganizationCreateWithoutAchievementsInput = {
   recommendations?: Prisma.RecommendationCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutAchievementsInput = {
@@ -1456,6 +1506,7 @@ export type OrganizationUncheckedCreateWithoutAchievementsInput = {
   recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutAchievementsInput = {
@@ -1495,6 +1546,7 @@ export type OrganizationUpdateWithoutAchievementsInput = {
   recommendations?: Prisma.RecommendationUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutAchievementsInput = {
@@ -1518,6 +1570,7 @@ export type OrganizationUncheckedUpdateWithoutAchievementsInput = {
   recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutSessionsInput = {
@@ -1541,6 +1594,7 @@ export type OrganizationCreateWithoutSessionsInput = {
   recommendations?: Prisma.RecommendationCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutSessionsInput = {
@@ -1564,6 +1618,7 @@ export type OrganizationUncheckedCreateWithoutSessionsInput = {
   recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutSessionsInput = {
@@ -1603,6 +1658,7 @@ export type OrganizationUpdateWithoutSessionsInput = {
   recommendations?: Prisma.RecommendationUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutSessionsInput = {
@@ -1626,6 +1682,7 @@ export type OrganizationUncheckedUpdateWithoutSessionsInput = {
   recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutCapturedInputsInput = {
@@ -1649,6 +1706,7 @@ export type OrganizationCreateWithoutCapturedInputsInput = {
   recommendations?: Prisma.RecommendationCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutCapturedInputsInput = {
@@ -1672,6 +1730,7 @@ export type OrganizationUncheckedCreateWithoutCapturedInputsInput = {
   recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutCapturedInputsInput = {
@@ -1711,6 +1770,7 @@ export type OrganizationUpdateWithoutCapturedInputsInput = {
   recommendations?: Prisma.RecommendationUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutCapturedInputsInput = {
@@ -1734,6 +1794,7 @@ export type OrganizationUncheckedUpdateWithoutCapturedInputsInput = {
   recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutMaturityRubricsInput = {
@@ -1757,6 +1818,7 @@ export type OrganizationCreateWithoutMaturityRubricsInput = {
   capturedInputs?: Prisma.CapturedInputCreateNestedManyWithoutOrganizationInput
   recommendations?: Prisma.RecommendationCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutMaturityRubricsInput = {
@@ -1780,6 +1842,7 @@ export type OrganizationUncheckedCreateWithoutMaturityRubricsInput = {
   capturedInputs?: Prisma.CapturedInputUncheckedCreateNestedManyWithoutOrganizationInput
   recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutMaturityRubricsInput = {
@@ -1819,6 +1882,7 @@ export type OrganizationUpdateWithoutMaturityRubricsInput = {
   capturedInputs?: Prisma.CapturedInputUpdateManyWithoutOrganizationNestedInput
   recommendations?: Prisma.RecommendationUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutMaturityRubricsInput = {
@@ -1841,6 +1905,119 @@ export type OrganizationUncheckedUpdateWithoutMaturityRubricsInput = {
   sessions?: Prisma.AssessmentSessionUncheckedUpdateManyWithoutOrganizationNestedInput
   capturedInputs?: Prisma.CapturedInputUncheckedUpdateManyWithoutOrganizationNestedInput
   recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutOrganizationNestedInput
+  assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutPlanningItemsInput = {
+  id?: string
+  name: string
+  industry?: string | null
+  size?: string | null
+  notes?: string | null
+  engagementMotive?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserOrganizationCreateNestedManyWithoutOrganizationInput
+  domains?: Prisma.BusinessDomainCreateNestedManyWithoutOrganizationInput
+  stakeholders?: Prisma.StakeholderCreateNestedManyWithoutOrganizationInput
+  kpis?: Prisma.KPICreateNestedManyWithoutOrganizationInput
+  achievements?: Prisma.AchievementCreateNestedManyWithoutOrganizationInput
+  technologies?: Prisma.TechnologyCreateNestedManyWithoutOrganizationInput
+  processes?: Prisma.ProcessCreateNestedManyWithoutOrganizationInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutOrganizationInput
+  sessions?: Prisma.AssessmentSessionCreateNestedManyWithoutOrganizationInput
+  capturedInputs?: Prisma.CapturedInputCreateNestedManyWithoutOrganizationInput
+  recommendations?: Prisma.RecommendationCreateNestedManyWithoutOrganizationInput
+  maturityRubrics?: Prisma.MaturityRubricCreateNestedManyWithoutOrganizationInput
+  assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutPlanningItemsInput = {
+  id?: string
+  name: string
+  industry?: string | null
+  size?: string | null
+  notes?: string | null
+  engagementMotive?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
+  domains?: Prisma.BusinessDomainUncheckedCreateNestedManyWithoutOrganizationInput
+  stakeholders?: Prisma.StakeholderUncheckedCreateNestedManyWithoutOrganizationInput
+  kpis?: Prisma.KPIUncheckedCreateNestedManyWithoutOrganizationInput
+  achievements?: Prisma.AchievementUncheckedCreateNestedManyWithoutOrganizationInput
+  technologies?: Prisma.TechnologyUncheckedCreateNestedManyWithoutOrganizationInput
+  processes?: Prisma.ProcessUncheckedCreateNestedManyWithoutOrganizationInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutOrganizationInput
+  sessions?: Prisma.AssessmentSessionUncheckedCreateNestedManyWithoutOrganizationInput
+  capturedInputs?: Prisma.CapturedInputUncheckedCreateNestedManyWithoutOrganizationInput
+  recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutOrganizationInput
+  maturityRubrics?: Prisma.MaturityRubricUncheckedCreateNestedManyWithoutOrganizationInput
+  assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutPlanningItemsInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutPlanningItemsInput, Prisma.OrganizationUncheckedCreateWithoutPlanningItemsInput>
+}
+
+export type OrganizationUpsertWithoutPlanningItemsInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutPlanningItemsInput, Prisma.OrganizationUncheckedUpdateWithoutPlanningItemsInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutPlanningItemsInput, Prisma.OrganizationUncheckedCreateWithoutPlanningItemsInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutPlanningItemsInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutPlanningItemsInput, Prisma.OrganizationUncheckedUpdateWithoutPlanningItemsInput>
+}
+
+export type OrganizationUpdateWithoutPlanningItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserOrganizationUpdateManyWithoutOrganizationNestedInput
+  domains?: Prisma.BusinessDomainUpdateManyWithoutOrganizationNestedInput
+  stakeholders?: Prisma.StakeholderUpdateManyWithoutOrganizationNestedInput
+  kpis?: Prisma.KPIUpdateManyWithoutOrganizationNestedInput
+  achievements?: Prisma.AchievementUpdateManyWithoutOrganizationNestedInput
+  technologies?: Prisma.TechnologyUpdateManyWithoutOrganizationNestedInput
+  processes?: Prisma.ProcessUpdateManyWithoutOrganizationNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutOrganizationNestedInput
+  sessions?: Prisma.AssessmentSessionUpdateManyWithoutOrganizationNestedInput
+  capturedInputs?: Prisma.CapturedInputUpdateManyWithoutOrganizationNestedInput
+  recommendations?: Prisma.RecommendationUpdateManyWithoutOrganizationNestedInput
+  maturityRubrics?: Prisma.MaturityRubricUpdateManyWithoutOrganizationNestedInput
+  assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutPlanningItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
+  domains?: Prisma.BusinessDomainUncheckedUpdateManyWithoutOrganizationNestedInput
+  stakeholders?: Prisma.StakeholderUncheckedUpdateManyWithoutOrganizationNestedInput
+  kpis?: Prisma.KPIUncheckedUpdateManyWithoutOrganizationNestedInput
+  achievements?: Prisma.AchievementUncheckedUpdateManyWithoutOrganizationNestedInput
+  technologies?: Prisma.TechnologyUncheckedUpdateManyWithoutOrganizationNestedInput
+  processes?: Prisma.ProcessUncheckedUpdateManyWithoutOrganizationNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutOrganizationNestedInput
+  sessions?: Prisma.AssessmentSessionUncheckedUpdateManyWithoutOrganizationNestedInput
+  capturedInputs?: Prisma.CapturedInputUncheckedUpdateManyWithoutOrganizationNestedInput
+  recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutOrganizationNestedInput
+  maturityRubrics?: Prisma.MaturityRubricUncheckedUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
@@ -1865,6 +2042,7 @@ export type OrganizationCreateWithoutRecommendationsInput = {
   capturedInputs?: Prisma.CapturedInputCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutRecommendationsInput = {
@@ -1888,6 +2066,7 @@ export type OrganizationUncheckedCreateWithoutRecommendationsInput = {
   capturedInputs?: Prisma.CapturedInputUncheckedCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedCreateNestedManyWithoutOrganizationInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutRecommendationsInput = {
@@ -1927,6 +2106,7 @@ export type OrganizationUpdateWithoutRecommendationsInput = {
   capturedInputs?: Prisma.CapturedInputUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutRecommendationsInput = {
@@ -1950,6 +2130,7 @@ export type OrganizationUncheckedUpdateWithoutRecommendationsInput = {
   capturedInputs?: Prisma.CapturedInputUncheckedUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedUpdateManyWithoutOrganizationNestedInput
   assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutAssessmentTasksInput = {
@@ -1973,6 +2154,7 @@ export type OrganizationCreateWithoutAssessmentTasksInput = {
   capturedInputs?: Prisma.CapturedInputCreateNestedManyWithoutOrganizationInput
   recommendations?: Prisma.RecommendationCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutAssessmentTasksInput = {
@@ -1996,6 +2178,7 @@ export type OrganizationUncheckedCreateWithoutAssessmentTasksInput = {
   capturedInputs?: Prisma.CapturedInputUncheckedCreateNestedManyWithoutOrganizationInput
   recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutOrganizationInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutAssessmentTasksInput = {
@@ -2035,6 +2218,7 @@ export type OrganizationUpdateWithoutAssessmentTasksInput = {
   capturedInputs?: Prisma.CapturedInputUpdateManyWithoutOrganizationNestedInput
   recommendations?: Prisma.RecommendationUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutAssessmentTasksInput = {
@@ -2058,6 +2242,7 @@ export type OrganizationUncheckedUpdateWithoutAssessmentTasksInput = {
   capturedInputs?: Prisma.CapturedInputUncheckedUpdateManyWithoutOrganizationNestedInput
   recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 
@@ -2079,6 +2264,7 @@ export type OrganizationCountOutputType = {
   recommendations: number
   maturityRubrics: number
   assessmentTasks: number
+  planningItems: number
 }
 
 export type OrganizationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2095,6 +2281,7 @@ export type OrganizationCountOutputTypeSelect<ExtArgs extends runtime.Types.Exte
   recommendations?: boolean | OrganizationCountOutputTypeCountRecommendationsArgs
   maturityRubrics?: boolean | OrganizationCountOutputTypeCountMaturityRubricsArgs
   assessmentTasks?: boolean | OrganizationCountOutputTypeCountAssessmentTasksArgs
+  planningItems?: boolean | OrganizationCountOutputTypeCountPlanningItemsArgs
 }
 
 /**
@@ -2198,6 +2385,13 @@ export type OrganizationCountOutputTypeCountAssessmentTasksArgs<ExtArgs extends 
   where?: Prisma.AssessmentTaskWhereInput
 }
 
+/**
+ * OrganizationCountOutputType without action
+ */
+export type OrganizationCountOutputTypeCountPlanningItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PlanningItemWhereInput
+}
+
 
 export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2221,6 +2415,7 @@ export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   recommendations?: boolean | Prisma.Organization$recommendationsArgs<ExtArgs>
   maturityRubrics?: boolean | Prisma.Organization$maturityRubricsArgs<ExtArgs>
   assessmentTasks?: boolean | Prisma.Organization$assessmentTasksArgs<ExtArgs>
+  planningItems?: boolean | Prisma.Organization$planningItemsArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["organization"]>
 
@@ -2272,6 +2467,7 @@ export type OrganizationInclude<ExtArgs extends runtime.Types.Extensions.Interna
   recommendations?: boolean | Prisma.Organization$recommendationsArgs<ExtArgs>
   maturityRubrics?: boolean | Prisma.Organization$maturityRubricsArgs<ExtArgs>
   assessmentTasks?: boolean | Prisma.Organization$assessmentTasksArgs<ExtArgs>
+  planningItems?: boolean | Prisma.Organization$planningItemsArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type OrganizationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2293,6 +2489,7 @@ export type $OrganizationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     recommendations: Prisma.$RecommendationPayload<ExtArgs>[]
     maturityRubrics: Prisma.$MaturityRubricPayload<ExtArgs>[]
     assessmentTasks: Prisma.$AssessmentTaskPayload<ExtArgs>[]
+    planningItems: Prisma.$PlanningItemPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2710,6 +2907,7 @@ export interface Prisma__OrganizationClient<T, Null = never, ExtArgs extends run
   recommendations<T extends Prisma.Organization$recommendationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$recommendationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecommendationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   maturityRubrics<T extends Prisma.Organization$maturityRubricsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$maturityRubricsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaturityRubricPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assessmentTasks<T extends Prisma.Organization$assessmentTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$assessmentTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  planningItems<T extends Prisma.Organization$planningItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$planningItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlanningItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3449,6 +3647,30 @@ export type Organization$assessmentTasksArgs<ExtArgs extends runtime.Types.Exten
   take?: number
   skip?: number
   distinct?: Prisma.AssessmentTaskScalarFieldEnum | Prisma.AssessmentTaskScalarFieldEnum[]
+}
+
+/**
+ * Organization.planningItems
+ */
+export type Organization$planningItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PlanningItem
+   */
+  select?: Prisma.PlanningItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PlanningItem
+   */
+  omit?: Prisma.PlanningItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PlanningItemInclude<ExtArgs> | null
+  where?: Prisma.PlanningItemWhereInput
+  orderBy?: Prisma.PlanningItemOrderByWithRelationInput | Prisma.PlanningItemOrderByWithRelationInput[]
+  cursor?: Prisma.PlanningItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PlanningItemScalarFieldEnum | Prisma.PlanningItemScalarFieldEnum[]
 }
 
 /**

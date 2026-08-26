@@ -29,6 +29,8 @@ model User {
   requestedAssessmentTasks AssessmentTask[] @relation("TaskRequester")
   assignedAssessmentTasks AssessmentTask[] @relation("TaskAssignee")
   completedAssessmentTasks AssessmentTask[] @relation("TaskCompleter")
+  createdPlanningItems PlanningItem[] @relation("PlanningItemCreator")
+  approvedPlanningItems PlanningItem[] @relation("PlanningItemApprover")
 }
 
 model Organization {
@@ -54,6 +56,7 @@ model Organization {
   recommendations Recommendation[]
   maturityRubrics MaturityRubric[]
   assessmentTasks AssessmentTask[]
+  planningItems PlanningItem[]
 }
 
 model UserOrganization {
@@ -494,6 +497,7 @@ model ApprovedInsight {
   capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
   decision   AssessmentDecision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
   growthActions GrowthAction[]
+  planningItems PlanningItem[]
 
   @@index([capabilityId, createdAt])
   @@index([decisionId])
@@ -520,6 +524,59 @@ model GrowthAction {
 
   @@index([insightId, status])
   @@index([ownerEmail, status])
+}
+
+
+enum PlanningItemType {
+  REQUIREMENT
+  SPECIFICATION
+  GOAL
+  OBJECTIVE
+}
+
+enum PlanningItemLifecycleStatus {
+  DRAFT
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum PlanningItemApprovalState {
+  NOT_REQUIRED
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model PlanningItem {
+  id                  String                    @id @default(cuid())
+  organizationId      String
+  type                PlanningItemType
+  title               String
+  description         String
+  ownerEmail          String?
+  targetDate          DateTime?
+  lifecycleStatus     PlanningItemLifecycleStatus @default(DRAFT)
+  humanApprovalState  PlanningItemApprovalState @default(NOT_REQUIRED)
+  createdBy           String?
+  approvedBy          String?
+  createdAt           DateTime                  @default(now())
+  approvedAt          DateTime?
+  updatedAt           DateTime                  @updatedAt
+  parentId            String?
+  approvedInsightId   String?
+
+  organization        Organization              @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  creator             User?                     @relation("PlanningItemCreator", fields: [createdBy], references: [email], onDelete: SetNull)
+  approver            User?                     @relation("PlanningItemApprover", fields: [approvedBy], references: [email], onDelete: SetNull)
+  parent              PlanningItem?             @relation("PlanningItemHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children            PlanningItem[]            @relation("PlanningItemHierarchy")
+  approvedInsight     ApprovedInsight?          @relation(fields: [approvedInsightId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, type, lifecycleStatus])
+  @@index([organizationId, targetDate])
+  @@index([parentId])
+  @@index([approvedInsightId])
 }
 
 model TargetMaturity {

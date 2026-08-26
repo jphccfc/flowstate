@@ -412,6 +412,7 @@ export const ModelName = {
   AssessmentDecision: 'AssessmentDecision',
   ApprovedInsight: 'ApprovedInsight',
   GrowthAction: 'GrowthAction',
+  PlanningItem: 'PlanningItem',
   TargetMaturity: 'TargetMaturity',
   CapabilityKPIMaturityCeiling: 'CapabilityKPIMaturityCeiling',
   Dependency: 'Dependency',
@@ -436,7 +437,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "growthAction" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob" | "assessmentTask"
+    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "growthAction" | "planningItem" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob" | "assessmentTask"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2512,6 +2513,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PlanningItem: {
+      payload: Prisma.$PlanningItemPayload<ExtArgs>
+      fields: Prisma.PlanningItemFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PlanningItemFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningItemPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PlanningItemFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningItemPayload>
+        }
+        findFirst: {
+          args: Prisma.PlanningItemFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningItemPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PlanningItemFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningItemPayload>
+        }
+        findMany: {
+          args: Prisma.PlanningItemFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningItemPayload>[]
+        }
+        create: {
+          args: Prisma.PlanningItemCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningItemPayload>
+        }
+        createMany: {
+          args: Prisma.PlanningItemCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PlanningItemCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningItemPayload>[]
+        }
+        delete: {
+          args: Prisma.PlanningItemDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningItemPayload>
+        }
+        update: {
+          args: Prisma.PlanningItemUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningItemPayload>
+        }
+        deleteMany: {
+          args: Prisma.PlanningItemDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PlanningItemUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PlanningItemUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningItemPayload>[]
+        }
+        upsert: {
+          args: Prisma.PlanningItemUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanningItemPayload>
+        }
+        aggregate: {
+          args: Prisma.PlanningItemAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePlanningItem>
+        }
+        groupBy: {
+          args: Prisma.PlanningItemGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PlanningItemGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PlanningItemCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PlanningItemCountAggregateOutputType> | number
+        }
+      }
+    }
     TargetMaturity: {
       payload: Prisma.$TargetMaturityPayload<ExtArgs>
       fields: Prisma.TargetMaturityFieldRefs
@@ -3624,6 +3699,28 @@ export const GrowthActionScalarFieldEnum = {
 export type GrowthActionScalarFieldEnum = (typeof GrowthActionScalarFieldEnum)[keyof typeof GrowthActionScalarFieldEnum]
 
 
+export const PlanningItemScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  type: 'type',
+  title: 'title',
+  description: 'description',
+  ownerEmail: 'ownerEmail',
+  targetDate: 'targetDate',
+  lifecycleStatus: 'lifecycleStatus',
+  humanApprovalState: 'humanApprovalState',
+  createdBy: 'createdBy',
+  approvedBy: 'approvedBy',
+  createdAt: 'createdAt',
+  approvedAt: 'approvedAt',
+  updatedAt: 'updatedAt',
+  parentId: 'parentId',
+  approvedInsightId: 'approvedInsightId'
+} as const
+
+export type PlanningItemScalarFieldEnum = (typeof PlanningItemScalarFieldEnum)[keyof typeof PlanningItemScalarFieldEnum]
+
+
 export const TargetMaturityScalarFieldEnum = {
   id: 'id',
   capabilityId: 'capabilityId',
@@ -3974,6 +4071,48 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
+ * Reference to a field of type 'PlanningItemType'
+ */
+export type EnumPlanningItemTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanningItemType'>
+
+
+
+/**
+ * Reference to a field of type 'PlanningItemType[]'
+ */
+export type ListEnumPlanningItemTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanningItemType[]'>
+
+
+
+/**
+ * Reference to a field of type 'PlanningItemLifecycleStatus'
+ */
+export type EnumPlanningItemLifecycleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanningItemLifecycleStatus'>
+
+
+
+/**
+ * Reference to a field of type 'PlanningItemLifecycleStatus[]'
+ */
+export type ListEnumPlanningItemLifecycleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanningItemLifecycleStatus[]'>
+
+
+
+/**
+ * Reference to a field of type 'PlanningItemApprovalState'
+ */
+export type EnumPlanningItemApprovalStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanningItemApprovalState'>
+
+
+
+/**
+ * Reference to a field of type 'PlanningItemApprovalState[]'
+ */
+export type ListEnumPlanningItemApprovalStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanningItemApprovalState[]'>
+
+
+
+/**
  * Reference to a field of type 'DependencyType'
  */
 export type EnumDependencyTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DependencyType'>
@@ -4222,6 +4361,7 @@ export type GlobalOmitConfig = {
   assessmentDecision?: Prisma.AssessmentDecisionOmit
   approvedInsight?: Prisma.ApprovedInsightOmit
   growthAction?: Prisma.GrowthActionOmit
+  planningItem?: Prisma.PlanningItemOmit
   targetMaturity?: Prisma.TargetMaturityOmit
   capabilityKPIMaturityCeiling?: Prisma.CapabilityKPIMaturityCeilingOmit
   dependency?: Prisma.DependencyOmit

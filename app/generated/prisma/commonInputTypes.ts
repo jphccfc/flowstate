@@ -443,6 +443,57 @@ export type BoolWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedBoolFilter<$PrismaModel>
 }
 
+export type EnumPlanningItemTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanningItemType | Prisma.EnumPlanningItemTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanningItemType[] | Prisma.ListEnumPlanningItemTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanningItemType[] | Prisma.ListEnumPlanningItemTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanningItemTypeFilter<$PrismaModel> | $Enums.PlanningItemType
+}
+
+export type EnumPlanningItemLifecycleStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanningItemLifecycleStatus | Prisma.EnumPlanningItemLifecycleStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanningItemLifecycleStatus[] | Prisma.ListEnumPlanningItemLifecycleStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanningItemLifecycleStatus[] | Prisma.ListEnumPlanningItemLifecycleStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanningItemLifecycleStatusFilter<$PrismaModel> | $Enums.PlanningItemLifecycleStatus
+}
+
+export type EnumPlanningItemApprovalStateFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanningItemApprovalState | Prisma.EnumPlanningItemApprovalStateFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanningItemApprovalState[] | Prisma.ListEnumPlanningItemApprovalStateFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanningItemApprovalState[] | Prisma.ListEnumPlanningItemApprovalStateFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanningItemApprovalStateFilter<$PrismaModel> | $Enums.PlanningItemApprovalState
+}
+
+export type EnumPlanningItemTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanningItemType | Prisma.EnumPlanningItemTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanningItemType[] | Prisma.ListEnumPlanningItemTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanningItemType[] | Prisma.ListEnumPlanningItemTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanningItemTypeWithAggregatesFilter<$PrismaModel> | $Enums.PlanningItemType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPlanningItemTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPlanningItemTypeFilter<$PrismaModel>
+}
+
+export type EnumPlanningItemLifecycleStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanningItemLifecycleStatus | Prisma.EnumPlanningItemLifecycleStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanningItemLifecycleStatus[] | Prisma.ListEnumPlanningItemLifecycleStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanningItemLifecycleStatus[] | Prisma.ListEnumPlanningItemLifecycleStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanningItemLifecycleStatusWithAggregatesFilter<$PrismaModel> | $Enums.PlanningItemLifecycleStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPlanningItemLifecycleStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPlanningItemLifecycleStatusFilter<$PrismaModel>
+}
+
+export type EnumPlanningItemApprovalStateWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanningItemApprovalState | Prisma.EnumPlanningItemApprovalStateFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanningItemApprovalState[] | Prisma.ListEnumPlanningItemApprovalStateFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanningItemApprovalState[] | Prisma.ListEnumPlanningItemApprovalStateFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanningItemApprovalStateWithAggregatesFilter<$PrismaModel> | $Enums.PlanningItemApprovalState
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPlanningItemApprovalStateFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPlanningItemApprovalStateFilter<$PrismaModel>
+}
+
 export type EnumDependencyTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.DependencyType | Prisma.EnumDependencyTypeFieldRefInput<$PrismaModel>
   in?: $Enums.DependencyType[] | Prisma.ListEnumDependencyTypeFieldRefInput<$PrismaModel>
@@ -943,6 +994,57 @@ export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedBoolFilter<$PrismaModel>
   _max?: Prisma.NestedBoolFilter<$PrismaModel>
+}
+
+export type NestedEnumPlanningItemTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanningItemType | Prisma.EnumPlanningItemTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanningItemType[] | Prisma.ListEnumPlanningItemTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanningItemType[] | Prisma.ListEnumPlanningItemTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanningItemTypeFilter<$PrismaModel> | $Enums.PlanningItemType
+}
+
+export type NestedEnumPlanningItemLifecycleStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanningItemLifecycleStatus | Prisma.EnumPlanningItemLifecycleStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanningItemLifecycleStatus[] | Prisma.ListEnumPlanningItemLifecycleStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanningItemLifecycleStatus[] | Prisma.ListEnumPlanningItemLifecycleStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanningItemLifecycleStatusFilter<$PrismaModel> | $Enums.PlanningItemLifecycleStatus
+}
+
+export type NestedEnumPlanningItemApprovalStateFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanningItemApprovalState | Prisma.EnumPlanningItemApprovalStateFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanningItemApprovalState[] | Prisma.ListEnumPlanningItemApprovalStateFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanningItemApprovalState[] | Prisma.ListEnumPlanningItemApprovalStateFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanningItemApprovalStateFilter<$PrismaModel> | $Enums.PlanningItemApprovalState
+}
+
+export type NestedEnumPlanningItemTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanningItemType | Prisma.EnumPlanningItemTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanningItemType[] | Prisma.ListEnumPlanningItemTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanningItemType[] | Prisma.ListEnumPlanningItemTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanningItemTypeWithAggregatesFilter<$PrismaModel> | $Enums.PlanningItemType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPlanningItemTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPlanningItemTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumPlanningItemLifecycleStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanningItemLifecycleStatus | Prisma.EnumPlanningItemLifecycleStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanningItemLifecycleStatus[] | Prisma.ListEnumPlanningItemLifecycleStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanningItemLifecycleStatus[] | Prisma.ListEnumPlanningItemLifecycleStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanningItemLifecycleStatusWithAggregatesFilter<$PrismaModel> | $Enums.PlanningItemLifecycleStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPlanningItemLifecycleStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPlanningItemLifecycleStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumPlanningItemApprovalStateWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlanningItemApprovalState | Prisma.EnumPlanningItemApprovalStateFieldRefInput<$PrismaModel>
+  in?: $Enums.PlanningItemApprovalState[] | Prisma.ListEnumPlanningItemApprovalStateFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlanningItemApprovalState[] | Prisma.ListEnumPlanningItemApprovalStateFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlanningItemApprovalStateWithAggregatesFilter<$PrismaModel> | $Enums.PlanningItemApprovalState
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPlanningItemApprovalStateFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPlanningItemApprovalStateFilter<$PrismaModel>
 }
 
 export type NestedEnumDependencyTypeFilter<$PrismaModel = never> = {

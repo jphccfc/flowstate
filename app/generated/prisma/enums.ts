@@ -65,6 +65,36 @@ export const TagStatus = {
 export type TagStatus = (typeof TagStatus)[keyof typeof TagStatus]
 
 
+export const PlanningItemType = {
+  REQUIREMENT: 'REQUIREMENT',
+  SPECIFICATION: 'SPECIFICATION',
+  GOAL: 'GOAL',
+  OBJECTIVE: 'OBJECTIVE'
+} as const
+
+export type PlanningItemType = (typeof PlanningItemType)[keyof typeof PlanningItemType]
+
+
+export const PlanningItemLifecycleStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type PlanningItemLifecycleStatus = (typeof PlanningItemLifecycleStatus)[keyof typeof PlanningItemLifecycleStatus]
+
+
+export const PlanningItemApprovalState = {
+  NOT_REQUIRED: 'NOT_REQUIRED',
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type PlanningItemApprovalState = (typeof PlanningItemApprovalState)[keyof typeof PlanningItemApprovalState]
+
+
 export const DependencyType = {
   CAPABILITY_TO_KPI: 'CAPABILITY_TO_KPI',
   KPI_TO_KPI: 'KPI_TO_KPI',

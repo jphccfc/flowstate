@@ -79,6 +79,7 @@ export const ModelName = {
   AssessmentDecision: 'AssessmentDecision',
   ApprovedInsight: 'ApprovedInsight',
   GrowthAction: 'GrowthAction',
+  PlanningItem: 'PlanningItem',
   TargetMaturity: 'TargetMaturity',
   CapabilityKPIMaturityCeiling: 'CapabilityKPIMaturityCeiling',
   Dependency: 'Dependency',
@@ -511,6 +512,28 @@ export const GrowthActionScalarFieldEnum = {
 } as const
 
 export type GrowthActionScalarFieldEnum = (typeof GrowthActionScalarFieldEnum)[keyof typeof GrowthActionScalarFieldEnum]
+
+
+export const PlanningItemScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  type: 'type',
+  title: 'title',
+  description: 'description',
+  ownerEmail: 'ownerEmail',
+  targetDate: 'targetDate',
+  lifecycleStatus: 'lifecycleStatus',
+  humanApprovalState: 'humanApprovalState',
+  createdBy: 'createdBy',
+  approvedBy: 'approvedBy',
+  createdAt: 'createdAt',
+  approvedAt: 'approvedAt',
+  updatedAt: 'updatedAt',
+  parentId: 'parentId',
+  approvedInsightId: 'approvedInsightId'
+} as const
+
+export type PlanningItemScalarFieldEnum = (typeof PlanningItemScalarFieldEnum)[keyof typeof PlanningItemScalarFieldEnum]
 
 
 export const TargetMaturityScalarFieldEnum = {
