@@ -32,9 +32,21 @@ describe("workspace responsive and theme contracts", () => {
     expect(overview).toContain("Strategic initiatives to improve the business outcome");
   });
 
-  it("shows the Flowstate process on the workspace overview", () => {
-    expect(overview).toContain("Evidence → Assessment → Decision → Growth Plan → Outcome");
+  it("shows planning items in the Flowstate process on the workspace overview", () => {
+    expect(overview).toContain("Evidence → Assessment → Decision → Planning Items → Growth Plan → Outcome");
+    expect(overview).toContain("Planning items");
     expect(overview).toContain("Profit / sale / liquidation");
+  });
+
+  it("keeps planning controls aligned with assessment task controls and uses proper-case types", () => {
+    const planning = readFileSync(resolve(process.cwd(), "app/clients/[id]/planning/page.tsx"), "utf8");
+    expect(planning).toContain('className="dashboard-primary-button px-4 py-2 rounded-lg text-sm font-medium"');
+    expect(planning).toContain('className="flex flex-wrap items-start justify-between gap-4 mb-8"');
+    expect(planning).toContain("Requirement");
+    expect(planning).toContain("Specification");
+    expect(planning).toContain("Goal");
+    expect(planning).toContain("Objective");
+    expect(planning).not.toContain('<option key={type}>{type}</option>');
   });
 
   it("avoids a persisted-theme hydration mismatch", () => {
