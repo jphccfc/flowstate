@@ -1,4 +1,5 @@
 import { afterAll, describe, expect, it, vi } from "vitest";
+import { canAccessClient } from "../../lib/auth/organization";
 import { cleanupOrganization, createTestOrganization, prisma } from "../helpers/db";
 
 vi.mock("@/lib/supabase/server", () => ({
@@ -86,6 +87,29 @@ describe("GET /api/clients/[id]", () => {
     expect(res.status).toBe(200);
     const updated = await res.json();
     expect(updated.engagementMotive).toBe("Liquidation");
+  });
+
+  it("allows an assigned user and rejects an unassigned organization", async () => {
+    const assigned = await createTestOrganization({ name: "Assigned Client Visibility Org" });
+    const unassigned = await prisma.organization.create({ data: { name: "Unassigned Client Visibility Org" } });
+    const otherOrg = await prisma.organization.create({ data: { name: "Other User Organization" } });
+    const otherUser = await prisma.user.upsert({
+      where: { email: "other-user@test.com" },
+      update: {},
+      create: { email: "other-user@test.com", role: "ADVISOR" },
+    });
+    await prisma.userOrganization.create({
+      data: { userId: otherUser.id, organizationId: otherOrg.id, role: "ADVISOR" },
+    });
+    try {
+      expect(await canAccessClient("advisor@test.com", assigned.id)).toBe(true);
+      expect(await canAccessClient("advisor@test.com", unassigned.id)).toBe(false);
+      expect(await canAccessClient("other-user@test.com", assigned.id)).toBe(false);
+    } finally {
+      await cleanupOrganization(assigned.id);
+      await cleanupOrganization(unassigned.id);
+      await cleanupOrganization(otherOrg.id);
+    }
   });
 
   it("rejects access to an organization the authenticated user does not belong to", async () => {
