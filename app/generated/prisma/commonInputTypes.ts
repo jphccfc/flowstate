@@ -494,6 +494,23 @@ export type EnumPlanningItemApprovalStateWithAggregatesFilter<$PrismaModel = nev
   _max?: Prisma.NestedEnumPlanningItemApprovalStateFilter<$PrismaModel>
 }
 
+export type EnumCommunicationPackStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommunicationPackStatus | Prisma.EnumCommunicationPackStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommunicationPackStatus[] | Prisma.ListEnumCommunicationPackStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommunicationPackStatus[] | Prisma.ListEnumCommunicationPackStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommunicationPackStatusFilter<$PrismaModel> | $Enums.CommunicationPackStatus
+}
+
+export type EnumCommunicationPackStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommunicationPackStatus | Prisma.EnumCommunicationPackStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommunicationPackStatus[] | Prisma.ListEnumCommunicationPackStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommunicationPackStatus[] | Prisma.ListEnumCommunicationPackStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommunicationPackStatusWithAggregatesFilter<$PrismaModel> | $Enums.CommunicationPackStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCommunicationPackStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCommunicationPackStatusFilter<$PrismaModel>
+}
+
 export type EnumCommunicationPackActionFilter<$PrismaModel = never> = {
   equals?: $Enums.CommunicationPackAction | Prisma.EnumCommunicationPackActionFieldRefInput<$PrismaModel>
   in?: $Enums.CommunicationPackAction[] | Prisma.ListEnumCommunicationPackActionFieldRefInput<$PrismaModel>
@@ -1062,6 +1079,23 @@ export type NestedEnumPlanningItemApprovalStateWithAggregatesFilter<$PrismaModel
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumPlanningItemApprovalStateFilter<$PrismaModel>
   _max?: Prisma.NestedEnumPlanningItemApprovalStateFilter<$PrismaModel>
+}
+
+export type NestedEnumCommunicationPackStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommunicationPackStatus | Prisma.EnumCommunicationPackStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommunicationPackStatus[] | Prisma.ListEnumCommunicationPackStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommunicationPackStatus[] | Prisma.ListEnumCommunicationPackStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommunicationPackStatusFilter<$PrismaModel> | $Enums.CommunicationPackStatus
+}
+
+export type NestedEnumCommunicationPackStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommunicationPackStatus | Prisma.EnumCommunicationPackStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.CommunicationPackStatus[] | Prisma.ListEnumCommunicationPackStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommunicationPackStatus[] | Prisma.ListEnumCommunicationPackStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommunicationPackStatusWithAggregatesFilter<$PrismaModel> | $Enums.CommunicationPackStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCommunicationPackStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCommunicationPackStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumCommunicationPackActionFilter<$PrismaModel = never> = {

@@ -31,7 +31,7 @@ export type CommunicationPackMinAggregateOutputType = {
   insightId: string | null
   title: string | null
   content: string | null
-  status: string | null
+  status: $Enums.CommunicationPackStatus | null
   createdBy: string | null
   reviewedBy: string | null
   reviewedAt: Date | null
@@ -46,7 +46,7 @@ export type CommunicationPackMaxAggregateOutputType = {
   insightId: string | null
   title: string | null
   content: string | null
-  status: string | null
+  status: $Enums.CommunicationPackStatus | null
   createdBy: string | null
   reviewedBy: string | null
   reviewedAt: Date | null
@@ -202,7 +202,7 @@ export type CommunicationPackGroupByOutputType = {
   stakeholderContext: runtime.JsonValue
   title: string
   content: string
-  status: string
+  status: $Enums.CommunicationPackStatus
   createdBy: string
   reviewedBy: string | null
   reviewedAt: Date | null
@@ -240,7 +240,7 @@ export type CommunicationPackWhereInput = {
   stakeholderContext?: Prisma.JsonFilter<"CommunicationPack">
   title?: Prisma.StringFilter<"CommunicationPack"> | string
   content?: Prisma.StringFilter<"CommunicationPack"> | string
-  status?: Prisma.StringFilter<"CommunicationPack"> | string
+  status?: Prisma.EnumCommunicationPackStatusFilter<"CommunicationPack"> | $Enums.CommunicationPackStatus
   createdBy?: Prisma.StringFilter<"CommunicationPack"> | string
   reviewedBy?: Prisma.StringNullableFilter<"CommunicationPack"> | string | null
   reviewedAt?: Prisma.DateTimeNullableFilter<"CommunicationPack"> | Date | string | null
@@ -289,7 +289,7 @@ export type CommunicationPackWhereUniqueInput = Prisma.AtLeast<{
   stakeholderContext?: Prisma.JsonFilter<"CommunicationPack">
   title?: Prisma.StringFilter<"CommunicationPack"> | string
   content?: Prisma.StringFilter<"CommunicationPack"> | string
-  status?: Prisma.StringFilter<"CommunicationPack"> | string
+  status?: Prisma.EnumCommunicationPackStatusFilter<"CommunicationPack"> | $Enums.CommunicationPackStatus
   createdBy?: Prisma.StringFilter<"CommunicationPack"> | string
   reviewedBy?: Prisma.StringNullableFilter<"CommunicationPack"> | string | null
   reviewedAt?: Prisma.DateTimeNullableFilter<"CommunicationPack"> | Date | string | null
@@ -335,7 +335,7 @@ export type CommunicationPackScalarWhereWithAggregatesInput = {
   stakeholderContext?: Prisma.JsonWithAggregatesFilter<"CommunicationPack">
   title?: Prisma.StringWithAggregatesFilter<"CommunicationPack"> | string
   content?: Prisma.StringWithAggregatesFilter<"CommunicationPack"> | string
-  status?: Prisma.StringWithAggregatesFilter<"CommunicationPack"> | string
+  status?: Prisma.EnumCommunicationPackStatusWithAggregatesFilter<"CommunicationPack"> | $Enums.CommunicationPackStatus
   createdBy?: Prisma.StringWithAggregatesFilter<"CommunicationPack"> | string
   reviewedBy?: Prisma.StringNullableWithAggregatesFilter<"CommunicationPack"> | string | null
   reviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CommunicationPack"> | Date | string | null
@@ -349,7 +349,7 @@ export type CommunicationPackCreateInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -370,7 +370,7 @@ export type CommunicationPackUncheckedCreateInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   createdBy: string
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
@@ -385,7 +385,7 @@ export type CommunicationPackUpdateInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -406,7 +406,7 @@ export type CommunicationPackUncheckedUpdateInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -424,7 +424,7 @@ export type CommunicationPackCreateManyInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   createdBy: string
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
@@ -438,7 +438,7 @@ export type CommunicationPackUpdateManyMutationInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -453,7 +453,7 @@ export type CommunicationPackUncheckedUpdateManyInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -733,6 +733,10 @@ export type CommunicationPackUncheckedUpdateManyWithoutInsightNestedInput = {
   deleteMany?: Prisma.CommunicationPackScalarWhereInput | Prisma.CommunicationPackScalarWhereInput[]
 }
 
+export type EnumCommunicationPackStatusFieldUpdateOperationsInput = {
+  set?: $Enums.CommunicationPackStatus
+}
+
 export type CommunicationPackCreateNestedOneWithoutAcknowledgementsInput = {
   create?: Prisma.XOR<Prisma.CommunicationPackCreateWithoutAcknowledgementsInput, Prisma.CommunicationPackUncheckedCreateWithoutAcknowledgementsInput>
   connectOrCreate?: Prisma.CommunicationPackCreateOrConnectWithoutAcknowledgementsInput
@@ -753,7 +757,7 @@ export type CommunicationPackCreateWithoutCreatorInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -773,7 +777,7 @@ export type CommunicationPackUncheckedCreateWithoutCreatorInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
   createdAt?: Date | string
@@ -797,7 +801,7 @@ export type CommunicationPackCreateWithoutReviewerInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -817,7 +821,7 @@ export type CommunicationPackUncheckedCreateWithoutReviewerInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   createdBy: string
   reviewedAt?: Date | string | null
   createdAt?: Date | string
@@ -863,7 +867,7 @@ export type CommunicationPackScalarWhereInput = {
   stakeholderContext?: Prisma.JsonFilter<"CommunicationPack">
   title?: Prisma.StringFilter<"CommunicationPack"> | string
   content?: Prisma.StringFilter<"CommunicationPack"> | string
-  status?: Prisma.StringFilter<"CommunicationPack"> | string
+  status?: Prisma.EnumCommunicationPackStatusFilter<"CommunicationPack"> | $Enums.CommunicationPackStatus
   createdBy?: Prisma.StringFilter<"CommunicationPack"> | string
   reviewedBy?: Prisma.StringNullableFilter<"CommunicationPack"> | string | null
   reviewedAt?: Prisma.DateTimeNullableFilter<"CommunicationPack"> | Date | string | null
@@ -893,7 +897,7 @@ export type CommunicationPackCreateWithoutOrganizationInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -912,7 +916,7 @@ export type CommunicationPackUncheckedCreateWithoutOrganizationInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   createdBy: string
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
@@ -953,7 +957,7 @@ export type CommunicationPackCreateWithoutDecisionInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -972,7 +976,7 @@ export type CommunicationPackUncheckedCreateWithoutDecisionInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   createdBy: string
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
@@ -1013,7 +1017,7 @@ export type CommunicationPackCreateWithoutInsightInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1032,7 +1036,7 @@ export type CommunicationPackUncheckedCreateWithoutInsightInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   createdBy: string
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
@@ -1073,7 +1077,7 @@ export type CommunicationPackCreateWithoutAcknowledgementsInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1093,7 +1097,7 @@ export type CommunicationPackUncheckedCreateWithoutAcknowledgementsInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   createdBy: string
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
@@ -1123,7 +1127,7 @@ export type CommunicationPackUpdateWithoutAcknowledgementsInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1143,7 +1147,7 @@ export type CommunicationPackUncheckedUpdateWithoutAcknowledgementsInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1160,7 +1164,7 @@ export type CommunicationPackCreateManyCreatorInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
   createdAt?: Date | string
@@ -1176,7 +1180,7 @@ export type CommunicationPackCreateManyReviewerInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   createdBy: string
   reviewedAt?: Date | string | null
   createdAt?: Date | string
@@ -1189,7 +1193,7 @@ export type CommunicationPackUpdateWithoutCreatorInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1209,7 +1213,7 @@ export type CommunicationPackUncheckedUpdateWithoutCreatorInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1226,7 +1230,7 @@ export type CommunicationPackUncheckedUpdateManyWithoutCreatorInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1239,7 +1243,7 @@ export type CommunicationPackUpdateWithoutReviewerInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1259,7 +1263,7 @@ export type CommunicationPackUncheckedUpdateWithoutReviewerInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1276,7 +1280,7 @@ export type CommunicationPackUncheckedUpdateManyWithoutReviewerInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1291,7 +1295,7 @@ export type CommunicationPackCreateManyOrganizationInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   createdBy: string
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
@@ -1305,7 +1309,7 @@ export type CommunicationPackUpdateWithoutOrganizationInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1324,7 +1328,7 @@ export type CommunicationPackUncheckedUpdateWithoutOrganizationInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1341,7 +1345,7 @@ export type CommunicationPackUncheckedUpdateManyWithoutOrganizationInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1357,7 +1361,7 @@ export type CommunicationPackCreateManyDecisionInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   createdBy: string
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
@@ -1371,7 +1375,7 @@ export type CommunicationPackUpdateWithoutDecisionInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1390,7 +1394,7 @@ export type CommunicationPackUncheckedUpdateWithoutDecisionInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1407,7 +1411,7 @@ export type CommunicationPackUncheckedUpdateManyWithoutDecisionInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1423,7 +1427,7 @@ export type CommunicationPackCreateManyInsightInput = {
   stakeholderContext: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title: string
   content: string
-  status?: string
+  status?: $Enums.CommunicationPackStatus
   createdBy: string
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
@@ -1437,7 +1441,7 @@ export type CommunicationPackUpdateWithoutInsightInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1456,7 +1460,7 @@ export type CommunicationPackUncheckedUpdateWithoutInsightInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1473,7 +1477,7 @@ export type CommunicationPackUncheckedUpdateManyWithoutInsightInput = {
   stakeholderContext?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCommunicationPackStatusFieldUpdateOperationsInput | $Enums.CommunicationPackStatus
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1641,7 +1645,7 @@ export type $CommunicationPackPayload<ExtArgs extends runtime.Types.Extensions.I
     stakeholderContext: runtime.JsonValue
     title: string
     content: string
-    status: string
+    status: $Enums.CommunicationPackStatus
     createdBy: string
     reviewedBy: string | null
     reviewedAt: Date | null
@@ -2084,7 +2088,7 @@ export interface CommunicationPackFieldRefs {
   readonly stakeholderContext: Prisma.FieldRef<"CommunicationPack", 'Json'>
   readonly title: Prisma.FieldRef<"CommunicationPack", 'String'>
   readonly content: Prisma.FieldRef<"CommunicationPack", 'String'>
-  readonly status: Prisma.FieldRef<"CommunicationPack", 'String'>
+  readonly status: Prisma.FieldRef<"CommunicationPack", 'CommunicationPackStatus'>
   readonly createdBy: Prisma.FieldRef<"CommunicationPack", 'String'>
   readonly reviewedBy: Prisma.FieldRef<"CommunicationPack", 'String'>
   readonly reviewedAt: Prisma.FieldRef<"CommunicationPack", 'DateTime'>

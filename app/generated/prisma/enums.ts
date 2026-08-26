@@ -95,9 +95,22 @@ export const PlanningItemApprovalState = {
 export type PlanningItemApprovalState = (typeof PlanningItemApprovalState)[keyof typeof PlanningItemApprovalState]
 
 
+export const CommunicationPackStatus = {
+  DRAFT: 'DRAFT',
+  READY_FOR_REVIEW: 'READY_FOR_REVIEW',
+  CHANGES_REQUESTED: 'CHANGES_REQUESTED',
+  APPROVED_FOR_DISTRIBUTION: 'APPROVED_FOR_DISTRIBUTION',
+  ACKNOWLEDGED: 'ACKNOWLEDGED'
+} as const
+
+export type CommunicationPackStatus = (typeof CommunicationPackStatus)[keyof typeof CommunicationPackStatus]
+
+
 export const CommunicationPackAction = {
-  ACKNOWLEDGED: 'ACKNOWLEDGED',
-  REQUEST_CHANGES: 'REQUEST_CHANGES'
+  SUBMITTED: 'SUBMITTED',
+  REQUEST_CHANGES: 'REQUEST_CHANGES',
+  APPROVED: 'APPROVED',
+  ACKNOWLEDGED: 'ACKNOWLEDGED'
 } as const
 
 export type CommunicationPackAction = (typeof CommunicationPackAction)[keyof typeof CommunicationPackAction]

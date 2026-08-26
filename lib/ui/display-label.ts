@@ -5,3 +5,5 @@ export function formatDisplayLabel(value: string | null | undefined): string {
     ? words[0][0].toUpperCase() + words[0].slice(1) + words.slice(1).map((word) => ` ${word}`).join("")
     : "";
 }
+
+export const displayLabel = formatDisplayLabel;
