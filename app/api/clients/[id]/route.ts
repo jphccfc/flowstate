@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
-import { hasOrganizationPermission } from "@/lib/auth/organization";
+import { canAccessClient, hasOrganizationPermission } from "@/lib/auth/organization";
 import { getCurrentMaturityForOrganization } from "@/lib/maturity/current";
 import { getCurrentTargetMaturityForOrganization } from "@/lib/maturity/target";
 
@@ -44,7 +44,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
   });
 
   if (!org) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if (!(await hasOrganizationPermission(user.email, org.id, "client.read"))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!(await canAccessClient(user.email, org.id))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const [currentAsIs, currentToBe] = await Promise.all([
     getCurrentMaturityForOrganization(id),

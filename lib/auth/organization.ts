@@ -62,6 +62,18 @@ export async function hasOrganizationPermission(
   return membership ? hasPermission(membership.role as OrganizationRole, permission) : false;
 }
 
+/**
+ * Returns whether an authenticated user can see a client workspace.
+ * Clients are organizations; UserOrganization is the existing assignment boundary.
+ * Keep this check server-side so callers cannot rely on client-supplied role data.
+ */
+export async function canAccessClient(
+  email: string | null | undefined,
+  clientId: string
+): Promise<boolean> {
+  return hasOrganizationPermission(email, clientId, "client.read");
+}
+
 export async function isOrganizationMember(email: string | null | undefined, organizationId: string): Promise<boolean> {
   return (await getOrganizationMembership(email, organizationId)) !== null;
 }
