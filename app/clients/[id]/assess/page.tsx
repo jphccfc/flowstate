@@ -397,7 +397,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
     setInsightBusy(false);
   }
 
-  async function updateDecision(action: "REJECT" | "REOPEN" | "SIGN_OFF") {
+  async function updateDecision(action: "REJECT" | "REOPEN" | "SIGN_OFF" | "REVOKE") {
     const current = decisions[0];
     if (!current) return;
     setDecisionBusy(true);
@@ -492,6 +492,13 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   const selectedCap = org?.domains.flatMap((d) => d.capabilities).find((c) => c.id === selectedCapId);
   const selectedDomain = org?.domains.find((d) => d.capabilities.some((c) => c.id === selectedCapId));
 
+  function selectCapability(capabilityId: string) {
+    setSelectedCapId(capabilityId);
+    setHistory(null);
+    setPerspectiveData(null);
+    setPerspectiveError(null);
+  }
+
   if (loading) return <div className="flex-1 flex items-center justify-center text-[var(--muted)]">Loading...</div>;
 
   if (orgError) {
@@ -538,40 +545,23 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
           </div>
           <div className="text-xs text-[var(--muted)]">{org.domains.reduce((count, domain) => count + domain.capabilities.length, 0)} capabilities</div>
         </div>
-        <div className="assessment-selector-options">
-          {org.domains.map((domain) => (
-            <div key={domain.id} className="assessment-domain-group">
-              <div className="flex items-center gap-2 px-3 py-2 bg-[var(--muted-bg)] rounded-lg">
-                <div className="w-2 h-2 rounded-full shrink-0" style={{ background: domain.color ?? "#94a3b8" }} />
-                <span className="text-xs font-semibold text-[var(--foreground)] truncate">{domain.name}</span>
-              </div>
-              <div className="assessment-capability-options">
-                {domain.capabilities.map((cap) => {
-                  const gap = calculateGap(cap.currentAsIs, cap.currentToBe);
-                  const severity = getGapSeverity(gap);
-                  const isSelected = cap.id === selectedCapId;
-                  return (
-                    <button
-                      type="button"
-                      key={cap.id}
-                      aria-pressed={isSelected}
-                      onClick={() => {
-                        setSelectedCapId(cap.id);
-                        setHistory(null);
-                        setPerspectiveData(null);
-                        setPerspectiveError(null);
-                      }}
-                      className={`assessment-capability-option ${isSelected ? "is-selected" : ""}`}
-                    >
-                      <span className="truncate">{cap.name}</span>
-                      <span className="w-2 h-2 rounded-full shrink-0" style={{ background: getGapColor(severity) }} />
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
+        <label className="assessment-selector-control">
+          <span className="text-xs font-semibold text-[var(--foreground)]">Capability</span>
+          <select
+            aria-label="Capability to assess"
+            value={selectedCapId ?? ""}
+            onChange={(event) => selectCapability(event.target.value)}
+            className="assessment-capability-select"
+          >
+            {org.domains.map((domain) => (
+              <optgroup key={domain.id} label={domain.name}>
+                {domain.capabilities.map((cap) => (
+                  <option key={cap.id} value={cap.id}>{cap.name}</option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+        </label>
       </section>
 
       <main className="assessment-content">
@@ -624,7 +614,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
             {selectedCapId && <section className="workspace-card p-5 mb-4" aria-labelledby="decision-title">
               <div className="flex items-start justify-between gap-4 mb-3"><div><div className="workspace-eyebrow">Human control</div><h3 id="decision-title" className="text-sm font-semibold text-[var(--foreground)]">Assessment decision and sign-off</h3></div><span className="text-xs text-[var(--muted)]">Append-only history</span></div>
               {decisions.length === 0 ? <p className="text-sm text-[var(--muted)]">No human decision recorded yet. AI proposals remain provisional.</p> : <div className="space-y-2">{decisions.slice(0, 3).map((decision) => <div key={decision.id} className="rounded-lg border border-[var(--card-border)] p-3 text-xs"><div className="flex items-center justify-between gap-3"><strong className="text-[var(--foreground)]">{decision.status.replaceAll("_", " ")}</strong><span className="text-[var(--muted)]">{decision.score ?? "No score"}</span></div><div className="mt-1 text-[var(--muted)]">{decision.decidedBy ?? "Unknown reviewer"} · {new Date(decision.decidedAt).toLocaleString()}</div>{decision.rationale && <p className="mt-1 text-[var(--muted)]">{decision.rationale}</p>}</div>)}</div>}
-              <div className="mt-3 flex flex-wrap gap-2"><button type="button" onClick={() => createDecision("APPROVED")} disabled={decisionBusy || ["APPROVED", "SIGNED_OFF"].includes(decisions[0]?.status ?? "")} className="px-3 py-1.5 rounded-lg flowstate-success-button text-white text-xs disabled:opacity-50">{["APPROVED", "SIGNED_OFF"].includes(decisions[0]?.status ?? "") ? "Assessment already approved — Reopen to amend" : "Approve assessment"}</button><button type="button" onClick={() => createDecision("EVIDENCE_REQUESTED")} disabled={decisionBusy} className="px-3 py-1.5 rounded-lg border border-[var(--card-border)] text-xs disabled:opacity-50">Request evidence</button>{decisions[0] && <><button type="button" onClick={() => updateDecision("REOPEN")} disabled={decisionBusy} className="px-3 py-1.5 rounded-lg border border-[var(--card-border)] text-xs disabled:opacity-50">Reopen</button><button type="button" onClick={() => updateDecision("SIGN_OFF")} disabled={decisionBusy} className="px-3 py-1.5 rounded-lg flowstate-accent-button text-white text-xs disabled:opacity-50">Sign off</button></>}</div>
+              <div className="mt-3 flex flex-wrap gap-2"><button type="button" onClick={() => createDecision("APPROVED")} disabled={decisionBusy || ["APPROVED", "SIGNED_OFF"].includes(decisions[0]?.status ?? "")} className="px-3 py-1.5 rounded-lg flowstate-success-button text-white text-xs disabled:opacity-50">{["APPROVED", "SIGNED_OFF"].includes(decisions[0]?.status ?? "") ? "Assessment already approved — Reopen to amend" : "Approve assessment"}</button><button type="button" onClick={() => createDecision("EVIDENCE_REQUESTED")} disabled={decisionBusy} className="px-3 py-1.5 rounded-lg border border-[var(--card-border)] text-xs disabled:opacity-50">Request evidence</button>{decisions[0] && <><button type="button" onClick={() => updateDecision("REOPEN")} disabled={decisionBusy} className="px-3 py-1.5 rounded-lg border border-[var(--card-border)] text-xs disabled:opacity-50">Reopen</button><button type="button" onClick={() => updateDecision("SIGN_OFF")} disabled={decisionBusy || decisions[0]?.status !== "APPROVED"} className="px-3 py-1.5 rounded-lg flowstate-accent-button text-white text-xs disabled:opacity-50">Sign off</button><button type="button" onClick={() => updateDecision("REVOKE")} disabled={decisionBusy || !["APPROVED", "SIGNED_OFF"].includes(decisions[0]?.status ?? "")} className="px-3 py-1.5 rounded-lg border border-[var(--destructive)] text-[var(--destructive)] text-xs disabled:opacity-50">Revoke approval</button></>}</div>
             </section>}
 
             {decisions[0]?.status === "SIGNED_OFF" && <section className="workspace-card p-5 mb-4" aria-labelledby="insights-title"><div className="flex items-start justify-between gap-4 mb-3"><div><div className="workspace-eyebrow">Approved output</div><h3 id="insights-title" className="text-sm font-semibold text-[var(--foreground)]">Approved insights and priorities</h3></div><button type="button" onClick={createInsight} disabled={insightBusy} className="px-3 py-1.5 rounded-lg flowstate-accent-button text-white text-xs disabled:opacity-50">{insightBusy ? "Creating…" : "Create insight"}</button></div>{insights.length === 0 ? <p className="text-sm text-[var(--muted)]">No approved insight has been created from this signed-off decision.</p> : <div className="space-y-2">{insights.map((insight) => <div key={insight.id} className="rounded-lg border border-[var(--card-border)] p-3 text-sm"><div className="flex items-center justify-between gap-3"><strong>{insight.title}</strong><span className="text-xs text-[var(--muted)]">Priority {insight.priority ?? "—"}</span></div><p className="mt-1 text-xs text-[var(--muted)]">{insight.description}</p><div className="mt-1 text-[10px] text-[var(--muted)]">Traceable to signed-off decision · {insight.sourcePerspectiveIds.length} perspective sources</div></div>)}</div>}</section>}
