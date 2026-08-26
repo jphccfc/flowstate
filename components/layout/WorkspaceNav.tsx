@@ -31,6 +31,7 @@ export function WorkspaceNav({ clientId, clientName }: { clientId: string; clien
     { href: `/clients/${clientId}/assess`, label: "Assessment", short: "03" },
     { href: `/clients/${clientId}/tasks`, label: "Assessment tasks", short: "04" },
     { href: `/clients/${clientId}/planning`, label: "Planning items", short: "05" },
+    { href: `/clients/${clientId}/communication-packs`, label: "Communication packs", short: "06" },
     { href: `/clients/${clientId}/analysis`, label: "Insights", short: "06" },
     { href: `/clients/${clientId}/report`, label: "Reports", short: "07" },
     { href: `/clients/${clientId}/recommendations`, label: "Growth plan", short: "08" },

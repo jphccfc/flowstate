@@ -31,6 +31,9 @@ model User {
   completedAssessmentTasks AssessmentTask[] @relation("TaskCompleter")
   createdPlanningItems PlanningItem[] @relation("PlanningItemCreator")
   approvedPlanningItems PlanningItem[] @relation("PlanningItemApprover")
+  createdCommunicationPacks CommunicationPack[] @relation("CommunicationPackCreator")
+  reviewedCommunicationPacks CommunicationPack[] @relation("CommunicationPackReviewer")
+  communicationPackAcknowledgements CommunicationPackAcknowledgement[] @relation("CommunicationPackActor")
 }
 
 model Organization {
@@ -57,6 +60,7 @@ model Organization {
   maturityRubrics MaturityRubric[]
   assessmentTasks AssessmentTask[]
   planningItems PlanningItem[]
+  communicationPacks CommunicationPack[]
 }
 
 model UserOrganization {
@@ -474,6 +478,7 @@ model AssessmentDecision {
 
   capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
   approvedInsights ApprovedInsight[]
+  communicationPacks CommunicationPack[]
 
   @@index([capabilityId, createdAt])
   @@index([supersedesId])
@@ -498,6 +503,7 @@ model ApprovedInsight {
   decision   AssessmentDecision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
   growthActions GrowthAction[]
   planningItems PlanningItem[]
+  communicationPacks CommunicationPack[]
 
   @@index([capabilityId, createdAt])
   @@index([decisionId])
@@ -577,6 +583,49 @@ model PlanningItem {
   @@index([organizationId, targetDate])
   @@index([parentId])
   @@index([approvedInsightId])
+}
+
+model CommunicationPack {
+ id String @id @default(cuid())
+ organizationId String
+ decisionId String?
+ insightId String?
+ recipientContext Json
+ stakeholderContext Json
+ title String
+ content String
+ status String @default("DRAFT")
+ createdBy String
+ reviewedBy String?
+ reviewedAt DateTime?
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+ decision AssessmentDecision? @relation(fields: [decisionId], references: [id], onDelete: Restrict)
+ insight ApprovedInsight? @relation(fields: [insightId], references: [id], onDelete: Restrict)
+ creator User @relation("CommunicationPackCreator", fields: [createdBy], references: [email], onDelete: Restrict)
+ reviewer User? @relation("CommunicationPackReviewer", fields: [reviewedBy], references: [email], onDelete: SetNull)
+ acknowledgements CommunicationPackAcknowledgement[]
+ @@index([organizationId, status, createdAt])
+ @@index([decisionId])
+ @@index([insightId])
+}
+
+enum CommunicationPackAction {
+ ACKNOWLEDGED
+ REQUEST_CHANGES
+}
+
+model CommunicationPackAcknowledgement {
+ id String @id @default(cuid())
+ communicationPackId String
+ action CommunicationPackAction
+ note String?
+ actedBy String
+ createdAt DateTime @default(now())
+ communicationPack CommunicationPack @relation(fields: [communicationPackId], references: [id], onDelete: Cascade)
+ actor User @relation("CommunicationPackActor", fields: [actedBy], references: [email], onDelete: Restrict)
+ @@index([communicationPackId, createdAt])
 }
 
 model TargetMaturity {
