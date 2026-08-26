@@ -13,6 +13,7 @@ describe("assessment approval governance", () => {
     expect(page).toContain("Assessment already approved");
     expect(page).toContain("Reopen");
     expect(page).toContain("Delete my decision");
+    expect(page).not.toContain("Revoke approval");
     expect(page).toContain("selectedDecisionId");
     expect(mutationRoute).toContain("REVOKED");
     expect(mutationRoute).toContain("DELETED");
