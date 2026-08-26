@@ -594,7 +594,7 @@ model CommunicationPack {
  stakeholderContext Json
  title String
  content String
- status String @default("DRAFT")
+ status CommunicationPackStatus @default(DRAFT)
  createdBy String
  reviewedBy String?
  reviewedAt DateTime?
@@ -611,9 +611,19 @@ model CommunicationPack {
  @@index([insightId])
 }
 
-enum CommunicationPackAction {
+enum CommunicationPackStatus {
+ DRAFT
+ READY_FOR_REVIEW
+ CHANGES_REQUESTED
+ APPROVED_FOR_DISTRIBUTION
  ACKNOWLEDGED
+}
+
+enum CommunicationPackAction {
+ SUBMITTED
  REQUEST_CHANGES
+ APPROVED
+ ACKNOWLEDGED
 }
 
 model CommunicationPackAcknowledgement {
