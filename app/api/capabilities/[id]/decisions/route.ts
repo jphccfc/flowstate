@@ -33,6 +33,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   const status = typeof body.status === "string" ? body.status : "PENDING_REVIEW";
   if (!["APPROVED", "REJECTED", "EVIDENCE_REQUESTED"].includes(status)) return NextResponse.json({ error: "Invalid decision status" }, { status: 400 });
   if (body.score !== undefined && (typeof body.score !== "number" || body.score < 0 || body.score > 5)) return NextResponse.json({ error: "score must be between 0 and 5" }, { status: 400 });
+  if (status === "APPROVED") {
+    const latest = await prisma.assessmentDecision.findFirst({ where: { capabilityId: id }, orderBy: { createdAt: "desc" }, select: { status: true } });
+    if (latest && ["APPROVED", "SIGNED_OFF"].includes(latest.status)) return NextResponse.json({ error: "assessment already has an approved decision; reopen it before approving again" }, { status: 409 });
+  }
   const decision = await prisma.assessmentDecision.create({ data: {
     capabilityId: id, status, score: typeof body.score === "number" ? body.score : null,
     scoreRangeMin: typeof body.scoreRangeMin === "number" ? body.scoreRangeMin : null,

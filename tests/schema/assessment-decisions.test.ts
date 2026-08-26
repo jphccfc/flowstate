@@ -29,6 +29,12 @@ describe("assessment decisions", () => {
     expect(response.status).toBe(201); const body = await response.json(); decisionId = body.id; expect(body.status).toBe("APPROVED"); expect(body.score).toBe(3); expect(body.decidedBy).toBe("advisor@test.com");
   });
 
+  it("rejects a duplicate approval while the latest decision is already approved", async () => {
+    const response = await POST(request({ status: "APPROVED", score: 4, rationale: "Duplicate approval attempt." }), { params: Promise.resolve({ id: capabilityId }) });
+    expect(response.status).toBe(409);
+    expect(await response.json()).toMatchObject({ error: "assessment already has an approved decision; reopen it before approving again" });
+  });
+
   it("records a new decision version instead of mutating the prior decision", async () => {
     const response = await PATCH(request({ action: "REOPEN", rationale: "New evidence requires review." }, "PATCH"), { params: Promise.resolve({ id: decisionId }) });
     expect(response.status).toBe(200); const body = await response.json(); expect(body.status).toBe("REOPENED"); expect(body.supersedesId).toBe(decisionId); expect(body.id).not.toBe(decisionId);
