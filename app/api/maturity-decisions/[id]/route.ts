@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
 import { hasOrganizationPermission } from "@/lib/auth/organization";
 
-const actionStatuses: Record<string, string> = { REJECT: "REJECTED", AMEND: "AMENDED", REQUEST_EVIDENCE: "EVIDENCE_REQUESTED", REOPEN: "REOPENED", SIGN_OFF: "SIGNED_OFF" };
+const actionStatuses: Record<string, string> = { REJECT: "REJECTED", AMEND: "AMENDED", REQUEST_EVIDENCE: "EVIDENCE_REQUESTED", REOPEN: "REOPENED", SIGN_OFF: "SIGNED_OFF", REVOKE: "REVOKED" };
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { data: { user } } = await (await createClient()).auth.getUser();
@@ -14,7 +14,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   if (!(await hasOrganizationPermission(user.email, existing.capability.domain.organizationId, "assessment.review"))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   const body = await req.json().catch(() => ({}));
   const status = actionStatuses[body.action];
-  if (!status) return NextResponse.json({ error: "action must be REJECT, AMEND, REQUEST_EVIDENCE, REOPEN, or SIGN_OFF" }, { status: 400 });
+  if (!status) return NextResponse.json({ error: "action must be REJECT, AMEND, REQUEST_EVIDENCE, REOPEN, SIGN_OFF, or REVOKE" }, { status: 400 });
+  if (body.action === "SIGN_OFF" && existing.status !== "APPROVED") return NextResponse.json({ error: "only an approved decision can be signed off" }, { status: 409 });
+  if (body.action === "REVOKE" && !["APPROVED", "SIGNED_OFF"].includes(existing.status)) return NextResponse.json({ error: "only an approved or signed-off decision can be revoked" }, { status: 409 });
   if (body.score !== undefined && (typeof body.score !== "number" || body.score < 0 || body.score > 5)) return NextResponse.json({ error: "score must be between 0 and 5" }, { status: 400 });
   const decision = await prisma.assessmentDecision.create({ data: {
     capabilityId: existing.capabilityId, status,

@@ -211,12 +211,9 @@ body {
 .assessment-heading { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 1.25rem; margin-bottom: 1rem; }
 .assessment-selector { padding: 0.8rem; margin-bottom: 1rem; }
 .assessment-selector-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.15rem 0.25rem 0.7rem; }
-.assessment-selector-options { display: flex; gap: 0.75rem; overflow-x: auto; padding-bottom: 0.15rem; }
-.assessment-domain-group { min-width: 12rem; max-width: 18rem; flex: 1 1 12rem; }
-.assessment-capability-options { display: grid; gap: 0.35rem; margin-top: 0.4rem; }
-.assessment-capability-option { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; width: 100%; min-height: 2.25rem; padding: 0.45rem 0.65rem; border: 1px solid transparent; border-radius: 0.55rem; color: var(--foreground); background: transparent; font-size: 0.78rem; text-align: left; transition: background 120ms ease, border-color 120ms ease; }
-.assessment-capability-option:hover { background: var(--muted-bg); border-color: var(--card-border); }
-.assessment-capability-option.is-selected { color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); border-color: var(--accent); font-weight: 700; }
+.assessment-selector-control { display: grid; grid-template-columns: minmax(7rem, 0.25fr) minmax(0, 1fr); align-items: center; gap: 0.75rem; }
+.assessment-capability-select { width: 100%; min-height: 2.35rem; padding: 0.45rem 0.65rem; border: 1px solid var(--card-border); border-radius: 0.55rem; color: var(--foreground); background: var(--card); font-size: 0.82rem; }
+.assessment-capability-select:focus { border-color: var(--accent); outline: 2px solid color-mix(in srgb, var(--accent) 25%, transparent); outline-offset: 1px; }
 .assessment-content { min-width: 0; min-height: 32rem; }
 .report-examples { padding: 1.25rem; }
 .report-example-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; }
@@ -227,8 +224,7 @@ body {
 @media (max-width: 800px) {
   .assessment-workspace { min-height: auto; padding: 0.75rem; }
   .assessment-heading { align-items: flex-start; padding: 1rem; }
-  .assessment-selector-options { display: grid; grid-template-columns: 1fr; overflow-x: visible; }
-  .assessment-domain-group { max-width: none; }
+  .assessment-selector-control { grid-template-columns: 1fr; gap: 0.35rem; }
   .assessment-content { min-height: 32rem; }
   .report-example-grid { grid-template-columns: 1fr; }
 }

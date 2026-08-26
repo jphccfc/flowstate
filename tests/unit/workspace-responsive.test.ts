@@ -81,7 +81,10 @@ describe("workspace responsive and theme contracts", () => {
 
   it("uses a compact assessment selector instead of a permanent third column", () => {
     expect(assess).toContain('className="assessment-selector workspace-card"');
+    expect(assess).toContain('aria-label="Capability to assess"');
     expect(assess).not.toContain('className="assessment-layout"');
+    expect(assess).not.toContain("assessment-capability-option");
+    expect(assess).not.toMatch(/<nav\b/);
     expect(css).toContain(".assessment-selector");
     expect(css).not.toContain("grid-template-columns: minmax(15rem, 18rem) minmax(0, 1fr)");
   });
