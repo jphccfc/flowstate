@@ -12,7 +12,10 @@ describe("assessment approval governance", () => {
     expect(route).toContain("assessment already has an approved decision; reopen it before approving again");
     expect(page).toContain("Assessment already approved");
     expect(page).toContain("Reopen");
-    expect(page).toContain("Revoke approval");
+    expect(page).toContain("Delete my decision");
+    expect(page).toContain("selectedDecisionId");
     expect(mutationRoute).toContain("REVOKED");
+    expect(mutationRoute).toContain("DELETED");
+    expect(mutationRoute).toContain("only delete your own decision");
   });
 });

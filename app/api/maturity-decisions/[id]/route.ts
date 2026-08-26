@@ -32,3 +32,29 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   } });
   return NextResponse.json(decision);
 }
+
+
+export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { data: { user } } = await (await createClient()).auth.getUser();
+  if (!user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { id } = await params;
+  const existing = await prisma.assessmentDecision.findUnique({
+    where: { id },
+    include: {
+      capability: { include: { domain: { select: { organizationId: true } } } },
+      _count: { select: { approvedInsights: true, communicationPacks: true } },
+    },
+  });
+  if (!existing) return NextResponse.json({ error: "Decision not found" }, { status: 404 });
+  if (!(await hasOrganizationPermission(user.email, existing.capability.domain.organizationId, "assessment.review"))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (existing.decidedBy !== user.email) return NextResponse.json({ error: "you can only delete your own decision" }, { status: 403 });
+  if (existing._count.approvedInsights > 0 || existing._count.communicationPacks > 0) return NextResponse.json({ error: "decision is used by an approved output and cannot be deleted" }, { status: 409 });
+  const deleted = await prisma.assessmentDecision.create({ data: {
+    capabilityId: existing.capabilityId, status: "DELETED", score: existing.score,
+    scoreRangeMin: existing.scoreRangeMin, scoreRangeMax: existing.scoreRangeMax,
+    rationale: `Decision deleted by ${user.email}.`, rubricVersion: existing.rubricVersion,
+    sourceEvidenceIds: existing.sourceEvidenceIds, sourcePerspectiveIds: existing.sourcePerspectiveIds,
+    decidedBy: user.email, supersedesId: existing.id,
+  } });
+  return NextResponse.json(deleted);
+}

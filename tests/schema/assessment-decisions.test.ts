@@ -6,7 +6,7 @@ vi.mock("@/lib/supabase/server", () => ({
 }));
 
 import { GET, POST } from "../../app/api/capabilities/[id]/decisions/route";
-import { PATCH } from "../../app/api/maturity-decisions/[id]/route";
+import { DELETE, PATCH } from "../../app/api/maturity-decisions/[id]/route";
 
 const request = (body: unknown, method = "POST") => new Request("http://localhost", {
   method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
@@ -64,7 +64,20 @@ describe("assessment decisions", () => {
     const response = await POST(request({ status: "APPROVED", score: 2 }), { params: Promise.resolve({ id: capability.id }) }); expect(response.status).toBe(403); await cleanupOrganization(outsider.id);
   });
 
+  it("deletes only the current reviewers own decision through an audit-preserving tombstone", async () => {
+    const own = await POST(request({ status: "REJECTED", score: 2, rationale: "Reviewer correction." }), { params: Promise.resolve({ id: capabilityId }) });
+    expect(own.status).toBe(201);
+    const ownBody = await own.json();
+    const removed = await DELETE(new Request("http://localhost") as never, { params: Promise.resolve({ id: ownBody.id }) });
+    expect(removed.status).toBe(200);
+    expect((await removed.json()).status).toBe("DELETED");
+
+    const other = await prisma.assessmentDecision.create({ data: { capabilityId, status: "REJECTED", decidedBy: "other-reviewer@test.com" } });
+    const forbidden = await DELETE(new Request("http://localhost") as never, { params: Promise.resolve({ id: other.id }) });
+    expect(forbidden.status).toBe(403);
+  });
+
   it("lists the decision history for an authorised organisation", async () => {
-    const response = await GET(new Request("http://localhost") as never, { params: Promise.resolve({ id: capabilityId }) }); expect(response.status).toBe(200); const body = await response.json(); expect(body).toHaveLength(6); expect(body.map((item: { status: string }) => item.status)).toEqual(["REOPENED", "REVOKED", "SIGNED_OFF", "APPROVED", "EVIDENCE_REQUESTED", "APPROVED"]);
+    const response = await GET(new Request("http://localhost") as never, { params: Promise.resolve({ id: capabilityId }) }); expect(response.status).toBe(200); const body = await response.json(); expect(body).toHaveLength(9); expect(body.map((item: { status: string }) => item.status)).toEqual(expect.arrayContaining(["DELETED", "REOPENED", "REVOKED", "SIGNED_OFF", "APPROVED", "EVIDENCE_REQUESTED"]));
   });
 });
