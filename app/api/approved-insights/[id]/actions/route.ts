@@ -23,8 +23,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   if (!(await isOrganizationMember(body.ownerEmail.trim(), insight.capability.domain.organizationId))) return NextResponse.json({ error: "ownerEmail must belong to an organisation member" }, { status: 400 });
   const outcomeScenarios = new Set(["PROFIT_GROWTH", "SALE_READINESS", "RESTRUCTURING", "MULTIPLIER_IMPROVEMENT"]);
   const outcomeScenario = body.outcomeScenario ?? "PROFIT_GROWTH";
+  const expectedValue = body.expectedValue === undefined || body.expectedValue === "" ? undefined : Number(body.expectedValue);
+  if (expectedValue !== undefined && !Number.isFinite(expectedValue)) return NextResponse.json({ error: "expectedValue must be numeric" }, { status: 400 });
   if (typeof outcomeScenario !== "string" || !outcomeScenarios.has(outcomeScenario)) return NextResponse.json({ error: "A valid outcomeScenario is required" }, { status: 400 });
-  const action = await prisma.growthAction.create({ data: { insightId: id, title: body.title.trim(), description: body.description.trim(), outcomeScenario, ownerEmail: body.ownerEmail.trim(), dueDate: new Date(body.dueDate), priority: typeof body.priority === "number" ? body.priority : undefined, createdBy: user.email } });
+  const action = await prisma.growthAction.create({ data: { insightId: id, title: body.title.trim(), description: body.description.trim(), outcomeScenario, expectedValue, valueAssumptions: typeof body.valueAssumptions === "string" ? body.valueAssumptions.trim() || undefined : undefined, ownerEmail: body.ownerEmail.trim(), dueDate: new Date(body.dueDate), priority: typeof body.priority === "number" ? body.priority : undefined, createdBy: user.email } });
   return NextResponse.json(action, { status: 201 });
 }
 

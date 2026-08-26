@@ -199,6 +199,8 @@ export type UserWhereInput = {
   requestedAssessmentTasks?: Prisma.AssessmentTaskListRelationFilter
   assignedAssessmentTasks?: Prisma.AssessmentTaskListRelationFilter
   completedAssessmentTasks?: Prisma.AssessmentTaskListRelationFilter
+  createdPlanningItems?: Prisma.PlanningItemListRelationFilter
+  approvedPlanningItems?: Prisma.PlanningItemListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -214,6 +216,8 @@ export type UserOrderByWithRelationInput = {
   requestedAssessmentTasks?: Prisma.AssessmentTaskOrderByRelationAggregateInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskOrderByRelationAggregateInput
   completedAssessmentTasks?: Prisma.AssessmentTaskOrderByRelationAggregateInput
+  createdPlanningItems?: Prisma.PlanningItemOrderByRelationAggregateInput
+  approvedPlanningItems?: Prisma.PlanningItemOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -232,6 +236,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   requestedAssessmentTasks?: Prisma.AssessmentTaskListRelationFilter
   assignedAssessmentTasks?: Prisma.AssessmentTaskListRelationFilter
   completedAssessmentTasks?: Prisma.AssessmentTaskListRelationFilter
+  createdPlanningItems?: Prisma.PlanningItemListRelationFilter
+  approvedPlanningItems?: Prisma.PlanningItemListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -273,6 +279,8 @@ export type UserCreateInput = {
   requestedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutRequesterInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutAssigneeInput
   completedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutApproverInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -288,6 +296,8 @@ export type UserUncheckedCreateInput = {
   requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutRequesterInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutAssigneeInput
   completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutApproverInput
 }
 
 export type UserUpdateInput = {
@@ -303,6 +313,8 @@ export type UserUpdateInput = {
   requestedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutRequesterNestedInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutAssigneeNestedInput
   completedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUpdateManyWithoutApproverNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -318,6 +330,8 @@ export type UserUncheckedUpdateInput = {
   requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutRequesterNestedInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutAssigneeNestedInput
   completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutApproverNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -432,6 +446,38 @@ export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>
 }
 
+export type UserCreateNestedOneWithoutCreatedPlanningItemsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedPlanningItemsInput, Prisma.UserUncheckedCreateWithoutCreatedPlanningItemsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedPlanningItemsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutApprovedPlanningItemsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApprovedPlanningItemsInput, Prisma.UserUncheckedCreateWithoutApprovedPlanningItemsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApprovedPlanningItemsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutCreatedPlanningItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedPlanningItemsInput, Prisma.UserUncheckedCreateWithoutCreatedPlanningItemsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedPlanningItemsInput
+  upsert?: Prisma.UserUpsertWithoutCreatedPlanningItemsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedPlanningItemsInput, Prisma.UserUpdateWithoutCreatedPlanningItemsInput>, Prisma.UserUncheckedUpdateWithoutCreatedPlanningItemsInput>
+}
+
+export type UserUpdateOneWithoutApprovedPlanningItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApprovedPlanningItemsInput, Prisma.UserUncheckedCreateWithoutApprovedPlanningItemsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApprovedPlanningItemsInput
+  upsert?: Prisma.UserUpsertWithoutApprovedPlanningItemsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutApprovedPlanningItemsInput, Prisma.UserUpdateWithoutApprovedPlanningItemsInput>, Prisma.UserUncheckedUpdateWithoutApprovedPlanningItemsInput>
+}
+
 export type UserCreateNestedOneWithoutRequestedAssessmentTasksInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutRequestedAssessmentTasksInput, Prisma.UserUncheckedCreateWithoutRequestedAssessmentTasksInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutRequestedAssessmentTasksInput
@@ -488,6 +534,8 @@ export type UserCreateWithoutOrganizationsInput = {
   requestedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutRequesterInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutAssigneeInput
   completedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutApproverInput
 }
 
 export type UserUncheckedCreateWithoutOrganizationsInput = {
@@ -502,6 +550,8 @@ export type UserUncheckedCreateWithoutOrganizationsInput = {
   requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutRequesterInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutAssigneeInput
   completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutApproverInput
 }
 
 export type UserCreateOrConnectWithoutOrganizationsInput = {
@@ -532,6 +582,8 @@ export type UserUpdateWithoutOrganizationsInput = {
   requestedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutRequesterNestedInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutAssigneeNestedInput
   completedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUpdateManyWithoutApproverNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrganizationsInput = {
@@ -546,6 +598,8 @@ export type UserUncheckedUpdateWithoutOrganizationsInput = {
   requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutRequesterNestedInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutAssigneeNestedInput
   completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutApproverNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -560,6 +614,8 @@ export type UserCreateWithoutSessionsInput = {
   requestedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutRequesterInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutAssigneeInput
   completedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutApproverInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -574,6 +630,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutRequesterInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutAssigneeInput
   completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutApproverInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -604,6 +662,8 @@ export type UserUpdateWithoutSessionsInput = {
   requestedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutRequesterNestedInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutAssigneeNestedInput
   completedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUpdateManyWithoutApproverNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -618,6 +678,168 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutRequesterNestedInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutAssigneeNestedInput
   completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutApproverNestedInput
+}
+
+export type UserCreateWithoutCreatedPlanningItemsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationCreateNestedManyWithoutUserInput
+  sessions?: Prisma.AssessmentSessionCreateNestedManyWithoutAdvisorInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutRequesterInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutAssigneeInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutCompletedByInput
+  approvedPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutApproverInput
+}
+
+export type UserUncheckedCreateWithoutCreatedPlanningItemsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.AssessmentSessionUncheckedCreateNestedManyWithoutAdvisorInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutRequesterInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutCompletedByInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutApproverInput
+}
+
+export type UserCreateOrConnectWithoutCreatedPlanningItemsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedPlanningItemsInput, Prisma.UserUncheckedCreateWithoutCreatedPlanningItemsInput>
+}
+
+export type UserCreateWithoutApprovedPlanningItemsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationCreateNestedManyWithoutUserInput
+  sessions?: Prisma.AssessmentSessionCreateNestedManyWithoutAdvisorInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutRequesterInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutAssigneeInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutCreatorInput
+}
+
+export type UserUncheckedCreateWithoutApprovedPlanningItemsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.AssessmentSessionUncheckedCreateNestedManyWithoutAdvisorInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutRequesterInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutCreatorInput
+}
+
+export type UserCreateOrConnectWithoutApprovedPlanningItemsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutApprovedPlanningItemsInput, Prisma.UserUncheckedCreateWithoutApprovedPlanningItemsInput>
+}
+
+export type UserUpsertWithoutCreatedPlanningItemsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedPlanningItemsInput, Prisma.UserUncheckedUpdateWithoutCreatedPlanningItemsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedPlanningItemsInput, Prisma.UserUncheckedCreateWithoutCreatedPlanningItemsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreatedPlanningItemsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedPlanningItemsInput, Prisma.UserUncheckedUpdateWithoutCreatedPlanningItemsInput>
+}
+
+export type UserUpdateWithoutCreatedPlanningItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.AssessmentSessionUpdateManyWithoutAdvisorNestedInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutRequesterNestedInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutAssigneeNestedInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutCompletedByNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUpdateManyWithoutApproverNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatedPlanningItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.AssessmentSessionUncheckedUpdateManyWithoutAdvisorNestedInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutRequesterNestedInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutCompletedByNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutApproverNestedInput
+}
+
+export type UserUpsertWithoutApprovedPlanningItemsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutApprovedPlanningItemsInput, Prisma.UserUncheckedUpdateWithoutApprovedPlanningItemsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutApprovedPlanningItemsInput, Prisma.UserUncheckedCreateWithoutApprovedPlanningItemsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutApprovedPlanningItemsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutApprovedPlanningItemsInput, Prisma.UserUncheckedUpdateWithoutApprovedPlanningItemsInput>
+}
+
+export type UserUpdateWithoutApprovedPlanningItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.AssessmentSessionUpdateManyWithoutAdvisorNestedInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutRequesterNestedInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutAssigneeNestedInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUpdateManyWithoutCreatorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutApprovedPlanningItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.AssessmentSessionUncheckedUpdateManyWithoutAdvisorNestedInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutRequesterNestedInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutRequestedAssessmentTasksInput = {
@@ -632,6 +854,8 @@ export type UserCreateWithoutRequestedAssessmentTasksInput = {
   sessions?: Prisma.AssessmentSessionCreateNestedManyWithoutAdvisorInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutAssigneeInput
   completedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutApproverInput
 }
 
 export type UserUncheckedCreateWithoutRequestedAssessmentTasksInput = {
@@ -646,6 +870,8 @@ export type UserUncheckedCreateWithoutRequestedAssessmentTasksInput = {
   sessions?: Prisma.AssessmentSessionUncheckedCreateNestedManyWithoutAdvisorInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutAssigneeInput
   completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutApproverInput
 }
 
 export type UserCreateOrConnectWithoutRequestedAssessmentTasksInput = {
@@ -665,6 +891,8 @@ export type UserCreateWithoutAssignedAssessmentTasksInput = {
   sessions?: Prisma.AssessmentSessionCreateNestedManyWithoutAdvisorInput
   requestedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutRequesterInput
   completedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutApproverInput
 }
 
 export type UserUncheckedCreateWithoutAssignedAssessmentTasksInput = {
@@ -679,6 +907,8 @@ export type UserUncheckedCreateWithoutAssignedAssessmentTasksInput = {
   sessions?: Prisma.AssessmentSessionUncheckedCreateNestedManyWithoutAdvisorInput
   requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutRequesterInput
   completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutApproverInput
 }
 
 export type UserCreateOrConnectWithoutAssignedAssessmentTasksInput = {
@@ -698,6 +928,8 @@ export type UserCreateWithoutCompletedAssessmentTasksInput = {
   sessions?: Prisma.AssessmentSessionCreateNestedManyWithoutAdvisorInput
   requestedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutRequesterInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutAssigneeInput
+  createdPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutApproverInput
 }
 
 export type UserUncheckedCreateWithoutCompletedAssessmentTasksInput = {
@@ -712,6 +944,8 @@ export type UserUncheckedCreateWithoutCompletedAssessmentTasksInput = {
   sessions?: Prisma.AssessmentSessionUncheckedCreateNestedManyWithoutAdvisorInput
   requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutRequesterInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutApproverInput
 }
 
 export type UserCreateOrConnectWithoutCompletedAssessmentTasksInput = {
@@ -742,6 +976,8 @@ export type UserUpdateWithoutRequestedAssessmentTasksInput = {
   sessions?: Prisma.AssessmentSessionUpdateManyWithoutAdvisorNestedInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutAssigneeNestedInput
   completedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUpdateManyWithoutApproverNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRequestedAssessmentTasksInput = {
@@ -756,6 +992,8 @@ export type UserUncheckedUpdateWithoutRequestedAssessmentTasksInput = {
   sessions?: Prisma.AssessmentSessionUncheckedUpdateManyWithoutAdvisorNestedInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutAssigneeNestedInput
   completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutApproverNestedInput
 }
 
 export type UserUpsertWithoutAssignedAssessmentTasksInput = {
@@ -781,6 +1019,8 @@ export type UserUpdateWithoutAssignedAssessmentTasksInput = {
   sessions?: Prisma.AssessmentSessionUpdateManyWithoutAdvisorNestedInput
   requestedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutRequesterNestedInput
   completedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUpdateManyWithoutApproverNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedAssessmentTasksInput = {
@@ -795,6 +1035,8 @@ export type UserUncheckedUpdateWithoutAssignedAssessmentTasksInput = {
   sessions?: Prisma.AssessmentSessionUncheckedUpdateManyWithoutAdvisorNestedInput
   requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutRequesterNestedInput
   completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutApproverNestedInput
 }
 
 export type UserUpsertWithoutCompletedAssessmentTasksInput = {
@@ -820,6 +1062,8 @@ export type UserUpdateWithoutCompletedAssessmentTasksInput = {
   sessions?: Prisma.AssessmentSessionUpdateManyWithoutAdvisorNestedInput
   requestedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutRequesterNestedInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutAssigneeNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUpdateManyWithoutApproverNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCompletedAssessmentTasksInput = {
@@ -834,6 +1078,8 @@ export type UserUncheckedUpdateWithoutCompletedAssessmentTasksInput = {
   sessions?: Prisma.AssessmentSessionUncheckedUpdateManyWithoutAdvisorNestedInput
   requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutRequesterNestedInput
   assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutApproverNestedInput
 }
 
 
@@ -847,6 +1093,8 @@ export type UserCountOutputType = {
   requestedAssessmentTasks: number
   assignedAssessmentTasks: number
   completedAssessmentTasks: number
+  createdPlanningItems: number
+  approvedPlanningItems: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -855,6 +1103,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   requestedAssessmentTasks?: boolean | UserCountOutputTypeCountRequestedAssessmentTasksArgs
   assignedAssessmentTasks?: boolean | UserCountOutputTypeCountAssignedAssessmentTasksArgs
   completedAssessmentTasks?: boolean | UserCountOutputTypeCountCompletedAssessmentTasksArgs
+  createdPlanningItems?: boolean | UserCountOutputTypeCountCreatedPlanningItemsArgs
+  approvedPlanningItems?: boolean | UserCountOutputTypeCountApprovedPlanningItemsArgs
 }
 
 /**
@@ -902,6 +1152,20 @@ export type UserCountOutputTypeCountCompletedAssessmentTasksArgs<ExtArgs extends
   where?: Prisma.AssessmentTaskWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCreatedPlanningItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PlanningItemWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountApprovedPlanningItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PlanningItemWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -916,6 +1180,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   requestedAssessmentTasks?: boolean | Prisma.User$requestedAssessmentTasksArgs<ExtArgs>
   assignedAssessmentTasks?: boolean | Prisma.User$assignedAssessmentTasksArgs<ExtArgs>
   completedAssessmentTasks?: boolean | Prisma.User$completedAssessmentTasksArgs<ExtArgs>
+  createdPlanningItems?: boolean | Prisma.User$createdPlanningItemsArgs<ExtArgs>
+  approvedPlanningItems?: boolean | Prisma.User$approvedPlanningItemsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -956,6 +1222,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   requestedAssessmentTasks?: boolean | Prisma.User$requestedAssessmentTasksArgs<ExtArgs>
   assignedAssessmentTasks?: boolean | Prisma.User$assignedAssessmentTasksArgs<ExtArgs>
   completedAssessmentTasks?: boolean | Prisma.User$completedAssessmentTasksArgs<ExtArgs>
+  createdPlanningItems?: boolean | Prisma.User$createdPlanningItemsArgs<ExtArgs>
+  approvedPlanningItems?: boolean | Prisma.User$approvedPlanningItemsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -969,6 +1237,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     requestedAssessmentTasks: Prisma.$AssessmentTaskPayload<ExtArgs>[]
     assignedAssessmentTasks: Prisma.$AssessmentTaskPayload<ExtArgs>[]
     completedAssessmentTasks: Prisma.$AssessmentTaskPayload<ExtArgs>[]
+    createdPlanningItems: Prisma.$PlanningItemPayload<ExtArgs>[]
+    approvedPlanningItems: Prisma.$PlanningItemPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1377,6 +1647,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   requestedAssessmentTasks<T extends Prisma.User$requestedAssessmentTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$requestedAssessmentTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignedAssessmentTasks<T extends Prisma.User$assignedAssessmentTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedAssessmentTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   completedAssessmentTasks<T extends Prisma.User$completedAssessmentTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$completedAssessmentTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdPlanningItems<T extends Prisma.User$createdPlanningItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdPlanningItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlanningItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  approvedPlanningItems<T extends Prisma.User$approvedPlanningItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$approvedPlanningItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlanningItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1923,6 +2195,54 @@ export type User$completedAssessmentTasksArgs<ExtArgs extends runtime.Types.Exte
   take?: number
   skip?: number
   distinct?: Prisma.AssessmentTaskScalarFieldEnum | Prisma.AssessmentTaskScalarFieldEnum[]
+}
+
+/**
+ * User.createdPlanningItems
+ */
+export type User$createdPlanningItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PlanningItem
+   */
+  select?: Prisma.PlanningItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PlanningItem
+   */
+  omit?: Prisma.PlanningItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PlanningItemInclude<ExtArgs> | null
+  where?: Prisma.PlanningItemWhereInput
+  orderBy?: Prisma.PlanningItemOrderByWithRelationInput | Prisma.PlanningItemOrderByWithRelationInput[]
+  cursor?: Prisma.PlanningItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PlanningItemScalarFieldEnum | Prisma.PlanningItemScalarFieldEnum[]
+}
+
+/**
+ * User.approvedPlanningItems
+ */
+export type User$approvedPlanningItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PlanningItem
+   */
+  select?: Prisma.PlanningItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PlanningItem
+   */
+  omit?: Prisma.PlanningItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PlanningItemInclude<ExtArgs> | null
+  where?: Prisma.PlanningItemWhereInput
+  orderBy?: Prisma.PlanningItemOrderByWithRelationInput | Prisma.PlanningItemOrderByWithRelationInput[]
+  cursor?: Prisma.PlanningItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PlanningItemScalarFieldEnum | Prisma.PlanningItemScalarFieldEnum[]
 }
 
 /**
