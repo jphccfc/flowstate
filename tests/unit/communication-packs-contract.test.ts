@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
 const root = process.cwd();
+const queue = readFileSync(resolve(root, "app/api/clients/[id]/communication-packs/route.ts"), "utf8");
 const detail = readFileSync(resolve(root, "app/api/clients/[id]/communication-packs/[packId]/route.ts"), "utf8");
 const page = readFileSync(resolve(root, "app/clients/[id]/communication-packs/page.tsx"), "utf8");
 const schema = readFileSync(resolve(root, "prisma/schema.prisma"), "utf8");
@@ -33,6 +34,16 @@ describe("Communication Pack governed review contract", () => {
     for (const action of ["SUBMITTED", "REQUEST_CHANGES", "APPROVED", "ACKNOWLEDGED"]) expect(schema).toContain(action);
     expect(detail).toContain("communicationPackAcknowledgement.create");
     expect(detail).toContain("assessment.review");
+  });
+
+
+  it("returns current approved decisions with identifiable labels rather than raw IDs", () => {
+    expect(queue).toContain("supersedesId");
+    expect(queue).toContain("currentDecisions");
+    expect(queue).toContain("capability");
+    expect(queue).toContain("label");
+    expect(page).toContain("decision.label");
+    expect(page).not.toContain("s.id}</option>");
   });
 
   it("uses the shared sentence-case display label helper", () => {
