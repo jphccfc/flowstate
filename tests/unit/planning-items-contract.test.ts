@@ -6,6 +6,7 @@ const root = resolve(__dirname, "../..");
 const schema = readFileSync(resolve(root, "prisma/schema.prisma"), "utf8");
 const route = readFileSync(resolve(root, "app/api/clients/[id]/planning-items/route.ts"), "utf8");
 const page = readFileSync(resolve(root, "app/clients/[id]/planning/page.tsx"), "utf8");
+const members = readFileSync(resolve(root, "app/api/clients/[id]/members/route.ts"), "utf8");
 
 describe("PlanningItem contract", () => {
   it("defines the four planning item types and lifecycle fields", () => {
@@ -19,6 +20,9 @@ describe("PlanningItem contract", () => {
     expect(route).toContain("assessment.submit");
     expect(route).toContain("assessment.review");
     expect(page).toContain("Add planning item");
+    expect(page).toContain("/members");
+    expect(page).toContain("member.email");
+    expect(members).toContain("members.read");
     expect(page).toContain("No planning items yet");
   });
 });

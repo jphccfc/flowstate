@@ -43,6 +43,13 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   if (typeof body.taskId !== "string") return NextResponse.json({ error: "taskId is required" }, { status: 400 });
   const task = await prisma.assessmentTask.findFirst({ where: { id: body.taskId, organizationId: id } }); if (!task) return NextResponse.json({ error: "Task not found" }, { status: 404 });
   const data: Record<string, unknown> = {};
+  if (valid(body.type, types)) data.type = body.type;
+  if (typeof body.title === "string" && body.title.trim()) data.title = body.title.trim();
+  if (typeof body.description === "string" && body.description.trim()) data.description = body.description.trim();
+  if (typeof body.context === "string") data.context = body.context.trim() || null;
+  if (typeof body.dueDate === "string") { const dueDate = new Date(body.dueDate); if (Number.isNaN(dueDate.getTime())) return NextResponse.json({ error: "A valid due date is required" }, { status: 400 }); data.dueDate = dueDate; }
+  if (Number.isInteger(body.priority)) data.priority = Math.min(5, Math.max(1, body.priority));
+  if (typeof body.assigneeId === "string") { const assignee = await prisma.userOrganization.findFirst({ where: { organizationId: id, userId: body.assigneeId }, select: { userId: true } }); if (!assignee) return NextResponse.json({ error: "Assignee must belong to this organisation" }, { status: 400 }); data.assigneeId = assignee.userId; }
   if (valid(body.status, statuses)) data.status = body.status;
   if (valid(body.humanReviewState, reviewStates)) { if (!(await hasOrganizationPermission(current.email, id, "assessment.review"))) return NextResponse.json({ error: "Human review permission required" }, { status: 403 }); data.humanReviewState = body.humanReviewState; }
   if (typeof body.completionNote === "string") data.completionNote = body.completionNote.trim() || null;
