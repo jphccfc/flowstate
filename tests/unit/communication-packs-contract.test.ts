@@ -15,6 +15,9 @@ describe("Communication Pack governed review contract", () => {
     expect(page).toContain("recipientContext");
     expect(page).toContain("stakeholderContext");
     expect(page).toContain("Save draft");
+    expect(page).toContain("At least one approved source is required");
+    expect(page).toContain("No approved decision sources available");
+    expect(page).toContain("No approved insight sources available");
   });
 
   it("supports detail GET and editable PATCH persistence", () => {
