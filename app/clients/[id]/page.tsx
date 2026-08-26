@@ -93,7 +93,7 @@ export default async function ClientOverviewPage({
         <h2 id="flowstate-process-title" className="font-semibold text-[var(--foreground)] mb-3">Evidence to outcome</h2>
         <p className="text-sm text-[var(--muted)] mb-4">Evidence is reviewed into assessment decisions, then translated into strategic Growth Plan initiatives and measurable business outcomes.</p>
         <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-[var(--foreground)]" aria-label="Flowstate process">
-          {"Evidence → Assessment → Decision → Growth Plan → Outcome".split(" → ").map((step, index, steps) => (
+          {"Evidence → Assessment → Decision → Planning Items → Growth Plan → Outcome".split(" → ").map((step, index, steps) => (
             <span key={step} className="flex items-center gap-2">
               <span className="rounded-full border border-[var(--card-border)] bg-[var(--muted-bg)] px-3 py-1.5">{step}</span>
               {index < steps.length - 1 && <span className="text-[var(--muted)]" aria-hidden="true">→</span>}
@@ -112,6 +112,12 @@ export default async function ClientOverviewPage({
         </div>
         <div className="workspace-card p-6">
           <div className="workspace-nav-icon mb-4 text-sm">09</div>
+          <h2 className="font-semibold text-[var(--foreground)] mb-1">Planning items</h2>
+          <p className="text-sm text-[var(--muted)] mb-3">Turn approved insights into requirements, specifications, goals and objectives before creating strategic Growth Plan initiatives.</p>
+          <Link href={`/clients/${id}/planning`} className="text-sm font-medium text-[var(--accent)] hover:underline">Open planning items →</Link>
+        </div>
+        <div className="workspace-card p-6">
+          <div className="workspace-nav-icon mb-4 text-sm">10</div>
           <h2 className="font-semibold text-[var(--foreground)] mb-1">Growth plan</h2>
           <p className="text-sm text-[var(--muted)] mb-3">Strategic initiatives to improve the business outcome through capability, process, technology, profitability, sale, or restructuring work.</p>
           <Link href={`/clients/${id}/recommendations`} className="text-sm font-medium text-[var(--accent)] hover:underline">Open growth plan →</Link>
