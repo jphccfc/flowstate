@@ -492,6 +492,13 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   const selectedCap = org?.domains.flatMap((d) => d.capabilities).find((c) => c.id === selectedCapId);
   const selectedDomain = org?.domains.find((d) => d.capabilities.some((c) => c.id === selectedCapId));
 
+  function selectCapability(capabilityId: string) {
+    setSelectedCapId(capabilityId);
+    setHistory(null);
+    setPerspectiveData(null);
+    setPerspectiveError(null);
+  }
+
   if (loading) return <div className="flex-1 flex items-center justify-center text-[var(--muted)]">Loading...</div>;
 
   if (orgError) {
@@ -538,40 +545,23 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
           </div>
           <div className="text-xs text-[var(--muted)]">{org.domains.reduce((count, domain) => count + domain.capabilities.length, 0)} capabilities</div>
         </div>
-        <div className="assessment-selector-options">
-          {org.domains.map((domain) => (
-            <div key={domain.id} className="assessment-domain-group">
-              <div className="flex items-center gap-2 px-3 py-2 bg-[var(--muted-bg)] rounded-lg">
-                <div className="w-2 h-2 rounded-full shrink-0" style={{ background: domain.color ?? "#94a3b8" }} />
-                <span className="text-xs font-semibold text-[var(--foreground)] truncate">{domain.name}</span>
-              </div>
-              <div className="assessment-capability-options">
-                {domain.capabilities.map((cap) => {
-                  const gap = calculateGap(cap.currentAsIs, cap.currentToBe);
-                  const severity = getGapSeverity(gap);
-                  const isSelected = cap.id === selectedCapId;
-                  return (
-                    <button
-                      type="button"
-                      key={cap.id}
-                      aria-pressed={isSelected}
-                      onClick={() => {
-                        setSelectedCapId(cap.id);
-                        setHistory(null);
-                        setPerspectiveData(null);
-                        setPerspectiveError(null);
-                      }}
-                      className={`assessment-capability-option ${isSelected ? "is-selected" : ""}`}
-                    >
-                      <span className="truncate">{cap.name}</span>
-                      <span className="w-2 h-2 rounded-full shrink-0" style={{ background: getGapColor(severity) }} />
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
+        <label className="assessment-selector-control">
+          <span className="text-xs font-semibold text-[var(--foreground)]">Capability</span>
+          <select
+            aria-label="Capability to assess"
+            value={selectedCapId ?? ""}
+            onChange={(event) => selectCapability(event.target.value)}
+            className="assessment-capability-select"
+          >
+            {org.domains.map((domain) => (
+              <optgroup key={domain.id} label={domain.name}>
+                {domain.capabilities.map((cap) => (
+                  <option key={cap.id} value={cap.id}>{cap.name}</option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+        </label>
       </section>
 
       <main className="assessment-content">
