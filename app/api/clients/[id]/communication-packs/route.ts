@@ -5,11 +5,13 @@ import { hasOrganizationPermission } from "@/lib/auth/organization";
 
 async function currentUser() { return (await (await createClient()).auth.getUser()).data.user; }
 async function approvedSources(organizationId: string) {
-  const [decisions, insights] = await Promise.all([
-    prisma.assessmentDecision.findMany({ where: { capability: { domain: { organizationId } }, status: { in: ["APPROVED", "SIGNED_OFF"] } }, select: { id: true, status: true, rationale: true } }),
+  const [allDecisions, insights] = await Promise.all([
+    prisma.assessmentDecision.findMany({ where: { capability: { domain: { organizationId } }, status: { in: ["APPROVED", "SIGNED_OFF"] } }, select: { id: true, status: true, rationale: true, score: true, decidedAt: true, supersedesId: true, capability: { select: { name: true, domain: { select: { name: true } } } } }, orderBy: { decidedAt: "desc" } }),
     prisma.approvedInsight.findMany({ where: { capability: { domain: { organizationId } }, status: "APPROVED" }, select: { id: true, title: true, status: true } }),
   ]);
-  return { decisions, insights };
+  const supersededIds = new Set(allDecisions.map((decision) => decision.supersedesId).filter((id): id is string => Boolean(id)));
+  const currentDecisions = allDecisions.filter((decision) => !supersededIds.has(decision.id)).map((decision) => ({ id: decision.id, status: decision.status, label: `${decision.capability.domain.name} · ${decision.capability.name}${decision.score === null ? "" : ` · Score ${decision.score}`} · ${new Date(decision.decidedAt).toLocaleDateString("en-GB")}` }));
+  return { decisions: currentDecisions, insights };
 }
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const user = await currentUser(); const { id } = await params;
