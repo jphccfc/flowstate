@@ -34,6 +34,10 @@ describe("Assessment Tasks and profile workflow", () => {
   it("provides an edit form for assessment task fields", () => {
     expect(tasks).toContain("Edit assessment task");
     expect(tasks).toContain("setEditingTask");
+    expect(tasks).toContain("onClick={() => startEdit(task)}");
+    expect(tasks).not.toContain(">Edit task</button>");
+    expect(tasks).toContain("formatDisplayLabel(status)");
+    expect(tasks).toContain("formatDisplayLabel(task.humanReviewState)");
     expect(tasks).toContain("method: \"PATCH\"");
     expect(taskRoute).toContain("body.title");
     expect(taskRoute).toContain("body.description");
