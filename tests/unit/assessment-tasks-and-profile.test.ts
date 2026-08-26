@@ -6,6 +6,8 @@ const root = process.cwd();
 const nav = readFileSync(resolve(root, "components/layout/WorkspaceNav.tsx"), "utf8");
 const overview = readFileSync(resolve(root, "app/clients/[id]/page.tsx"), "utf8");
 const profile = readFileSync(resolve(root, "app/profile/page.tsx"), "utf8");
+const tasks = readFileSync(resolve(root, "app/clients/[id]/tasks/page.tsx"), "utf8");
+const taskRoute = readFileSync(resolve(root, "app/api/clients/[id]/tasks/route.ts"), "utf8");
 
 describe("Assessment Tasks and profile workflow", () => {
   it("exposes Assessment Tasks in the workspace navigation", () => {
@@ -27,6 +29,15 @@ describe("Assessment Tasks and profile workflow", () => {
     expect(profile).toContain("<Navbar />");
     expect(profile).toContain('href="/dashboard"');
     expect(profile).toContain("Back to main menu");
+  });
+
+  it("provides an edit form for assessment task fields", () => {
+    expect(tasks).toContain("Edit assessment task");
+    expect(tasks).toContain("setEditingTask");
+    expect(tasks).toContain("method: \"PATCH\"");
+    expect(taskRoute).toContain("body.title");
+    expect(taskRoute).toContain("body.description");
+    expect(taskRoute).toContain("body.dueDate");
   });
 
   it("defines the separate assessment task model", () => {
