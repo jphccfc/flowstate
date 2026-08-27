@@ -412,6 +412,9 @@ export const MaturityPerspectiveScalarFieldEnum = {
   sourceEvidenceIds: 'sourceEvidenceIds',
   rubricVersion: 'rubricVersion',
   status: 'status',
+  reviewedBy: 'reviewedBy',
+  reviewNotes: 'reviewNotes',
+  reviewedAt: 'reviewedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

@@ -58,6 +58,9 @@ export type MaturityPerspectiveMinAggregateOutputType = {
   confidence: number | null
   rubricVersion: number | null
   status: string | null
+  reviewedBy: string | null
+  reviewNotes: string | null
+  reviewedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -78,6 +81,9 @@ export type MaturityPerspectiveMaxAggregateOutputType = {
   confidence: number | null
   rubricVersion: number | null
   status: string | null
+  reviewedBy: string | null
+  reviewNotes: string | null
+  reviewedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -99,6 +105,9 @@ export type MaturityPerspectiveCountAggregateOutputType = {
   sourceEvidenceIds: number
   rubricVersion: number
   status: number
+  reviewedBy: number
+  reviewNotes: number
+  reviewedAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -137,6 +146,9 @@ export type MaturityPerspectiveMinAggregateInputType = {
   confidence?: true
   rubricVersion?: true
   status?: true
+  reviewedBy?: true
+  reviewNotes?: true
+  reviewedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -157,6 +169,9 @@ export type MaturityPerspectiveMaxAggregateInputType = {
   confidence?: true
   rubricVersion?: true
   status?: true
+  reviewedBy?: true
+  reviewNotes?: true
+  reviewedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -178,6 +193,9 @@ export type MaturityPerspectiveCountAggregateInputType = {
   sourceEvidenceIds?: true
   rubricVersion?: true
   status?: true
+  reviewedBy?: true
+  reviewNotes?: true
+  reviewedAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -286,6 +304,9 @@ export type MaturityPerspectiveGroupByOutputType = {
   sourceEvidenceIds: string[]
   rubricVersion: number | null
   status: string
+  reviewedBy: string | null
+  reviewNotes: string | null
+  reviewedAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: MaturityPerspectiveCountAggregateOutputType | null
@@ -330,6 +351,9 @@ export type MaturityPerspectiveWhereInput = {
   sourceEvidenceIds?: Prisma.StringNullableListFilter<"MaturityPerspective">
   rubricVersion?: Prisma.IntNullableFilter<"MaturityPerspective"> | number | null
   status?: Prisma.StringFilter<"MaturityPerspective"> | string
+  reviewedBy?: Prisma.StringNullableFilter<"MaturityPerspective"> | string | null
+  reviewNotes?: Prisma.StringNullableFilter<"MaturityPerspective"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"MaturityPerspective"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"MaturityPerspective"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MaturityPerspective"> | Date | string
   capability?: Prisma.XOR<Prisma.CapabilityScalarRelationFilter, Prisma.CapabilityWhereInput>
@@ -353,6 +377,9 @@ export type MaturityPerspectiveOrderByWithRelationInput = {
   sourceEvidenceIds?: Prisma.SortOrder
   rubricVersion?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  reviewedBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewNotes?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   capability?: Prisma.CapabilityOrderByWithRelationInput
@@ -379,6 +406,9 @@ export type MaturityPerspectiveWhereUniqueInput = Prisma.AtLeast<{
   sourceEvidenceIds?: Prisma.StringNullableListFilter<"MaturityPerspective">
   rubricVersion?: Prisma.IntNullableFilter<"MaturityPerspective"> | number | null
   status?: Prisma.StringFilter<"MaturityPerspective"> | string
+  reviewedBy?: Prisma.StringNullableFilter<"MaturityPerspective"> | string | null
+  reviewNotes?: Prisma.StringNullableFilter<"MaturityPerspective"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"MaturityPerspective"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"MaturityPerspective"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MaturityPerspective"> | Date | string
   capability?: Prisma.XOR<Prisma.CapabilityScalarRelationFilter, Prisma.CapabilityWhereInput>
@@ -402,6 +432,9 @@ export type MaturityPerspectiveOrderByWithAggregationInput = {
   sourceEvidenceIds?: Prisma.SortOrder
   rubricVersion?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  reviewedBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewNotes?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.MaturityPerspectiveCountOrderByAggregateInput
@@ -431,6 +464,9 @@ export type MaturityPerspectiveScalarWhereWithAggregatesInput = {
   sourceEvidenceIds?: Prisma.StringNullableListFilter<"MaturityPerspective">
   rubricVersion?: Prisma.IntNullableWithAggregatesFilter<"MaturityPerspective"> | number | null
   status?: Prisma.StringWithAggregatesFilter<"MaturityPerspective"> | string
+  reviewedBy?: Prisma.StringNullableWithAggregatesFilter<"MaturityPerspective"> | string | null
+  reviewNotes?: Prisma.StringNullableWithAggregatesFilter<"MaturityPerspective"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"MaturityPerspective"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"MaturityPerspective"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"MaturityPerspective"> | Date | string
 }
@@ -450,6 +486,9 @@ export type MaturityPerspectiveCreateInput = {
   sourceEvidenceIds?: Prisma.MaturityPerspectiveCreatesourceEvidenceIdsInput | string[]
   rubricVersion?: number | null
   status?: string
+  reviewedBy?: string | null
+  reviewNotes?: string | null
+  reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   capability: Prisma.CapabilityCreateNestedOneWithoutMaturityPerspectivesInput
@@ -473,6 +512,9 @@ export type MaturityPerspectiveUncheckedCreateInput = {
   sourceEvidenceIds?: Prisma.MaturityPerspectiveCreatesourceEvidenceIdsInput | string[]
   rubricVersion?: number | null
   status?: string
+  reviewedBy?: string | null
+  reviewNotes?: string | null
+  reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -492,6 +534,9 @@ export type MaturityPerspectiveUpdateInput = {
   sourceEvidenceIds?: Prisma.MaturityPerspectiveUpdatesourceEvidenceIdsInput | string[]
   rubricVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capability?: Prisma.CapabilityUpdateOneRequiredWithoutMaturityPerspectivesNestedInput
@@ -515,6 +560,9 @@ export type MaturityPerspectiveUncheckedUpdateInput = {
   sourceEvidenceIds?: Prisma.MaturityPerspectiveUpdatesourceEvidenceIdsInput | string[]
   rubricVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -536,6 +584,9 @@ export type MaturityPerspectiveCreateManyInput = {
   sourceEvidenceIds?: Prisma.MaturityPerspectiveCreatesourceEvidenceIdsInput | string[]
   rubricVersion?: number | null
   status?: string
+  reviewedBy?: string | null
+  reviewNotes?: string | null
+  reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -555,6 +606,9 @@ export type MaturityPerspectiveUpdateManyMutationInput = {
   sourceEvidenceIds?: Prisma.MaturityPerspectiveUpdatesourceEvidenceIdsInput | string[]
   rubricVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -576,6 +630,9 @@ export type MaturityPerspectiveUncheckedUpdateManyInput = {
   sourceEvidenceIds?: Prisma.MaturityPerspectiveUpdatesourceEvidenceIdsInput | string[]
   rubricVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -607,6 +664,9 @@ export type MaturityPerspectiveCountOrderByAggregateInput = {
   sourceEvidenceIds?: Prisma.SortOrder
   rubricVersion?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  reviewedBy?: Prisma.SortOrder
+  reviewNotes?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -635,6 +695,9 @@ export type MaturityPerspectiveMaxOrderByAggregateInput = {
   confidence?: Prisma.SortOrder
   rubricVersion?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  reviewedBy?: Prisma.SortOrder
+  reviewNotes?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -655,6 +718,9 @@ export type MaturityPerspectiveMinOrderByAggregateInput = {
   confidence?: Prisma.SortOrder
   rubricVersion?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  reviewedBy?: Prisma.SortOrder
+  reviewNotes?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -775,6 +841,9 @@ export type MaturityPerspectiveCreateWithoutCapabilityInput = {
   sourceEvidenceIds?: Prisma.MaturityPerspectiveCreatesourceEvidenceIdsInput | string[]
   rubricVersion?: number | null
   status?: string
+  reviewedBy?: string | null
+  reviewNotes?: string | null
+  reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   stakeholder?: Prisma.StakeholderCreateNestedOneWithoutPerspectivesInput
@@ -796,6 +865,9 @@ export type MaturityPerspectiveUncheckedCreateWithoutCapabilityInput = {
   sourceEvidenceIds?: Prisma.MaturityPerspectiveCreatesourceEvidenceIdsInput | string[]
   rubricVersion?: number | null
   status?: string
+  reviewedBy?: string | null
+  reviewNotes?: string | null
+  reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -846,6 +918,9 @@ export type MaturityPerspectiveScalarWhereInput = {
   sourceEvidenceIds?: Prisma.StringNullableListFilter<"MaturityPerspective">
   rubricVersion?: Prisma.IntNullableFilter<"MaturityPerspective"> | number | null
   status?: Prisma.StringFilter<"MaturityPerspective"> | string
+  reviewedBy?: Prisma.StringNullableFilter<"MaturityPerspective"> | string | null
+  reviewNotes?: Prisma.StringNullableFilter<"MaturityPerspective"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"MaturityPerspective"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"MaturityPerspective"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MaturityPerspective"> | Date | string
 }
@@ -865,6 +940,9 @@ export type MaturityPerspectiveCreateWithoutStakeholderInput = {
   sourceEvidenceIds?: Prisma.MaturityPerspectiveCreatesourceEvidenceIdsInput | string[]
   rubricVersion?: number | null
   status?: string
+  reviewedBy?: string | null
+  reviewNotes?: string | null
+  reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   capability: Prisma.CapabilityCreateNestedOneWithoutMaturityPerspectivesInput
@@ -886,6 +964,9 @@ export type MaturityPerspectiveUncheckedCreateWithoutStakeholderInput = {
   sourceEvidenceIds?: Prisma.MaturityPerspectiveCreatesourceEvidenceIdsInput | string[]
   rubricVersion?: number | null
   status?: string
+  reviewedBy?: string | null
+  reviewNotes?: string | null
+  reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -932,6 +1013,9 @@ export type MaturityPerspectiveCreateManyCapabilityInput = {
   sourceEvidenceIds?: Prisma.MaturityPerspectiveCreatesourceEvidenceIdsInput | string[]
   rubricVersion?: number | null
   status?: string
+  reviewedBy?: string | null
+  reviewNotes?: string | null
+  reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -951,6 +1035,9 @@ export type MaturityPerspectiveUpdateWithoutCapabilityInput = {
   sourceEvidenceIds?: Prisma.MaturityPerspectiveUpdatesourceEvidenceIdsInput | string[]
   rubricVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   stakeholder?: Prisma.StakeholderUpdateOneWithoutPerspectivesNestedInput
@@ -972,6 +1059,9 @@ export type MaturityPerspectiveUncheckedUpdateWithoutCapabilityInput = {
   sourceEvidenceIds?: Prisma.MaturityPerspectiveUpdatesourceEvidenceIdsInput | string[]
   rubricVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -992,6 +1082,9 @@ export type MaturityPerspectiveUncheckedUpdateManyWithoutCapabilityInput = {
   sourceEvidenceIds?: Prisma.MaturityPerspectiveUpdatesourceEvidenceIdsInput | string[]
   rubricVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1012,6 +1105,9 @@ export type MaturityPerspectiveCreateManyStakeholderInput = {
   sourceEvidenceIds?: Prisma.MaturityPerspectiveCreatesourceEvidenceIdsInput | string[]
   rubricVersion?: number | null
   status?: string
+  reviewedBy?: string | null
+  reviewNotes?: string | null
+  reviewedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1031,6 +1127,9 @@ export type MaturityPerspectiveUpdateWithoutStakeholderInput = {
   sourceEvidenceIds?: Prisma.MaturityPerspectiveUpdatesourceEvidenceIdsInput | string[]
   rubricVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capability?: Prisma.CapabilityUpdateOneRequiredWithoutMaturityPerspectivesNestedInput
@@ -1052,6 +1151,9 @@ export type MaturityPerspectiveUncheckedUpdateWithoutStakeholderInput = {
   sourceEvidenceIds?: Prisma.MaturityPerspectiveUpdatesourceEvidenceIdsInput | string[]
   rubricVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1072,6 +1174,9 @@ export type MaturityPerspectiveUncheckedUpdateManyWithoutStakeholderInput = {
   sourceEvidenceIds?: Prisma.MaturityPerspectiveUpdatesourceEvidenceIdsInput | string[]
   rubricVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1095,6 +1200,9 @@ export type MaturityPerspectiveSelect<ExtArgs extends runtime.Types.Extensions.I
   sourceEvidenceIds?: boolean
   rubricVersion?: boolean
   status?: boolean
+  reviewedBy?: boolean
+  reviewNotes?: boolean
+  reviewedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   capability?: boolean | Prisma.CapabilityDefaultArgs<ExtArgs>
@@ -1118,6 +1226,9 @@ export type MaturityPerspectiveSelectCreateManyAndReturn<ExtArgs extends runtime
   sourceEvidenceIds?: boolean
   rubricVersion?: boolean
   status?: boolean
+  reviewedBy?: boolean
+  reviewNotes?: boolean
+  reviewedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   capability?: boolean | Prisma.CapabilityDefaultArgs<ExtArgs>
@@ -1141,6 +1252,9 @@ export type MaturityPerspectiveSelectUpdateManyAndReturn<ExtArgs extends runtime
   sourceEvidenceIds?: boolean
   rubricVersion?: boolean
   status?: boolean
+  reviewedBy?: boolean
+  reviewNotes?: boolean
+  reviewedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   capability?: boolean | Prisma.CapabilityDefaultArgs<ExtArgs>
@@ -1164,11 +1278,14 @@ export type MaturityPerspectiveSelectScalar = {
   sourceEvidenceIds?: boolean
   rubricVersion?: boolean
   status?: boolean
+  reviewedBy?: boolean
+  reviewNotes?: boolean
+  reviewedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type MaturityPerspectiveOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "capabilityId" | "stakeholderId" | "assessorEmail" | "stakeholderType" | "assessorRole" | "locationTag" | "score" | "scoreRangeMin" | "scoreRangeMax" | "originalStatement" | "rationale" | "confidence" | "sourceEvidenceIds" | "rubricVersion" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["maturityPerspective"]>
+export type MaturityPerspectiveOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "capabilityId" | "stakeholderId" | "assessorEmail" | "stakeholderType" | "assessorRole" | "locationTag" | "score" | "scoreRangeMin" | "scoreRangeMax" | "originalStatement" | "rationale" | "confidence" | "sourceEvidenceIds" | "rubricVersion" | "status" | "reviewedBy" | "reviewNotes" | "reviewedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["maturityPerspective"]>
 export type MaturityPerspectiveInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   capability?: boolean | Prisma.CapabilityDefaultArgs<ExtArgs>
   stakeholder?: boolean | Prisma.MaturityPerspective$stakeholderArgs<ExtArgs>
@@ -1205,6 +1322,9 @@ export type $MaturityPerspectivePayload<ExtArgs extends runtime.Types.Extensions
     sourceEvidenceIds: string[]
     rubricVersion: number | null
     status: string
+    reviewedBy: string | null
+    reviewNotes: string | null
+    reviewedAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["maturityPerspective"]>
@@ -1648,6 +1768,9 @@ export interface MaturityPerspectiveFieldRefs {
   readonly sourceEvidenceIds: Prisma.FieldRef<"MaturityPerspective", 'String[]'>
   readonly rubricVersion: Prisma.FieldRef<"MaturityPerspective", 'Int'>
   readonly status: Prisma.FieldRef<"MaturityPerspective", 'String'>
+  readonly reviewedBy: Prisma.FieldRef<"MaturityPerspective", 'String'>
+  readonly reviewNotes: Prisma.FieldRef<"MaturityPerspective", 'String'>
+  readonly reviewedAt: Prisma.FieldRef<"MaturityPerspective", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"MaturityPerspective", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"MaturityPerspective", 'DateTime'>
 }
