@@ -41,5 +41,7 @@ describe("persisted AI maturity proposals", () => {
     const proposal = await prisma.maturityProposal.create({ data: { capabilityId: capability.id, proposalType: "MATURITY_RATING", interpretation: "Ad hoc practice", suggestedScore: 1, confidence: 0.7, sourceEvidenceIds: [], missingEvidence: [], conflictingEvidence: [], status: "PENDING_REVIEW" } });
     const response = await PATCH(req({ action: "approve", reviewNotes: "Confirmed with manager" }, "PATCH"), { params: Promise.resolve({ id: proposal.id }) });
     expect(response.status).toBe(200); expect(await response.json()).toMatchObject({ id: proposal.id, status: "APPROVED", reviewedBy: "advisor@test.com", reviewNotes: "Confirmed with manager" });
+    const decision = await prisma.assessmentDecision.findFirst({ where: { capabilityId: capability.id }, orderBy: { createdAt: "desc" } });
+    expect(decision).toMatchObject({ status: "APPROVED", score: 1, rationale: "Ad hoc practice", decidedBy: "advisor@test.com", sourceEvidenceIds: [], sourcePerspectiveIds: [] });
   });
 });

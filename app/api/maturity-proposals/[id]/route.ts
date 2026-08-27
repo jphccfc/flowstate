@@ -11,8 +11,30 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   if (!actions.has(body.action)) return NextResponse.json({ error: "action must be approve, reject, or edit" }, { status: 400 });
   const proposal = await prisma.maturityProposal.findUnique({ where: { id }, include: { capability: { include: { domain: { select: { organizationId: true } } } } } });
   if (!proposal) return NextResponse.json({ error: "Proposal not found" }, { status: 404 });
-  if (!(await hasOrganizationPermission(user.email, proposal.capability.domain.organizationId, "assessment.review"))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  const permission = body.action === "approve" ? "assessment.approve" : "assessment.review";
+  if (!(await hasOrganizationPermission(user.email, proposal.capability.domain.organizationId, permission))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (proposal.status !== "PENDING_REVIEW") return NextResponse.json({ error: "Proposal has already been reviewed" }, { status: 409 });
   const status = body.action === "approve" ? "APPROVED" : body.action === "reject" ? "REJECTED" : "EDITED";
-  const update = { status, reviewedBy: user.email, reviewNotes: typeof body.reviewNotes === "string" ? body.reviewNotes : undefined, reviewedAt: new Date(), ...(body.action === "edit" && typeof body.interpretation === "string" ? { interpretation: body.interpretation } : {}), ...(body.action === "edit" && typeof body.suggestedScore === "number" ? { suggestedScore: Math.max(0, Math.min(5, body.suggestedScore)) } : {}) };
-  return NextResponse.json(await prisma.maturityProposal.update({ where: { id }, data: update }));
+  const reviewNotes = typeof body.reviewNotes === "string" ? body.reviewNotes.trim() : "";
+  const update = { status, reviewedBy: user.email, reviewNotes: reviewNotes || null, reviewedAt: new Date(), ...(body.action === "edit" && typeof body.interpretation === "string" ? { interpretation: body.interpretation } : {}), ...(body.action === "edit" && typeof body.suggestedScore === "number" ? { suggestedScore: Math.max(0, Math.min(5, body.suggestedScore)) } : {}) };
+  if (body.action !== "approve") return NextResponse.json(await prisma.maturityProposal.update({ where: { id }, data: update }));
+
+  const approved = await prisma.$transaction(async (tx) => {
+    const latestDecision = await tx.assessmentDecision.findFirst({ where: { capabilityId: proposal.capabilityId }, orderBy: { createdAt: "desc" }, select: { status: true } });
+    if (latestDecision && ["APPROVED", "SIGNED_OFF"].includes(latestDecision.status)) throw new Error("assessment already has an approved decision; reopen it before approving again");
+    const reviewedProposal = await tx.maturityProposal.update({ where: { id }, data: update });
+    await tx.assessmentDecision.create({ data: {
+      capabilityId: proposal.capabilityId, status: "APPROVED", score: proposal.suggestedScore,
+      scoreRangeMin: proposal.scoreRangeMin, scoreRangeMax: proposal.scoreRangeMax,
+      rationale: proposal.interpretation, rubricVersion: null,
+      sourceEvidenceIds: proposal.sourceEvidenceIds, sourcePerspectiveIds: proposal.sourcePerspectiveIds,
+      decidedBy: user.email,
+    } });
+    return reviewedProposal;
+  }).catch((error: unknown) => {
+    if (error instanceof Error && error.message.includes("approved decision")) return null;
+    throw error;
+  });
+  if (!approved) return NextResponse.json({ error: "assessment already has an approved decision; reopen it before approving again" }, { status: 409 });
+  return NextResponse.json(approved);
 }
