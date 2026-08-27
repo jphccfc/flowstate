@@ -31,7 +31,7 @@ type HistoryData = {
   gap: number | null;
 };
 type Perspective = { id: string; stakeholderType: string; assessorRole: string | null; score: number; originalStatement: string; rationale: string | null; confidence: number | null };
-type Proposal = { id: string; interpretation: string; suggestedScore: number | null; scoreRangeMin: number | null; scoreRangeMax: number | null; confidence: number | null; missingEvidence: string[]; conflictingEvidence: string[]; status: string; reviewNotes: string | null };
+type Proposal = { id: string; proposalType?: string; interpretation: string; suggestedScore: number | null; scoreRangeMin: number | null; scoreRangeMax: number | null; confidence: number | null; missingEvidence: string[]; conflictingEvidence: string[]; status: string; reviewNotes: string | null };
 type Decision = { id: string; status: string; score: number | null; rationale: string | null; decidedBy: string | null; decidedAt: string; supersedesId: string | null; canDelete?: boolean };
 type Insight = { id: string; decisionId: string; type: string; title: string; description: string; priority: number | null; sourcePerspectiveIds: string[] };
 type GrowthAction = { id: string; insightId: string; title: string; description: string; outcomeScenario: string; expectedValue: number | null; valueAssumptions: string | null; ownerEmail: string | null; dueDate: string | null; priority: number | null; status: string };
@@ -420,6 +420,14 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
     setDecisionBusy(false);
   }
 
+  async function validateApprovedRating() {
+    if (!selectedCapId) return;
+    setProposalBusy(true);
+    const res = await fetch(`/api/capabilities/${selectedCapId}/validation`, { method: "POST" });
+    if (res.ok) { const proposal = await res.json(); setProposals((current) => [proposal, ...current]); }
+    setProposalBusy(false);
+  }
+
   async function generateProposal() {
     if (!selectedCapId) return;
     setProposalBusy(true);
@@ -660,7 +668,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
                 {perspectiveData && <details className="mt-4 text-xs text-[var(--muted)]"><summary className="cursor-pointer text-[var(--accent)]">Current maturity rubric</summary><div className="mt-2 space-y-1">{perspectiveData.rubric.anchors.map((anchor) => <div key={anchor.level}><strong className="text-[var(--foreground)]">{anchor.level} — {anchor.label}:</strong> {anchor.description}</div>)}</div></details>}
 
                 {perspectiveData && <div className="mt-4 border-t border-[var(--card-border)] pt-4">
-                  <div className="flex items-center justify-between gap-3"><div><div className="text-xs font-semibold text-[var(--foreground)]">AI proposal</div><div className="text-xs text-[var(--muted)]">Provisional only; it cannot change the saved assessment.</div></div><button type="button" onClick={generateProposal} disabled={proposalBusy} className="px-3 py-1.5 rounded-lg flowstate-accent-button text-white text-xs disabled:opacity-50">{proposalBusy ? "Generating…" : "Generate proposal"}</button></div>
+                  <div className="flex items-center justify-between gap-3"><div><div className="text-xs font-semibold text-[var(--foreground)]">AI evidence proposal</div><div className="text-xs text-[var(--muted)]">Provisional only; it cannot change the saved assessment.</div></div><div className="flex flex-wrap gap-2"><button type="button" onClick={generateProposal} disabled={proposalBusy} className="px-3 py-1.5 rounded-lg flowstate-accent-button text-white text-xs disabled:opacity-50">{proposalBusy ? "Generating…" : "Generate proposal"}</button><button type="button" onClick={validateApprovedRating} disabled={proposalBusy || !decisions.some((decision) => ["APPROVED", "SIGNED_OFF"].includes(decision.status))} className="px-3 py-1.5 rounded-lg border border-[var(--card-border)] text-[var(--foreground)] text-xs disabled:opacity-50">Validate approved rating</button></div></div>
                   {proposals.slice(0, 1).map((proposal) => <div key={proposal.id} className="mt-3 rounded-lg border border-[var(--card-border)] p-3 text-xs"><div className="flex items-center justify-between gap-3"><strong className="text-[var(--foreground)]">{proposal.status === "PENDING_REVIEW" ? "Pending human review" : proposal.status}</strong>{proposal.suggestedScore !== null && <span className="font-bold text-[var(--accent)]">Suggested {proposal.suggestedScore}</span>}</div><p className="mt-2 text-[var(--muted)]">{proposal.interpretation}</p>{proposal.missingEvidence.length > 0 && <p className="mt-2 text-[var(--muted)]">Missing evidence: {proposal.missingEvidence.join(", ")}</p>}{proposal.status === "PENDING_REVIEW" && <div className="mt-3 flex gap-2"><button type="button" onClick={() => reviewProposal(proposal.id, "approve")} className="px-2 py-1 rounded flowstate-success-button text-white">Approve proposal</button><button type="button" onClick={() => reviewProposal(proposal.id, "reject")} className="px-2 py-1 rounded bg-[var(--destructive)] text-white">Reject proposal</button></div>}</div>)}
                 </div>}
                 {perspectiveData && <PerspectiveForm onSubmit={savePerspective} />}

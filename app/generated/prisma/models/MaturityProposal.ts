@@ -86,6 +86,7 @@ export type MaturityProposalCountAggregateOutputType = {
   missingEvidence: number
   conflictingEvidence: number
   sourceEvidenceIds: number
+  sourcePerspectiveIds: number
   status: number
   reviewedBy: number
   reviewNotes: number
@@ -156,6 +157,7 @@ export type MaturityProposalCountAggregateInputType = {
   missingEvidence?: true
   conflictingEvidence?: true
   sourceEvidenceIds?: true
+  sourcePerspectiveIds?: true
   status?: true
   reviewedBy?: true
   reviewNotes?: true
@@ -263,6 +265,7 @@ export type MaturityProposalGroupByOutputType = {
   missingEvidence: string[]
   conflictingEvidence: string[]
   sourceEvidenceIds: string[]
+  sourcePerspectiveIds: string[]
   status: string
   reviewedBy: string | null
   reviewNotes: string | null
@@ -306,6 +309,7 @@ export type MaturityProposalWhereInput = {
   missingEvidence?: Prisma.StringNullableListFilter<"MaturityProposal">
   conflictingEvidence?: Prisma.StringNullableListFilter<"MaturityProposal">
   sourceEvidenceIds?: Prisma.StringNullableListFilter<"MaturityProposal">
+  sourcePerspectiveIds?: Prisma.StringNullableListFilter<"MaturityProposal">
   status?: Prisma.StringFilter<"MaturityProposal"> | string
   reviewedBy?: Prisma.StringNullableFilter<"MaturityProposal"> | string | null
   reviewNotes?: Prisma.StringNullableFilter<"MaturityProposal"> | string | null
@@ -327,6 +331,7 @@ export type MaturityProposalOrderByWithRelationInput = {
   missingEvidence?: Prisma.SortOrder
   conflictingEvidence?: Prisma.SortOrder
   sourceEvidenceIds?: Prisma.SortOrder
+  sourcePerspectiveIds?: Prisma.SortOrder
   status?: Prisma.SortOrder
   reviewedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewNotes?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -351,6 +356,7 @@ export type MaturityProposalWhereUniqueInput = Prisma.AtLeast<{
   missingEvidence?: Prisma.StringNullableListFilter<"MaturityProposal">
   conflictingEvidence?: Prisma.StringNullableListFilter<"MaturityProposal">
   sourceEvidenceIds?: Prisma.StringNullableListFilter<"MaturityProposal">
+  sourcePerspectiveIds?: Prisma.StringNullableListFilter<"MaturityProposal">
   status?: Prisma.StringFilter<"MaturityProposal"> | string
   reviewedBy?: Prisma.StringNullableFilter<"MaturityProposal"> | string | null
   reviewNotes?: Prisma.StringNullableFilter<"MaturityProposal"> | string | null
@@ -372,6 +378,7 @@ export type MaturityProposalOrderByWithAggregationInput = {
   missingEvidence?: Prisma.SortOrder
   conflictingEvidence?: Prisma.SortOrder
   sourceEvidenceIds?: Prisma.SortOrder
+  sourcePerspectiveIds?: Prisma.SortOrder
   status?: Prisma.SortOrder
   reviewedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewNotes?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -400,6 +407,7 @@ export type MaturityProposalScalarWhereWithAggregatesInput = {
   missingEvidence?: Prisma.StringNullableListFilter<"MaturityProposal">
   conflictingEvidence?: Prisma.StringNullableListFilter<"MaturityProposal">
   sourceEvidenceIds?: Prisma.StringNullableListFilter<"MaturityProposal">
+  sourcePerspectiveIds?: Prisma.StringNullableListFilter<"MaturityProposal">
   status?: Prisma.StringWithAggregatesFilter<"MaturityProposal"> | string
   reviewedBy?: Prisma.StringNullableWithAggregatesFilter<"MaturityProposal"> | string | null
   reviewNotes?: Prisma.StringNullableWithAggregatesFilter<"MaturityProposal"> | string | null
@@ -419,6 +427,7 @@ export type MaturityProposalCreateInput = {
   missingEvidence?: Prisma.MaturityProposalCreatemissingEvidenceInput | string[]
   conflictingEvidence?: Prisma.MaturityProposalCreateconflictingEvidenceInput | string[]
   sourceEvidenceIds?: Prisma.MaturityProposalCreatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.MaturityProposalCreatesourcePerspectiveIdsInput | string[]
   status?: string
   reviewedBy?: string | null
   reviewNotes?: string | null
@@ -440,6 +449,7 @@ export type MaturityProposalUncheckedCreateInput = {
   missingEvidence?: Prisma.MaturityProposalCreatemissingEvidenceInput | string[]
   conflictingEvidence?: Prisma.MaturityProposalCreateconflictingEvidenceInput | string[]
   sourceEvidenceIds?: Prisma.MaturityProposalCreatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.MaturityProposalCreatesourcePerspectiveIdsInput | string[]
   status?: string
   reviewedBy?: string | null
   reviewNotes?: string | null
@@ -459,6 +469,7 @@ export type MaturityProposalUpdateInput = {
   missingEvidence?: Prisma.MaturityProposalUpdatemissingEvidenceInput | string[]
   conflictingEvidence?: Prisma.MaturityProposalUpdateconflictingEvidenceInput | string[]
   sourceEvidenceIds?: Prisma.MaturityProposalUpdatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.MaturityProposalUpdatesourcePerspectiveIdsInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -480,6 +491,7 @@ export type MaturityProposalUncheckedUpdateInput = {
   missingEvidence?: Prisma.MaturityProposalUpdatemissingEvidenceInput | string[]
   conflictingEvidence?: Prisma.MaturityProposalUpdateconflictingEvidenceInput | string[]
   sourceEvidenceIds?: Prisma.MaturityProposalUpdatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.MaturityProposalUpdatesourcePerspectiveIdsInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -500,6 +512,7 @@ export type MaturityProposalCreateManyInput = {
   missingEvidence?: Prisma.MaturityProposalCreatemissingEvidenceInput | string[]
   conflictingEvidence?: Prisma.MaturityProposalCreateconflictingEvidenceInput | string[]
   sourceEvidenceIds?: Prisma.MaturityProposalCreatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.MaturityProposalCreatesourcePerspectiveIdsInput | string[]
   status?: string
   reviewedBy?: string | null
   reviewNotes?: string | null
@@ -519,6 +532,7 @@ export type MaturityProposalUpdateManyMutationInput = {
   missingEvidence?: Prisma.MaturityProposalUpdatemissingEvidenceInput | string[]
   conflictingEvidence?: Prisma.MaturityProposalUpdateconflictingEvidenceInput | string[]
   sourceEvidenceIds?: Prisma.MaturityProposalUpdatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.MaturityProposalUpdatesourcePerspectiveIdsInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -539,6 +553,7 @@ export type MaturityProposalUncheckedUpdateManyInput = {
   missingEvidence?: Prisma.MaturityProposalUpdatemissingEvidenceInput | string[]
   conflictingEvidence?: Prisma.MaturityProposalUpdateconflictingEvidenceInput | string[]
   sourceEvidenceIds?: Prisma.MaturityProposalUpdatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.MaturityProposalUpdatesourcePerspectiveIdsInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -569,6 +584,7 @@ export type MaturityProposalCountOrderByAggregateInput = {
   missingEvidence?: Prisma.SortOrder
   conflictingEvidence?: Prisma.SortOrder
   sourceEvidenceIds?: Prisma.SortOrder
+  sourcePerspectiveIds?: Prisma.SortOrder
   status?: Prisma.SortOrder
   reviewedBy?: Prisma.SortOrder
   reviewNotes?: Prisma.SortOrder
@@ -679,6 +695,10 @@ export type MaturityProposalCreatesourceEvidenceIdsInput = {
   set: string[]
 }
 
+export type MaturityProposalCreatesourcePerspectiveIdsInput = {
+  set: string[]
+}
+
 export type MaturityProposalUpdatemissingEvidenceInput = {
   set?: string[]
   push?: string | string[]
@@ -694,6 +714,11 @@ export type MaturityProposalUpdatesourceEvidenceIdsInput = {
   push?: string | string[]
 }
 
+export type MaturityProposalUpdatesourcePerspectiveIdsInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
 export type MaturityProposalCreateWithoutCapabilityInput = {
   id?: string
   proposalType: string
@@ -705,6 +730,7 @@ export type MaturityProposalCreateWithoutCapabilityInput = {
   missingEvidence?: Prisma.MaturityProposalCreatemissingEvidenceInput | string[]
   conflictingEvidence?: Prisma.MaturityProposalCreateconflictingEvidenceInput | string[]
   sourceEvidenceIds?: Prisma.MaturityProposalCreatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.MaturityProposalCreatesourcePerspectiveIdsInput | string[]
   status?: string
   reviewedBy?: string | null
   reviewNotes?: string | null
@@ -724,6 +750,7 @@ export type MaturityProposalUncheckedCreateWithoutCapabilityInput = {
   missingEvidence?: Prisma.MaturityProposalCreatemissingEvidenceInput | string[]
   conflictingEvidence?: Prisma.MaturityProposalCreateconflictingEvidenceInput | string[]
   sourceEvidenceIds?: Prisma.MaturityProposalCreatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.MaturityProposalCreatesourcePerspectiveIdsInput | string[]
   status?: string
   reviewedBy?: string | null
   reviewNotes?: string | null
@@ -773,6 +800,7 @@ export type MaturityProposalScalarWhereInput = {
   missingEvidence?: Prisma.StringNullableListFilter<"MaturityProposal">
   conflictingEvidence?: Prisma.StringNullableListFilter<"MaturityProposal">
   sourceEvidenceIds?: Prisma.StringNullableListFilter<"MaturityProposal">
+  sourcePerspectiveIds?: Prisma.StringNullableListFilter<"MaturityProposal">
   status?: Prisma.StringFilter<"MaturityProposal"> | string
   reviewedBy?: Prisma.StringNullableFilter<"MaturityProposal"> | string | null
   reviewNotes?: Prisma.StringNullableFilter<"MaturityProposal"> | string | null
@@ -792,6 +820,7 @@ export type MaturityProposalCreateManyCapabilityInput = {
   missingEvidence?: Prisma.MaturityProposalCreatemissingEvidenceInput | string[]
   conflictingEvidence?: Prisma.MaturityProposalCreateconflictingEvidenceInput | string[]
   sourceEvidenceIds?: Prisma.MaturityProposalCreatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.MaturityProposalCreatesourcePerspectiveIdsInput | string[]
   status?: string
   reviewedBy?: string | null
   reviewNotes?: string | null
@@ -811,6 +840,7 @@ export type MaturityProposalUpdateWithoutCapabilityInput = {
   missingEvidence?: Prisma.MaturityProposalUpdatemissingEvidenceInput | string[]
   conflictingEvidence?: Prisma.MaturityProposalUpdateconflictingEvidenceInput | string[]
   sourceEvidenceIds?: Prisma.MaturityProposalUpdatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.MaturityProposalUpdatesourcePerspectiveIdsInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -830,6 +860,7 @@ export type MaturityProposalUncheckedUpdateWithoutCapabilityInput = {
   missingEvidence?: Prisma.MaturityProposalUpdatemissingEvidenceInput | string[]
   conflictingEvidence?: Prisma.MaturityProposalUpdateconflictingEvidenceInput | string[]
   sourceEvidenceIds?: Prisma.MaturityProposalUpdatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.MaturityProposalUpdatesourcePerspectiveIdsInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -849,6 +880,7 @@ export type MaturityProposalUncheckedUpdateManyWithoutCapabilityInput = {
   missingEvidence?: Prisma.MaturityProposalUpdatemissingEvidenceInput | string[]
   conflictingEvidence?: Prisma.MaturityProposalUpdateconflictingEvidenceInput | string[]
   sourceEvidenceIds?: Prisma.MaturityProposalUpdatesourceEvidenceIdsInput | string[]
+  sourcePerspectiveIds?: Prisma.MaturityProposalUpdatesourcePerspectiveIdsInput | string[]
   status?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -871,6 +903,7 @@ export type MaturityProposalSelect<ExtArgs extends runtime.Types.Extensions.Inte
   missingEvidence?: boolean
   conflictingEvidence?: boolean
   sourceEvidenceIds?: boolean
+  sourcePerspectiveIds?: boolean
   status?: boolean
   reviewedBy?: boolean
   reviewNotes?: boolean
@@ -892,6 +925,7 @@ export type MaturityProposalSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   missingEvidence?: boolean
   conflictingEvidence?: boolean
   sourceEvidenceIds?: boolean
+  sourcePerspectiveIds?: boolean
   status?: boolean
   reviewedBy?: boolean
   reviewNotes?: boolean
@@ -913,6 +947,7 @@ export type MaturityProposalSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   missingEvidence?: boolean
   conflictingEvidence?: boolean
   sourceEvidenceIds?: boolean
+  sourcePerspectiveIds?: boolean
   status?: boolean
   reviewedBy?: boolean
   reviewNotes?: boolean
@@ -934,6 +969,7 @@ export type MaturityProposalSelectScalar = {
   missingEvidence?: boolean
   conflictingEvidence?: boolean
   sourceEvidenceIds?: boolean
+  sourcePerspectiveIds?: boolean
   status?: boolean
   reviewedBy?: boolean
   reviewNotes?: boolean
@@ -942,7 +978,7 @@ export type MaturityProposalSelectScalar = {
   updatedAt?: boolean
 }
 
-export type MaturityProposalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "capabilityId" | "proposalType" | "interpretation" | "suggestedScore" | "scoreRangeMin" | "scoreRangeMax" | "confidence" | "missingEvidence" | "conflictingEvidence" | "sourceEvidenceIds" | "status" | "reviewedBy" | "reviewNotes" | "reviewedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["maturityProposal"]>
+export type MaturityProposalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "capabilityId" | "proposalType" | "interpretation" | "suggestedScore" | "scoreRangeMin" | "scoreRangeMax" | "confidence" | "missingEvidence" | "conflictingEvidence" | "sourceEvidenceIds" | "sourcePerspectiveIds" | "status" | "reviewedBy" | "reviewNotes" | "reviewedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["maturityProposal"]>
 export type MaturityProposalInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   capability?: boolean | Prisma.CapabilityDefaultArgs<ExtArgs>
 }
@@ -970,6 +1006,7 @@ export type $MaturityProposalPayload<ExtArgs extends runtime.Types.Extensions.In
     missingEvidence: string[]
     conflictingEvidence: string[]
     sourceEvidenceIds: string[]
+    sourcePerspectiveIds: string[]
     status: string
     reviewedBy: string | null
     reviewNotes: string | null
@@ -1411,6 +1448,7 @@ export interface MaturityProposalFieldRefs {
   readonly missingEvidence: Prisma.FieldRef<"MaturityProposal", 'String[]'>
   readonly conflictingEvidence: Prisma.FieldRef<"MaturityProposal", 'String[]'>
   readonly sourceEvidenceIds: Prisma.FieldRef<"MaturityProposal", 'String[]'>
+  readonly sourcePerspectiveIds: Prisma.FieldRef<"MaturityProposal", 'String[]'>
   readonly status: Prisma.FieldRef<"MaturityProposal", 'String'>
   readonly reviewedBy: Prisma.FieldRef<"MaturityProposal", 'String'>
   readonly reviewNotes: Prisma.FieldRef<"MaturityProposal", 'String'>
