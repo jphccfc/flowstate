@@ -22,6 +22,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const approved = await prisma.$transaction(async (tx) => {
     const latestDecision = await tx.assessmentDecision.findFirst({ where: { capabilityId: proposal.capabilityId }, orderBy: { createdAt: "desc" }, select: { status: true } });
     if (latestDecision && ["APPROVED", "SIGNED_OFF"].includes(latestDecision.status)) throw new Error("assessment already has an approved decision; reopen it before approving again");
+    const sourcePerspectiveIds = [...new Set(proposal.sourcePerspectiveIds)];
+    if (sourcePerspectiveIds.length > 0) {
+      const approvedPerspectiveCount = await tx.maturityPerspective.count({ where: { id: { in: sourcePerspectiveIds }, capabilityId: proposal.capabilityId, status: "APPROVED" } });
+      if (approvedPerspectiveCount !== sourcePerspectiveIds.length) throw new Error("proposal cites perspectives that are no longer approved");
+    }
     const reviewedProposal = await tx.maturityProposal.update({ where: { id }, data: update });
     await tx.assessmentDecision.create({ data: {
       capabilityId: proposal.capabilityId, status: "APPROVED", score: proposal.suggestedScore,
@@ -33,8 +38,10 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     return reviewedProposal;
   }).catch((error: unknown) => {
     if (error instanceof Error && error.message.includes("approved decision")) return null;
+    if (error instanceof Error && error.message.includes("no longer approved")) return "STALE_PROVENANCE" as const;
     throw error;
   });
+  if (approved === "STALE_PROVENANCE") return NextResponse.json({ error: "proposal cites perspectives that are no longer approved" }, { status: 409 });
   if (!approved) return NextResponse.json({ error: "assessment already has an approved decision; reopen it before approving again" }, { status: 409 });
   return NextResponse.json(approved);
 }
