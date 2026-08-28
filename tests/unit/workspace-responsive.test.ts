@@ -96,6 +96,10 @@ describe("workspace responsive and theme contracts", () => {
     expect(assess).toContain("Current maturity rubric");
     expect(assess).toContain("Add perspective");
     expect(assess).toContain("Evidence coverage");
+    expect(assess).toContain("Reviewed evidence");
+    expect(assess).toContain("sourceEvidenceIds");
+    expect(assess).toContain("Source segment");
+    expect(assess).toContain("/evidence");
     expect(assess).toContain("Pending review");
     expect(assess).toContain("Generate proposal");
     expect(assess).toContain("Approve proposal");
