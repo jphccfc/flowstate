@@ -35,5 +35,12 @@ describe("PlanningItem contract", () => {
     expect(page).toContain("Source decision");
     expect(page).toContain("Source evidence");
     expect(page).toContain("Source perspective");
+    expect(route).toContain("sourceEvidence");
+    expect(route).toContain("sourcePerspectives");
+    expect(page).toContain("segmentText");
+    expect(page).toContain("sourceType");
+    expect(page).toContain("sourceRef");
+    expect(page).toContain("stakeholderType");
+    expect(page).toContain("statement");
   });
 });

@@ -96,10 +96,32 @@ describe("planning item contract", () => {
   it("links a planning item to an approved insight and returns its decision provenance", async () => {
     const domain = await prisma.businessDomain.create({ data: { organizationId, name: "Provenance domain" } });
     const capability = await prisma.capability.create({ data: { domainId: domain.id, name: "Provenance capability" } });
-    const decision = await prisma.assessmentDecision.create({ data: { capabilityId: capability.id, status: "SIGNED_OFF", sourceEvidenceIds: ["evidence-1"], sourcePerspectiveIds: ["perspective-1"] } });
+    const input = await prisma.capturedInput.create({ data: { organizationId, type: "DOCUMENT", sourceRef: "assessment.pdf", rawText: "Assessment source", capturedAt: new Date() } });
+    const segment = await prisma.capturedSegment.create({ data: { capturedInputId: input.id, order: 0, text: "The team has a documented planning process." } });
+    const evidence = await prisma.tag.create({ data: { segmentId: segment.id, targetType: "CAPABILITY", targetId: capability.id, confidence: 0.99, status: "APPROVED", reviewedBy: currentEmail, reviewedAt: new Date() } });
+    const perspective = await prisma.maturityPerspective.create({ data: { capabilityId: capability.id, stakeholderType: "operations_leader", score: 2, originalStatement: "We have a process, but it is inconsistently followed.", sourceEvidenceIds: [evidence.id] } });
+    const decision = await prisma.assessmentDecision.create({ data: { capabilityId: capability.id, status: "SIGNED_OFF", score: 2, rationale: "Supported by reviewed evidence and stakeholder perspective.", sourceEvidenceIds: [evidence.id], sourcePerspectiveIds: [perspective.id] } });
     const insight = await prisma.approvedInsight.create({ data: { capabilityId: capability.id, decisionId: decision.id, type: "MATURITY_GAP", title: "Approved gap", description: "Evidence-backed gap", sourceEvidenceIds: decision.sourceEvidenceIds, sourcePerspectiveIds: decision.sourcePerspectiveIds } });
     const response = await POST(request({ type: "OBJECTIVE", title: "Address approved gap", description: "Create a measurable objective.", ownerEmail: "planning-advisor@test.com", approvedInsightId: insight.id }) as unknown as NextRequest, { params: Promise.resolve({ id: organizationId }) });
     expect(response.status).toBe(201);
-    expect(await response.json()).toMatchObject({ approvedInsightId: insight.id, approvedInsight: { id: insight.id, decisionId: decision.id, sourceEvidenceIds: ["evidence-1"], sourcePerspectiveIds: ["perspective-1"] } });
+    expect(await response.json()).toMatchObject({ approvedInsightId: insight.id, approvedInsight: { id: insight.id, decisionId: decision.id, sourceEvidenceIds: [evidence.id], sourcePerspectiveIds: [perspective.id], decision: { id: decision.id, status: "SIGNED_OFF", score: 2, rationale: decision.rationale }, sourceEvidence: [{ id: evidence.id, segmentText: segment.text, sourceType: "DOCUMENT", sourceRef: "assessment.pdf" }], sourcePerspectives: [{ id: perspective.id, stakeholderType: "operations_leader", statement: perspective.originalStatement }] } });
   });
+  it("does not resolve foreign evidence or perspectives in local insight provenance", async () => {
+    const localDomain = await prisma.businessDomain.create({ data: { organizationId, name: "Local provenance boundary" } });
+    const localCapability = await prisma.capability.create({ data: { domainId: localDomain.id, name: "Local capability" } });
+    const foreignInput = await prisma.capturedInput.create({ data: { organizationId: otherOrganizationId, type: "TEXT_NOTE", sourceRef: "private.txt", rawText: "Private source" } });
+    const foreignSegment = await prisma.capturedSegment.create({ data: { capturedInputId: foreignInput.id, order: 0, text: "Private segment" } });
+    const foreignDomain = await prisma.businessDomain.create({ data: { organizationId: otherOrganizationId, name: "Foreign provenance boundary" } });
+    const foreignCapability = await prisma.capability.create({ data: { domainId: foreignDomain.id, name: "Foreign capability" } });
+    const foreignEvidence = await prisma.tag.create({ data: { segmentId: foreignSegment.id, targetType: "CAPABILITY", targetId: foreignCapability.id, confidence: 1, status: "APPROVED" } });
+    const foreignPerspective = await prisma.maturityPerspective.create({ data: { capabilityId: foreignCapability.id, stakeholderType: "private_stakeholder", score: 1, originalStatement: "Private statement" } });
+    const decision = await prisma.assessmentDecision.create({ data: { capabilityId: localCapability.id, status: "SIGNED_OFF", sourceEvidenceIds: [foreignEvidence.id], sourcePerspectiveIds: [foreignPerspective.id] } });
+    const insight = await prisma.approvedInsight.create({ data: { capabilityId: localCapability.id, decisionId: decision.id, type: "MATURITY_GAP", title: "Local insight", description: "Local description", sourceEvidenceIds: decision.sourceEvidenceIds, sourcePerspectiveIds: decision.sourcePerspectiveIds } });
+    const item = await prisma.planningItem.create({ data: { organizationId, type: "GOAL", title: "Local goal", description: "Local description", approvedInsightId: insight.id } });
+    const response = await GET(new Request("http://localhost") as unknown as NextRequest, { params: Promise.resolve({ id: organizationId }) });
+    const returned = (await response.json()).find((entry: { id: string }) => entry.id === item.id);
+    expect(returned.approvedInsight.sourceEvidence).toEqual([]);
+    expect(returned.approvedInsight.sourcePerspectives).toEqual([]);
+  });
+
 });
