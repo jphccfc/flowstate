@@ -31,6 +31,7 @@ type HistoryData = {
   gap: number | null;
 };
 type Perspective = { id: string; stakeholderType: string; assessorRole: string | null; score: number; originalStatement: string; rationale: string | null; confidence: number | null; status: string; reviewedBy: string | null };
+type ReviewedEvidence = { id: string; segmentText: string; sourceType: string; sourceRef: string | null; capturedInputId: string; segmentId: string };
 type Proposal = { id: string; proposalType?: string; interpretation: string; suggestedScore: number | null; scoreRangeMin: number | null; scoreRangeMax: number | null; confidence: number | null; missingEvidence: string[]; conflictingEvidence: string[]; status: string; reviewNotes: string | null };
 type Decision = { id: string; status: string; score: number | null; rationale: string | null; decidedBy: string | null; decidedAt: string; supersedesId: string | null; canDelete?: boolean };
 type Insight = { id: string; decisionId: string; type: string; title: string; description: string; priority: number | null; sourcePerspectiveIds: string[] };
@@ -169,12 +170,13 @@ function EntryForm({
   );
 }
 
-function PerspectiveForm({ onSubmit }: { onSubmit: (data: { stakeholderType: string; score: number; originalStatement: string; rationale: string; confidence: number }) => Promise<void> }) {
+function PerspectiveForm({ evidence, onSubmit }: { evidence: ReviewedEvidence[]; onSubmit: (data: { stakeholderType: string; score: number; originalStatement: string; rationale: string; confidence: number; sourceEvidenceIds: string[] }) => Promise<void> }) {
   const [stakeholderType, setStakeholderType] = useState("employee");
   const [score, setScore] = useState("0");
   const [originalStatement, setOriginalStatement] = useState("");
   const [rationale, setRationale] = useState("");
   const [confidence, setConfidence] = useState("0.8");
+  const [sourceEvidenceIds, setSourceEvidenceIds] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -183,7 +185,7 @@ function PerspectiveForm({ onSubmit }: { onSubmit: (data: { stakeholderType: str
     setSaving(true);
     setError(null);
     try {
-      await onSubmit({ stakeholderType, score: Number(score), originalStatement, rationale, confidence: Number(confidence) });
+      await onSubmit({ stakeholderType, score: Number(score), originalStatement, rationale, confidence: Number(confidence), sourceEvidenceIds });
       setOriginalStatement("");
       setRationale("");
     } catch (submissionError) {
@@ -215,6 +217,10 @@ function PerspectiveForm({ onSubmit }: { onSubmit: (data: { stakeholderType: str
       <label className="block text-xs text-[var(--muted)]">Original statement
         <textarea name="originalStatement" required value={originalStatement} onChange={(event) => setOriginalStatement(event.target.value)} rows={3} placeholder="Record the stakeholder's words, not an AI summary" className="mt-1 w-full px-2 py-1.5 border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] bg-[var(--card)] resize-y" />
       </label>
+      <fieldset className="rounded-lg border border-[var(--card-border)] p-3">
+        <legend className="px-1 text-xs font-semibold text-[var(--foreground)]">Reviewed evidence</legend>
+        {evidence.length === 0 ? <p className="text-xs text-[var(--muted)]">No reviewed evidence is linked to this capability yet.</p> : <div className="space-y-2">{evidence.map((item) => <label key={item.id} className="flex gap-2 text-xs text-[var(--muted)]"><input type="checkbox" checked={sourceEvidenceIds.includes(item.id)} onChange={(event) => setSourceEvidenceIds((current) => event.target.checked ? [...current, item.id] : current.filter((id) => id !== item.id))} /><span><strong className="text-[var(--foreground)]">Source segment:</strong> “{item.segmentText}”<span className="block">File/source: {item.sourceRef ?? item.sourceType.replaceAll("_", " ")}</span></span></label>)}</div>}
+      </fieldset>
       <label className="block text-xs text-[var(--muted)]">Rationale (optional)
         <textarea name="rationale" value={rationale} onChange={(event) => setRationale(event.target.value)} rows={2} placeholder="Why does this perspective support the score?" className="mt-1 w-full px-2 py-1.5 border border-[var(--card-border)] rounded-lg text-sm text-[var(--foreground)] bg-[var(--card)] resize-y" />
       </label>
@@ -233,6 +239,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
   const [selectedCapId, setSelectedCapId] = useState<string | null>(null);
   const [history, setHistory] = useState<HistoryData | null>(null);
   const [perspectiveData, setPerspectiveData] = useState<PerspectiveData | null>(null);
+  const [reviewedEvidence, setReviewedEvidence] = useState<ReviewedEvidence[]>([]);
   const [perspectiveError, setPerspectiveError] = useState<string | null>(null);
   const [proposals, setProposals] = useState<Proposal[]>([]);
   const [proposalBusy, setProposalBusy] = useState(false);
@@ -314,6 +321,10 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
     }
     setPerspectiveData(data);
   }, []);
+
+  useEffect(() => {
+    if (selectedCapId) fetch(`/api/capabilities/${selectedCapId}/evidence`).then((res) => res.ok ? res.json() : []).then(setReviewedEvidence);
+  }, [selectedCapId]);
 
   useEffect(() => {
     if (selectedCapId) {
@@ -449,7 +460,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
     setPerspectiveData((current) => current ? { ...current, perspectives: current.perspectives.map((perspective) => perspective.id === perspectiveId ? updated : perspective), summary: { ...current.summary, pendingReview: current.perspectives.filter((perspective) => perspective.id === perspectiveId ? updated.status === "SUBMITTED" : perspective.status === "SUBMITTED").length, reviewState: current.perspectives.some((perspective) => perspective.id === perspectiveId ? updated.status === "SUBMITTED" : perspective.status === "SUBMITTED") ? "PENDING_REVIEW" : "REVIEWED" } } : current);
   }
 
-  async function savePerspective(data: { stakeholderType: string; score: number; originalStatement: string; rationale: string; confidence: number }) {
+  async function savePerspective(data: { stakeholderType: string; score: number; originalStatement: string; rationale: string; confidence: number; sourceEvidenceIds: string[] }) {
     if (!selectedCapId) return;
     const res = await fetch(`/api/capabilities/${selectedCapId}/perspectives`, {
       method: "POST",
@@ -679,7 +690,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
                   <div className="flex items-center justify-between gap-3"><div><div className="text-xs font-semibold text-[var(--foreground)]">AI evidence proposal</div><div className="text-xs text-[var(--muted)]">Provisional only; it cannot change the saved assessment.</div></div><div className="flex flex-wrap gap-2"><button type="button" onClick={generateProposal} disabled={proposalBusy} className="px-3 py-1.5 rounded-lg flowstate-accent-button text-white text-xs disabled:opacity-50">{proposalBusy ? "Generating…" : "Generate proposal"}</button><button type="button" onClick={validateApprovedRating} disabled={proposalBusy || !decisions.some((decision) => ["APPROVED", "SIGNED_OFF"].includes(decision.status))} className="px-3 py-1.5 rounded-lg border border-[var(--card-border)] text-[var(--foreground)] text-xs disabled:opacity-50">Validate approved rating</button></div></div>
                   {proposals.slice(0, 1).map((proposal) => <div key={proposal.id} className="mt-3 rounded-lg border border-[var(--card-border)] p-3 text-xs"><div className="flex items-center justify-between gap-3"><strong className="text-[var(--foreground)]">{proposal.status === "PENDING_REVIEW" ? "Pending human review" : proposal.status}</strong>{proposal.suggestedScore !== null && <span className="font-bold text-[var(--accent)]">Suggested {proposal.suggestedScore}</span>}</div><p className="mt-2 text-[var(--muted)]">{proposal.interpretation}</p>{proposal.missingEvidence.length > 0 && <p className="mt-2 text-[var(--muted)]">Missing evidence: {proposal.missingEvidence.join(", ")}</p>}{proposal.status === "PENDING_REVIEW" && <div className="mt-3 flex gap-2"><button type="button" onClick={() => reviewProposal(proposal.id, "approve")} className="px-2 py-1 rounded flowstate-success-button text-white">Approve proposal</button><button type="button" onClick={() => reviewProposal(proposal.id, "reject")} className="px-2 py-1 rounded bg-[var(--destructive)] text-white">Reject proposal</button></div>}</div>)}
                 </div>}
-                {perspectiveData && <PerspectiveForm onSubmit={savePerspective} />}
+                {perspectiveData && <PerspectiveForm evidence={reviewedEvidence} onSubmit={savePerspective} />}
               </section>
             )}
 

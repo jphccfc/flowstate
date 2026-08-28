@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
-import { isOrganizationMember } from "@/lib/auth/organization";
+import { canAccessClient } from "@/lib/auth/organization";
 import { DEFAULT_MATURITY_RUBRIC, summarisePerspectiveScores } from "@/lib/maturity/rubric";
 
 const perspectiveTypes = new Set(["employee", "manager", "expert_analyst", "stakeholder", "ai"]);
@@ -12,7 +12,7 @@ async function getAuthorizedCapability(id: string, email: string) {
     include: { domain: { select: { organizationId: true } } },
   });
   if (!capability) return { capability: null, allowed: false };
-  return { capability, allowed: await isOrganizationMember(email, capability.domain.organizationId) };
+  return { capability, allowed: await canAccessClient(email, capability.domain.organizationId) };
 }
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -66,6 +66,25 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   if (!perspectiveTypes.has(stakeholderType) || typeof score !== "number" || !Number.isFinite(score) || score < 0 || score > 5 || typeof originalStatement !== "string" || !originalStatement.trim()) {
     return NextResponse.json({ error: "stakeholderType, score (0-5), and originalStatement are required" }, { status: 400 });
   }
+  const sourceEvidenceIds: string[] = Array.isArray(body.sourceEvidenceIds)
+    ? Array.from(new Set<string>(body.sourceEvidenceIds.filter((value: unknown): value is string => typeof value === "string")))
+    : [];
+  if (sourceEvidenceIds.length > 0) {
+    const approvedEvidence = await prisma.tag.findMany({
+      where: {
+        id: { in: sourceEvidenceIds },
+        targetType: "CAPABILITY",
+        targetId: id,
+        status: "APPROVED",
+        segment: { capturedInput: { organizationId: capability.domain.organizationId } },
+      },
+      select: { id: true },
+    });
+    if (approvedEvidence.length !== sourceEvidenceIds.length) {
+      return NextResponse.json({ error: "sourceEvidenceIds must reference approved evidence for this capability" }, { status: 400 });
+    }
+  }
+
   if (body.confidence !== undefined && (typeof body.confidence !== "number" || body.confidence < 0 || body.confidence > 1)) {
     return NextResponse.json({ error: "confidence must be between 0 and 1" }, { status: 400 });
   }
@@ -84,7 +103,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       originalStatement: originalStatement.trim(),
       rationale: typeof body.rationale === "string" ? body.rationale : undefined,
       confidence: typeof body.confidence === "number" ? body.confidence : undefined,
-      sourceEvidenceIds: Array.isArray(body.sourceEvidenceIds) ? body.sourceEvidenceIds.filter((value: unknown): value is string => typeof value === "string") : [],
+      sourceEvidenceIds,
       rubricVersion: typeof body.rubricVersion === "number" ? body.rubricVersion : undefined,
       status: "SUBMITTED",
     },
