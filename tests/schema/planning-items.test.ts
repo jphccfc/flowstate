@@ -62,4 +62,14 @@ describe("planning item contract", () => {
     expect(item).not.toHaveProperty("assigneeId");
     expect(item).not.toHaveProperty("insightId");
   });
+
+  it("links a planning item to an approved insight and returns its decision provenance", async () => {
+    const domain = await prisma.businessDomain.create({ data: { organizationId, name: "Provenance domain" } });
+    const capability = await prisma.capability.create({ data: { domainId: domain.id, name: "Provenance capability" } });
+    const decision = await prisma.assessmentDecision.create({ data: { capabilityId: capability.id, status: "SIGNED_OFF", sourceEvidenceIds: ["evidence-1"], sourcePerspectiveIds: ["perspective-1"] } });
+    const insight = await prisma.approvedInsight.create({ data: { capabilityId: capability.id, decisionId: decision.id, type: "MATURITY_GAP", title: "Approved gap", description: "Evidence-backed gap", sourceEvidenceIds: decision.sourceEvidenceIds, sourcePerspectiveIds: decision.sourcePerspectiveIds } });
+    const response = await POST(request({ type: "OBJECTIVE", title: "Address approved gap", description: "Create a measurable objective.", approvedInsightId: insight.id }) as unknown as NextRequest, { params: Promise.resolve({ id: organizationId }) });
+    expect(response.status).toBe(201);
+    expect(await response.json()).toMatchObject({ approvedInsightId: insight.id, approvedInsight: { id: insight.id, decisionId: decision.id, sourceEvidenceIds: ["evidence-1"], sourcePerspectiveIds: ["perspective-1"] } });
+  });
 });
