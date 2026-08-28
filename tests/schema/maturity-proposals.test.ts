@@ -88,4 +88,33 @@ describe("persisted AI maturity proposals", () => {
     const decision = await prisma.assessmentDecision.findFirst({ where: { capabilityId: capability.id }, orderBy: { createdAt: "desc" } });
     expect(decision).toMatchObject({ status: "APPROVED", score: 1, rationale: "Ad hoc practice", decidedBy: "advisor@test.com", sourceEvidenceIds: [], sourcePerspectiveIds: [] });
   });
+  it("allows only one human review transition when actions race", async () => {
+    const organization = await createTestOrganization({ name: "Concurrent Review Org" }); organizationId = organization.id;
+    const domain = await prisma.businessDomain.create({ data: { organizationId: organization.id, name: "Operations" } });
+    const capability = await prisma.capability.create({ data: { domainId: domain.id, name: "Production planning" } });
+    const proposal = await prisma.maturityProposal.create({ data: { capabilityId: capability.id, proposalType: "MATURITY_RATING", interpretation: "Ad hoc practice", suggestedScore: 1, confidence: 0.7, sourceEvidenceIds: [], missingEvidence: [], conflictingEvidence: [], status: "PENDING_REVIEW" } });
+
+    const responses = await Promise.all([
+      PATCH(req({ action: "reject", reviewNotes: "Not supported" }, "PATCH"), { params: Promise.resolve({ id: proposal.id }) }),
+      PATCH(req({ action: "edit", interpretation: "Needs clarification" }, "PATCH"), { params: Promise.resolve({ id: proposal.id }) }),
+    ]);
+
+    expect(responses.map((response) => response.status).sort()).toEqual([200, 409]);
+    expect(["REJECTED", "EDITED"]).toContain((await prisma.maturityProposal.findUnique({ where: { id: proposal.id } }))?.status);
+  });
+  it("allows only one decision when competing proposals are approved concurrently", async () => {
+    const organization = await createTestOrganization({ name: "Concurrent Proposal Org" }); organizationId = organization.id;
+    const domain = await prisma.businessDomain.create({ data: { organizationId: organization.id, name: "Operations" } });
+    const capability = await prisma.capability.create({ data: { domainId: domain.id, name: "Production planning" } });
+    const proposalData = { capabilityId: capability.id, proposalType: "MATURITY_RATING" as const, interpretation: "Ad hoc practice", suggestedScore: 1, confidence: 0.7, sourceEvidenceIds: [], missingEvidence: [], conflictingEvidence: [], status: "PENDING_REVIEW" as const };
+    const [first, second] = await Promise.all([prisma.maturityProposal.create({ data: proposalData }), prisma.maturityProposal.create({ data: proposalData })]);
+
+    const responses = await Promise.all([
+      PATCH(req({ action: "approve" }, "PATCH"), { params: Promise.resolve({ id: first.id }) }),
+      PATCH(req({ action: "approve" }, "PATCH"), { params: Promise.resolve({ id: second.id }) }),
+    ]);
+
+    expect(responses.map((response) => response.status).sort()).toEqual([200, 409]);
+    expect(await prisma.assessmentDecision.count({ where: { capabilityId: capability.id } })).toBe(1);
+  });
 });
