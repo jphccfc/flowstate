@@ -19,7 +19,7 @@ export default async function ClientOverviewPage({
         orderBy: { order: "asc" },
       },
       sessions: { orderBy: { createdAt: "desc" }, take: 3 },
-      _count: { select: { kpis: true, achievements: true, stakeholders: true } },
+      _count: { select: { kpis: true, achievements: true, stakeholders: true, planningItems: true } },
     },
   });
 
@@ -37,6 +37,8 @@ export default async function ClientOverviewPage({
     (sum, d) => sum + d.capabilities.filter((c) => assessedCapabilityIds.has(c.id)).length,
     0
   );
+
+  const planningItemCount = org._count.planningItems;
 
   const cards = [
     { href: `/clients/${id}/capture`, label: "Capture evidence", icon: "02", desc: "Upload and capture traceable evidence for this client", cta: "Open capture evidence" },
@@ -114,8 +116,8 @@ export default async function ClientOverviewPage({
         <div className="workspace-card p-6">
           <div className="workspace-nav-icon mb-4 text-sm">09</div>
           <h2 className="font-semibold text-[var(--foreground)] mb-1">Planning items</h2>
-          <p className="text-sm text-[var(--muted)] mb-3">Turn approved insights into requirements, specifications, goals and objectives before creating strategic Growth Plan initiatives.</p>
-          <Link href={`/clients/${id}/planning`} className="text-sm font-medium text-[var(--accent)] hover:underline">Open planning items →</Link>
+          <p className="text-sm text-[var(--muted)] mb-3"><span className="font-medium text-[var(--foreground)]">Planning items ready to shape the Growth Plan:</span> {planningItemCount} item{planningItemCount === 1 ? "" : "s"} — requirements, specifications, goals and objectives.</p>
+          <Link href={`/clients/${id}/planning`} aria-label={`Open planning items (${planningItemCount})`} className="text-sm font-medium text-[var(--accent)] hover:underline">Open planning items →</Link>
         </div>
         <div className="workspace-card p-6">
           <div className="workspace-nav-icon mb-4 text-sm">10</div>
