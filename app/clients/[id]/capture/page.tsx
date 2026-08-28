@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, use } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { validateDocumentFile } from "./document-validation";
 
 type CapturedInputType = "TEXT_NOTE" | "EMAIL" | "AUDIO" | "DOCUMENT" | "DATA_ROOM_FILE";
 
@@ -26,6 +27,8 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
   const [submitting, setSubmitting] = useState(false);
   const [startingSession, setStartingSession] = useState(false);
   const [inputs, setInputs] = useState<CapturedInput[]>([]);
+  const [fileError, setFileError] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const isFileType = FILE_TYPES.has(type);
 
@@ -46,11 +49,14 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
     setType(next);
     setRawText("");
     setFile(null);
+    setFileError(null);
+    setSubmitError(null);
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (isFileType ? !file : !rawText.trim()) return;
+    if (isFileType ? !file || !!fileError : !rawText.trim()) return;
+    setSubmitError(null);
     setSubmitting(true);
     try {
       const formData = new FormData();
@@ -67,8 +73,14 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
       if (res.ok) {
         setRawText("");
         setFile(null);
+        setFileError(null);
         loadInputs();
+      } else {
+        const body = await res.json().catch(() => null);
+        setSubmitError(body?.error ?? "Capture could not be submitted. Please try again.");
       }
+    } catch {
+      setSubmitError("Capture could not be submitted. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -109,8 +121,9 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
 
       <form onSubmit={handleSubmit} className="bg-[var(--card)] border border-[var(--card-border)] rounded-lg p-4 mb-8">
         <div className="mb-4">
-          <label className="block text-xs font-medium text-[var(--muted)] mb-1">Type</label>
+          <label htmlFor="capture-type" className="block text-xs font-medium text-[var(--muted)] mb-1">Type</label>
           <select
+            id="capture-type"
             value={type}
             onChange={(e) => handleTypeChange(e.target.value as CapturedInputType)}
             className="border border-[var(--card-border)] rounded px-2 py-1 text-sm"
@@ -118,7 +131,7 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
             <option value="TEXT_NOTE">Text Note</option>
             <option value="EMAIL">Email</option>
             <option value="AUDIO">Audio</option>
-            <option value="DOCUMENT">Document</option>
+            <option value="DOCUMENT">Document (PDF or DOCX)</option>
             <option value="DATA_ROOM_FILE">Data Room File</option>
           </select>
         </div>
@@ -134,15 +147,31 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
         </div>
         {isFileType ? (
           <div className="mb-4">
-            <label className="block text-xs font-medium text-[var(--muted)] mb-1">
+            <label htmlFor="capture-file" className="block text-xs font-medium text-[var(--muted)] mb-1">
               {type === "AUDIO" ? "Audio file" : "Document (PDF or DOCX)"}
             </label>
             <input
+              id="capture-file"
               type="file"
-              accept={type === "AUDIO" ? "audio/*" : ".pdf,.docx"}
-              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+              accept={type === "AUDIO" ? "audio/*" : ".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"}
+              aria-describedby={type === "DOCUMENT" ? "document-file-help document-file-error" : undefined}
+              aria-invalid={type === "DOCUMENT" && !!fileError}
+              onChange={(e) => {
+                const nextFile = e.target.files?.[0] ?? null;
+                setFile(nextFile);
+                setFileError(type === "DOCUMENT" ? validateDocumentFile(nextFile) : null);
+                setSubmitError(null);
+              }}
               className="text-sm w-full"
             />
+            {type === "DOCUMENT" && (
+              <p id="document-file-help" className="text-xs text-[var(--muted)] mt-1">
+                Select a PDF or DOCX document. Other file types are not accepted.
+              </p>
+            )}
+            {type === "DOCUMENT" && fileError && (
+              <p id="document-file-error" role="alert" className="text-xs text-red-700 mt-1">{fileError}</p>
+            )}
           </div>
         ) : (
           <div className="mb-4">
@@ -157,9 +186,11 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
             />
           </div>
         )}
+        {submitting && <p role="status" aria-live="polite" className="text-sm text-[var(--muted)] mb-2">{type === "DOCUMENT" ? "Document upload in progress…" : "Capture in progress…"}</p>}
+        {submitError && <p role="alert" className="text-sm text-red-700 mb-2">{submitError}</p>}
         <button
           type="submit"
-          disabled={submitting || (isFileType ? !file : !rawText.trim())}
+          disabled={submitting || (isFileType ? !file || !!fileError : !rawText.trim())}
           className="flowstate-accent-button text-white text-sm font-medium px-4 py-2 rounded disabled:opacity-50"
         >
           {submitting ? "Submitting…" : "Capture"}
