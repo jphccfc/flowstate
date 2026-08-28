@@ -25,6 +25,14 @@ export function WorkspaceNav({ clientId, clientName }: { clientId: string; clien
     return () => { active = false; };
   }, []);
 
+  useEffect(() => {
+    const closeMenu = window.setTimeout(() => {
+      setOpen(false);
+      setWorkspacePickerOpen(false);
+    }, 0);
+    return () => window.clearTimeout(closeMenu);
+  }, [pathname]);
+
   const items: NavItem[] = [
     { href: `/clients/${clientId}`, label: "Overview", short: "01" },
     { href: `/clients/${clientId}/capture`, label: "Capture evidence", short: "02" },

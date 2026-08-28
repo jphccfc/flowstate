@@ -165,4 +165,15 @@ describe("workspace responsive and theme contracts", () => {
     expect(dialog).toContain('role="dialog"');
     expect(dialog).toContain("aria-modal=\"true\"");
   });
+
+  it("closes the mobile navigation whenever the route changes", () => {
+    expect(nav).toContain("setOpen(false);\n      setWorkspacePickerOpen(false);");
+    expect(nav).toContain("}, [pathname]);");
+  });
+
+  it("keeps the mobile navigation panel inside the viewport", () => {
+    expect(css).toContain("width: 15.5rem;");
+    expect(css).toContain(".workspace-navigation-panel { display: flex;");
+    expect(css).toContain(".workspace-content { min-width: 0; flex: 1; }");
+  });
 });
