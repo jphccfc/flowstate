@@ -1,9 +1,11 @@
-import { afterAll, describe, expect, it, vi } from "vitest";
+import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import { cleanupOrganization, createTestOrganization, prisma } from "../helpers/db";
+
+let currentEmail = "advisor@test.com";
 
 vi.mock("@/lib/supabase/server", () => ({
   createClient: async () => ({
-    auth: { getUser: async () => ({ data: { user: { id: "test-user", email: "advisor@test.com" } } }) },
+    auth: { getUser: async () => ({ data: { user: { id: "test-user", email: currentEmail } } }) },
   }),
 }));
 
@@ -37,6 +39,10 @@ function makeFormDataRequest(fields: Record<string, string | File>) {
 describe("captured-inputs routes", () => {
   let orgId: string;
 
+  afterEach(() => {
+    currentEmail = "advisor@test.com";
+  });
+
   afterAll(async () => {
     if (orgId) await cleanupOrganization(orgId);
     await prisma.$disconnect();
@@ -63,6 +69,40 @@ describe("captured-inputs routes", () => {
       params: Promise.resolve({ id: created.id }),
     });
     expect(getRes.status).toBe(200);
+  });
+
+  it("allows a system admin to capture and read client inputs without membership, but denies another organization", async () => {
+    const client = await createTestOrganization({ name: "System Admin Capture Client" });
+    orgId = client.id;
+    const foreign = await prisma.organization.create({ data: { name: "System Admin Foreign Org", industry: "Manufacturing" } });
+    const adminEmail = `capture-system-admin-${Date.now()}@flowstate.test`;
+    await prisma.user.create({ data: { email: adminEmail, role: "SYSTEM_ADMIN" } });
+    currentEmail = adminEmail;
+
+    const createRes = await createInput(
+      makeFormDataRequest({ organizationId: client.id, type: "TEXT_NOTE", rawText: "Admin capture note." })
+    );
+    expect(createRes.status).toBe(201);
+    const created = await createRes.json();
+    expect((await listInputs(new Request(`http://localhost/api/captured-inputs?organizationId=${client.id}`) as never)).status).toBe(200);
+    expect((await getInput(new Request(`http://localhost/api/captured-inputs/${created.id}`) as never, {
+      params: Promise.resolve({ id: created.id }),
+    })).status).toBe(200);
+
+    const outsiderEmail = `capture-outsider-${Date.now()}@flowstate.test`;
+    await prisma.user.create({ data: { email: outsiderEmail, role: "ADVISOR" } });
+    currentEmail = outsiderEmail;
+    const foreignCreate = await createInput(
+      makeFormDataRequest({ organizationId: foreign.id, type: "TEXT_NOTE", rawText: "Should be denied." })
+    );
+    expect(foreignCreate.status).toBe(403);
+    expect((await listInputs(new Request(`http://localhost/api/captured-inputs?organizationId=${foreign.id}`) as never)).status).toBe(403);
+    expect(await prisma.capturedInput.count({ where: { organizationId: foreign.id } })).toBe(0);
+
+    await prisma.organization.delete({ where: { id: foreign.id } });
+    await prisma.organization.delete({ where: { id: client.id } });
+    orgId = "";
+    currentEmail = "advisor@test.com";
   });
 
   it("uploads an AUDIO file to Blob and creates a PENDING CapturedInput with sourceRef set", async () => {
