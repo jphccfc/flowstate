@@ -17,9 +17,16 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const status = body.action === "approve" ? "APPROVED" : body.action === "reject" ? "REJECTED" : "EDITED";
   const reviewNotes = typeof body.reviewNotes === "string" ? body.reviewNotes.trim() : "";
   const update = { status, reviewedBy: user.email, reviewNotes: reviewNotes || null, reviewedAt: new Date(), ...(body.action === "edit" && typeof body.interpretation === "string" ? { interpretation: body.interpretation } : {}), ...(body.action === "edit" && typeof body.suggestedScore === "number" ? { suggestedScore: Math.max(0, Math.min(5, body.suggestedScore)) } : {}) };
-  if (body.action !== "approve") return NextResponse.json(await prisma.maturityProposal.update({ where: { id }, data: update }));
+  if (body.action !== "approve") {
+    const reviewed = await prisma.maturityProposal.updateMany({ where: { id, status: "PENDING_REVIEW" }, data: update });
+    if (reviewed.count !== 1) return NextResponse.json({ error: "Proposal has already been reviewed" }, { status: 409 });
+    return NextResponse.json(await prisma.maturityProposal.findUniqueOrThrow({ where: { id } }));
+  }
 
   const approved = await prisma.$transaction(async (tx) => {
+    // Serialize approvals for one capability so competing proposals cannot both pass
+    // the latest-decision check before either creates its immutable decision.
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${proposal.capabilityId}))`;
     const latestDecision = await tx.assessmentDecision.findFirst({ where: { capabilityId: proposal.capabilityId }, orderBy: { createdAt: "desc" }, select: { status: true } });
     if (latestDecision && ["APPROVED", "SIGNED_OFF"].includes(latestDecision.status)) throw new Error("assessment already has an approved decision; reopen it before approving again");
     const sourcePerspectiveIds = [...new Set(proposal.sourcePerspectiveIds)];
@@ -27,7 +34,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       const approvedPerspectiveCount = await tx.maturityPerspective.count({ where: { id: { in: sourcePerspectiveIds }, capabilityId: proposal.capabilityId, status: "APPROVED" } });
       if (approvedPerspectiveCount !== sourcePerspectiveIds.length) throw new Error("proposal cites perspectives that are no longer approved");
     }
-    const reviewedProposal = await tx.maturityProposal.update({ where: { id }, data: update });
+    const reviewedProposal = await tx.maturityProposal.updateMany({ where: { id, status: "PENDING_REVIEW" }, data: update });
+    if (reviewedProposal.count !== 1) throw new Error("proposal has already been reviewed");
+    const reviewed = await tx.maturityProposal.findUniqueOrThrow({ where: { id } });
     await tx.assessmentDecision.create({ data: {
       capabilityId: proposal.capabilityId, status: "APPROVED", score: proposal.suggestedScore,
       scoreRangeMin: proposal.scoreRangeMin, scoreRangeMax: proposal.scoreRangeMax,
@@ -35,13 +44,15 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       sourceEvidenceIds: proposal.sourceEvidenceIds, sourcePerspectiveIds: proposal.sourcePerspectiveIds,
       decidedBy: user.email,
     } });
-    return reviewedProposal;
+    return reviewed;
   }).catch((error: unknown) => {
+    if (error instanceof Error && error.message.includes("already been reviewed")) return "ALREADY_REVIEWED" as const;
     if (error instanceof Error && error.message.includes("approved decision")) return null;
     if (error instanceof Error && error.message.includes("no longer approved")) return "STALE_PROVENANCE" as const;
     throw error;
   });
   if (approved === "STALE_PROVENANCE") return NextResponse.json({ error: "proposal cites perspectives that are no longer approved" }, { status: 409 });
+  if (approved === "ALREADY_REVIEWED") return NextResponse.json({ error: "Proposal has already been reviewed" }, { status: 409 });
   if (!approved) return NextResponse.json({ error: "assessment already has an approved decision; reopen it before approving again" }, { status: 409 });
   return NextResponse.json(approved);
 }
