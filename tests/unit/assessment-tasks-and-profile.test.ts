@@ -35,6 +35,7 @@ describe("Assessment Tasks and profile workflow", () => {
     expect(tasks).toContain("Edit assessment task");
     expect(tasks).toContain("setEditingTask");
     expect(tasks).toContain("onClick={() => startEdit(task)}");
+    expect(tasks).toContain("onClick={(event) => event.stopPropagation()}");
     expect(tasks).not.toContain(">Edit task</button>");
     expect(tasks).toContain("formatDisplayLabel(status)");
     expect(tasks).toContain("formatDisplayLabel(task.humanReviewState)");
