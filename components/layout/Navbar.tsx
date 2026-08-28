@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
 interface NavbarProps {
   clientName?: string;
@@ -69,6 +70,8 @@ export function Navbar({ clientName, clientId }: NavbarProps) {
             ))}
           </nav>
         )}
+
+        <ThemeToggle />
 
         <button
           onClick={handleSignOut}
