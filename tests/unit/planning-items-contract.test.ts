@@ -30,5 +30,10 @@ describe("PlanningItem contract", () => {
     expect(page).toContain("humanApprovalState");
     expect(members).toContain("members.read");
     expect(page).toContain("No planning items yet");
+    expect(page).toContain("approvedInsightId");
+    expect(page).toContain("Approved insight");
+    expect(page).toContain("Source decision");
+    expect(page).toContain("Source evidence");
+    expect(page).toContain("Source perspective");
   });
 });

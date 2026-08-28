@@ -13,7 +13,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
   const current = await user(); const { id } = await params;
   if (!current) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   if (!(await hasOrganizationPermission(current.email, id, "client.read"))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  return NextResponse.json(await prisma.planningItem.findMany({ where: { organizationId: id }, orderBy: [{ lifecycleStatus: "asc" }, { targetDate: "asc" }, { createdAt: "desc" }] }));
+  return NextResponse.json(await prisma.planningItem.findMany({ where: { organizationId: id }, orderBy: [{ lifecycleStatus: "asc" }, { targetDate: "asc" }, { createdAt: "desc" }], include: { approvedInsight: { select: { id: true, title: true, decisionId: true, sourceEvidenceIds: true, sourcePerspectiveIds: true, decision: { select: { id: true, status: true, score: true, rationale: true } } } } } }));
 }
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -29,8 +29,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   if (!(await getOrganizationMembership(ownerEmail, id))) return NextResponse.json({ error: "ownerEmail must belong to an organisation member" }, { status: 400 });
   let targetDate: Date | null = null; if (body.targetDate !== undefined) { targetDate = new Date(body.targetDate); if (Number.isNaN(targetDate.getTime())) return NextResponse.json({ error: "targetDate must be a valid date" }, { status: 400 }); }
   if (body.parentId !== undefined && !(await prisma.planningItem.findFirst({ where: { id: body.parentId, organizationId: id }, select: { id: true } }))) return NextResponse.json({ error: "parentId must belong to this organisation" }, { status: 400 });
-  if (body.approvedInsightId !== undefined && !(await prisma.approvedInsight.findFirst({ where: { id: body.approvedInsightId, capability: { domain: { organizationId: id } } }, select: { id: true } }))) return NextResponse.json({ error: "approvedInsightId must belong to this organisation" }, { status: 400 });
-  const item = await prisma.planningItem.create({ data: { organizationId: id, type: body.type, title, description, ownerEmail, targetDate, createdBy: current.email, parentId: typeof body.parentId === "string" ? body.parentId : null, approvedInsightId: typeof body.approvedInsightId === "string" ? body.approvedInsightId : null } });
+  if (body.approvedInsightId !== undefined && !(await prisma.approvedInsight.findFirst({ where: { id: body.approvedInsightId, status: "APPROVED", capability: { domain: { organizationId: id } } }, select: { id: true } }))) return NextResponse.json({ error: "approvedInsightId must belong to this organisation" }, { status: 400 });
+  const item = await prisma.planningItem.create({ data: { organizationId: id, type: body.type, title, description, ownerEmail, targetDate, createdBy: current.email, parentId: typeof body.parentId === "string" ? body.parentId : null, approvedInsightId: typeof body.approvedInsightId === "string" ? body.approvedInsightId : null }, include: { approvedInsight: { select: { id: true, title: true, decisionId: true, sourceEvidenceIds: true, sourcePerspectiveIds: true, decision: { select: { id: true, status: true, score: true, rationale: true } } } } } });
   return NextResponse.json(item, { status: 201 });
 }
 
