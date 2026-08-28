@@ -8,6 +8,7 @@ import { InputType } from "@/app/generated/prisma/enums";
 
 const VALID_TYPES = new Set<InputType>(["TEXT_NOTE", "EMAIL", "AUDIO", "DOCUMENT", "DATA_ROOM_FILE"]);
 const TEXT_TYPES = new Set<InputType>(["TEXT_NOTE", "EMAIL"]);
+const DOCUMENT_EXTENSIONS = new Set(["pdf", "docx"]);
 
 function isInputType(value: string): value is InputType {
   return (VALID_TYPES as Set<string>).has(value);
@@ -61,6 +62,12 @@ export async function POST(req: NextRequest) {
   } else {
     if (!(file instanceof File)) {
       return NextResponse.json({ error: "file is required" }, { status: 400 });
+    }
+    if (type === "DOCUMENT") {
+      const extension = file.name.split(".").pop()?.toLowerCase();
+      if (!extension || !DOCUMENT_EXTENSIONS.has(extension)) {
+        return NextResponse.json({ error: "Documents must be PDF or DOCX files" }, { status: 400 });
+      }
     }
     const blob = await put(file.name, file, { access: "public", addRandomSuffix: true });
     capturedInput = await prisma.capturedInput.create({

@@ -13,7 +13,7 @@ vi.mock("next/server", async (importOriginal) => {
 });
 
 vi.mock("@vercel/blob", () => ({
-  put: vi.fn().mockResolvedValue({ url: "https://blob.example.com/interview.m4a" }),
+  put: vi.fn().mockImplementation(async (name: string) => ({ url: `https://blob.example.com/${name}` })),
 }));
 
 vi.mock("@/lib/ingestion/pipeline", () => ({
@@ -80,6 +80,37 @@ describe("captured-inputs routes", () => {
     expect(created.rawText).toBeNull();
   });
 
+  it("uploads a PDF document and preserves its source provenance for processing", async () => {
+    const org = await createTestOrganization({ name: "Route Document Test Org" });
+    orgId = org.id;
+    const file = new File(["fake pdf bytes"], "assessment.pdf", { type: "application/pdf" });
+    const res = await createInput(makeFormDataRequest({ organizationId: org.id, type: "DOCUMENT", file, locationTag: "Toronto" }));
+    expect(res.status).toBe(201);
+    const created = await res.json();
+    expect(created.type).toBe("DOCUMENT");
+    expect(created.sourceRef).toBe("https://blob.example.com/assessment.pdf");
+    expect(created.locationTag).toBe("Toronto");
+    expect(created.status).toBe("PENDING");
+    expect(created.rawText).toBeNull();
+  });
+
+  it("rejects a document that is not PDF or DOCX before uploading it", async () => {
+    const org = await createTestOrganization({ name: "Route Document Type Test Org" });
+    orgId = org.id;
+    const file = new File(["spreadsheet"], "assessment.xlsx", { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    const res = await createInput(makeFormDataRequest({ organizationId: org.id, type: "DOCUMENT", file }));
+    expect(res.status).toBe(400);
+    expect(await res.json()).toEqual({ error: "Documents must be PDF or DOCX files" });
+  });
+
+  it("denies a document upload to an organization the authenticated user cannot access", async () => {
+    const org = await prisma.organization.create({ data: { name: "Route Foreign Document Test Org", industry: "Manufacturing" } });
+    orgId = org.id;
+    const file = new File(["fake pdf bytes"], "foreign.pdf", { type: "application/pdf" });
+    const res = await createInput(makeFormDataRequest({ organizationId: org.id, type: "DOCUMENT", file }));
+    expect(res.status).toBe(403);
+    expect(await prisma.capturedInput.count({ where: { organizationId: org.id } })).toBe(0);
+  });
   it("rejects an invalid type with 400", async () => {
     const org = await createTestOrganization({ name: "Route Reject Test Org" });
     orgId = org.id;
