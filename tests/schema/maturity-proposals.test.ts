@@ -41,6 +41,22 @@ describe("persisted AI maturity proposals", () => {
     expect(fetchMock.mock.calls[0][1].body).not.toContain("Unreviewed claim");
     expect(pending.status).toBe("SUBMITTED");
   });
+  it("refuses approval when a cited perspective is no longer approved", async () => {
+    const organization = await createTestOrganization({ name: "Stale Provenance Org" }); organizationId = organization.id;
+    const domain = await prisma.businessDomain.create({ data: { organizationId: organization.id, name: "Operations" } });
+    const capability = await prisma.capability.create({ data: { domainId: domain.id, name: "Production planning" } });
+    const perspective = await prisma.maturityPerspective.create({ data: { capabilityId: capability.id, stakeholderType: "EXPERT", score: 2, originalStatement: "Reviewed claim", status: "APPROVED" } });
+    const proposal = await prisma.maturityProposal.create({ data: { capabilityId: capability.id, proposalType: "MATURITY_RATING", interpretation: "Supported practice", suggestedScore: 2, sourcePerspectiveIds: [perspective.id], status: "PENDING_REVIEW" } });
+    await prisma.maturityPerspective.update({ where: { id: perspective.id }, data: { status: "REJECTED" } });
+
+    const response = await PATCH(req({ action: "approve" }, "PATCH"), { params: Promise.resolve({ id: proposal.id }) });
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toMatchObject({ error: "proposal cites perspectives that are no longer approved" });
+    expect((await prisma.maturityProposal.findUnique({ where: { id: proposal.id } }))?.status).toBe("PENDING_REVIEW");
+    expect(await prisma.assessmentDecision.count({ where: { capabilityId: capability.id } })).toBe(0);
+  });
+
   it("rejects proposal generation for a capability in another organization", async () => {
     const organization = await createTestOrganization({ name: "Other Proposal Org" });
     try {
