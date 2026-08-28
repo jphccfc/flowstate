@@ -25,6 +25,34 @@ describe("persisted AI maturity proposals", () => {
     expect(body).toMatchObject({ capabilityId: capability.id, status: "PENDING_REVIEW", suggestedScore: 1, scoreRangeMin: 0.5, scoreRangeMax: 1.5, confidence: 0.82, sourceEvidenceIds: [tag.id] });
     expect((await prisma.maturityAssessment.findFirst({ where: { capabilityId: capability.id } }))?.score).toBe(1);
   });
+  it("uses only approved perspectives and preserves their IDs as proposal provenance", async () => {
+    const organization = await createTestOrganization({ name: "Perspective Provenance Org" }); organizationId = organization.id;
+    const domain = await prisma.businessDomain.create({ data: { organizationId: organization.id, name: "Operations" } });
+    const capability = await prisma.capability.create({ data: { domainId: domain.id, name: "Production planning" } });
+    const pending = await prisma.maturityPerspective.create({ data: { capabilityId: capability.id, stakeholderType: "EMPLOYEE", score: 1, originalStatement: "Unreviewed claim", status: "SUBMITTED" } });
+    const approved = await prisma.maturityPerspective.create({ data: { capabilityId: capability.id, stakeholderType: "EXPERT", score: 2, originalStatement: "Reviewed claim", status: "APPROVED" } });
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ choices: [{ message: { content: JSON.stringify({ interpretation: "Planning is ad hoc", suggestedScore: 1, confidence: 0.82, missingEvidence: [], conflictingEvidence: [] }) } }] }) });
+    vi.stubGlobal("fetch", fetchMock);
+    const response = await POST(req({}), { params: Promise.resolve({ id: capability.id }) });
+    expect(response.status).toBe(201);
+    const body = await response.json();
+    expect(body.sourcePerspectiveIds).toEqual([approved.id]);
+    expect(fetchMock.mock.calls[0][1].body).toContain("Reviewed claim");
+    expect(fetchMock.mock.calls[0][1].body).not.toContain("Unreviewed claim");
+    expect(pending.status).toBe("SUBMITTED");
+  });
+  it("rejects proposal generation for a capability in another organization", async () => {
+    const organization = await createTestOrganization({ name: "Other Proposal Org" });
+    try {
+      const domain = await prisma.businessDomain.create({ data: { organizationId: organization.id, name: "Operations" } });
+      const capability = await prisma.capability.create({ data: { domainId: domain.id, name: "Production planning" } });
+      await prisma.userOrganization.deleteMany({ where: { organizationId: organization.id, user: { email: "advisor@test.com" } } });
+      const response = await POST(req({}), { params: Promise.resolve({ id: capability.id }) });
+      expect(response.status).toBe(403);
+    } finally {
+      await cleanupOrganization(organization.id);
+    }
+  });
   it("blocks a client stakeholder from approving an AI proposal", async () => {
     const organization = await createTestOrganization({ name: "Maturity Role Org" }); organizationId = organization.id;
     await prisma.userOrganization.updateMany({ where: { organizationId: organization.id, user: { email: "advisor@test.com" } }, data: { role: "CLIENT_STAKEHOLDER" } });
