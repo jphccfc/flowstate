@@ -13,10 +13,10 @@ async function addReadableProvenance<T extends { approvedInsight: InsightWithDec
   if (!item.approvedInsight) return item;
   const insight = item.approvedInsight;
   const [sourceEvidence, sourcePerspectives] = await Promise.all([
-    prisma.tag.findMany({ where: { id: { in: insight.sourceEvidenceIds }, status: "APPROVED", targetType: "CAPABILITY", targetId: insight.capabilityId, segment: { capturedInput: { organizationId } } }, select: { id: true, segment: { select: { text: true, capturedInput: { select: { type: true, sourceRef: true } } } } } }),
+    prisma.tag.findMany({ where: { id: { in: insight.sourceEvidenceIds }, status: "APPROVED", targetType: "CAPABILITY", targetId: insight.capabilityId, segment: { capturedInput: { organizationId } } }, select: { id: true, segment: { select: { text: true, capturedInput: { select: { id: true, type: true, sourceRef: true } } } } } }),
     prisma.maturityPerspective.findMany({ where: { id: { in: insight.sourcePerspectiveIds }, capabilityId: insight.capabilityId, capability: { domain: { organizationId } } }, select: { id: true, stakeholderType: true, originalStatement: true } }),
   ]);
-  return { ...item, approvedInsight: { ...insight, sourceEvidence: sourceEvidence.map((e) => ({ id: e.id, segmentText: e.segment.text, sourceType: e.segment.capturedInput.type, sourceRef: e.segment.capturedInput.sourceRef })), sourcePerspectives: sourcePerspectives.map((perspective) => ({ id: perspective.id, stakeholderType: perspective.stakeholderType, statement: perspective.originalStatement })) } };
+  return { ...item, approvedInsight: { ...insight, sourceEvidence: sourceEvidence.map((e) => ({ id: e.id, capturedInputId: e.segment.capturedInput.id, segmentText: e.segment.text, sourceType: e.segment.capturedInput.type, sourceRef: e.segment.capturedInput.sourceRef })), sourcePerspectives: sourcePerspectives.map((perspective) => ({ id: perspective.id, stakeholderType: perspective.stakeholderType, statement: perspective.originalStatement })) } };
 }
 async function user() { return (await (await createClient()).auth.getUser()).data.user; }
 async function approvedInsightBelongsToOrganization(approvedInsightId: unknown, organizationId: string) {

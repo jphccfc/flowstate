@@ -36,4 +36,10 @@ describe("capture evidence UX contract", () => {
     expect(capture).toContain('fetch("/api/captured-inputs", { method: "POST", body: formData })');
     expect(capture).toContain("validateDocumentFile");
   });
+
+  it("can focus a capture record when provenance links back from planning", () => {
+    expect(capture).toContain("captureId");
+    expect(capture).toContain("Referenced capture");
+    expect(capture).toContain("aria-current");
+  });
 });
