@@ -39,6 +39,7 @@ export default async function ClientOverviewPage({
   );
 
   const cards = [
+    { href: `/clients/${id}/capture`, label: "Capture evidence", icon: "02", desc: "Upload and capture traceable evidence for this client", cta: "Open capture evidence" },
     { href: `/clients/${id}/configure`, label: "Blueprint", icon: "02", desc: "Set up domains, capabilities, KPIs, and target achievements", cta: "Configure blueprint" },
     { href: `/clients/${id}/assess`, label: "Assessment", icon: "03", desc: "Run a guided capability assessment interview", cta: "Start / continue assessment" },
     { href: `/clients/${id}/tasks`, label: "Assessment tasks", icon: "04", desc: "Raise and manage the operational work needed to complete this assessment", cta: "Open assessment tasks" },
