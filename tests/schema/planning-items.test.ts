@@ -2,7 +2,8 @@ import { beforeAll, afterAll, describe, expect, it, vi } from "vitest";
 import { prisma } from "@/lib/db";
 import type { NextRequest } from "next/server";
 
-const currentEmail = "planning-advisor@test.com";
+let currentEmail = "planning-advisor@test.com";
+const adminEmail = "planning-system-admin@test.com";
 vi.mock("@/lib/supabase/server", () => ({ createClient: async () => ({ auth: { getUser: async () => ({ data: { user: { email: currentEmail } } }) } }) }));
 
 import { GET, POST, PATCH } from "@/app/api/clients/[id]/planning-items/route";
@@ -17,6 +18,7 @@ describe("planning item contract", () => {
 
   beforeAll(async () => {
     const owner = await prisma.user.upsert({ where: { email: currentEmail }, update: { role: "ADVISOR" }, create: { email: currentEmail, role: "ADVISOR" } });
+    await prisma.user.upsert({ where: { email: adminEmail }, update: { role: "SYSTEM_ADMIN" }, create: { email: adminEmail, role: "SYSTEM_ADMIN" } });
     const outsider = await prisma.user.upsert({ where: { email: "planning-outsider@test.com" }, update: {}, create: { email: "planning-outsider@test.com", role: "CLIENT_EXECUTIVE" } });
     const org = await prisma.organization.create({ data: { name: "Planning Organisation" } });
     const otherOrg = await prisma.organization.create({ data: { name: "Other Planning Organisation" } });
@@ -26,7 +28,7 @@ describe("planning item contract", () => {
   });
   afterAll(async () => {
     await prisma.organization.deleteMany({ where: { id: { in: [organizationId, otherOrganizationId] } } });
-    await prisma.user.deleteMany({ where: { email: { in: [currentEmail, "planning-outsider@test.com"] } } });
+    await prisma.user.deleteMany({ where: { email: { in: [currentEmail, adminEmail, "planning-outsider@test.com"] } } });
     await prisma.$disconnect();
   });
 
@@ -37,6 +39,23 @@ describe("planning item contract", () => {
     expect(body).toMatchObject({ type: "REQUIREMENT", ownerEmail: currentEmail, lifecycleStatus: "DRAFT", humanApprovalState: "NOT_REQUIRED", createdBy: currentEmail });
     const list = await GET(new Request("http://localhost") as unknown as NextRequest, { params: Promise.resolve({ id: organizationId }) });
     expect((await list.json()).some((item: { id: string }) => item.id === body.id)).toBe(true);
+  });
+
+  it("allows a system admin without membership to list and create for an accessible organisation", async () => {
+    currentEmail = adminEmail;
+    const list = await GET(new Request("http://localhost") as unknown as NextRequest, { params: Promise.resolve({ id: organizationId }) });
+    expect(list.status).toBe(200);
+    const missingOwner = await POST(request({ type: "GOAL", title: "Unsafe owner", description: "Must require a member owner." }) as unknown as NextRequest, { params: Promise.resolve({ id: organizationId }) });
+    expect(missingOwner.status).toBe(400);
+    const response = await POST(request({ type: "GOAL", title: "Admin-created goal", description: "Owned by an organisation member.", ownerEmail: "planning-advisor@test.com" }) as unknown as NextRequest, { params: Promise.resolve({ id: organizationId }) });
+    expect(response.status).toBe(201);
+    expect((await response.json()).createdBy).toBe(adminEmail);
+  });
+
+  it("denies a member access to another organisation", async () => {
+    currentEmail = "planning-advisor@test.com";
+    const denied = await GET(new Request("http://localhost") as unknown as NextRequest, { params: Promise.resolve({ id: otherOrganizationId }) });
+    expect(denied.status).toBe(403);
   });
 
   it("rejects an owner from another organisation", async () => {
@@ -57,6 +76,17 @@ describe("planning item contract", () => {
     expect(await response.json()).toMatchObject({ humanApprovalState: "APPROVED", approvedBy: currentEmail });
   });
 
+  it("rejects a PATCH approved insight from another organisation", async () => {
+    currentEmail = "planning-advisor@test.com";
+    const foreignDomain = await prisma.businessDomain.create({ data: { organizationId: otherOrganizationId, name: "Foreign provenance domain" } });
+    const foreignCapability = await prisma.capability.create({ data: { domainId: foreignDomain.id, name: "Foreign provenance capability" } });
+    const foreignDecision = await prisma.assessmentDecision.create({ data: { capabilityId: foreignCapability.id, status: "SIGNED_OFF" } });
+    const foreignInsight = await prisma.approvedInsight.create({ data: { capability: { connect: { id: foreignCapability.id } }, decision: { connect: { id: foreignDecision.id } }, type: "MATURITY_GAP", title: "Foreign approved gap", description: "Should not link" } });
+    const item = await prisma.planningItem.create({ data: { organizationId, type: "OBJECTIVE", title: "Provenance boundary", description: "Must remain local" } });
+    const response = await PATCH(request({ planningItemId: item.id, approvedInsightId: foreignInsight.id }, "PATCH") as unknown as NextRequest, { params: Promise.resolve({ id: organizationId }) });
+    expect(response.status).toBe(400);
+  });
+
   it("keeps planning items separate from assessment tasks and growth actions", async () => {
     const item = await prisma.planningItem.findFirstOrThrow({ where: { organizationId } });
     expect(item).not.toHaveProperty("assigneeId");
@@ -68,7 +98,7 @@ describe("planning item contract", () => {
     const capability = await prisma.capability.create({ data: { domainId: domain.id, name: "Provenance capability" } });
     const decision = await prisma.assessmentDecision.create({ data: { capabilityId: capability.id, status: "SIGNED_OFF", sourceEvidenceIds: ["evidence-1"], sourcePerspectiveIds: ["perspective-1"] } });
     const insight = await prisma.approvedInsight.create({ data: { capabilityId: capability.id, decisionId: decision.id, type: "MATURITY_GAP", title: "Approved gap", description: "Evidence-backed gap", sourceEvidenceIds: decision.sourceEvidenceIds, sourcePerspectiveIds: decision.sourcePerspectiveIds } });
-    const response = await POST(request({ type: "OBJECTIVE", title: "Address approved gap", description: "Create a measurable objective.", approvedInsightId: insight.id }) as unknown as NextRequest, { params: Promise.resolve({ id: organizationId }) });
+    const response = await POST(request({ type: "OBJECTIVE", title: "Address approved gap", description: "Create a measurable objective.", ownerEmail: "planning-advisor@test.com", approvedInsightId: insight.id }) as unknown as NextRequest, { params: Promise.resolve({ id: organizationId }) });
     expect(response.status).toBe(201);
     expect(await response.json()).toMatchObject({ approvedInsightId: insight.id, approvedInsight: { id: insight.id, decisionId: decision.id, sourceEvidenceIds: ["evidence-1"], sourcePerspectiveIds: ["perspective-1"] } });
   });
