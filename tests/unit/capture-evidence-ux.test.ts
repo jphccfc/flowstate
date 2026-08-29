@@ -27,6 +27,12 @@ describe("capture evidence UX contract", () => {
     expect(capture).toContain("file.name");
   });
 
+  it("guides the user from a successful capture to tag review", () => {
+    expect(capture).toContain("Capture submitted");
+    expect(capture).toContain("Review captured evidence");
+    expect(capture).toContain('href={`/clients/${organizationId}/review`}');
+  });
+
   it("uses contextual upload actions while preserving text Capture and valid-file gating", () => {
     expect(capture).toContain('"Upload document"');
     expect(capture).toContain('"Upload audio"');
