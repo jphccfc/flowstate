@@ -35,5 +35,7 @@ describe("capture evidence UX contract", () => {
     expect(capture).toContain("!file || !!fileError");
     expect(capture).toContain('fetch("/api/captured-inputs", { method: "POST", body: formData })');
     expect(capture).toContain("validateDocumentFile");
+    expect(capture).toContain("setSubmitError(await readErrorMessage(res))");
+    expect(capture).toContain("return body;");
   });
 });
