@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
@@ -11,6 +11,7 @@ type Workspace = { id: string; name: string; industry: string | null };
 
 export function WorkspaceNav({ clientId, clientName }: { clientId: string; clientName: string }) {
   const pathname = usePathname();
+  const initialPathname = useRef(pathname);
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
@@ -26,11 +27,9 @@ export function WorkspaceNav({ clientId, clientName }: { clientId: string; clien
   }, []);
 
   useEffect(() => {
-    const closeMenu = window.setTimeout(() => {
-      setOpen(false);
-      setWorkspacePickerOpen(false);
-    }, 0);
-    return () => window.clearTimeout(closeMenu);
+    if (pathname === initialPathname.current) return;
+    setOpen(false);
+    setWorkspacePickerOpen(false);
   }, [pathname]);
 
   const items: NavItem[] = [

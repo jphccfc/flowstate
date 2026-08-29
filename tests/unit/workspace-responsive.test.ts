@@ -166,8 +166,15 @@ describe("workspace responsive and theme contracts", () => {
     expect(dialog).toContain("aria-modal=\"true\"");
   });
 
+  it("does not close the first mobile toggle during initial pathname effect", () => {
+    expect(nav).toContain("const initialPathname = useRef(pathname);");
+    expect(nav).toContain("if (pathname === initialPathname.current) return;");
+    expect(nav).not.toContain("window.setTimeout");
+    expect(nav).toContain("onClick={() => setOpen((value) => !value)}");
+  });
+
   it("closes the mobile navigation whenever the route changes", () => {
-    expect(nav).toContain("setOpen(false);\n      setWorkspacePickerOpen(false);");
+    expect(nav).toContain("setOpen(false);\n    setWorkspacePickerOpen(false);");
     expect(nav).toContain("}, [pathname]);");
   });
 
