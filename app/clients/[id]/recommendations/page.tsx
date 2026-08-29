@@ -18,6 +18,7 @@ type Recommendation = {
   feedback: Feedback[];
 };
 type FormValues = { title: string; description: string; estimatedValue: string; priorityScore: string };
+type GrowthAction = { id: string; title: string; description: string; outcomeScenario: string; expectedValue: number | null; ownerEmail: string | null; dueDate: string | null; status: string; insight: { title: string; capability: { name: string } } };
 
 const EMPTY_FORM: FormValues = { title: "", description: "", estimatedValue: "", priorityScore: "" };
 const statuses: Array<"ALL" | Status> = ["ALL", "DRAFT", "PENDING_REVIEW", "EDITED", "APPROVED", "REJECTED"];
@@ -53,6 +54,7 @@ export default function RecommendationsPage({ params }: { params: Promise<{ id: 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [growthActions, setGrowthActions] = useState<GrowthAction[]>([]);
 
   const loadRecommendations = useCallback(async () => {
     setLoading(true);
@@ -68,9 +70,21 @@ export default function RecommendationsPage({ params }: { params: Promise<{ id: 
     setLoading(false);
   }, [organizationId, status]);
 
-  // This effect intentionally synchronizes the page with the remote recommendation API.
+  const loadGrowthActions = useCallback(async () => {
+    const response = await fetch(`/api/clients/${organizationId}/growth-actions`);
+    if (response.ok) setGrowthActions(await response.json());
+  }, [organizationId]);
+
+  // These effects intentionally synchronize the page with remote workspace APIs.
   // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { loadRecommendations(); }, [loadRecommendations]);
+  useEffect(() => { loadRecommendations(); loadGrowthActions(); }, [loadRecommendations, loadGrowthActions]);
+
+  async function updateGrowthAction(id: string, nextStatus: string) {
+    const response = await fetch(`/api/growth-actions/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status: nextStatus }) });
+    if (!response.ok) { setError("The Growth Plan action could not be updated."); return; }
+    const updated = await response.json();
+    setGrowthActions((current) => current.map((action) => action.id === id ? { ...action, ...updated } : action));
+  }
 
   function setField(field: keyof FormValues, value: string) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -169,6 +183,11 @@ export default function RecommendationsPage({ params }: { params: Promise<{ id: 
           </div>
         </div>
       </form>
+
+      <section className="bg-white rounded-xl border border-[var(--card-border)] p-5 mb-6" aria-labelledby="growth-actions-title">
+        <div className="flex flex-wrap items-start justify-between gap-3"><div><h2 id="growth-actions-title" className="font-semibold text-[var(--foreground)]">Growth actions</h2><p className="text-sm text-[var(--muted)] mt-1">Track strategic actions created from approved insights and keep owners aligned on next steps.</p></div><span className="text-xs text-[var(--muted)]">{growthActions.length} action{growthActions.length === 1 ? "" : "s"}</span></div>
+        {growthActions.length === 0 ? <p className="text-sm text-[var(--muted)] mt-4">No Growth Plan actions yet. Create one from a signed-off assessment insight.</p> : <div className="space-y-3 mt-4">{growthActions.map((action) => <article key={action.id} className="rounded-lg border border-[var(--card-border)] p-4"><div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="font-medium text-[var(--foreground)]">{action.title}</h3><p className="text-xs text-[var(--muted)] mt-1">{action.insight.capability.name} · {action.insight.title}</p></div><span className="rounded-full px-2.5 py-1 text-xs font-medium bg-[var(--muted-bg)] text-[var(--muted)]">{action.status.replaceAll("_", " ")}</span></div><p className="text-sm text-[var(--foreground)] mt-3">{action.description}</p><div className="flex flex-wrap items-center gap-4 text-xs text-[var(--muted)] mt-3"><span>Owner: {action.ownerEmail ?? "Unassigned"}</span><span>Due: {action.dueDate ? formatDate(action.dueDate) : "Not set"}</span>{action.expectedValue !== null && <span>Expected value: {action.expectedValue.toLocaleString()}</span>}</div><label className="block text-xs text-[var(--muted)] mt-3">Update status<select aria-label={'Update status for ' + action.title} value={action.status} onChange={(event) => updateGrowthAction(action.id, event.target.value)} className="ml-2 border border-[var(--card-border)] rounded-lg px-2 py-1 text-xs bg-white"><option value="PLANNED">Planned</option><option value="IN_PROGRESS">In progress</option><option value="COMPLETED">Completed</option><option value="BLOCKED">Blocked</option></select></label></article>)}</div>}
+      </section>
 
       {error && <div role="alert" className="mb-4 rounded-lg border border-[var(--destructive)] p-3 text-sm text-[var(--destructive)]">{error}</div>}
       {loading ? <p className="text-sm text-[var(--muted)]">Loading recommendations...</p> : recommendations.length === 0 ? <div className="bg-white rounded-xl border border-[var(--card-border)] p-8 text-center text-sm text-[var(--muted)]">No recommendations match this filter.</div> : (
