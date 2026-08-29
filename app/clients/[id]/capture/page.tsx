@@ -87,8 +87,7 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
         setFileError(null);
         loadInputs();
       } else {
-        const body = await res.json().catch(() => null);
-        setSubmitError(body?.error ?? "Capture could not be submitted. Please try again.");
+        setSubmitError(await readErrorMessage(res));
       }
     } catch {
       setSubmitError("Capture could not be submitted. Please try again.");
@@ -225,6 +224,21 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
       </div>
     </div>
   );
+}
+
+async function readErrorMessage(response: Response) {
+  const fallback = "Capture could not be submitted. Please try again.";
+  const body = await response.text();
+  if (!body) return fallback;
+  try {
+    const parsed: unknown = JSON.parse(body);
+    if (typeof parsed === "object" && parsed !== null && "error" in parsed && typeof parsed.error === "string") {
+      return parsed.error;
+    }
+  } catch {
+    // Some runtime failures return plain text instead of JSON.
+  }
+  return body;
 }
 
 function StatusPill({ status, error }: { status: string; error: string | null }) {

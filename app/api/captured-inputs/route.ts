@@ -19,72 +19,77 @@ export async function POST(req: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const formData = await req.formData();
-  const organizationId = formData.get("organizationId");
-  const type = formData.get("type");
-  const locationTag = formData.get("locationTag");
-  const rawText = formData.get("rawText");
-  const file = formData.get("file");
-  const sessionIdField = formData.get("sessionId");
+  try {
+    const formData = await req.formData();
+    const organizationId = formData.get("organizationId");
+    const type = formData.get("type");
+    const locationTag = formData.get("locationTag");
+    const rawText = formData.get("rawText");
+    const file = formData.get("file");
+    const sessionIdField = formData.get("sessionId");
 
-  if (typeof organizationId !== "string" || !organizationId || typeof type !== "string" || !type) {
-    return NextResponse.json({ error: "organizationId and type are required" }, { status: 400 });
-  }
-  if (!(await canAccessClient(user.email, organizationId))) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
-  if (!isInputType(type)) {
-    return NextResponse.json({ error: `Unsupported type: ${type}` }, { status: 400 });
-  }
-
-  const sessionId = typeof sessionIdField === "string" && sessionIdField ? sessionIdField : null;
-  if (sessionId && type !== "TEXT_NOTE") {
-    return NextResponse.json({ error: "Live session captures must be type TEXT_NOTE" }, { status: 400 });
-  }
-
-  const resolvedLocationTag = typeof locationTag === "string" && locationTag ? locationTag : null;
-  let capturedInput;
-
-  if (TEXT_TYPES.has(type)) {
-    if (typeof rawText !== "string" || !rawText.trim()) {
-      return NextResponse.json({ error: "rawText is required" }, { status: 400 });
+    if (typeof organizationId !== "string" || !organizationId || typeof type !== "string" || !type) {
+      return NextResponse.json({ error: "organizationId and type are required" }, { status: 400 });
     }
-    capturedInput = await prisma.capturedInput.create({
-      data: {
-        organizationId,
-        type,
-        rawText,
-        locationTag: resolvedLocationTag,
-        sessionId,
-        status: "TRANSCRIBED",
-      },
-    });
-  } else {
-    if (!(file instanceof File)) {
-      return NextResponse.json({ error: "file is required" }, { status: 400 });
+    if (!(await canAccessClient(user.email, organizationId))) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
-    if (type === "DOCUMENT") {
-      const extension = file.name.split(".").pop()?.toLowerCase();
-      if (!extension || !DOCUMENT_EXTENSIONS.has(extension)) {
-        return NextResponse.json({ error: "Documents must be PDF or DOCX files" }, { status: 400 });
+    if (!isInputType(type)) {
+      return NextResponse.json({ error: `Unsupported type: ${type}` }, { status: 400 });
+    }
+
+    const sessionId = typeof sessionIdField === "string" && sessionIdField ? sessionIdField : null;
+    if (sessionId && type !== "TEXT_NOTE") {
+      return NextResponse.json({ error: "Live session captures must be type TEXT_NOTE" }, { status: 400 });
+    }
+
+    const resolvedLocationTag = typeof locationTag === "string" && locationTag ? locationTag : null;
+    let capturedInput;
+
+    if (TEXT_TYPES.has(type)) {
+      if (typeof rawText !== "string" || !rawText.trim()) {
+        return NextResponse.json({ error: "rawText is required" }, { status: 400 });
       }
+      capturedInput = await prisma.capturedInput.create({
+        data: {
+          organizationId,
+          type,
+          rawText,
+          locationTag: resolvedLocationTag,
+          sessionId,
+          status: "TRANSCRIBED",
+        },
+      });
+    } else {
+      if (!(file instanceof File)) {
+        return NextResponse.json({ error: "file is required" }, { status: 400 });
+      }
+      if (type === "DOCUMENT") {
+        const extension = file.name.split(".").pop()?.toLowerCase();
+        if (!extension || !DOCUMENT_EXTENSIONS.has(extension)) {
+          return NextResponse.json({ error: "Documents must be PDF or DOCX files" }, { status: 400 });
+        }
+      }
+      const blob = await put(file.name, file, { access: "public", addRandomSuffix: true });
+      capturedInput = await prisma.capturedInput.create({
+        data: {
+          organizationId,
+          type,
+          sourceRef: blob.url,
+          locationTag: resolvedLocationTag,
+          sessionId,
+          status: "PENDING",
+        },
+      });
     }
-    const blob = await put(file.name, file, { access: "public", addRandomSuffix: true });
-    capturedInput = await prisma.capturedInput.create({
-      data: {
-        organizationId,
-        type,
-        sourceRef: blob.url,
-        locationTag: resolvedLocationTag,
-        sessionId,
-        status: "PENDING",
-      },
-    });
+
+    after(() => processCapturedInput(capturedInput.id));
+
+    return NextResponse.json(capturedInput, { status: 201 });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Capture could not be submitted";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
-
-  after(() => processCapturedInput(capturedInput.id));
-
-  return NextResponse.json(capturedInput, { status: 201 });
 }
 
 export async function GET(req: NextRequest) {
