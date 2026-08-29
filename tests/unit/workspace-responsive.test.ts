@@ -79,6 +79,12 @@ describe("workspace responsive and theme contracts", () => {
     expect(css).toContain(".assessment-content");
   });
 
+  it("keeps assessment state cards theme-aware in dark mode", () => {
+    expect(assess).toContain('className="workspace-card p-5 mb-4"');
+    expect(assess).not.toContain('className="bg-white rounded-xl border border-[var(--card-border)] p-5 mb-4 shadow-sm"');
+    expect(assess).not.toContain('className="bg-white rounded-xl border border-[var(--card-border)] p-5 mb-8 shadow-sm text-center"');
+  });
+
   it("uses a compact assessment selector instead of a permanent third column", () => {
     expect(assess).toContain('className="assessment-selector workspace-card"');
     expect(assess).toContain('aria-label="Capability to assess"');
