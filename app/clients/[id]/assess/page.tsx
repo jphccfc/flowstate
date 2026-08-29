@@ -694,7 +694,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
               </section>
             )}
 
-            <div className="bg-white rounded-xl border border-[var(--card-border)] p-5 mb-4 shadow-sm">
+            <div className="workspace-card p-5 mb-4">
               <h3 className="text-sm font-semibold text-[var(--foreground)] mb-3">Current State (As-Is)</h3>
               <div className="space-y-2 mb-4">
                 {history.currentAsIs.length === 0 ? (
@@ -725,7 +725,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
               )}
             </div>
 
-            <div className="bg-white rounded-xl border border-[var(--card-border)] p-5 mb-4 shadow-sm">
+            <div className="workspace-card p-5 mb-4">
               <h3 className="text-sm font-semibold text-[var(--foreground)] mb-3">Target State (To-Be)</h3>
               <div className="space-y-2 mb-4">
                 {history.currentToBe.length === 0 ? (
@@ -759,7 +759,7 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
             {(() => {
               const gap = history.gap ?? calculateGap(history.currentAsIs, history.currentToBe);
               return (
-                <div className="bg-white rounded-xl border border-[var(--card-border)] p-5 mb-8 shadow-sm text-center">
+                <div className="workspace-card p-5 mb-8 text-center">
                   <span className="text-xs text-[var(--muted)]">Gap: </span>
                   {gap == null ? (
                     <span className="text-xs text-[var(--muted)]">Set both current and target scores to calculate the gap.</span>
