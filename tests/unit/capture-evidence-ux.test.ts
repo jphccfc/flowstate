@@ -38,4 +38,12 @@ describe("capture evidence UX contract", () => {
     expect(capture).toContain("setSubmitError(await readErrorMessage(res))");
     expect(capture).toContain("return body;");
   });
+  it("summarizes capture processing and takes users directly to tag review", () => {
+    expect(capture).toContain("Capture status");
+    expect(capture).toContain("Needs review");
+    expect(capture).toContain("Processing");
+    expect(capture).toContain("Failed");
+    expect(capture).toContain('href={`/clients/${organizationId}/review`}');
+    expect(capture).toContain("Review extracted tags");
+  });
 });

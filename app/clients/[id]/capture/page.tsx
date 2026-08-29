@@ -32,6 +32,11 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
   const [inputs, setInputs] = useState<CapturedInput[]>([]);
 
   const isFileType = FILE_TYPES.has(type);
+  const statusCounts = {
+    needsReview: inputs.filter((input) => input.status === "TAGGED").length,
+    processing: inputs.filter((input) => ["PENDING", "TRANSCRIBED"].includes(input.status)).length,
+    failed: inputs.filter((input) => input.status === "FAILED").length,
+  };
   const chooserLabels: Record<"AUDIO" | "DOCUMENT" | "DATA_ROOM_FILE", string> = {
     DOCUMENT: "Choose document",
     AUDIO: "Choose audio",
@@ -127,7 +132,33 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
           {startingSession ? "Starting…" : "Start Live Session"}
         </button>
       </div>
-      <h1 className="text-2xl font-bold mb-6">Capture</h1>
+      <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold">Capture</h1>
+          <p className="mt-1 text-sm text-[var(--muted)]">Add evidence, then review extracted tags before using it in an assessment.</p>
+        </div>
+        <Link href={`/clients/${organizationId}/review`} className="flowstate-accent-button rounded px-3 py-2 text-sm font-medium text-white">
+          Review extracted tags{statusCounts.needsReview > 0 ? ` (${statusCounts.needsReview})` : ""}
+        </Link>
+      </div>
+
+      <section className="workspace-card mb-6 p-4" aria-labelledby="capture-status-title">
+        <h2 id="capture-status-title" className="text-sm font-semibold text-[var(--foreground)]">Capture status</h2>
+        <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-3">
+          <div className="rounded border border-[var(--card-border)] bg-[var(--muted-bg)] p-3">
+            <div className="text-lg font-semibold text-[var(--foreground)]">{statusCounts.needsReview}</div>
+            <div className="text-xs text-[var(--muted)]">Needs review</div>
+          </div>
+          <div className="rounded border border-[var(--card-border)] bg-[var(--muted-bg)] p-3">
+            <div className="text-lg font-semibold text-[var(--foreground)]">{statusCounts.processing}</div>
+            <div className="text-xs text-[var(--muted)]">Processing</div>
+          </div>
+          <div className="rounded border border-[var(--card-border)] bg-[var(--muted-bg)] p-3">
+            <div className="text-lg font-semibold text-[var(--foreground)]">{statusCounts.failed}</div>
+            <div className="text-xs text-[var(--muted)]">Failed</div>
+          </div>
+        </div>
+      </section>
 
       <form onSubmit={handleSubmit} className="bg-[var(--card)] border border-[var(--card-border)] rounded-lg p-4 mb-8">
         <div className="mb-4">
