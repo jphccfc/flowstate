@@ -49,6 +49,13 @@ describe("workspace responsive and theme contracts", () => {
     expect(planning).not.toContain('<option key={type}>{type}</option>');
   });
 
+  it("surfaces planning item progress directly in the client process journey", () => {
+    expect(overview).toContain("planningItems: true");
+    expect(overview).toContain("planningItemCount");
+    expect(overview).toContain("Planning items ready to shape the Growth Plan");
+    expect(overview).toContain("aria-label={`Open planning items (${planningItemCount})`}");
+  });
+
   it("avoids a persisted-theme hydration mismatch", () => {
     expect(themeToggle).toContain("useSyncExternalStore");
     expect(themeToggle).toContain("function getServerSnapshot(): Theme");
