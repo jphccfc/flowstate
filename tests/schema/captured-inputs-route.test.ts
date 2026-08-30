@@ -190,20 +190,25 @@ describe("captured-inputs routes", () => {
     expect(created.sessionId).toBe(session.id);
   });
 
-  it("rejects a sessionId paired with a non-TEXT_NOTE type", async () => {
-    const org = await createTestOrganization({ name: "Route Session Reject Test Org" });
+  it("accepts an AUDIO file for an active live session and keeps the organisation link", async () => {
+    const org = await createTestOrganization({ name: "Route Live Audio Test Org" });
     orgId = org.id;
+    const advisor = await prisma.user.create({ data: { email: `route-live-audio-${Date.now()}@flowstate.test`, role: "ADVISOR" } });
+    const session = await prisma.assessmentSession.create({ data: { organizationId: org.id, advisorId: advisor.id, status: "active" } });
+    const file = new File(["recorded audio"], "live.webm", { type: "audio/webm" });
+    const res = await createInput(makeFormDataRequest({ organizationId: org.id, type: "AUDIO", file, sessionId: session.id }));
+    expect(res.status).toBe(201);
+    const created = await res.json();
+    expect(created.type).toBe("AUDIO");
+    expect(created.sessionId).toBe(session.id);
+    expect(created.status).toBe("PENDING");
+  });
 
-    const advisor = await prisma.user.create({
-      data: { email: `route-session-advisor2-${Date.now()}@flowstate.test`, role: "ADVISOR" },
-    });
-    const session = await prisma.assessmentSession.create({
-      data: { organizationId: org.id, advisorId: advisor.id, status: "active" },
-    });
-
-    const res = await createInput(
-      makeFormDataRequest({ organizationId: org.id, type: "EMAIL", rawText: "n/a", sessionId: session.id })
-    );
-    expect(res.status).toBe(400);
+  it("rejects a live audio capture for a missing or foreign session", async () => {
+    const org = await createTestOrganization({ name: "Route Live Audio Boundary Test Org" });
+    orgId = org.id;
+    const file = new File(["recorded audio"], "live.webm", { type: "audio/webm" });
+    const res = await createInput(makeFormDataRequest({ organizationId: org.id, type: "AUDIO", file, sessionId: "missing-session" }));
+    expect(res.status).toBe(404);
   });
 });
