@@ -1,0 +1,10 @@
+ALTER TYPE "ProcessingStatus" ADD VALUE IF NOT EXISTS 'QUARANTINED';
+ALTER TABLE "CapturedInput" ADD COLUMN "senderEmail" TEXT, ADD COLUMN "senderName" TEXT, ADD COLUMN "subject" TEXT, ADD COLUMN "idempotencyKey" TEXT, ADD COLUMN "quarantineReason" TEXT;
+CREATE UNIQUE INDEX "CapturedInput_organizationId_idempotencyKey_key" ON "CapturedInput"("organizationId", "idempotencyKey");
+CREATE TABLE "CapturedInputAttachment" ("id" TEXT NOT NULL, "capturedInputId" TEXT NOT NULL, "filename" TEXT NOT NULL, "contentType" TEXT NOT NULL, "sizeBytes" INTEGER, "sourceRef" TEXT, "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, CONSTRAINT "CapturedInputAttachment_pkey" PRIMARY KEY ("id"));
+CREATE TABLE "InboundEmailEndpoint" ("id" TEXT NOT NULL, "organizationId" TEXT NOT NULL, "addressKey" TEXT NOT NULL, "inboundAddress" TEXT NOT NULL, "tokenHash" TEXT NOT NULL, "active" BOOLEAN NOT NULL DEFAULT true, "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "updatedAt" TIMESTAMP(3) NOT NULL, CONSTRAINT "InboundEmailEndpoint_pkey" PRIMARY KEY ("id"));
+CREATE UNIQUE INDEX "InboundEmailEndpoint_organizationId_key" ON "InboundEmailEndpoint"("organizationId");
+CREATE UNIQUE INDEX "InboundEmailEndpoint_addressKey_key" ON "InboundEmailEndpoint"("addressKey");
+CREATE UNIQUE INDEX "InboundEmailEndpoint_inboundAddress_key" ON "InboundEmailEndpoint"("inboundAddress");
+ALTER TABLE "CapturedInputAttachment" ADD CONSTRAINT "CapturedInputAttachment_capturedInputId_fkey" FOREIGN KEY ("capturedInputId") REFERENCES "CapturedInput"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "InboundEmailEndpoint" ADD CONSTRAINT "InboundEmailEndpoint_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;

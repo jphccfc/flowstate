@@ -30,6 +30,8 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
   const [submitting, setSubmitting] = useState(false);
   const [startingSession, setStartingSession] = useState(false);
   const [inputs, setInputs] = useState<CapturedInput[]>([]);
+  const [inboundEmail, setInboundEmail] = useState<{ inboundAddress: string; active: boolean } | null>(null);
+  const [inboundEmailLoading, setInboundEmailLoading] = useState(false);
 
   const isFileType = FILE_TYPES.has(type);
   const statusCounts = {
@@ -57,9 +59,10 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
     // Remote capture polling intentionally updates state after each fetch.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     loadInputs();
+    fetch(`/api/clients/${organizationId}/inbound-email`).then((res) => res.ok ? res.json() : null).then(setInboundEmail);
     const interval = setInterval(loadInputs, 3000);
     return () => clearInterval(interval);
-  }, [loadInputs]);
+  }, [loadInputs, organizationId]);
 
   function handleTypeChange(next: CapturedInputType) {
     setType(next);
@@ -158,6 +161,13 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
             <div className="text-xs text-[var(--muted)]">Failed</div>
           </div>
         </div>
+      </section>
+
+      <section className="workspace-card mb-6 p-4" aria-labelledby="inbound-email-title">
+        <h2 id="inbound-email-title" className="text-sm font-semibold text-[var(--foreground)]">Inbound email capture</h2>
+        <p className="mt-1 text-xs text-[var(--muted)]">Provider-neutral foundation. Configure Microsoft 365/Graph, SendGrid, or another provider separately; no provider credentials are stored here.</p>
+        {inboundEmail ? <p className="mt-3 rounded border border-[var(--card-border)] bg-[var(--muted-bg)] p-3 text-sm"><span className="font-medium">Client address:</span> <code>{inboundEmail.inboundAddress}</code></p> : <p className="mt-3 text-sm text-[var(--muted)]">No inbound address configured yet.</p>}
+        <button type="button" disabled={inboundEmailLoading} onClick={async () => { setInboundEmailLoading(true); const res = await fetch(`/api/clients/${organizationId}/inbound-email`, { method: "POST" }); if (res.ok) { const data = await res.json(); setInboundEmail(data); } setInboundEmailLoading(false); }} className="mt-3 flowstate-accent-button rounded px-3 py-2 text-sm font-medium text-white disabled:opacity-50">{inboundEmailLoading ? "Generating…" : inboundEmail ? "Rotate inbound address" : "Generate inbound address"}</button>
       </section>
 
       <form onSubmit={handleSubmit} className="bg-[var(--card)] border border-[var(--card-border)] rounded-lg p-4 mb-8">

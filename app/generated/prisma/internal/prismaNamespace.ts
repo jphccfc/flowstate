@@ -403,6 +403,8 @@ export const ModelName = {
   AchievementStakeholder: 'AchievementStakeholder',
   AssessmentSession: 'AssessmentSession',
   CapturedInput: 'CapturedInput',
+  CapturedInputAttachment: 'CapturedInputAttachment',
+  InboundEmailEndpoint: 'InboundEmailEndpoint',
   CapturedSegment: 'CapturedSegment',
   Tag: 'Tag',
   MaturityRubric: 'MaturityRubric',
@@ -439,7 +441,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "growthAction" | "planningItem" | "communicationPack" | "communicationPackAcknowledgement" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob" | "assessmentTask"
+    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedInputAttachment" | "inboundEmailEndpoint" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "growthAction" | "planningItem" | "communicationPack" | "communicationPackAcknowledgement" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob" | "assessmentTask"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1846,6 +1848,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.CapturedInputCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.CapturedInputCountAggregateOutputType> | number
+        }
+      }
+    }
+    CapturedInputAttachment: {
+      payload: Prisma.$CapturedInputAttachmentPayload<ExtArgs>
+      fields: Prisma.CapturedInputAttachmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CapturedInputAttachmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputAttachmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CapturedInputAttachmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputAttachmentPayload>
+        }
+        findFirst: {
+          args: Prisma.CapturedInputAttachmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputAttachmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CapturedInputAttachmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputAttachmentPayload>
+        }
+        findMany: {
+          args: Prisma.CapturedInputAttachmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputAttachmentPayload>[]
+        }
+        create: {
+          args: Prisma.CapturedInputAttachmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputAttachmentPayload>
+        }
+        createMany: {
+          args: Prisma.CapturedInputAttachmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CapturedInputAttachmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputAttachmentPayload>[]
+        }
+        delete: {
+          args: Prisma.CapturedInputAttachmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputAttachmentPayload>
+        }
+        update: {
+          args: Prisma.CapturedInputAttachmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputAttachmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.CapturedInputAttachmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CapturedInputAttachmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CapturedInputAttachmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputAttachmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.CapturedInputAttachmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapturedInputAttachmentPayload>
+        }
+        aggregate: {
+          args: Prisma.CapturedInputAttachmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCapturedInputAttachment>
+        }
+        groupBy: {
+          args: Prisma.CapturedInputAttachmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CapturedInputAttachmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CapturedInputAttachmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CapturedInputAttachmentCountAggregateOutputType> | number
+        }
+      }
+    }
+    InboundEmailEndpoint: {
+      payload: Prisma.$InboundEmailEndpointPayload<ExtArgs>
+      fields: Prisma.InboundEmailEndpointFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InboundEmailEndpointFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InboundEmailEndpointPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InboundEmailEndpointFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InboundEmailEndpointPayload>
+        }
+        findFirst: {
+          args: Prisma.InboundEmailEndpointFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InboundEmailEndpointPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InboundEmailEndpointFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InboundEmailEndpointPayload>
+        }
+        findMany: {
+          args: Prisma.InboundEmailEndpointFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InboundEmailEndpointPayload>[]
+        }
+        create: {
+          args: Prisma.InboundEmailEndpointCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InboundEmailEndpointPayload>
+        }
+        createMany: {
+          args: Prisma.InboundEmailEndpointCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InboundEmailEndpointCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InboundEmailEndpointPayload>[]
+        }
+        delete: {
+          args: Prisma.InboundEmailEndpointDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InboundEmailEndpointPayload>
+        }
+        update: {
+          args: Prisma.InboundEmailEndpointUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InboundEmailEndpointPayload>
+        }
+        deleteMany: {
+          args: Prisma.InboundEmailEndpointDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InboundEmailEndpointUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InboundEmailEndpointUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InboundEmailEndpointPayload>[]
+        }
+        upsert: {
+          args: Prisma.InboundEmailEndpointUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InboundEmailEndpointPayload>
+        }
+        aggregate: {
+          args: Prisma.InboundEmailEndpointAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInboundEmailEndpoint>
+        }
+        groupBy: {
+          args: Prisma.InboundEmailEndpointGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InboundEmailEndpointGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InboundEmailEndpointCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InboundEmailEndpointCountAggregateOutputType> | number
         }
       }
     }
@@ -3672,6 +3822,11 @@ export const CapturedInputScalarFieldEnum = {
   sessionId: 'sessionId',
   type: 'type',
   sourceRef: 'sourceRef',
+  senderEmail: 'senderEmail',
+  senderName: 'senderName',
+  subject: 'subject',
+  idempotencyKey: 'idempotencyKey',
+  quarantineReason: 'quarantineReason',
   rawText: 'rawText',
   locationTag: 'locationTag',
   status: 'status',
@@ -3682,6 +3837,33 @@ export const CapturedInputScalarFieldEnum = {
 } as const
 
 export type CapturedInputScalarFieldEnum = (typeof CapturedInputScalarFieldEnum)[keyof typeof CapturedInputScalarFieldEnum]
+
+
+export const CapturedInputAttachmentScalarFieldEnum = {
+  id: 'id',
+  capturedInputId: 'capturedInputId',
+  filename: 'filename',
+  contentType: 'contentType',
+  sizeBytes: 'sizeBytes',
+  sourceRef: 'sourceRef',
+  createdAt: 'createdAt'
+} as const
+
+export type CapturedInputAttachmentScalarFieldEnum = (typeof CapturedInputAttachmentScalarFieldEnum)[keyof typeof CapturedInputAttachmentScalarFieldEnum]
+
+
+export const InboundEmailEndpointScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  addressKey: 'addressKey',
+  inboundAddress: 'inboundAddress',
+  tokenHash: 'tokenHash',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InboundEmailEndpointScalarFieldEnum = (typeof InboundEmailEndpointScalarFieldEnum)[keyof typeof InboundEmailEndpointScalarFieldEnum]
 
 
 export const CapturedSegmentScalarFieldEnum = {
@@ -4222,6 +4404,13 @@ export type ListEnumProcessingStatusFieldRefInput<$PrismaModel> = FieldRefInputT
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+
+
+
+/**
  * Reference to a field of type 'TagTargetType'
  */
 export type EnumTagTargetTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TagTargetType'>
@@ -4246,13 +4435,6 @@ export type EnumTagStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
  * Reference to a field of type 'TagStatus[]'
  */
 export type ListEnumTagStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TagStatus[]'>
-
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
 
 
 
@@ -4566,6 +4748,8 @@ export type GlobalOmitConfig = {
   achievementStakeholder?: Prisma.AchievementStakeholderOmit
   assessmentSession?: Prisma.AssessmentSessionOmit
   capturedInput?: Prisma.CapturedInputOmit
+  capturedInputAttachment?: Prisma.CapturedInputAttachmentOmit
+  inboundEmailEndpoint?: Prisma.InboundEmailEndpointOmit
   capturedSegment?: Prisma.CapturedSegmentOmit
   tag?: Prisma.TagOmit
   maturityRubric?: Prisma.MaturityRubricOmit
