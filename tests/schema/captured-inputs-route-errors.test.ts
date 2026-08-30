@@ -31,6 +31,22 @@ function request() {
 }
 
 describe("captured input POST error responses", () => {
+  it("returns a safe configuration error when Blob storage is not configured", async () => {
+    vi.stubEnv("BLOB_READ_WRITE_TOKEN", "");
+    const formData = new FormData();
+    formData.set("organizationId", "org-1");
+    formData.set("type", "AUDIO");
+    formData.set("file", new File(["audio"], "live.webm", { type: "audio/webm" }));
+
+    const response = await POST(new Request("http://localhost/api/captured-inputs", { method: "POST", body: formData }) as never);
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual({
+      error: "File storage configuration is unavailable. Please contact your administrator.",
+    });
+    vi.unstubAllEnvs();
+  });
+
   it("returns the persistence error as JSON instead of an unstructured 500", async () => {
     db.prisma.capturedInput.create.mockRejectedValueOnce(new Error("database unavailable"));
 

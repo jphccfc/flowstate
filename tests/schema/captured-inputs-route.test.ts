@@ -1,4 +1,4 @@
-import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { cleanupOrganization, createTestOrganization, prisma } from "../helpers/db";
 
 let currentEmail = "advisor@test.com";
@@ -38,6 +38,8 @@ function makeFormDataRequest(fields: Record<string, string | File>) {
 
 describe("captured-inputs routes", () => {
   let orgId: string;
+
+  beforeAll(() => vi.stubEnv("BLOB_READ_WRITE_TOKEN", "test-token"));
 
   afterEach(() => {
     currentEmail = "advisor@test.com";
