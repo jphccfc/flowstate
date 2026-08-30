@@ -46,4 +46,18 @@ describe("capture evidence UX contract", () => {
     expect(capture).toContain('href={`/clients/${organizationId}/review`}');
     expect(capture).toContain("Review extracted tags");
   });
+
+  it("provides microphone capture controls and visible retry/status feedback in a live session", () => {
+    const session = readFileSync(resolve(root, "app/clients/[id]/session/[sessionId]/page.tsx"), "utf8");
+    expect(session).toContain("navigator.mediaDevices.getUserMedia");
+    expect(session).toContain("MediaRecorder");
+    expect(session).toContain("Start recording");
+    expect(session).toContain("Pause recording");
+    expect(session).toContain("Resume recording");
+    expect(session).toContain("Stop and save");
+    expect(session).toContain("Microphone permission");
+    expect(session).toContain("Retry upload");
+    expect(session).toContain("/api/captured-inputs");
+    expect(session).toContain('formData.append("type", "AUDIO")');
+  });
 });

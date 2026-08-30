@@ -39,8 +39,10 @@ export async function POST(req: NextRequest) {
     }
 
     const sessionId = typeof sessionIdField === "string" && sessionIdField ? sessionIdField : null;
-    if (sessionId && type !== "TEXT_NOTE") {
-      return NextResponse.json({ error: "Live session captures must be type TEXT_NOTE" }, { status: 400 });
+    if (sessionId) {
+      const session = await prisma.assessmentSession.findUnique({ where: { id: sessionId }, select: { organizationId: true, status: true } });
+      if (!session || session.organizationId !== organizationId) return NextResponse.json({ error: "Live session not found" }, { status: 404 });
+      if (session.status !== "active") return NextResponse.json({ error: "Live session is not active" }, { status: 400 });
     }
 
     const resolvedLocationTag = typeof locationTag === "string" && locationTag ? locationTag : null;
