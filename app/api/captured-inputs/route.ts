@@ -72,6 +72,12 @@ export async function POST(req: NextRequest) {
           return NextResponse.json({ error: "Documents must be PDF or DOCX files" }, { status: 400 });
         }
       }
+      if (!process.env.BLOB_READ_WRITE_TOKEN) {
+        return NextResponse.json(
+          { error: "File storage configuration is unavailable. Please contact your administrator." },
+          { status: 503 },
+        );
+      }
       const blob = await put(file.name, file, { access: "public", addRandomSuffix: true });
       capturedInput = await prisma.capturedInput.create({
         data: {

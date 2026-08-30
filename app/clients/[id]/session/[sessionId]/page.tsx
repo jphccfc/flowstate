@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, use, useRef } from "react";
 import Link from "next/link";
+import { parseUploadResponse } from "@/lib/ingestion/upload-response";
 
 type Tag = { id: string; targetType: string; targetId: string; status: string };
 type Segment = { id: string; text: string; tags: Tag[] };
@@ -129,7 +130,8 @@ export default function SessionPage({ params }: { params: Promise<{ id: string; 
       formData.append("sessionId", sessionId);
       formData.append("file", new File([blob], `live-session-${Date.now()}.${extension}`, { type: blob.type }));
       const res = await fetch("/api/captured-inputs", { method: "POST", body: formData });
-      if (!res.ok) throw new Error(await res.text());
+      const result = await parseUploadResponse(res);
+      if (!result.ok) throw new Error(result.error);
       setUploadStatus("uploaded");
       await loadSession();
     } catch (error) {
