@@ -61,6 +61,7 @@ model Organization {
   assessmentTasks AssessmentTask[]
   planningItems PlanningItem[]
   communicationPacks CommunicationPack[]
+  inboundEmailEndpoint InboundEmailEndpoint?
 }
 
 model UserOrganization {
@@ -309,6 +310,7 @@ enum ProcessingStatus {
   TAGGING
   TAGGED
   FAILED
+  QUARANTINED
 }
 
 model CapturedInput {
@@ -317,6 +319,11 @@ model CapturedInput {
   sessionId      String?
   type           InputType
   sourceRef      String?
+  senderEmail    String?
+  senderName     String?
+  subject        String?
+  idempotencyKey String?
+  quarantineReason String?
   rawText        String?
   locationTag    String?
   status         ProcessingStatus  @default(PENDING)
@@ -328,6 +335,32 @@ model CapturedInput {
   organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   session      AssessmentSession? @relation(fields: [sessionId], references: [id])
   segments     CapturedSegment[]
+  attachments  CapturedInputAttachment[]
+
+  @@unique([organizationId, idempotencyKey])
+}
+
+model CapturedInputAttachment {
+  id             String   @id @default(cuid())
+  capturedInputId String
+  filename       String
+  contentType    String
+  sizeBytes      Int?
+  sourceRef      String?
+  createdAt      DateTime @default(now())
+  capturedInput  CapturedInput @relation(fields: [capturedInputId], references: [id], onDelete: Cascade)
+}
+
+model InboundEmailEndpoint {
+  id             String   @id @default(cuid())
+  organizationId String   @unique
+  addressKey     String   @unique
+  inboundAddress String   @unique
+  tokenHash      String
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  organization  Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 }
 
 model CapturedSegment {
