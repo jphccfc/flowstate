@@ -38,4 +38,10 @@ describe("capture evidence UX contract", () => {
     expect(capture).toContain("setSubmitError(await readErrorMessage(res))");
     expect(capture).toContain("return body;");
   });
+
+  it("can focus a capture record when provenance links back from planning", () => {
+    expect(capture).toContain("captureId");
+    expect(capture).toContain("Referenced capture");
+    expect(capture).toContain("aria-current");
+  });
 });

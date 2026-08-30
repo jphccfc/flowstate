@@ -30,6 +30,7 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
   const [submitting, setSubmitting] = useState(false);
   const [startingSession, setStartingSession] = useState(false);
   const [inputs, setInputs] = useState<CapturedInput[]>([]);
+  const [selectedCaptureId, setSelectedCaptureId] = useState("");
 
   const isFileType = FILE_TYPES.has(type);
   const chooserLabels: Record<"AUDIO" | "DOCUMENT" | "DATA_ROOM_FILE", string> = {
@@ -47,6 +48,13 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
     const res = await fetch(`/api/captured-inputs?organizationId=${organizationId}`);
     if (res.ok) setInputs(await res.json());
   }, [organizationId]);
+
+  useEffect(() => {
+    const captureId = new URLSearchParams(window.location.search).get("captureId") ?? "";
+    // The query string is an external navigation input for this read-only marker.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSelectedCaptureId(captureId);
+  }, []);
 
   useEffect(() => {
     // Remote capture polling intentionally updates state after each fetch.
@@ -213,9 +221,10 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
         {inputs.map((input) => (
           <div
             key={input.id}
-            className="flex items-center justify-between bg-[var(--card)] border border-[var(--card-border)] rounded px-3 py-2 text-sm"
+            className={`flex items-center justify-between bg-[var(--card)] border border-[var(--card-border)] rounded px-3 py-2 text-sm ${selectedCaptureId === input.id ? "ring-2 ring-[var(--accent)]" : ""}`}
+            aria-current={selectedCaptureId === input.id ? "location" : undefined}
           >
-            <span>{input.type}</span>
+            <span>{selectedCaptureId === input.id ? "Referenced capture · " : ""}{input.type}</span>
             <span className="text-[var(--muted)]">{new Date(input.createdAt).toLocaleString()}</span>
             <StatusPill status={input.status} error={input.error} />
           </div>
