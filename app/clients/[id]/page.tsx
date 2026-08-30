@@ -25,11 +25,19 @@ export default async function ClientOverviewPage({
 
   if (!org) notFound();
 
-  const assessedRows = await prisma.maturityAssessment.findMany({
-    where: { capability: { domain: { organizationId: id } } },
-    distinct: ["capabilityId"],
-    select: { capabilityId: true },
-  });
+  const [pendingReviewCaptures, processingCaptures, failedCaptures, openAssessmentTasks, openPlanningItems, activeGrowthActions, assessedRows] = await Promise.all([
+    prisma.capturedInput.count({ where: { organizationId: id, segments: { some: { tags: { some: { status: "PENDING_REVIEW" } } } } } }),
+    prisma.capturedInput.count({ where: { organizationId: id, status: { in: ["PENDING", "TRANSCRIBING", "SEGMENTING", "TAGGING"] } } }),
+    prisma.capturedInput.count({ where: { organizationId: id, status: "FAILED" } }),
+    prisma.assessmentTask.count({ where: { organizationId: id, status: { in: ["OPEN", "AWAITING_INPUT", "IN_PROGRESS", "BLOCKED"] } } }),
+    prisma.planningItem.count({ where: { organizationId: id, lifecycleStatus: { not: "COMPLETED" } } }),
+    prisma.growthAction.count({ where: { insight: { capability: { domain: { organizationId: id } } }, status: { in: ["PLANNED", "IN_PROGRESS"] } } }),
+    prisma.maturityAssessment.findMany({
+      where: { capability: { domain: { organizationId: id } } },
+      distinct: ["capabilityId"],
+      select: { capabilityId: true },
+    }),
+  ]);
   const assessedCapabilityIds = new Set(assessedRows.map((r) => r.capabilityId));
 
   const totalCapabilities = org.domains.reduce((sum, d) => sum + d.capabilities.length, 0);
@@ -73,6 +81,29 @@ export default async function ClientOverviewPage({
           </div>
         ))}
       </div>
+
+      <section className="workspace-card p-6 mb-8" aria-labelledby="progress-summary-title">
+        <div className="workspace-eyebrow mb-2">Work in progress</div>
+        <h2 id="progress-summary-title" className="font-semibold text-[var(--foreground)] mb-1">Progress summary</h2>
+        <p className="text-sm text-[var(--muted)] mb-4">A live view of work waiting for review or action in this organisation.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {[
+            { href: `/clients/${id}/review`, label: "Captures needing review", value: pendingReviewCaptures, detail: "Tags awaiting human review" },
+            { href: `/clients/${id}/capture`, label: "Processing or failed captures", value: processingCaptures + failedCaptures, detail: `${processingCaptures} processing · ${failedCaptures} failed` },
+            { href: `/clients/${id}/assess`, label: "Assessment progress", value: `${assessedCapabilities}/${totalCapabilities}`, detail: "Capabilities assessed" },
+            { href: `/clients/${id}/tasks`, label: "Open assessment tasks", value: openAssessmentTasks, detail: "Operational tasks still open" },
+            { href: `/clients/${id}/planning`, label: "Planning items", value: openPlanningItems, detail: "Items not yet completed" },
+            { href: `/clients/${id}/recommendations`, label: "Growth Plan actions", value: activeGrowthActions, detail: "Planned or in progress" },
+          ].map((item) => (
+            <Link key={item.href} href={item.href} className="rounded-lg border border-[var(--card-border)] bg-[var(--muted-bg)] p-4 transition-colors hover:border-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]">
+              <div className="text-sm font-medium text-[var(--foreground)]">{item.label}</div>
+              <div className="workspace-stat-value mt-2 text-2xl font-bold" aria-label={`${item.value} ${item.label}`}>{item.value}</div>
+              <div className="mt-1 text-xs text-[var(--muted)]">{item.detail}</div>
+              <div className="mt-3 text-xs font-medium text-[var(--accent)]">Open workflow <span aria-hidden="true">→</span></div>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
         {cards.map((card) => (
