@@ -16,34 +16,34 @@ describe("SharePoint integration hub foundation", () => {
     expect(route).toContain('hasOrganizationPermission(user.email, id, permission)');
     expect(route).toContain("organizationId: id");
   });
-
   it("makes the disconnected journey explicit and keeps sync disabled", () => {
-    expect(page).toContain("Not connected");
-    expect(page).toContain("Connect Microsoft 365");
-    expect(page).toContain("Site");
-    expect(page).toContain("Library");
-    expect(page).toContain("Folder");
-    expect(page).toContain("Sync now");
-    expect(page).toContain("disabled={true}");
+    expect(page).toContain("Not connected"); expect(page).toContain("Connect Microsoft 365");
+    expect(page).toContain("Site"); expect(page).toContain("Library"); expect(page).toContain("Folder");
+    expect(page).toContain("Sync now"); expect(page).toContain("disabled={true}");
     expect(page).toContain("No Microsoft Graph or SharePoint connection is configured");
   });
-
   it("shows an accessible connection prerequisite status immediately in the connection section", () => {
-    const connectionSection = page.match(/<section[^>]*aria-labelledby=\"connection-status\"[\s\S]*?<\/section>/)?.[0] ?? "";
-
+    const connectionSection = page.match(/<section[^>]*aria-labelledby="connection-status"[\s\S]*?<\/section>/)?.[0] ?? "";
     expect(connectionSection).toContain('role="status"');
     expect(connectionSection).toContain("Microsoft 365 connection setup is not available in this foundation.");
     expect(connectionSection).toContain("No Microsoft Graph or SharePoint connection is configured.");
     expect(connectionSection).not.toContain("Connected");
   });
-
   it("uses a provider-neutral import preview contract without storing OAuth tokens", () => {
-    expect(adapter).toContain("SharePointSourceSelection");
-    expect(adapter).toContain("ImportPreview");
-    expect(adapter).toContain("NotConnected");
-    expect(adapter).toContain("encryptedSecretRef");
-    expect(adapter).not.toContain("accessToken");
-    expect(route).toContain("preview");
-    expect(route).toContain("sourceSelection");
+    expect(adapter).toContain("SharePointSourceSelection"); expect(adapter).toContain("ImportPreview");
+    expect(adapter).toContain("NotConnected"); expect(adapter).toContain("encryptedSecretRef");
+    expect(adapter).not.toContain("accessToken"); expect(route).toContain("preview"); expect(route).toContain("sourceSelection");
+  });
+  it("exposes a configuration-only connect readiness boundary", () => {
+    const connectRoute = readFileSync(resolve(root, "app/api/clients/[id]/integrations/sharepoint/connect/route.ts"), "utf8");
+    expect(connectRoute).toContain("getMicrosoft365ConnectionReadiness");
+    expect(connectRoute).toContain('hasOrganizationPermission(user.email, id, "client.configure")');
+    expect(connectRoute).toContain('connectionState: "NotConfigured"'); expect(connectRoute).toContain("missingConfiguration");
+    expect(connectRoute).not.toContain("access_token"); expect(connectRoute).not.toContain("client_secret");
+  });
+  it("renders readiness and failure states without claiming a verified connection", () => {
+    expect(page).toContain("Ready to connect"); expect(page).toContain("Microsoft 365 settings are not configured");
+    expect(page).toContain("Connection setup failed"); expect(page).toContain("connectionState"); expect(page).toContain("syncEnabled");
+    expect(page).not.toContain('connectionState: "Connected"');
   });
 });
