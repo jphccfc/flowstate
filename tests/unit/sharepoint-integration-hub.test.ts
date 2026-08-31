@@ -28,6 +28,15 @@ describe("SharePoint integration hub foundation", () => {
     expect(page).toContain("No Microsoft Graph or SharePoint connection is configured");
   });
 
+  it("shows an accessible connection prerequisite status immediately in the connection section", () => {
+    const connectionSection = page.match(/<section[^>]*aria-labelledby=\"connection-status\"[\s\S]*?<\/section>/)?.[0] ?? "";
+
+    expect(connectionSection).toContain('role="status"');
+    expect(connectionSection).toContain("Microsoft 365 connection setup is not available in this foundation.");
+    expect(connectionSection).toContain("No Microsoft Graph or SharePoint connection is configured.");
+    expect(connectionSection).not.toContain("Connected");
+  });
+
   it("uses a provider-neutral import preview contract without storing OAuth tokens", () => {
     expect(adapter).toContain("SharePointSourceSelection");
     expect(adapter).toContain("ImportPreview");
