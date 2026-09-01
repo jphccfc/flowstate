@@ -36,6 +36,15 @@ Variable **names only** — no values. Extracted from the local `.env` and `.env
 - `VERCEL_GIT_COMMIT_AUTHOR_LOGIN`
 - `VERCEL_GIT_PULL_REQUEST_ID`
 
+## Microsoft 365 readiness boundary
+
+The SharePoint readiness endpoint checks these non-secret Microsoft Entra settings by name only:
+- `MICROSOFT_ENTRA_CLIENT_ID`
+- `MICROSOFT_ENTRA_TENANT_ID`
+- `MICROSOFT_ENTRA_REDIRECT_URI`
+
+No OAuth client secret, token, tenant connection, or encrypted secret reference is configured by this slice.
+
 ## Where to get real values
 
 - Local dev: pull from Vercel with `vercel env pull` (requires `vercel link` + project access), or request `.env.local` directly from the outgoing team.
