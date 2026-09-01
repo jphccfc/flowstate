@@ -6,7 +6,7 @@ import Link from "next/link";
 type Selection = { site: string; library: string; folder: string };
 type ConnectionState = "NotConfigured" | "Ready" | "ConnectionFailed";
 type Preview = { connectionState: string; message: string; itemCount: number };
-type Readiness = { connectionState: ConnectionState; syncEnabled: false; missingConfiguration?: string[] };
+type Readiness = { connectionState: ConnectionState; syncEnabled: false; missingConfiguration?: string[]; message?: string };
 
 const fieldLabels = { site: "Site", library: "Library", folder: "Folder" } as const;
 
@@ -31,6 +31,10 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
       const response = await fetch(`/api/clients/${organizationId}/integrations/sharepoint/connect`, { method: "POST" });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? "Connection setup failed.");
+      if (data.connectionState === "Ready" && typeof data.authorizationUrl === "string") {
+        window.location.assign(data.authorizationUrl);
+        return;
+      }
       setReadiness(data);
       setConnectionState(data.connectionState);
     } catch (cause) {
