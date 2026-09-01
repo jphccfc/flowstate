@@ -42,6 +42,9 @@ The SharePoint readiness endpoint checks these non-secret Microsoft Entra settin
 - `MICROSOFT_ENTRA_CLIENT_ID`
 - `MICROSOFT_ENTRA_TENANT_ID`
 - `MICROSOFT_ENTRA_REDIRECT_URI`
+- `MICROSOFT_ENTRA_SCOPES` (optional; space-delimited, defaults to the least-privilege `User.Read`)
+
+The Connect boundary now creates a cryptographically random, 10-minute state value, binds it to a secure HttpOnly SameSite cookie, and returns only a Microsoft authorize URL when all required non-secret settings are present. It does not exchange codes, persist tokens, or claim a connected state. OAuth callback validation and reviewed encrypted token storage are the next slice. Sync remains disabled until that work is verified.
 
 No OAuth client secret, token, tenant connection, or encrypted secret reference is configured by this slice.
 
