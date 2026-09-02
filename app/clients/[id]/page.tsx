@@ -47,14 +47,14 @@ export default async function ClientOverviewPage({
   );
 
   const cards = [
-    { href: `/clients/${id}/capture`, label: "Capture evidence", icon: "02", desc: "Upload and capture traceable evidence for this client", cta: "Open capture evidence" },
-    { href: `/clients/${id}/configure`, label: "Blueprint", icon: "02", desc: "Set up domains, capabilities, KPIs, and target achievements", cta: "Configure blueprint" },
-    { href: `/clients/${id}/assess`, label: "Assessment", icon: "03", desc: "Run a guided capability assessment interview", cta: "Start / continue assessment" },
-    { href: `/clients/${id}/tasks`, label: "Assessment tasks", icon: "04", desc: "Raise and manage the operational work needed to complete this assessment", cta: "Open assessment tasks" },
-    { href: `/clients/${id}/analysis`, label: "Insights", icon: "04", desc: "View gaps, domain scores, and capability evidence", cta: "View insights" },
-    { href: `/clients/${id}/report`, label: "Reports", icon: "05", desc: "Read executive outcomes, evidence, and approved priorities", cta: "View reports" },
-    { href: `/clients/${id}/recommendations`, label: "Growth plan", icon: "07", desc: "Manage strategic initiatives and their reviewed recommendations", cta: "Open growth plan" },
-    { href: `/clients/${id}/review`, label: "Review queue", icon: "08", desc: "Approve, reject, or reassign extracted tags", cta: "Open review queue" },
+    { href: `/clients/${id}/capture`, label: "Capture evidence", desc: "Upload and capture traceable evidence for this client", cta: "Open capture evidence" },
+    { href: `/clients/${id}/configure`, label: "Blueprint", desc: "Set up domains, capabilities, KPIs, and target achievements", cta: "Configure blueprint" },
+    { href: `/clients/${id}/assess`, label: "Assessment", desc: "Run a guided capability assessment interview", cta: "Start / continue assessment" },
+    { href: `/clients/${id}/tasks`, label: "Assessment tasks", desc: "Raise and manage the operational work needed to complete this assessment", cta: "Open assessment tasks" },
+    { href: `/clients/${id}/analysis`, label: "Insights", desc: "View gaps, domain scores, and capability evidence", cta: "View insights" },
+    { href: `/clients/${id}/report`, label: "Reports", desc: "Read executive outcomes, evidence, and approved priorities", cta: "View reports" },
+    { href: `/clients/${id}/recommendations`, label: "Growth plan", desc: "Manage strategic initiatives and their reviewed recommendations", cta: "Open growth plan" },
+    { href: `/clients/${id}/review`, label: "Review queue", desc: "Approve, reject, or reassign extracted tags", cta: "Open review queue" },
   ];
 
   return (
@@ -105,20 +105,24 @@ export default async function ClientOverviewPage({
         </div>
       </section>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+      <section aria-labelledby="workflow-areas-title" className="mb-8">
+        <div className="workspace-eyebrow mb-2">Client workflows</div>
+        <h2 id="workflow-areas-title" className="font-semibold text-[var(--foreground)] mb-3">Workflow areas</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {cards.map((card) => (
           <Link
             key={card.href}
             href={card.href}
-            className="workspace-card p-6 transition-all group"
+            className="workspace-card p-5 sm:p-6 transition-all group" aria-label={`Workflow: ${card.label}`}
           >
-            <div className="workspace-nav-icon mb-4 text-sm">{card.icon}</div>
+            <div className="text-xs font-medium uppercase tracking-wide text-[var(--muted)] mb-3">Workflow</div>
             <div className="font-semibold text-[var(--foreground)] mb-1">{card.label}</div>
             <div className="text-sm text-[var(--muted)] mb-3">{card.desc}</div>
             <div className="text-sm font-medium text-[var(--accent)] group-hover:underline">{card.cta} →</div>
           </Link>
         ))}
-      </div>
+        </div>
+      </section>
 
       <section className="workspace-card p-6 mb-8" aria-labelledby="flowstate-process-title">
         <div className="workspace-eyebrow mb-2">Flowstate methodology</div>
@@ -137,19 +141,19 @@ export default async function ClientOverviewPage({
 
       <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8" aria-label="Planning workstreams">
         <div className="workspace-card p-6">
-          <div className="workspace-nav-icon mb-4 text-sm">08</div>
+          <div className="workspace-eyebrow mb-3">Operational workflow</div>
           <h2 className="font-semibold text-[var(--foreground)] mb-1">Assessment tasks</h2>
           <p className="text-sm text-[var(--muted)] mb-3">Operational work required to complete the assessment: evidence requests, interviews, validation, review, sign-off, and report preparation.</p>
           <Link href={`/clients/${id}/tasks`} className="text-sm font-medium text-[var(--accent)] hover:underline">Raise assessment task →</Link>
         </div>
         <div className="workspace-card p-6">
-          <div className="workspace-nav-icon mb-4 text-sm">09</div>
+          <div className="workspace-eyebrow mb-3">Planning workflow</div>
           <h2 className="font-semibold text-[var(--foreground)] mb-1">Planning items</h2>
           <p className="text-sm text-[var(--muted)] mb-3">Turn approved insights into requirements, specifications, goals and objectives before creating strategic Growth Plan initiatives.</p>
           <Link href={`/clients/${id}/planning`} className="text-sm font-medium text-[var(--accent)] hover:underline">Open planning items →</Link>
         </div>
         <div className="workspace-card p-6">
-          <div className="workspace-nav-icon mb-4 text-sm">10</div>
+          <div className="workspace-eyebrow mb-3">Strategic workflow</div>
           <h2 className="font-semibold text-[var(--foreground)] mb-1">Growth plan</h2>
           <p className="text-sm text-[var(--muted)] mb-3">Strategic initiatives to improve the business outcome through capability, process, technology, profitability, sale, or restructuring work.</p>
           <Link href={`/clients/${id}/recommendations`} className="text-sm font-medium text-[var(--accent)] hover:underline">Open growth plan →</Link>
