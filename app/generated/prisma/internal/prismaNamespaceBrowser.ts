@@ -95,7 +95,9 @@ export const ModelName = {
   AssessmentTask: 'AssessmentTask',
   AgentDefinition: 'AgentDefinition',
   AgentPromptVersion: 'AgentPromptVersion',
-  AgentInputRule: 'AgentInputRule'
+  AgentInputRule: 'AgentInputRule',
+  AgentRun: 'AgentRun',
+  AgentOutput: 'AgentOutput'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -797,6 +799,41 @@ export const AgentInputRuleScalarFieldEnum = {
 } as const
 
 export type AgentInputRuleScalarFieldEnum = (typeof AgentInputRuleScalarFieldEnum)[keyof typeof AgentInputRuleScalarFieldEnum]
+
+
+export const AgentRunScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  capturedInputId: 'capturedInputId',
+  agentDefinitionId: 'agentDefinitionId',
+  promptVersionId: 'promptVersionId',
+  status: 'status',
+  provider: 'provider',
+  model: 'model',
+  error: 'error',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AgentRunScalarFieldEnum = (typeof AgentRunScalarFieldEnum)[keyof typeof AgentRunScalarFieldEnum]
+
+
+export const AgentOutputScalarFieldEnum = {
+  id: 'id',
+  runId: 'runId',
+  status: 'status',
+  provisionalOutput: 'provisionalOutput',
+  provider: 'provider',
+  model: 'model',
+  error: 'error',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
+  reviewNotes: 'reviewNotes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AgentOutputScalarFieldEnum = (typeof AgentOutputScalarFieldEnum)[keyof typeof AgentOutputScalarFieldEnum]
 
 
 export const SortOrder = {
