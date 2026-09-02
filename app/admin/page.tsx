@@ -51,7 +51,7 @@ export default function PlatformAdminPage() {
     <aside className="admin-rail">
       <div className="admin-rail-header"><Link href="/dashboard" className="workspace-brand"><span className="workspace-brand-mark" aria-hidden="true">FS</span><span className="workspace-brand-name">Flowstate</span></Link></div>
       <div className="admin-context"><div className="workspace-context-label">Platform control</div><div className="workspace-context-name">Administration</div></div>
-      <nav className="workspace-nav" aria-label="Platform navigation"><Link href="/admin" aria-current="page" className="workspace-nav-link"><span className="workspace-nav-icon" aria-hidden="true">01</span>Administration</Link><Link href="/dashboard" className="workspace-nav-link"><span className="workspace-nav-icon" aria-hidden="true">02</span>Client workspaces</Link></nav>
+      <nav className="workspace-nav" aria-label="Platform navigation"><Link href="/admin" aria-current="page" className="workspace-nav-link"><span className="workspace-nav-icon" aria-hidden="true">01</span>Administration</Link><Link href="/admin/agents" className="workspace-nav-link"><span className="workspace-nav-icon" aria-hidden="true">02</span>Agent catalogue</Link><Link href="/dashboard" className="workspace-nav-link"><span className="workspace-nav-icon" aria-hidden="true">03</span>Client workspaces</Link></nav>
       <div className="admin-rail-actions"><ThemeToggle /><button type="button" className="workspace-signout" onClick={signOut}>Sign out</button></div>
     </aside>
 
