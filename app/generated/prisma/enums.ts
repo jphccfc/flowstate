@@ -211,7 +211,8 @@ export type AgentRunStatus = (typeof AgentRunStatus)[keyof typeof AgentRunStatus
 export const AgentOutputStatus = {
   PROVISIONAL: 'PROVISIONAL',
   APPROVED: 'APPROVED',
-  REJECTED: 'REJECTED'
+  REJECTED: 'REJECTED',
+  AMENDED: 'AMENDED'
 } as const
 
 export type AgentOutputStatus = (typeof AgentOutputStatus)[keyof typeof AgentOutputStatus]
