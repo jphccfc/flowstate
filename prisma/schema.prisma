@@ -958,6 +958,7 @@ enum AgentOutputStatus {
   PROVISIONAL
   APPROVED
   REJECTED
+  AMENDED
 }
 
 model AgentRun {

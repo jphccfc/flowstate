@@ -10,6 +10,8 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (!(await hasOrganizationPermission(user.email, run.organizationId, "assessment.submit"))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   const body = await req.json().catch(() => null) as Record<string, unknown> | null; if (!body || typeof body.provisionalOutput !== "object" || body.provisionalOutput === null || Array.isArray(body.provisionalOutput)) return NextResponse.json({ error: "provisionalOutput object is required" }, { status: 400 });
   const provisionalOutput = body.provisionalOutput as Prisma.InputJsonValue;
+  const existing = await prisma.agentOutput.findUnique({ where: { runId: id }, select: { status: true } });
+  if (existing && existing.status !== "PROVISIONAL") return NextResponse.json({ error: "Reviewed output cannot be overwritten" }, { status: 409 });
   const output = await prisma.$transaction(async (tx) => { const created = await tx.agentOutput.upsert({ where: { runId: id }, create: { runId: id, provisionalOutput, provider: typeof body.provider === "string" ? body.provider : null, model: typeof body.model === "string" ? body.model : null }, update: { provisionalOutput, provider: typeof body.provider === "string" ? body.provider : null, model: typeof body.model === "string" ? body.model : null, status: "PROVISIONAL", reviewedBy: null, reviewedAt: null, reviewNotes: null } }); await tx.agentRun.update({ where: { id }, data: { status: "OUTPUT_READY", provider: created.provider, model: created.model, error: null } }); return created; });
   return NextResponse.json({ output }, { status: 201 });
 }
