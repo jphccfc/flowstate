@@ -30,6 +30,7 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
   const [submitting, setSubmitting] = useState(false);
   const [startingSession, setStartingSession] = useState(false);
   const [inputs, setInputs] = useState<CapturedInput[]>([]);
+  const [captureSubmitted, setCaptureSubmitted] = useState(false);
   const [inboundEmail, setInboundEmail] = useState<{ inboundAddress: string; active: boolean } | null>(null);
   const [inboundEmailLoading, setInboundEmailLoading] = useState(false);
 
@@ -70,12 +71,14 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
     setFile(null);
     setFileError(null);
     setSubmitError(null);
+    setCaptureSubmitted(false);
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (isFileType ? !file || !!fileError : !rawText.trim()) return;
     setSubmitError(null);
+    setCaptureSubmitted(false);
     setSubmitting(true);
     try {
       const formData = new FormData();
@@ -93,6 +96,7 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
         setRawText("");
         setFile(null);
         setFileError(null);
+        setCaptureSubmitted(true);
         loadInputs();
       } else {
         setSubmitError(await readErrorMessage(res));
@@ -248,6 +252,16 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
           {submitting ? "Submitting…" : isFileType ? actionLabels[type as "AUDIO" | "DOCUMENT" | "DATA_ROOM_FILE"] : "Capture"}
         </button>
       </form>
+
+      {captureSubmitted && (
+        <div role="status" aria-live="polite" className="mb-8 rounded-lg border border-[var(--card-border)] bg-[var(--muted-bg)] p-4">
+          <p className="font-medium text-[var(--foreground)]">Capture submitted</p>
+          <p className="mt-1 text-sm text-[var(--muted)]">Review the extracted tags before they are used in assessment or planning.</p>
+          <Link href={`/clients/${organizationId}/review`} className="mt-3 inline-flex text-sm font-medium text-[var(--accent)] underline underline-offset-2">
+            Review captured evidence →
+          </Link>
+        </div>
+      )}
 
       <h2 className="text-lg font-semibold mb-3">Recent captures</h2>
       <div className="space-y-2">
