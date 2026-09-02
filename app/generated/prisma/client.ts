@@ -251,3 +251,18 @@ export type ProcessingJob = Prisma.ProcessingJobModel
  *
  */
 export type AssessmentTask = Prisma.AssessmentTaskModel
+/**
+ * Model AgentDefinition
+ *
+ */
+export type AgentDefinition = Prisma.AgentDefinitionModel
+/**
+ * Model AgentPromptVersion
+ *
+ */
+export type AgentPromptVersion = Prisma.AgentPromptVersionModel
+/**
+ * Model AgentInputRule
+ *
+ */
+export type AgentInputRule = Prisma.AgentInputRuleModel

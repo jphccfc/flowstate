@@ -92,7 +92,10 @@ export const ModelName = {
   RecommendationFeedback: 'RecommendationFeedback',
   FollowUpSuggestion: 'FollowUpSuggestion',
   ProcessingJob: 'ProcessingJob',
-  AssessmentTask: 'AssessmentTask'
+  AssessmentTask: 'AssessmentTask',
+  AgentDefinition: 'AgentDefinition',
+  AgentPromptVersion: 'AgentPromptVersion',
+  AgentInputRule: 'AgentInputRule'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -754,6 +757,46 @@ export const AssessmentTaskScalarFieldEnum = {
 } as const
 
 export type AssessmentTaskScalarFieldEnum = (typeof AssessmentTaskScalarFieldEnum)[keyof typeof AssessmentTaskScalarFieldEnum]
+
+
+export const AgentDefinitionScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  name: 'name',
+  description: 'description',
+  createdBy: 'createdBy',
+  publishedPromptVersionId: 'publishedPromptVersionId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AgentDefinitionScalarFieldEnum = (typeof AgentDefinitionScalarFieldEnum)[keyof typeof AgentDefinitionScalarFieldEnum]
+
+
+export const AgentPromptVersionScalarFieldEnum = {
+  id: 'id',
+  agentDefinitionId: 'agentDefinitionId',
+  version: 'version',
+  prompt: 'prompt',
+  changeReason: 'changeReason',
+  authoredBy: 'authoredBy',
+  createdAt: 'createdAt',
+  publishedAt: 'publishedAt',
+  publishedBy: 'publishedBy'
+} as const
+
+export type AgentPromptVersionScalarFieldEnum = (typeof AgentPromptVersionScalarFieldEnum)[keyof typeof AgentPromptVersionScalarFieldEnum]
+
+
+export const AgentInputRuleScalarFieldEnum = {
+  id: 'id',
+  agentDefinitionId: 'agentDefinitionId',
+  inputType: 'inputType',
+  domainIdentifier: 'domainIdentifier',
+  createdAt: 'createdAt'
+} as const
+
+export type AgentInputRuleScalarFieldEnum = (typeof AgentInputRuleScalarFieldEnum)[keyof typeof AgentInputRuleScalarFieldEnum]
 
 
 export const SortOrder = {

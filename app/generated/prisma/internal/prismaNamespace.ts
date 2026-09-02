@@ -425,7 +425,10 @@ export const ModelName = {
   RecommendationFeedback: 'RecommendationFeedback',
   FollowUpSuggestion: 'FollowUpSuggestion',
   ProcessingJob: 'ProcessingJob',
-  AssessmentTask: 'AssessmentTask'
+  AssessmentTask: 'AssessmentTask',
+  AgentDefinition: 'AgentDefinition',
+  AgentPromptVersion: 'AgentPromptVersion',
+  AgentInputRule: 'AgentInputRule'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -441,7 +444,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedInputAttachment" | "inboundEmailEndpoint" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "growthAction" | "planningItem" | "communicationPack" | "communicationPackAcknowledgement" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob" | "assessmentTask"
+    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedInputAttachment" | "inboundEmailEndpoint" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "growthAction" | "planningItem" | "communicationPack" | "communicationPackAcknowledgement" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob" | "assessmentTask" | "agentDefinition" | "agentPromptVersion" | "agentInputRule"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3553,6 +3556,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AgentDefinition: {
+      payload: Prisma.$AgentDefinitionPayload<ExtArgs>
+      fields: Prisma.AgentDefinitionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AgentDefinitionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDefinitionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AgentDefinitionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDefinitionPayload>
+        }
+        findFirst: {
+          args: Prisma.AgentDefinitionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDefinitionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AgentDefinitionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDefinitionPayload>
+        }
+        findMany: {
+          args: Prisma.AgentDefinitionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDefinitionPayload>[]
+        }
+        create: {
+          args: Prisma.AgentDefinitionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDefinitionPayload>
+        }
+        createMany: {
+          args: Prisma.AgentDefinitionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AgentDefinitionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDefinitionPayload>[]
+        }
+        delete: {
+          args: Prisma.AgentDefinitionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDefinitionPayload>
+        }
+        update: {
+          args: Prisma.AgentDefinitionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDefinitionPayload>
+        }
+        deleteMany: {
+          args: Prisma.AgentDefinitionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AgentDefinitionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AgentDefinitionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDefinitionPayload>[]
+        }
+        upsert: {
+          args: Prisma.AgentDefinitionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentDefinitionPayload>
+        }
+        aggregate: {
+          args: Prisma.AgentDefinitionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAgentDefinition>
+        }
+        groupBy: {
+          args: Prisma.AgentDefinitionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AgentDefinitionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AgentDefinitionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AgentDefinitionCountAggregateOutputType> | number
+        }
+      }
+    }
+    AgentPromptVersion: {
+      payload: Prisma.$AgentPromptVersionPayload<ExtArgs>
+      fields: Prisma.AgentPromptVersionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AgentPromptVersionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentPromptVersionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AgentPromptVersionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentPromptVersionPayload>
+        }
+        findFirst: {
+          args: Prisma.AgentPromptVersionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentPromptVersionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AgentPromptVersionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentPromptVersionPayload>
+        }
+        findMany: {
+          args: Prisma.AgentPromptVersionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentPromptVersionPayload>[]
+        }
+        create: {
+          args: Prisma.AgentPromptVersionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentPromptVersionPayload>
+        }
+        createMany: {
+          args: Prisma.AgentPromptVersionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AgentPromptVersionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentPromptVersionPayload>[]
+        }
+        delete: {
+          args: Prisma.AgentPromptVersionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentPromptVersionPayload>
+        }
+        update: {
+          args: Prisma.AgentPromptVersionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentPromptVersionPayload>
+        }
+        deleteMany: {
+          args: Prisma.AgentPromptVersionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AgentPromptVersionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AgentPromptVersionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentPromptVersionPayload>[]
+        }
+        upsert: {
+          args: Prisma.AgentPromptVersionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentPromptVersionPayload>
+        }
+        aggregate: {
+          args: Prisma.AgentPromptVersionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAgentPromptVersion>
+        }
+        groupBy: {
+          args: Prisma.AgentPromptVersionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AgentPromptVersionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AgentPromptVersionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AgentPromptVersionCountAggregateOutputType> | number
+        }
+      }
+    }
+    AgentInputRule: {
+      payload: Prisma.$AgentInputRulePayload<ExtArgs>
+      fields: Prisma.AgentInputRuleFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AgentInputRuleFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentInputRulePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AgentInputRuleFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentInputRulePayload>
+        }
+        findFirst: {
+          args: Prisma.AgentInputRuleFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentInputRulePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AgentInputRuleFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentInputRulePayload>
+        }
+        findMany: {
+          args: Prisma.AgentInputRuleFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentInputRulePayload>[]
+        }
+        create: {
+          args: Prisma.AgentInputRuleCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentInputRulePayload>
+        }
+        createMany: {
+          args: Prisma.AgentInputRuleCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AgentInputRuleCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentInputRulePayload>[]
+        }
+        delete: {
+          args: Prisma.AgentInputRuleDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentInputRulePayload>
+        }
+        update: {
+          args: Prisma.AgentInputRuleUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentInputRulePayload>
+        }
+        deleteMany: {
+          args: Prisma.AgentInputRuleDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AgentInputRuleUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AgentInputRuleUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentInputRulePayload>[]
+        }
+        upsert: {
+          args: Prisma.AgentInputRuleUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AgentInputRulePayload>
+        }
+        aggregate: {
+          args: Prisma.AgentInputRuleAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAgentInputRule>
+        }
+        groupBy: {
+          args: Prisma.AgentInputRuleGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AgentInputRuleGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AgentInputRuleCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AgentInputRuleCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -4237,6 +4462,46 @@ export const AssessmentTaskScalarFieldEnum = {
 export type AssessmentTaskScalarFieldEnum = (typeof AssessmentTaskScalarFieldEnum)[keyof typeof AssessmentTaskScalarFieldEnum]
 
 
+export const AgentDefinitionScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  name: 'name',
+  description: 'description',
+  createdBy: 'createdBy',
+  publishedPromptVersionId: 'publishedPromptVersionId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AgentDefinitionScalarFieldEnum = (typeof AgentDefinitionScalarFieldEnum)[keyof typeof AgentDefinitionScalarFieldEnum]
+
+
+export const AgentPromptVersionScalarFieldEnum = {
+  id: 'id',
+  agentDefinitionId: 'agentDefinitionId',
+  version: 'version',
+  prompt: 'prompt',
+  changeReason: 'changeReason',
+  authoredBy: 'authoredBy',
+  createdAt: 'createdAt',
+  publishedAt: 'publishedAt',
+  publishedBy: 'publishedBy'
+} as const
+
+export type AgentPromptVersionScalarFieldEnum = (typeof AgentPromptVersionScalarFieldEnum)[keyof typeof AgentPromptVersionScalarFieldEnum]
+
+
+export const AgentInputRuleScalarFieldEnum = {
+  id: 'id',
+  agentDefinitionId: 'agentDefinitionId',
+  inputType: 'inputType',
+  domainIdentifier: 'domainIdentifier',
+  createdAt: 'createdAt'
+} as const
+
+export type AgentInputRuleScalarFieldEnum = (typeof AgentInputRuleScalarFieldEnum)[keyof typeof AgentInputRuleScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -4771,6 +5036,9 @@ export type GlobalOmitConfig = {
   followUpSuggestion?: Prisma.FollowUpSuggestionOmit
   processingJob?: Prisma.ProcessingJobOmit
   assessmentTask?: Prisma.AssessmentTaskOmit
+  agentDefinition?: Prisma.AgentDefinitionOmit
+  agentPromptVersion?: Prisma.AgentPromptVersionOmit
+  agentInputRule?: Prisma.AgentInputRuleOmit
 }
 
 /* Types for Logging */

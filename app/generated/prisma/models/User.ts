@@ -204,6 +204,9 @@ export type UserWhereInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackListRelationFilter
   reviewedCommunicationPacks?: Prisma.CommunicationPackListRelationFilter
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementListRelationFilter
+  createdAgentDefinitions?: Prisma.AgentDefinitionListRelationFilter
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionListRelationFilter
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -224,6 +227,9 @@ export type UserOrderByWithRelationInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackOrderByRelationAggregateInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackOrderByRelationAggregateInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementOrderByRelationAggregateInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionOrderByRelationAggregateInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionOrderByRelationAggregateInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -247,6 +253,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdCommunicationPacks?: Prisma.CommunicationPackListRelationFilter
   reviewedCommunicationPacks?: Prisma.CommunicationPackListRelationFilter
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementListRelationFilter
+  createdAgentDefinitions?: Prisma.AgentDefinitionListRelationFilter
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionListRelationFilter
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -293,6 +302,9 @@ export type UserCreateInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutCreatorInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutReviewerInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -313,6 +325,9 @@ export type UserUncheckedCreateInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutCreatorInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutReviewerInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
 }
 
 export type UserUpdateInput = {
@@ -333,6 +348,9 @@ export type UserUpdateInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutCreatorNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutReviewerNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -353,6 +371,9 @@ export type UserUncheckedUpdateInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutCreatorNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutReviewerNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -587,6 +608,50 @@ export type UserUpdateOneWithoutCompletedAssessmentTasksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCompletedAssessmentTasksInput, Prisma.UserUpdateWithoutCompletedAssessmentTasksInput>, Prisma.UserUncheckedUpdateWithoutCompletedAssessmentTasksInput>
 }
 
+export type UserCreateNestedOneWithoutCreatedAgentDefinitionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedAgentDefinitionsInput, Prisma.UserUncheckedCreateWithoutCreatedAgentDefinitionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedAgentDefinitionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCreatedAgentDefinitionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedAgentDefinitionsInput, Prisma.UserUncheckedCreateWithoutCreatedAgentDefinitionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedAgentDefinitionsInput
+  upsert?: Prisma.UserUpsertWithoutCreatedAgentDefinitionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedAgentDefinitionsInput, Prisma.UserUpdateWithoutCreatedAgentDefinitionsInput>, Prisma.UserUncheckedUpdateWithoutCreatedAgentDefinitionsInput>
+}
+
+export type UserCreateNestedOneWithoutAuthoredAgentPromptVersionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAuthoredAgentPromptVersionsInput, Prisma.UserUncheckedCreateWithoutAuthoredAgentPromptVersionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuthoredAgentPromptVersionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutPublishedAgentPromptVersionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPublishedAgentPromptVersionsInput, Prisma.UserUncheckedCreateWithoutPublishedAgentPromptVersionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPublishedAgentPromptVersionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAuthoredAgentPromptVersionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAuthoredAgentPromptVersionsInput, Prisma.UserUncheckedCreateWithoutAuthoredAgentPromptVersionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuthoredAgentPromptVersionsInput
+  upsert?: Prisma.UserUpsertWithoutAuthoredAgentPromptVersionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuthoredAgentPromptVersionsInput, Prisma.UserUpdateWithoutAuthoredAgentPromptVersionsInput>, Prisma.UserUncheckedUpdateWithoutAuthoredAgentPromptVersionsInput>
+}
+
+export type UserUpdateOneWithoutPublishedAgentPromptVersionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPublishedAgentPromptVersionsInput, Prisma.UserUncheckedCreateWithoutPublishedAgentPromptVersionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPublishedAgentPromptVersionsInput
+  upsert?: Prisma.UserUpsertWithoutPublishedAgentPromptVersionsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPublishedAgentPromptVersionsInput, Prisma.UserUpdateWithoutPublishedAgentPromptVersionsInput>, Prisma.UserUncheckedUpdateWithoutPublishedAgentPromptVersionsInput>
+}
+
 export type UserCreateWithoutOrganizationsInput = {
   id?: string
   email: string
@@ -604,6 +669,9 @@ export type UserCreateWithoutOrganizationsInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutCreatorInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutReviewerInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
 }
 
 export type UserUncheckedCreateWithoutOrganizationsInput = {
@@ -623,6 +691,9 @@ export type UserUncheckedCreateWithoutOrganizationsInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutCreatorInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutReviewerInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
 }
 
 export type UserCreateOrConnectWithoutOrganizationsInput = {
@@ -658,6 +729,9 @@ export type UserUpdateWithoutOrganizationsInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutCreatorNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutReviewerNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrganizationsInput = {
@@ -677,6 +751,9 @@ export type UserUncheckedUpdateWithoutOrganizationsInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutCreatorNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutReviewerNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -696,6 +773,9 @@ export type UserCreateWithoutSessionsInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutCreatorInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutReviewerInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -715,6 +795,9 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutCreatorInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutReviewerInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -750,6 +833,9 @@ export type UserUpdateWithoutSessionsInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutCreatorNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutReviewerNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -769,6 +855,9 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutCreatorNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutReviewerNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserCreateWithoutCreatedPlanningItemsInput = {
@@ -788,6 +877,9 @@ export type UserCreateWithoutCreatedPlanningItemsInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutCreatorInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutReviewerInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
 }
 
 export type UserUncheckedCreateWithoutCreatedPlanningItemsInput = {
@@ -807,6 +899,9 @@ export type UserUncheckedCreateWithoutCreatedPlanningItemsInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutCreatorInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutReviewerInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
 }
 
 export type UserCreateOrConnectWithoutCreatedPlanningItemsInput = {
@@ -831,6 +926,9 @@ export type UserCreateWithoutApprovedPlanningItemsInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutCreatorInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutReviewerInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
 }
 
 export type UserUncheckedCreateWithoutApprovedPlanningItemsInput = {
@@ -850,6 +948,9 @@ export type UserUncheckedCreateWithoutApprovedPlanningItemsInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutCreatorInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutReviewerInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
 }
 
 export type UserCreateOrConnectWithoutApprovedPlanningItemsInput = {
@@ -885,6 +986,9 @@ export type UserUpdateWithoutCreatedPlanningItemsInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutCreatorNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutReviewerNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedPlanningItemsInput = {
@@ -904,6 +1008,9 @@ export type UserUncheckedUpdateWithoutCreatedPlanningItemsInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutCreatorNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutReviewerNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserUpsertWithoutApprovedPlanningItemsInput = {
@@ -934,6 +1041,9 @@ export type UserUpdateWithoutApprovedPlanningItemsInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutCreatorNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutReviewerNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovedPlanningItemsInput = {
@@ -953,6 +1063,9 @@ export type UserUncheckedUpdateWithoutApprovedPlanningItemsInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutCreatorNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutReviewerNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserCreateWithoutCreatedCommunicationPacksInput = {
@@ -972,6 +1085,9 @@ export type UserCreateWithoutCreatedCommunicationPacksInput = {
   approvedPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutApproverInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutReviewerInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
 }
 
 export type UserUncheckedCreateWithoutCreatedCommunicationPacksInput = {
@@ -991,6 +1107,9 @@ export type UserUncheckedCreateWithoutCreatedCommunicationPacksInput = {
   approvedPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutApproverInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutReviewerInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
 }
 
 export type UserCreateOrConnectWithoutCreatedCommunicationPacksInput = {
@@ -1015,6 +1134,9 @@ export type UserCreateWithoutReviewedCommunicationPacksInput = {
   approvedPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutApproverInput
   createdCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutCreatorInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
 }
 
 export type UserUncheckedCreateWithoutReviewedCommunicationPacksInput = {
@@ -1034,6 +1156,9 @@ export type UserUncheckedCreateWithoutReviewedCommunicationPacksInput = {
   approvedPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutApproverInput
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutCreatorInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
 }
 
 export type UserCreateOrConnectWithoutReviewedCommunicationPacksInput = {
@@ -1069,6 +1194,9 @@ export type UserUpdateWithoutCreatedCommunicationPacksInput = {
   approvedPlanningItems?: Prisma.PlanningItemUpdateManyWithoutApproverNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutReviewerNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedCommunicationPacksInput = {
@@ -1088,6 +1216,9 @@ export type UserUncheckedUpdateWithoutCreatedCommunicationPacksInput = {
   approvedPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutApproverNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutReviewerNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserUpsertWithoutReviewedCommunicationPacksInput = {
@@ -1118,6 +1249,9 @@ export type UserUpdateWithoutReviewedCommunicationPacksInput = {
   approvedPlanningItems?: Prisma.PlanningItemUpdateManyWithoutApproverNestedInput
   createdCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutCreatorNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewedCommunicationPacksInput = {
@@ -1137,6 +1271,9 @@ export type UserUncheckedUpdateWithoutReviewedCommunicationPacksInput = {
   approvedPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutApproverNestedInput
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutCreatorNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserCreateWithoutCommunicationPackAcknowledgementsInput = {
@@ -1156,6 +1293,9 @@ export type UserCreateWithoutCommunicationPackAcknowledgementsInput = {
   approvedPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutApproverInput
   createdCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutCreatorInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutReviewerInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
 }
 
 export type UserUncheckedCreateWithoutCommunicationPackAcknowledgementsInput = {
@@ -1175,6 +1315,9 @@ export type UserUncheckedCreateWithoutCommunicationPackAcknowledgementsInput = {
   approvedPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutApproverInput
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutCreatorInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutReviewerInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
 }
 
 export type UserCreateOrConnectWithoutCommunicationPackAcknowledgementsInput = {
@@ -1210,6 +1353,9 @@ export type UserUpdateWithoutCommunicationPackAcknowledgementsInput = {
   approvedPlanningItems?: Prisma.PlanningItemUpdateManyWithoutApproverNestedInput
   createdCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutCreatorNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutReviewerNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommunicationPackAcknowledgementsInput = {
@@ -1229,6 +1375,9 @@ export type UserUncheckedUpdateWithoutCommunicationPackAcknowledgementsInput = {
   approvedPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutApproverNestedInput
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutCreatorNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutReviewerNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserCreateWithoutRequestedAssessmentTasksInput = {
@@ -1248,6 +1397,9 @@ export type UserCreateWithoutRequestedAssessmentTasksInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutCreatorInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutReviewerInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
 }
 
 export type UserUncheckedCreateWithoutRequestedAssessmentTasksInput = {
@@ -1267,6 +1419,9 @@ export type UserUncheckedCreateWithoutRequestedAssessmentTasksInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutCreatorInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutReviewerInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
 }
 
 export type UserCreateOrConnectWithoutRequestedAssessmentTasksInput = {
@@ -1291,6 +1446,9 @@ export type UserCreateWithoutAssignedAssessmentTasksInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutCreatorInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutReviewerInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
 }
 
 export type UserUncheckedCreateWithoutAssignedAssessmentTasksInput = {
@@ -1310,6 +1468,9 @@ export type UserUncheckedCreateWithoutAssignedAssessmentTasksInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutCreatorInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutReviewerInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
 }
 
 export type UserCreateOrConnectWithoutAssignedAssessmentTasksInput = {
@@ -1334,6 +1495,9 @@ export type UserCreateWithoutCompletedAssessmentTasksInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutCreatorInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutReviewerInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
 }
 
 export type UserUncheckedCreateWithoutCompletedAssessmentTasksInput = {
@@ -1353,6 +1517,9 @@ export type UserUncheckedCreateWithoutCompletedAssessmentTasksInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutCreatorInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutReviewerInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
 }
 
 export type UserCreateOrConnectWithoutCompletedAssessmentTasksInput = {
@@ -1388,6 +1555,9 @@ export type UserUpdateWithoutRequestedAssessmentTasksInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutCreatorNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutReviewerNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRequestedAssessmentTasksInput = {
@@ -1407,6 +1577,9 @@ export type UserUncheckedUpdateWithoutRequestedAssessmentTasksInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutCreatorNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutReviewerNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserUpsertWithoutAssignedAssessmentTasksInput = {
@@ -1437,6 +1610,9 @@ export type UserUpdateWithoutAssignedAssessmentTasksInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutCreatorNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutReviewerNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedAssessmentTasksInput = {
@@ -1456,6 +1632,9 @@ export type UserUncheckedUpdateWithoutAssignedAssessmentTasksInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutCreatorNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutReviewerNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserUpsertWithoutCompletedAssessmentTasksInput = {
@@ -1486,6 +1665,9 @@ export type UserUpdateWithoutCompletedAssessmentTasksInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutCreatorNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutReviewerNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCompletedAssessmentTasksInput = {
@@ -1505,6 +1687,321 @@ export type UserUncheckedUpdateWithoutCompletedAssessmentTasksInput = {
   createdCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutCreatorNestedInput
   reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutReviewerNestedInput
   communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
+}
+
+export type UserCreateWithoutCreatedAgentDefinitionsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationCreateNestedManyWithoutUserInput
+  sessions?: Prisma.AssessmentSessionCreateNestedManyWithoutAdvisorInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutRequesterInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutAssigneeInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutApproverInput
+  createdCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutCreatorInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutReviewerInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementCreateNestedManyWithoutActorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
+}
+
+export type UserUncheckedCreateWithoutCreatedAgentDefinitionsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.AssessmentSessionUncheckedCreateNestedManyWithoutAdvisorInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutRequesterInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutApproverInput
+  createdCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutCreatorInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutReviewerInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedCreateNestedManyWithoutActorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
+}
+
+export type UserCreateOrConnectWithoutCreatedAgentDefinitionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedAgentDefinitionsInput, Prisma.UserUncheckedCreateWithoutCreatedAgentDefinitionsInput>
+}
+
+export type UserUpsertWithoutCreatedAgentDefinitionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedAgentDefinitionsInput, Prisma.UserUncheckedUpdateWithoutCreatedAgentDefinitionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedAgentDefinitionsInput, Prisma.UserUncheckedCreateWithoutCreatedAgentDefinitionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreatedAgentDefinitionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedAgentDefinitionsInput, Prisma.UserUncheckedUpdateWithoutCreatedAgentDefinitionsInput>
+}
+
+export type UserUpdateWithoutCreatedAgentDefinitionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.AssessmentSessionUpdateManyWithoutAdvisorNestedInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutRequesterNestedInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutAssigneeNestedInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUpdateManyWithoutApproverNestedInput
+  createdCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutCreatorNestedInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutReviewerNestedInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUpdateManyWithoutActorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatedAgentDefinitionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.AssessmentSessionUncheckedUpdateManyWithoutAdvisorNestedInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutRequesterNestedInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutApproverNestedInput
+  createdCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutCreatorNestedInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutReviewerNestedInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedUpdateManyWithoutActorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
+}
+
+export type UserCreateWithoutAuthoredAgentPromptVersionsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationCreateNestedManyWithoutUserInput
+  sessions?: Prisma.AssessmentSessionCreateNestedManyWithoutAdvisorInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutRequesterInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutAssigneeInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutApproverInput
+  createdCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutCreatorInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutReviewerInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionCreateNestedManyWithoutCreatorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
+}
+
+export type UserUncheckedCreateWithoutAuthoredAgentPromptVersionsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.AssessmentSessionUncheckedCreateNestedManyWithoutAdvisorInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutRequesterInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutApproverInput
+  createdCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutCreatorInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutReviewerInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedCreateNestedManyWithoutCreatorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
+}
+
+export type UserCreateOrConnectWithoutAuthoredAgentPromptVersionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAuthoredAgentPromptVersionsInput, Prisma.UserUncheckedCreateWithoutAuthoredAgentPromptVersionsInput>
+}
+
+export type UserCreateWithoutPublishedAgentPromptVersionsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationCreateNestedManyWithoutUserInput
+  sessions?: Prisma.AssessmentSessionCreateNestedManyWithoutAdvisorInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutRequesterInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutAssigneeInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutApproverInput
+  createdCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutCreatorInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutReviewerInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
+}
+
+export type UserUncheckedCreateWithoutPublishedAgentPromptVersionsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.AssessmentSessionUncheckedCreateNestedManyWithoutAdvisorInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutRequesterInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutApproverInput
+  createdCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutCreatorInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutReviewerInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
+}
+
+export type UserCreateOrConnectWithoutPublishedAgentPromptVersionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPublishedAgentPromptVersionsInput, Prisma.UserUncheckedCreateWithoutPublishedAgentPromptVersionsInput>
+}
+
+export type UserUpsertWithoutAuthoredAgentPromptVersionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAuthoredAgentPromptVersionsInput, Prisma.UserUncheckedUpdateWithoutAuthoredAgentPromptVersionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAuthoredAgentPromptVersionsInput, Prisma.UserUncheckedCreateWithoutAuthoredAgentPromptVersionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAuthoredAgentPromptVersionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAuthoredAgentPromptVersionsInput, Prisma.UserUncheckedUpdateWithoutAuthoredAgentPromptVersionsInput>
+}
+
+export type UserUpdateWithoutAuthoredAgentPromptVersionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.AssessmentSessionUpdateManyWithoutAdvisorNestedInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutRequesterNestedInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutAssigneeNestedInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUpdateManyWithoutApproverNestedInput
+  createdCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutCreatorNestedInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutReviewerNestedInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUpdateManyWithoutCreatorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAuthoredAgentPromptVersionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.AssessmentSessionUncheckedUpdateManyWithoutAdvisorNestedInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutRequesterNestedInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutApproverNestedInput
+  createdCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutCreatorNestedInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutReviewerNestedInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedUpdateManyWithoutCreatorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
+}
+
+export type UserUpsertWithoutPublishedAgentPromptVersionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPublishedAgentPromptVersionsInput, Prisma.UserUncheckedUpdateWithoutPublishedAgentPromptVersionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPublishedAgentPromptVersionsInput, Prisma.UserUncheckedCreateWithoutPublishedAgentPromptVersionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPublishedAgentPromptVersionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPublishedAgentPromptVersionsInput, Prisma.UserUncheckedUpdateWithoutPublishedAgentPromptVersionsInput>
+}
+
+export type UserUpdateWithoutPublishedAgentPromptVersionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.AssessmentSessionUpdateManyWithoutAdvisorNestedInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutRequesterNestedInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutAssigneeNestedInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUpdateManyWithoutApproverNestedInput
+  createdCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutCreatorNestedInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutReviewerNestedInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPublishedAgentPromptVersionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.AssessmentSessionUncheckedUpdateManyWithoutAdvisorNestedInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutRequesterNestedInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutApproverNestedInput
+  createdCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutCreatorNestedInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutReviewerNestedInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 
@@ -1523,6 +2020,9 @@ export type UserCountOutputType = {
   createdCommunicationPacks: number
   reviewedCommunicationPacks: number
   communicationPackAcknowledgements: number
+  createdAgentDefinitions: number
+  authoredAgentPromptVersions: number
+  publishedAgentPromptVersions: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1536,6 +2036,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   createdCommunicationPacks?: boolean | UserCountOutputTypeCountCreatedCommunicationPacksArgs
   reviewedCommunicationPacks?: boolean | UserCountOutputTypeCountReviewedCommunicationPacksArgs
   communicationPackAcknowledgements?: boolean | UserCountOutputTypeCountCommunicationPackAcknowledgementsArgs
+  createdAgentDefinitions?: boolean | UserCountOutputTypeCountCreatedAgentDefinitionsArgs
+  authoredAgentPromptVersions?: boolean | UserCountOutputTypeCountAuthoredAgentPromptVersionsArgs
+  publishedAgentPromptVersions?: boolean | UserCountOutputTypeCountPublishedAgentPromptVersionsArgs
 }
 
 /**
@@ -1618,6 +2121,27 @@ export type UserCountOutputTypeCountCommunicationPackAcknowledgementsArgs<ExtArg
   where?: Prisma.CommunicationPackAcknowledgementWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCreatedAgentDefinitionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AgentDefinitionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAuthoredAgentPromptVersionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AgentPromptVersionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPublishedAgentPromptVersionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AgentPromptVersionWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1637,6 +2161,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdCommunicationPacks?: boolean | Prisma.User$createdCommunicationPacksArgs<ExtArgs>
   reviewedCommunicationPacks?: boolean | Prisma.User$reviewedCommunicationPacksArgs<ExtArgs>
   communicationPackAcknowledgements?: boolean | Prisma.User$communicationPackAcknowledgementsArgs<ExtArgs>
+  createdAgentDefinitions?: boolean | Prisma.User$createdAgentDefinitionsArgs<ExtArgs>
+  authoredAgentPromptVersions?: boolean | Prisma.User$authoredAgentPromptVersionsArgs<ExtArgs>
+  publishedAgentPromptVersions?: boolean | Prisma.User$publishedAgentPromptVersionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1682,6 +2209,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   createdCommunicationPacks?: boolean | Prisma.User$createdCommunicationPacksArgs<ExtArgs>
   reviewedCommunicationPacks?: boolean | Prisma.User$reviewedCommunicationPacksArgs<ExtArgs>
   communicationPackAcknowledgements?: boolean | Prisma.User$communicationPackAcknowledgementsArgs<ExtArgs>
+  createdAgentDefinitions?: boolean | Prisma.User$createdAgentDefinitionsArgs<ExtArgs>
+  authoredAgentPromptVersions?: boolean | Prisma.User$authoredAgentPromptVersionsArgs<ExtArgs>
+  publishedAgentPromptVersions?: boolean | Prisma.User$publishedAgentPromptVersionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1700,6 +2230,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     createdCommunicationPacks: Prisma.$CommunicationPackPayload<ExtArgs>[]
     reviewedCommunicationPacks: Prisma.$CommunicationPackPayload<ExtArgs>[]
     communicationPackAcknowledgements: Prisma.$CommunicationPackAcknowledgementPayload<ExtArgs>[]
+    createdAgentDefinitions: Prisma.$AgentDefinitionPayload<ExtArgs>[]
+    authoredAgentPromptVersions: Prisma.$AgentPromptVersionPayload<ExtArgs>[]
+    publishedAgentPromptVersions: Prisma.$AgentPromptVersionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2113,6 +2646,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   createdCommunicationPacks<T extends Prisma.User$createdCommunicationPacksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdCommunicationPacksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommunicationPackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviewedCommunicationPacks<T extends Prisma.User$reviewedCommunicationPacksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewedCommunicationPacksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommunicationPackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   communicationPackAcknowledgements<T extends Prisma.User$communicationPackAcknowledgementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$communicationPackAcknowledgementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommunicationPackAcknowledgementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdAgentDefinitions<T extends Prisma.User$createdAgentDefinitionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdAgentDefinitionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentDefinitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  authoredAgentPromptVersions<T extends Prisma.User$authoredAgentPromptVersionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$authoredAgentPromptVersionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentPromptVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  publishedAgentPromptVersions<T extends Prisma.User$publishedAgentPromptVersionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$publishedAgentPromptVersionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentPromptVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2779,6 +3315,78 @@ export type User$communicationPackAcknowledgementsArgs<ExtArgs extends runtime.T
   take?: number
   skip?: number
   distinct?: Prisma.CommunicationPackAcknowledgementScalarFieldEnum | Prisma.CommunicationPackAcknowledgementScalarFieldEnum[]
+}
+
+/**
+ * User.createdAgentDefinitions
+ */
+export type User$createdAgentDefinitionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AgentDefinition
+   */
+  select?: Prisma.AgentDefinitionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AgentDefinition
+   */
+  omit?: Prisma.AgentDefinitionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AgentDefinitionInclude<ExtArgs> | null
+  where?: Prisma.AgentDefinitionWhereInput
+  orderBy?: Prisma.AgentDefinitionOrderByWithRelationInput | Prisma.AgentDefinitionOrderByWithRelationInput[]
+  cursor?: Prisma.AgentDefinitionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AgentDefinitionScalarFieldEnum | Prisma.AgentDefinitionScalarFieldEnum[]
+}
+
+/**
+ * User.authoredAgentPromptVersions
+ */
+export type User$authoredAgentPromptVersionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AgentPromptVersion
+   */
+  select?: Prisma.AgentPromptVersionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AgentPromptVersion
+   */
+  omit?: Prisma.AgentPromptVersionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AgentPromptVersionInclude<ExtArgs> | null
+  where?: Prisma.AgentPromptVersionWhereInput
+  orderBy?: Prisma.AgentPromptVersionOrderByWithRelationInput | Prisma.AgentPromptVersionOrderByWithRelationInput[]
+  cursor?: Prisma.AgentPromptVersionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AgentPromptVersionScalarFieldEnum | Prisma.AgentPromptVersionScalarFieldEnum[]
+}
+
+/**
+ * User.publishedAgentPromptVersions
+ */
+export type User$publishedAgentPromptVersionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AgentPromptVersion
+   */
+  select?: Prisma.AgentPromptVersionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AgentPromptVersion
+   */
+  omit?: Prisma.AgentPromptVersionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AgentPromptVersionInclude<ExtArgs> | null
+  where?: Prisma.AgentPromptVersionWhereInput
+  orderBy?: Prisma.AgentPromptVersionOrderByWithRelationInput | Prisma.AgentPromptVersionOrderByWithRelationInput[]
+  cursor?: Prisma.AgentPromptVersionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AgentPromptVersionScalarFieldEnum | Prisma.AgentPromptVersionScalarFieldEnum[]
 }
 
 /**
