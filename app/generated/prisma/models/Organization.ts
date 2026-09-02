@@ -222,6 +222,7 @@ export type OrganizationWhereInput = {
   planningItems?: Prisma.PlanningItemListRelationFilter
   communicationPacks?: Prisma.CommunicationPackListRelationFilter
   inboundEmailEndpoint?: Prisma.XOR<Prisma.InboundEmailEndpointNullableScalarRelationFilter, Prisma.InboundEmailEndpointWhereInput> | null
+  agentRuns?: Prisma.AgentRunListRelationFilter
 }
 
 export type OrganizationOrderByWithRelationInput = {
@@ -249,6 +250,7 @@ export type OrganizationOrderByWithRelationInput = {
   planningItems?: Prisma.PlanningItemOrderByRelationAggregateInput
   communicationPacks?: Prisma.CommunicationPackOrderByRelationAggregateInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointOrderByWithRelationInput
+  agentRuns?: Prisma.AgentRunOrderByRelationAggregateInput
 }
 
 export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
@@ -279,6 +281,7 @@ export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
   planningItems?: Prisma.PlanningItemListRelationFilter
   communicationPacks?: Prisma.CommunicationPackListRelationFilter
   inboundEmailEndpoint?: Prisma.XOR<Prisma.InboundEmailEndpointNullableScalarRelationFilter, Prisma.InboundEmailEndpointWhereInput> | null
+  agentRuns?: Prisma.AgentRunListRelationFilter
 }, "id">
 
 export type OrganizationOrderByWithAggregationInput = {
@@ -334,6 +337,7 @@ export type OrganizationCreateInput = {
   planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateInput = {
@@ -361,6 +365,7 @@ export type OrganizationUncheckedCreateInput = {
   planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUpdateInput = {
@@ -388,6 +393,7 @@ export type OrganizationUpdateInput = {
   planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateInput = {
@@ -415,6 +421,7 @@ export type OrganizationUncheckedUpdateInput = {
   planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateManyInput = {
@@ -719,6 +726,20 @@ export type OrganizationUpdateOneRequiredWithoutAssessmentTasksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutAssessmentTasksInput, Prisma.OrganizationUpdateWithoutAssessmentTasksInput>, Prisma.OrganizationUncheckedUpdateWithoutAssessmentTasksInput>
 }
 
+export type OrganizationCreateNestedOneWithoutAgentRunsInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutAgentRunsInput, Prisma.OrganizationUncheckedCreateWithoutAgentRunsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutAgentRunsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+}
+
+export type OrganizationUpdateOneRequiredWithoutAgentRunsNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutAgentRunsInput, Prisma.OrganizationUncheckedCreateWithoutAgentRunsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutAgentRunsInput
+  upsert?: Prisma.OrganizationUpsertWithoutAgentRunsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutAgentRunsInput, Prisma.OrganizationUpdateWithoutAgentRunsInput>, Prisma.OrganizationUncheckedUpdateWithoutAgentRunsInput>
+}
+
 export type OrganizationCreateWithoutUsersInput = {
   id?: string
   name: string
@@ -743,6 +764,7 @@ export type OrganizationCreateWithoutUsersInput = {
   planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutUsersInput = {
@@ -769,6 +791,7 @@ export type OrganizationUncheckedCreateWithoutUsersInput = {
   planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutUsersInput = {
@@ -811,6 +834,7 @@ export type OrganizationUpdateWithoutUsersInput = {
   planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutUsersInput = {
@@ -837,6 +861,7 @@ export type OrganizationUncheckedUpdateWithoutUsersInput = {
   planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutDomainsInput = {
@@ -863,6 +888,7 @@ export type OrganizationCreateWithoutDomainsInput = {
   planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutDomainsInput = {
@@ -889,6 +915,7 @@ export type OrganizationUncheckedCreateWithoutDomainsInput = {
   planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutDomainsInput = {
@@ -931,6 +958,7 @@ export type OrganizationUpdateWithoutDomainsInput = {
   planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutDomainsInput = {
@@ -957,6 +985,7 @@ export type OrganizationUncheckedUpdateWithoutDomainsInput = {
   planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutStakeholdersInput = {
@@ -983,6 +1012,7 @@ export type OrganizationCreateWithoutStakeholdersInput = {
   planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutStakeholdersInput = {
@@ -1009,6 +1039,7 @@ export type OrganizationUncheckedCreateWithoutStakeholdersInput = {
   planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutStakeholdersInput = {
@@ -1051,6 +1082,7 @@ export type OrganizationUpdateWithoutStakeholdersInput = {
   planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutStakeholdersInput = {
@@ -1077,6 +1109,7 @@ export type OrganizationUncheckedUpdateWithoutStakeholdersInput = {
   planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutKpisInput = {
@@ -1103,6 +1136,7 @@ export type OrganizationCreateWithoutKpisInput = {
   planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutKpisInput = {
@@ -1129,6 +1163,7 @@ export type OrganizationUncheckedCreateWithoutKpisInput = {
   planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutKpisInput = {
@@ -1171,6 +1206,7 @@ export type OrganizationUpdateWithoutKpisInput = {
   planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutKpisInput = {
@@ -1197,6 +1233,7 @@ export type OrganizationUncheckedUpdateWithoutKpisInput = {
   planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutProcessesInput = {
@@ -1223,6 +1260,7 @@ export type OrganizationCreateWithoutProcessesInput = {
   planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutProcessesInput = {
@@ -1249,6 +1287,7 @@ export type OrganizationUncheckedCreateWithoutProcessesInput = {
   planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutProcessesInput = {
@@ -1291,6 +1330,7 @@ export type OrganizationUpdateWithoutProcessesInput = {
   planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutProcessesInput = {
@@ -1317,6 +1357,7 @@ export type OrganizationUncheckedUpdateWithoutProcessesInput = {
   planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutTechnologiesInput = {
@@ -1343,6 +1384,7 @@ export type OrganizationCreateWithoutTechnologiesInput = {
   planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutTechnologiesInput = {
@@ -1369,6 +1411,7 @@ export type OrganizationUncheckedCreateWithoutTechnologiesInput = {
   planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutTechnologiesInput = {
@@ -1411,6 +1454,7 @@ export type OrganizationUpdateWithoutTechnologiesInput = {
   planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutTechnologiesInput = {
@@ -1437,6 +1481,7 @@ export type OrganizationUncheckedUpdateWithoutTechnologiesInput = {
   planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutProjectsInput = {
@@ -1463,6 +1508,7 @@ export type OrganizationCreateWithoutProjectsInput = {
   planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutProjectsInput = {
@@ -1489,6 +1535,7 @@ export type OrganizationUncheckedCreateWithoutProjectsInput = {
   planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutProjectsInput = {
@@ -1531,6 +1578,7 @@ export type OrganizationUpdateWithoutProjectsInput = {
   planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutProjectsInput = {
@@ -1557,6 +1605,7 @@ export type OrganizationUncheckedUpdateWithoutProjectsInput = {
   planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutAchievementsInput = {
@@ -1583,6 +1632,7 @@ export type OrganizationCreateWithoutAchievementsInput = {
   planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutAchievementsInput = {
@@ -1609,6 +1659,7 @@ export type OrganizationUncheckedCreateWithoutAchievementsInput = {
   planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutAchievementsInput = {
@@ -1651,6 +1702,7 @@ export type OrganizationUpdateWithoutAchievementsInput = {
   planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutAchievementsInput = {
@@ -1677,6 +1729,7 @@ export type OrganizationUncheckedUpdateWithoutAchievementsInput = {
   planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutSessionsInput = {
@@ -1703,6 +1756,7 @@ export type OrganizationCreateWithoutSessionsInput = {
   planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutSessionsInput = {
@@ -1729,6 +1783,7 @@ export type OrganizationUncheckedCreateWithoutSessionsInput = {
   planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutSessionsInput = {
@@ -1771,6 +1826,7 @@ export type OrganizationUpdateWithoutSessionsInput = {
   planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutSessionsInput = {
@@ -1797,6 +1853,7 @@ export type OrganizationUncheckedUpdateWithoutSessionsInput = {
   planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutCapturedInputsInput = {
@@ -1823,6 +1880,7 @@ export type OrganizationCreateWithoutCapturedInputsInput = {
   planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutCapturedInputsInput = {
@@ -1849,6 +1907,7 @@ export type OrganizationUncheckedCreateWithoutCapturedInputsInput = {
   planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutCapturedInputsInput = {
@@ -1891,6 +1950,7 @@ export type OrganizationUpdateWithoutCapturedInputsInput = {
   planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutCapturedInputsInput = {
@@ -1917,6 +1977,7 @@ export type OrganizationUncheckedUpdateWithoutCapturedInputsInput = {
   planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutInboundEmailEndpointInput = {
@@ -1943,6 +2004,7 @@ export type OrganizationCreateWithoutInboundEmailEndpointInput = {
   assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
   planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutInboundEmailEndpointInput = {
@@ -1969,6 +2031,7 @@ export type OrganizationUncheckedCreateWithoutInboundEmailEndpointInput = {
   assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
   planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutInboundEmailEndpointInput = {
@@ -2011,6 +2074,7 @@ export type OrganizationUpdateWithoutInboundEmailEndpointInput = {
   assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
   planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUpdateManyWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutInboundEmailEndpointInput = {
@@ -2037,6 +2101,7 @@ export type OrganizationUncheckedUpdateWithoutInboundEmailEndpointInput = {
   assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
   planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutMaturityRubricsInput = {
@@ -2063,6 +2128,7 @@ export type OrganizationCreateWithoutMaturityRubricsInput = {
   planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutMaturityRubricsInput = {
@@ -2089,6 +2155,7 @@ export type OrganizationUncheckedCreateWithoutMaturityRubricsInput = {
   planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutMaturityRubricsInput = {
@@ -2131,6 +2198,7 @@ export type OrganizationUpdateWithoutMaturityRubricsInput = {
   planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutMaturityRubricsInput = {
@@ -2157,6 +2225,7 @@ export type OrganizationUncheckedUpdateWithoutMaturityRubricsInput = {
   planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutPlanningItemsInput = {
@@ -2183,6 +2252,7 @@ export type OrganizationCreateWithoutPlanningItemsInput = {
   assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutPlanningItemsInput = {
@@ -2209,6 +2279,7 @@ export type OrganizationUncheckedCreateWithoutPlanningItemsInput = {
   assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutPlanningItemsInput = {
@@ -2251,6 +2322,7 @@ export type OrganizationUpdateWithoutPlanningItemsInput = {
   assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutPlanningItemsInput = {
@@ -2277,6 +2349,7 @@ export type OrganizationUncheckedUpdateWithoutPlanningItemsInput = {
   assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutCommunicationPacksInput = {
@@ -2303,6 +2376,7 @@ export type OrganizationCreateWithoutCommunicationPacksInput = {
   assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
   planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutCommunicationPacksInput = {
@@ -2329,6 +2403,7 @@ export type OrganizationUncheckedCreateWithoutCommunicationPacksInput = {
   assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
   planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutCommunicationPacksInput = {
@@ -2371,6 +2446,7 @@ export type OrganizationUpdateWithoutCommunicationPacksInput = {
   assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
   planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutCommunicationPacksInput = {
@@ -2397,6 +2473,7 @@ export type OrganizationUncheckedUpdateWithoutCommunicationPacksInput = {
   assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
   planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutRecommendationsInput = {
@@ -2423,6 +2500,7 @@ export type OrganizationCreateWithoutRecommendationsInput = {
   planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutRecommendationsInput = {
@@ -2449,6 +2527,7 @@ export type OrganizationUncheckedCreateWithoutRecommendationsInput = {
   planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutRecommendationsInput = {
@@ -2491,6 +2570,7 @@ export type OrganizationUpdateWithoutRecommendationsInput = {
   planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutRecommendationsInput = {
@@ -2517,6 +2597,7 @@ export type OrganizationUncheckedUpdateWithoutRecommendationsInput = {
   planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutAssessmentTasksInput = {
@@ -2543,6 +2624,7 @@ export type OrganizationCreateWithoutAssessmentTasksInput = {
   planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutAssessmentTasksInput = {
@@ -2569,6 +2651,7 @@ export type OrganizationUncheckedCreateWithoutAssessmentTasksInput = {
   planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
   communicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutOrganizationInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutAssessmentTasksInput = {
@@ -2611,6 +2694,7 @@ export type OrganizationUpdateWithoutAssessmentTasksInput = {
   planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutAssessmentTasksInput = {
@@ -2637,6 +2721,131 @@ export type OrganizationUncheckedUpdateWithoutAssessmentTasksInput = {
   planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutAgentRunsInput = {
+  id?: string
+  name: string
+  industry?: string | null
+  size?: string | null
+  notes?: string | null
+  engagementMotive?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserOrganizationCreateNestedManyWithoutOrganizationInput
+  domains?: Prisma.BusinessDomainCreateNestedManyWithoutOrganizationInput
+  stakeholders?: Prisma.StakeholderCreateNestedManyWithoutOrganizationInput
+  kpis?: Prisma.KPICreateNestedManyWithoutOrganizationInput
+  achievements?: Prisma.AchievementCreateNestedManyWithoutOrganizationInput
+  technologies?: Prisma.TechnologyCreateNestedManyWithoutOrganizationInput
+  processes?: Prisma.ProcessCreateNestedManyWithoutOrganizationInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutOrganizationInput
+  sessions?: Prisma.AssessmentSessionCreateNestedManyWithoutOrganizationInput
+  capturedInputs?: Prisma.CapturedInputCreateNestedManyWithoutOrganizationInput
+  recommendations?: Prisma.RecommendationCreateNestedManyWithoutOrganizationInput
+  maturityRubrics?: Prisma.MaturityRubricCreateNestedManyWithoutOrganizationInput
+  assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
+  communicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutOrganizationInput
+  inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutAgentRunsInput = {
+  id?: string
+  name: string
+  industry?: string | null
+  size?: string | null
+  notes?: string | null
+  engagementMotive?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
+  domains?: Prisma.BusinessDomainUncheckedCreateNestedManyWithoutOrganizationInput
+  stakeholders?: Prisma.StakeholderUncheckedCreateNestedManyWithoutOrganizationInput
+  kpis?: Prisma.KPIUncheckedCreateNestedManyWithoutOrganizationInput
+  achievements?: Prisma.AchievementUncheckedCreateNestedManyWithoutOrganizationInput
+  technologies?: Prisma.TechnologyUncheckedCreateNestedManyWithoutOrganizationInput
+  processes?: Prisma.ProcessUncheckedCreateNestedManyWithoutOrganizationInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutOrganizationInput
+  sessions?: Prisma.AssessmentSessionUncheckedCreateNestedManyWithoutOrganizationInput
+  capturedInputs?: Prisma.CapturedInputUncheckedCreateNestedManyWithoutOrganizationInput
+  recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutOrganizationInput
+  maturityRubrics?: Prisma.MaturityRubricUncheckedCreateNestedManyWithoutOrganizationInput
+  assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
+  communicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutOrganizationInput
+  inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutAgentRunsInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutAgentRunsInput, Prisma.OrganizationUncheckedCreateWithoutAgentRunsInput>
+}
+
+export type OrganizationUpsertWithoutAgentRunsInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutAgentRunsInput, Prisma.OrganizationUncheckedUpdateWithoutAgentRunsInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutAgentRunsInput, Prisma.OrganizationUncheckedCreateWithoutAgentRunsInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutAgentRunsInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutAgentRunsInput, Prisma.OrganizationUncheckedUpdateWithoutAgentRunsInput>
+}
+
+export type OrganizationUpdateWithoutAgentRunsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserOrganizationUpdateManyWithoutOrganizationNestedInput
+  domains?: Prisma.BusinessDomainUpdateManyWithoutOrganizationNestedInput
+  stakeholders?: Prisma.StakeholderUpdateManyWithoutOrganizationNestedInput
+  kpis?: Prisma.KPIUpdateManyWithoutOrganizationNestedInput
+  achievements?: Prisma.AchievementUpdateManyWithoutOrganizationNestedInput
+  technologies?: Prisma.TechnologyUpdateManyWithoutOrganizationNestedInput
+  processes?: Prisma.ProcessUpdateManyWithoutOrganizationNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutOrganizationNestedInput
+  sessions?: Prisma.AssessmentSessionUpdateManyWithoutOrganizationNestedInput
+  capturedInputs?: Prisma.CapturedInputUpdateManyWithoutOrganizationNestedInput
+  recommendations?: Prisma.RecommendationUpdateManyWithoutOrganizationNestedInput
+  maturityRubrics?: Prisma.MaturityRubricUpdateManyWithoutOrganizationNestedInput
+  assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
+  communicationPacks?: Prisma.CommunicationPackUpdateManyWithoutOrganizationNestedInput
+  inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutAgentRunsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
+  domains?: Prisma.BusinessDomainUncheckedUpdateManyWithoutOrganizationNestedInput
+  stakeholders?: Prisma.StakeholderUncheckedUpdateManyWithoutOrganizationNestedInput
+  kpis?: Prisma.KPIUncheckedUpdateManyWithoutOrganizationNestedInput
+  achievements?: Prisma.AchievementUncheckedUpdateManyWithoutOrganizationNestedInput
+  technologies?: Prisma.TechnologyUncheckedUpdateManyWithoutOrganizationNestedInput
+  processes?: Prisma.ProcessUncheckedUpdateManyWithoutOrganizationNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutOrganizationNestedInput
+  sessions?: Prisma.AssessmentSessionUncheckedUpdateManyWithoutOrganizationNestedInput
+  capturedInputs?: Prisma.CapturedInputUncheckedUpdateManyWithoutOrganizationNestedInput
+  recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutOrganizationNestedInput
+  maturityRubrics?: Prisma.MaturityRubricUncheckedUpdateManyWithoutOrganizationNestedInput
+  assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
+  communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
+  inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
 }
 
 
@@ -2660,6 +2869,7 @@ export type OrganizationCountOutputType = {
   assessmentTasks: number
   planningItems: number
   communicationPacks: number
+  agentRuns: number
 }
 
 export type OrganizationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2678,6 +2888,7 @@ export type OrganizationCountOutputTypeSelect<ExtArgs extends runtime.Types.Exte
   assessmentTasks?: boolean | OrganizationCountOutputTypeCountAssessmentTasksArgs
   planningItems?: boolean | OrganizationCountOutputTypeCountPlanningItemsArgs
   communicationPacks?: boolean | OrganizationCountOutputTypeCountCommunicationPacksArgs
+  agentRuns?: boolean | OrganizationCountOutputTypeCountAgentRunsArgs
 }
 
 /**
@@ -2795,6 +3006,13 @@ export type OrganizationCountOutputTypeCountCommunicationPacksArgs<ExtArgs exten
   where?: Prisma.CommunicationPackWhereInput
 }
 
+/**
+ * OrganizationCountOutputType without action
+ */
+export type OrganizationCountOutputTypeCountAgentRunsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AgentRunWhereInput
+}
+
 
 export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2821,6 +3039,7 @@ export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   planningItems?: boolean | Prisma.Organization$planningItemsArgs<ExtArgs>
   communicationPacks?: boolean | Prisma.Organization$communicationPacksArgs<ExtArgs>
   inboundEmailEndpoint?: boolean | Prisma.Organization$inboundEmailEndpointArgs<ExtArgs>
+  agentRuns?: boolean | Prisma.Organization$agentRunsArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["organization"]>
 
@@ -2875,6 +3094,7 @@ export type OrganizationInclude<ExtArgs extends runtime.Types.Extensions.Interna
   planningItems?: boolean | Prisma.Organization$planningItemsArgs<ExtArgs>
   communicationPacks?: boolean | Prisma.Organization$communicationPacksArgs<ExtArgs>
   inboundEmailEndpoint?: boolean | Prisma.Organization$inboundEmailEndpointArgs<ExtArgs>
+  agentRuns?: boolean | Prisma.Organization$agentRunsArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type OrganizationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2899,6 +3119,7 @@ export type $OrganizationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     planningItems: Prisma.$PlanningItemPayload<ExtArgs>[]
     communicationPacks: Prisma.$CommunicationPackPayload<ExtArgs>[]
     inboundEmailEndpoint: Prisma.$InboundEmailEndpointPayload<ExtArgs> | null
+    agentRuns: Prisma.$AgentRunPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3319,6 +3540,7 @@ export interface Prisma__OrganizationClient<T, Null = never, ExtArgs extends run
   planningItems<T extends Prisma.Organization$planningItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$planningItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlanningItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   communicationPacks<T extends Prisma.Organization$communicationPacksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$communicationPacksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommunicationPackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   inboundEmailEndpoint<T extends Prisma.Organization$inboundEmailEndpointArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$inboundEmailEndpointArgs<ExtArgs>>): Prisma.Prisma__InboundEmailEndpointClient<runtime.Types.Result.GetResult<Prisma.$InboundEmailEndpointPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  agentRuns<T extends Prisma.Organization$agentRunsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$agentRunsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4125,6 +4347,30 @@ export type Organization$inboundEmailEndpointArgs<ExtArgs extends runtime.Types.
    */
   include?: Prisma.InboundEmailEndpointInclude<ExtArgs> | null
   where?: Prisma.InboundEmailEndpointWhereInput
+}
+
+/**
+ * Organization.agentRuns
+ */
+export type Organization$agentRunsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AgentRun
+   */
+  select?: Prisma.AgentRunSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AgentRun
+   */
+  omit?: Prisma.AgentRunOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AgentRunInclude<ExtArgs> | null
+  where?: Prisma.AgentRunWhereInput
+  orderBy?: Prisma.AgentRunOrderByWithRelationInput | Prisma.AgentRunOrderByWithRelationInput[]
+  cursor?: Prisma.AgentRunWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AgentRunScalarFieldEnum | Prisma.AgentRunScalarFieldEnum[]
 }
 
 /**

@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
-type NavItem = { href: string; label: string; short: string };
+type NavItem = { href: string; label: string };
 type Workspace = { id: string; name: string; industry: string | null };
 
 export function WorkspaceNav({ clientId, clientName }: { clientId: string; clientName: string }) {
@@ -33,18 +33,18 @@ export function WorkspaceNav({ clientId, clientName }: { clientId: string; clien
   }, [pathname]);
 
   const items: NavItem[] = [
-    { href: `/clients/${clientId}`, label: "Overview", short: "01" },
-    { href: `/clients/${clientId}/capture`, label: "Capture evidence", short: "02" },
-    { href: `/clients/${clientId}/integrations/sharepoint`, label: "Integrations", short: "03" },
-    { href: `/clients/${clientId}/configure`, label: "Blueprint", short: "02" },
-    { href: `/clients/${clientId}/assess`, label: "Assessment", short: "03" },
-    { href: `/clients/${clientId}/tasks`, label: "Assessment tasks", short: "04" },
-    { href: `/clients/${clientId}/planning`, label: "Planning items", short: "05" },
-    { href: `/clients/${clientId}/communication-packs`, label: "Communication packs", short: "06" },
-    { href: `/clients/${clientId}/analysis`, label: "Insights", short: "06" },
-    { href: `/clients/${clientId}/report`, label: "Reports", short: "07" },
-    { href: `/clients/${clientId}/recommendations`, label: "Growth plan", short: "08" },
-    { href: `/clients/${clientId}/review`, label: "Review queue", short: "09" },
+    { href: `/clients/${clientId}`, label: "Overview" },
+    { href: `/clients/${clientId}/capture`, label: "Capture evidence" },
+    { href: `/clients/${clientId}/integrations/sharepoint`, label: "Integrations" },
+    { href: `/clients/${clientId}/configure`, label: "Blueprint" },
+    { href: `/clients/${clientId}/assess`, label: "Assessment" },
+    { href: `/clients/${clientId}/tasks`, label: "Assessment tasks" },
+    { href: `/clients/${clientId}/planning`, label: "Planning items" },
+    { href: `/clients/${clientId}/communication-packs`, label: "Communication packs" },
+    { href: `/clients/${clientId}/analysis`, label: "Insights" },
+    { href: `/clients/${clientId}/report`, label: "Reports" },
+    { href: `/clients/${clientId}/recommendations`, label: "Growth plan" },
+    { href: `/clients/${clientId}/review`, label: "Review queue" },
   ];
 
   async function signOut() {
@@ -83,7 +83,7 @@ export function WorkspaceNav({ clientId, clientName }: { clientId: string; clien
         </div>
 
         <nav className="workspace-nav" aria-label="Workspace navigation">
-          {items.map((item) => {
+          {items.map((item, index) => {
             const active = item.href === `/clients/${clientId}` ? pathname === item.href : pathname.startsWith(item.href);
             return (
               <Link
@@ -93,7 +93,7 @@ export function WorkspaceNav({ clientId, clientName }: { clientId: string; clien
                 className="workspace-nav-link"
                 onClick={() => setOpen(false)}
               >
-                <span className="workspace-nav-icon" aria-hidden="true">{item.short}</span>
+                <span className="workspace-nav-icon" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                 {item.label}
               </Link>
             );

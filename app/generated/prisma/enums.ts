@@ -197,3 +197,21 @@ export const AssessmentTaskReviewState = {
 } as const
 
 export type AssessmentTaskReviewState = (typeof AssessmentTaskReviewState)[keyof typeof AssessmentTaskReviewState]
+
+
+export const AgentRunStatus = {
+  PENDING: 'PENDING',
+  OUTPUT_READY: 'OUTPUT_READY',
+  FAILED: 'FAILED'
+} as const
+
+export type AgentRunStatus = (typeof AgentRunStatus)[keyof typeof AgentRunStatus]
+
+
+export const AgentOutputStatus = {
+  PROVISIONAL: 'PROVISIONAL',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type AgentOutputStatus = (typeof AgentOutputStatus)[keyof typeof AgentOutputStatus]

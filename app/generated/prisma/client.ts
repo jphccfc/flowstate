@@ -266,3 +266,13 @@ export type AgentPromptVersion = Prisma.AgentPromptVersionModel
  *
  */
 export type AgentInputRule = Prisma.AgentInputRuleModel
+/**
+ * Model AgentRun
+ *
+ */
+export type AgentRun = Prisma.AgentRunModel
+/**
+ * Model AgentOutput
+ *
+ */
+export type AgentOutput = Prisma.AgentOutputModel

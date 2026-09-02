@@ -37,6 +37,7 @@ model User {
   createdAgentDefinitions AgentDefinition[] @relation("AgentDefinitionCreator")
   authoredAgentPromptVersions AgentPromptVersion[] @relation("AgentPromptVersionAuthor")
   publishedAgentPromptVersions AgentPromptVersion[] @relation("AgentPromptVersionPublisher")
+  reviewedAgentOutputs AgentOutput[] @relation("AgentOutputReviewer")
 }
 
 model Organization {
@@ -65,6 +66,7 @@ model Organization {
   planningItems PlanningItem[]
   communicationPacks CommunicationPack[]
   inboundEmailEndpoint InboundEmailEndpoint?
+  agentRuns AgentRun[]
 }
 
 model UserOrganization {
@@ -339,6 +341,7 @@ model CapturedInput {
   session      AssessmentSession? @relation(fields: [sessionId], references: [id])
   segments     CapturedSegment[]
   attachments  CapturedInputAttachment[]
+  agentRuns AgentRun[]
 
   @@unique([organizationId, idempotencyKey])
 }
@@ -904,6 +907,7 @@ model AgentDefinition {
   creator                User                 @relation("AgentDefinitionCreator", fields: [createdBy], references: [email], onDelete: Restrict)
   promptVersions         AgentPromptVersion[]
   inputRules             AgentInputRule[]
+  runs                   AgentRun[]
   publishedPromptVersion AgentPromptVersion?  @relation("PublishedAgentPromptVersion", fields: [publishedPromptVersionId], references: [id], onDelete: SetNull)
 
   @@index([name])
@@ -924,6 +928,7 @@ model AgentPromptVersion {
   author            User            @relation("AgentPromptVersionAuthor", fields: [authoredBy], references: [email], onDelete: Restrict)
   publisher         User?           @relation("AgentPromptVersionPublisher", fields: [publishedBy], references: [email], onDelete: SetNull)
   publishedFor       AgentDefinition? @relation("PublishedAgentPromptVersion")
+  runs              AgentRun[]
 
   @@unique([agentDefinitionId, version])
   @@index([agentDefinitionId, createdAt])
@@ -940,4 +945,58 @@ model AgentInputRule {
 
   @@unique([agentDefinitionId, inputType, domainIdentifier])
   @@index([inputType, domainIdentifier])
+}
+
+
+enum AgentRunStatus {
+  PENDING
+  OUTPUT_READY
+  FAILED
+}
+
+enum AgentOutputStatus {
+  PROVISIONAL
+  APPROVED
+  REJECTED
+}
+
+model AgentRun {
+  id String @id @default(cuid())
+  organizationId String
+  capturedInputId String
+  agentDefinitionId String
+  promptVersionId String
+  status AgentRunStatus @default(PENDING)
+  provider String?
+  model String?
+  error String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  capturedInput CapturedInput @relation(fields: [capturedInputId], references: [id], onDelete: Cascade)
+  agentDefinition AgentDefinition @relation(fields: [agentDefinitionId], references: [id], onDelete: Restrict)
+  promptVersion AgentPromptVersion @relation(fields: [promptVersionId], references: [id], onDelete: Restrict)
+  output AgentOutput?
+
+  @@index([organizationId, createdAt])
+  @@index([capturedInputId])
+}
+
+model AgentOutput {
+  id String @id @default(cuid())
+  runId String @unique
+  status AgentOutputStatus @default(PROVISIONAL)
+  provisionalOutput Json
+  provider String?
+  model String?
+  error String?
+  reviewedBy String?
+  reviewedAt DateTime?
+  reviewNotes String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  run AgentRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  reviewer User? @relation("AgentOutputReviewer", fields: [reviewedBy], references: [email], onDelete: SetNull)
 }

@@ -209,6 +209,7 @@ export type AgentDefinitionWhereInput = {
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   promptVersions?: Prisma.AgentPromptVersionListRelationFilter
   inputRules?: Prisma.AgentInputRuleListRelationFilter
+  runs?: Prisma.AgentRunListRelationFilter
   publishedPromptVersion?: Prisma.XOR<Prisma.AgentPromptVersionNullableScalarRelationFilter, Prisma.AgentPromptVersionWhereInput> | null
 }
 
@@ -224,6 +225,7 @@ export type AgentDefinitionOrderByWithRelationInput = {
   creator?: Prisma.UserOrderByWithRelationInput
   promptVersions?: Prisma.AgentPromptVersionOrderByRelationAggregateInput
   inputRules?: Prisma.AgentInputRuleOrderByRelationAggregateInput
+  runs?: Prisma.AgentRunOrderByRelationAggregateInput
   publishedPromptVersion?: Prisma.AgentPromptVersionOrderByWithRelationInput
 }
 
@@ -242,6 +244,7 @@ export type AgentDefinitionWhereUniqueInput = Prisma.AtLeast<{
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   promptVersions?: Prisma.AgentPromptVersionListRelationFilter
   inputRules?: Prisma.AgentInputRuleListRelationFilter
+  runs?: Prisma.AgentRunListRelationFilter
   publishedPromptVersion?: Prisma.XOR<Prisma.AgentPromptVersionNullableScalarRelationFilter, Prisma.AgentPromptVersionWhereInput> | null
 }, "id" | "key" | "publishedPromptVersionId">
 
@@ -283,6 +286,7 @@ export type AgentDefinitionCreateInput = {
   creator: Prisma.UserCreateNestedOneWithoutCreatedAgentDefinitionsInput
   promptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAgentDefinitionInput
   inputRules?: Prisma.AgentInputRuleCreateNestedManyWithoutAgentDefinitionInput
+  runs?: Prisma.AgentRunCreateNestedManyWithoutAgentDefinitionInput
   publishedPromptVersion?: Prisma.AgentPromptVersionCreateNestedOneWithoutPublishedForInput
 }
 
@@ -297,6 +301,7 @@ export type AgentDefinitionUncheckedCreateInput = {
   updatedAt?: Date | string
   promptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAgentDefinitionInput
   inputRules?: Prisma.AgentInputRuleUncheckedCreateNestedManyWithoutAgentDefinitionInput
+  runs?: Prisma.AgentRunUncheckedCreateNestedManyWithoutAgentDefinitionInput
 }
 
 export type AgentDefinitionUpdateInput = {
@@ -309,6 +314,7 @@ export type AgentDefinitionUpdateInput = {
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAgentDefinitionsNestedInput
   promptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAgentDefinitionNestedInput
   inputRules?: Prisma.AgentInputRuleUpdateManyWithoutAgentDefinitionNestedInput
+  runs?: Prisma.AgentRunUpdateManyWithoutAgentDefinitionNestedInput
   publishedPromptVersion?: Prisma.AgentPromptVersionUpdateOneWithoutPublishedForNestedInput
 }
 
@@ -323,6 +329,7 @@ export type AgentDefinitionUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   promptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAgentDefinitionNestedInput
   inputRules?: Prisma.AgentInputRuleUncheckedUpdateManyWithoutAgentDefinitionNestedInput
+  runs?: Prisma.AgentRunUncheckedUpdateManyWithoutAgentDefinitionNestedInput
 }
 
 export type AgentDefinitionCreateManyInput = {
@@ -511,6 +518,20 @@ export type AgentDefinitionUpdateOneRequiredWithoutInputRulesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AgentDefinitionUpdateToOneWithWhereWithoutInputRulesInput, Prisma.AgentDefinitionUpdateWithoutInputRulesInput>, Prisma.AgentDefinitionUncheckedUpdateWithoutInputRulesInput>
 }
 
+export type AgentDefinitionCreateNestedOneWithoutRunsInput = {
+  create?: Prisma.XOR<Prisma.AgentDefinitionCreateWithoutRunsInput, Prisma.AgentDefinitionUncheckedCreateWithoutRunsInput>
+  connectOrCreate?: Prisma.AgentDefinitionCreateOrConnectWithoutRunsInput
+  connect?: Prisma.AgentDefinitionWhereUniqueInput
+}
+
+export type AgentDefinitionUpdateOneRequiredWithoutRunsNestedInput = {
+  create?: Prisma.XOR<Prisma.AgentDefinitionCreateWithoutRunsInput, Prisma.AgentDefinitionUncheckedCreateWithoutRunsInput>
+  connectOrCreate?: Prisma.AgentDefinitionCreateOrConnectWithoutRunsInput
+  upsert?: Prisma.AgentDefinitionUpsertWithoutRunsInput
+  connect?: Prisma.AgentDefinitionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AgentDefinitionUpdateToOneWithWhereWithoutRunsInput, Prisma.AgentDefinitionUpdateWithoutRunsInput>, Prisma.AgentDefinitionUncheckedUpdateWithoutRunsInput>
+}
+
 export type AgentDefinitionCreateWithoutCreatorInput = {
   id?: string
   key: string
@@ -520,6 +541,7 @@ export type AgentDefinitionCreateWithoutCreatorInput = {
   updatedAt?: Date | string
   promptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAgentDefinitionInput
   inputRules?: Prisma.AgentInputRuleCreateNestedManyWithoutAgentDefinitionInput
+  runs?: Prisma.AgentRunCreateNestedManyWithoutAgentDefinitionInput
   publishedPromptVersion?: Prisma.AgentPromptVersionCreateNestedOneWithoutPublishedForInput
 }
 
@@ -533,6 +555,7 @@ export type AgentDefinitionUncheckedCreateWithoutCreatorInput = {
   updatedAt?: Date | string
   promptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAgentDefinitionInput
   inputRules?: Prisma.AgentInputRuleUncheckedCreateNestedManyWithoutAgentDefinitionInput
+  runs?: Prisma.AgentRunUncheckedCreateNestedManyWithoutAgentDefinitionInput
 }
 
 export type AgentDefinitionCreateOrConnectWithoutCreatorInput = {
@@ -584,6 +607,7 @@ export type AgentDefinitionCreateWithoutPromptVersionsInput = {
   updatedAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutCreatedAgentDefinitionsInput
   inputRules?: Prisma.AgentInputRuleCreateNestedManyWithoutAgentDefinitionInput
+  runs?: Prisma.AgentRunCreateNestedManyWithoutAgentDefinitionInput
   publishedPromptVersion?: Prisma.AgentPromptVersionCreateNestedOneWithoutPublishedForInput
 }
 
@@ -597,6 +621,7 @@ export type AgentDefinitionUncheckedCreateWithoutPromptVersionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   inputRules?: Prisma.AgentInputRuleUncheckedCreateNestedManyWithoutAgentDefinitionInput
+  runs?: Prisma.AgentRunUncheckedCreateNestedManyWithoutAgentDefinitionInput
 }
 
 export type AgentDefinitionCreateOrConnectWithoutPromptVersionsInput = {
@@ -614,6 +639,7 @@ export type AgentDefinitionCreateWithoutPublishedPromptVersionInput = {
   creator: Prisma.UserCreateNestedOneWithoutCreatedAgentDefinitionsInput
   promptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAgentDefinitionInput
   inputRules?: Prisma.AgentInputRuleCreateNestedManyWithoutAgentDefinitionInput
+  runs?: Prisma.AgentRunCreateNestedManyWithoutAgentDefinitionInput
 }
 
 export type AgentDefinitionUncheckedCreateWithoutPublishedPromptVersionInput = {
@@ -626,6 +652,7 @@ export type AgentDefinitionUncheckedCreateWithoutPublishedPromptVersionInput = {
   updatedAt?: Date | string
   promptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAgentDefinitionInput
   inputRules?: Prisma.AgentInputRuleUncheckedCreateNestedManyWithoutAgentDefinitionInput
+  runs?: Prisma.AgentRunUncheckedCreateNestedManyWithoutAgentDefinitionInput
 }
 
 export type AgentDefinitionCreateOrConnectWithoutPublishedPromptVersionInput = {
@@ -653,6 +680,7 @@ export type AgentDefinitionUpdateWithoutPromptVersionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAgentDefinitionsNestedInput
   inputRules?: Prisma.AgentInputRuleUpdateManyWithoutAgentDefinitionNestedInput
+  runs?: Prisma.AgentRunUpdateManyWithoutAgentDefinitionNestedInput
   publishedPromptVersion?: Prisma.AgentPromptVersionUpdateOneWithoutPublishedForNestedInput
 }
 
@@ -666,6 +694,7 @@ export type AgentDefinitionUncheckedUpdateWithoutPromptVersionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   inputRules?: Prisma.AgentInputRuleUncheckedUpdateManyWithoutAgentDefinitionNestedInput
+  runs?: Prisma.AgentRunUncheckedUpdateManyWithoutAgentDefinitionNestedInput
 }
 
 export type AgentDefinitionUpsertWithoutPublishedPromptVersionInput = {
@@ -689,6 +718,7 @@ export type AgentDefinitionUpdateWithoutPublishedPromptVersionInput = {
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAgentDefinitionsNestedInput
   promptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAgentDefinitionNestedInput
   inputRules?: Prisma.AgentInputRuleUpdateManyWithoutAgentDefinitionNestedInput
+  runs?: Prisma.AgentRunUpdateManyWithoutAgentDefinitionNestedInput
 }
 
 export type AgentDefinitionUncheckedUpdateWithoutPublishedPromptVersionInput = {
@@ -701,6 +731,7 @@ export type AgentDefinitionUncheckedUpdateWithoutPublishedPromptVersionInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   promptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAgentDefinitionNestedInput
   inputRules?: Prisma.AgentInputRuleUncheckedUpdateManyWithoutAgentDefinitionNestedInput
+  runs?: Prisma.AgentRunUncheckedUpdateManyWithoutAgentDefinitionNestedInput
 }
 
 export type AgentDefinitionCreateWithoutInputRulesInput = {
@@ -712,6 +743,7 @@ export type AgentDefinitionCreateWithoutInputRulesInput = {
   updatedAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutCreatedAgentDefinitionsInput
   promptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAgentDefinitionInput
+  runs?: Prisma.AgentRunCreateNestedManyWithoutAgentDefinitionInput
   publishedPromptVersion?: Prisma.AgentPromptVersionCreateNestedOneWithoutPublishedForInput
 }
 
@@ -725,6 +757,7 @@ export type AgentDefinitionUncheckedCreateWithoutInputRulesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   promptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAgentDefinitionInput
+  runs?: Prisma.AgentRunUncheckedCreateNestedManyWithoutAgentDefinitionInput
 }
 
 export type AgentDefinitionCreateOrConnectWithoutInputRulesInput = {
@@ -752,6 +785,7 @@ export type AgentDefinitionUpdateWithoutInputRulesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAgentDefinitionsNestedInput
   promptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAgentDefinitionNestedInput
+  runs?: Prisma.AgentRunUpdateManyWithoutAgentDefinitionNestedInput
   publishedPromptVersion?: Prisma.AgentPromptVersionUpdateOneWithoutPublishedForNestedInput
 }
 
@@ -765,6 +799,75 @@ export type AgentDefinitionUncheckedUpdateWithoutInputRulesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   promptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAgentDefinitionNestedInput
+  runs?: Prisma.AgentRunUncheckedUpdateManyWithoutAgentDefinitionNestedInput
+}
+
+export type AgentDefinitionCreateWithoutRunsInput = {
+  id?: string
+  key: string
+  name: string
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  creator: Prisma.UserCreateNestedOneWithoutCreatedAgentDefinitionsInput
+  promptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAgentDefinitionInput
+  inputRules?: Prisma.AgentInputRuleCreateNestedManyWithoutAgentDefinitionInput
+  publishedPromptVersion?: Prisma.AgentPromptVersionCreateNestedOneWithoutPublishedForInput
+}
+
+export type AgentDefinitionUncheckedCreateWithoutRunsInput = {
+  id?: string
+  key: string
+  name: string
+  description?: string | null
+  createdBy: string
+  publishedPromptVersionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  promptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAgentDefinitionInput
+  inputRules?: Prisma.AgentInputRuleUncheckedCreateNestedManyWithoutAgentDefinitionInput
+}
+
+export type AgentDefinitionCreateOrConnectWithoutRunsInput = {
+  where: Prisma.AgentDefinitionWhereUniqueInput
+  create: Prisma.XOR<Prisma.AgentDefinitionCreateWithoutRunsInput, Prisma.AgentDefinitionUncheckedCreateWithoutRunsInput>
+}
+
+export type AgentDefinitionUpsertWithoutRunsInput = {
+  update: Prisma.XOR<Prisma.AgentDefinitionUpdateWithoutRunsInput, Prisma.AgentDefinitionUncheckedUpdateWithoutRunsInput>
+  create: Prisma.XOR<Prisma.AgentDefinitionCreateWithoutRunsInput, Prisma.AgentDefinitionUncheckedCreateWithoutRunsInput>
+  where?: Prisma.AgentDefinitionWhereInput
+}
+
+export type AgentDefinitionUpdateToOneWithWhereWithoutRunsInput = {
+  where?: Prisma.AgentDefinitionWhereInput
+  data: Prisma.XOR<Prisma.AgentDefinitionUpdateWithoutRunsInput, Prisma.AgentDefinitionUncheckedUpdateWithoutRunsInput>
+}
+
+export type AgentDefinitionUpdateWithoutRunsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  key?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAgentDefinitionsNestedInput
+  promptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAgentDefinitionNestedInput
+  inputRules?: Prisma.AgentInputRuleUpdateManyWithoutAgentDefinitionNestedInput
+  publishedPromptVersion?: Prisma.AgentPromptVersionUpdateOneWithoutPublishedForNestedInput
+}
+
+export type AgentDefinitionUncheckedUpdateWithoutRunsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  key?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  publishedPromptVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  promptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAgentDefinitionNestedInput
+  inputRules?: Prisma.AgentInputRuleUncheckedUpdateManyWithoutAgentDefinitionNestedInput
 }
 
 export type AgentDefinitionCreateManyCreatorInput = {
@@ -786,6 +889,7 @@ export type AgentDefinitionUpdateWithoutCreatorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   promptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAgentDefinitionNestedInput
   inputRules?: Prisma.AgentInputRuleUpdateManyWithoutAgentDefinitionNestedInput
+  runs?: Prisma.AgentRunUpdateManyWithoutAgentDefinitionNestedInput
   publishedPromptVersion?: Prisma.AgentPromptVersionUpdateOneWithoutPublishedForNestedInput
 }
 
@@ -799,6 +903,7 @@ export type AgentDefinitionUncheckedUpdateWithoutCreatorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   promptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAgentDefinitionNestedInput
   inputRules?: Prisma.AgentInputRuleUncheckedUpdateManyWithoutAgentDefinitionNestedInput
+  runs?: Prisma.AgentRunUncheckedUpdateManyWithoutAgentDefinitionNestedInput
 }
 
 export type AgentDefinitionUncheckedUpdateManyWithoutCreatorInput = {
@@ -819,11 +924,13 @@ export type AgentDefinitionUncheckedUpdateManyWithoutCreatorInput = {
 export type AgentDefinitionCountOutputType = {
   promptVersions: number
   inputRules: number
+  runs: number
 }
 
 export type AgentDefinitionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   promptVersions?: boolean | AgentDefinitionCountOutputTypeCountPromptVersionsArgs
   inputRules?: boolean | AgentDefinitionCountOutputTypeCountInputRulesArgs
+  runs?: boolean | AgentDefinitionCountOutputTypeCountRunsArgs
 }
 
 /**
@@ -850,6 +957,13 @@ export type AgentDefinitionCountOutputTypeCountInputRulesArgs<ExtArgs extends ru
   where?: Prisma.AgentInputRuleWhereInput
 }
 
+/**
+ * AgentDefinitionCountOutputType without action
+ */
+export type AgentDefinitionCountOutputTypeCountRunsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AgentRunWhereInput
+}
+
 
 export type AgentDefinitionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -863,6 +977,7 @@ export type AgentDefinitionSelect<ExtArgs extends runtime.Types.Extensions.Inter
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   promptVersions?: boolean | Prisma.AgentDefinition$promptVersionsArgs<ExtArgs>
   inputRules?: boolean | Prisma.AgentDefinition$inputRulesArgs<ExtArgs>
+  runs?: boolean | Prisma.AgentDefinition$runsArgs<ExtArgs>
   publishedPromptVersion?: boolean | Prisma.AgentDefinition$publishedPromptVersionArgs<ExtArgs>
   _count?: boolean | Prisma.AgentDefinitionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["agentDefinition"]>
@@ -909,6 +1024,7 @@ export type AgentDefinitionInclude<ExtArgs extends runtime.Types.Extensions.Inte
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   promptVersions?: boolean | Prisma.AgentDefinition$promptVersionsArgs<ExtArgs>
   inputRules?: boolean | Prisma.AgentDefinition$inputRulesArgs<ExtArgs>
+  runs?: boolean | Prisma.AgentDefinition$runsArgs<ExtArgs>
   publishedPromptVersion?: boolean | Prisma.AgentDefinition$publishedPromptVersionArgs<ExtArgs>
   _count?: boolean | Prisma.AgentDefinitionCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -927,6 +1043,7 @@ export type $AgentDefinitionPayload<ExtArgs extends runtime.Types.Extensions.Int
     creator: Prisma.$UserPayload<ExtArgs>
     promptVersions: Prisma.$AgentPromptVersionPayload<ExtArgs>[]
     inputRules: Prisma.$AgentInputRulePayload<ExtArgs>[]
+    runs: Prisma.$AgentRunPayload<ExtArgs>[]
     publishedPromptVersion: Prisma.$AgentPromptVersionPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1335,6 +1452,7 @@ export interface Prisma__AgentDefinitionClient<T, Null = never, ExtArgs extends 
   creator<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   promptVersions<T extends Prisma.AgentDefinition$promptVersionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AgentDefinition$promptVersionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentPromptVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   inputRules<T extends Prisma.AgentDefinition$inputRulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AgentDefinition$inputRulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentInputRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  runs<T extends Prisma.AgentDefinition$runsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AgentDefinition$runsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   publishedPromptVersion<T extends Prisma.AgentDefinition$publishedPromptVersionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AgentDefinition$publishedPromptVersionArgs<ExtArgs>>): Prisma.Prisma__AgentPromptVersionClient<runtime.Types.Result.GetResult<Prisma.$AgentPromptVersionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1819,6 +1937,30 @@ export type AgentDefinition$inputRulesArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.AgentInputRuleScalarFieldEnum | Prisma.AgentInputRuleScalarFieldEnum[]
+}
+
+/**
+ * AgentDefinition.runs
+ */
+export type AgentDefinition$runsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AgentRun
+   */
+  select?: Prisma.AgentRunSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AgentRun
+   */
+  omit?: Prisma.AgentRunOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AgentRunInclude<ExtArgs> | null
+  where?: Prisma.AgentRunWhereInput
+  orderBy?: Prisma.AgentRunOrderByWithRelationInput | Prisma.AgentRunOrderByWithRelationInput[]
+  cursor?: Prisma.AgentRunWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AgentRunScalarFieldEnum | Prisma.AgentRunScalarFieldEnum[]
 }
 
 /**

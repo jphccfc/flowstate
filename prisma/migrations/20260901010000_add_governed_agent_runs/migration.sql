@@ -1,0 +1,13 @@
+CREATE TYPE "AgentRunStatus" AS ENUM ('PENDING', 'OUTPUT_READY', 'FAILED');
+CREATE TYPE "AgentOutputStatus" AS ENUM ('PROVISIONAL', 'APPROVED', 'REJECTED');
+CREATE TABLE "AgentRun" ("id" TEXT NOT NULL, "organizationId" TEXT NOT NULL, "capturedInputId" TEXT NOT NULL, "agentDefinitionId" TEXT NOT NULL, "promptVersionId" TEXT NOT NULL, "status" "AgentRunStatus" NOT NULL DEFAULT 'PENDING', "provider" TEXT, "model" TEXT, "error" TEXT, "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "updatedAt" TIMESTAMP(3) NOT NULL, CONSTRAINT "AgentRun_pkey" PRIMARY KEY ("id"));
+CREATE TABLE "AgentOutput" ("id" TEXT NOT NULL, "runId" TEXT NOT NULL, "status" "AgentOutputStatus" NOT NULL DEFAULT 'PROVISIONAL', "provisionalOutput" JSONB NOT NULL, "provider" TEXT, "model" TEXT, "error" TEXT, "reviewedBy" TEXT, "reviewedAt" TIMESTAMP(3), "reviewNotes" TEXT, "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "updatedAt" TIMESTAMP(3) NOT NULL, CONSTRAINT "AgentOutput_pkey" PRIMARY KEY ("id"));
+CREATE INDEX "AgentRun_organizationId_createdAt_idx" ON "AgentRun"("organizationId", "createdAt");
+CREATE INDEX "AgentRun_capturedInputId_idx" ON "AgentRun"("capturedInputId");
+CREATE UNIQUE INDEX "AgentOutput_runId_key" ON "AgentOutput"("runId");
+ALTER TABLE "AgentRun" ADD CONSTRAINT "AgentRun_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "AgentRun" ADD CONSTRAINT "AgentRun_capturedInputId_fkey" FOREIGN KEY ("capturedInputId") REFERENCES "CapturedInput"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "AgentRun" ADD CONSTRAINT "AgentRun_agentDefinitionId_fkey" FOREIGN KEY ("agentDefinitionId") REFERENCES "AgentDefinition"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "AgentRun" ADD CONSTRAINT "AgentRun_promptVersionId_fkey" FOREIGN KEY ("promptVersionId") REFERENCES "AgentPromptVersion"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "AgentOutput" ADD CONSTRAINT "AgentOutput_runId_fkey" FOREIGN KEY ("runId") REFERENCES "AgentRun"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "AgentOutput" ADD CONSTRAINT "AgentOutput_reviewedBy_fkey" FOREIGN KEY ("reviewedBy") REFERENCES "User"("email") ON DELETE SET NULL ON UPDATE CASCADE;
