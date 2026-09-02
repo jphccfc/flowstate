@@ -1,0 +1,16 @@
+CREATE TABLE "AgentDefinition" ("id" TEXT NOT NULL, "key" TEXT NOT NULL, "name" TEXT NOT NULL, "description" TEXT, "createdBy" TEXT NOT NULL, "publishedPromptVersionId" TEXT, "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "updatedAt" TIMESTAMP(3) NOT NULL, CONSTRAINT "AgentDefinition_pkey" PRIMARY KEY ("id"));
+CREATE TABLE "AgentPromptVersion" ("id" TEXT NOT NULL, "agentDefinitionId" TEXT NOT NULL, "version" INTEGER NOT NULL, "prompt" TEXT NOT NULL, "changeReason" TEXT NOT NULL, "authoredBy" TEXT NOT NULL, "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "publishedAt" TIMESTAMP(3), "publishedBy" TEXT, CONSTRAINT "AgentPromptVersion_pkey" PRIMARY KEY ("id"));
+CREATE TABLE "AgentInputRule" ("id" TEXT NOT NULL, "agentDefinitionId" TEXT NOT NULL, "inputType" "InputType" NOT NULL, "domainIdentifier" TEXT NOT NULL, "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, CONSTRAINT "AgentInputRule_pkey" PRIMARY KEY ("id"));
+CREATE UNIQUE INDEX "AgentDefinition_key_key" ON "AgentDefinition"("key");
+CREATE UNIQUE INDEX "AgentDefinition_publishedPromptVersionId_key" ON "AgentDefinition"("publishedPromptVersionId");
+CREATE INDEX "AgentDefinition_name_idx" ON "AgentDefinition"("name");
+CREATE UNIQUE INDEX "AgentPromptVersion_agentDefinitionId_version_key" ON "AgentPromptVersion"("agentDefinitionId", "version");
+CREATE INDEX "AgentPromptVersion_agentDefinitionId_createdAt_idx" ON "AgentPromptVersion"("agentDefinitionId", "createdAt");
+CREATE UNIQUE INDEX "AgentInputRule_agentDefinitionId_inputType_domainIdentifier_key" ON "AgentInputRule"("agentDefinitionId", "inputType", "domainIdentifier");
+CREATE INDEX "AgentInputRule_inputType_domainIdentifier_idx" ON "AgentInputRule"("inputType", "domainIdentifier");
+ALTER TABLE "AgentDefinition" ADD CONSTRAINT "AgentDefinition_createdBy_fkey" FOREIGN KEY ("createdBy") REFERENCES "User"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "AgentPromptVersion" ADD CONSTRAINT "AgentPromptVersion_agentDefinitionId_fkey" FOREIGN KEY ("agentDefinitionId") REFERENCES "AgentDefinition"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "AgentPromptVersion" ADD CONSTRAINT "AgentPromptVersion_authoredBy_fkey" FOREIGN KEY ("authoredBy") REFERENCES "User"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "AgentPromptVersion" ADD CONSTRAINT "AgentPromptVersion_publishedBy_fkey" FOREIGN KEY ("publishedBy") REFERENCES "User"("email") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "AgentDefinition" ADD CONSTRAINT "AgentDefinition_publishedPromptVersionId_fkey" FOREIGN KEY ("publishedPromptVersionId") REFERENCES "AgentPromptVersion"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "AgentInputRule" ADD CONSTRAINT "AgentInputRule_agentDefinitionId_fkey" FOREIGN KEY ("agentDefinitionId") REFERENCES "AgentDefinition"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -34,6 +34,9 @@ model User {
   createdCommunicationPacks CommunicationPack[] @relation("CommunicationPackCreator")
   reviewedCommunicationPacks CommunicationPack[] @relation("CommunicationPackReviewer")
   communicationPackAcknowledgements CommunicationPackAcknowledgement[] @relation("CommunicationPackActor")
+  createdAgentDefinitions AgentDefinition[] @relation("AgentDefinitionCreator")
+  authoredAgentPromptVersions AgentPromptVersion[] @relation("AgentPromptVersionAuthor")
+  publishedAgentPromptVersions AgentPromptVersion[] @relation("AgentPromptVersionPublisher")
 }
 
 model Organization {
@@ -885,4 +888,56 @@ model AssessmentTask {
 
   @@index([organizationId, status, dueDate])
   @@index([assigneeId, status])
+}
+
+
+model AgentDefinition {
+  id                     String               @id @default(cuid())
+  key                    String               @unique
+  name                   String
+  description            String?
+  createdBy              String
+  publishedPromptVersionId String?            @unique
+  createdAt              DateTime             @default(now())
+  updatedAt              DateTime             @updatedAt
+
+  creator                User                 @relation("AgentDefinitionCreator", fields: [createdBy], references: [email], onDelete: Restrict)
+  promptVersions         AgentPromptVersion[]
+  inputRules             AgentInputRule[]
+  publishedPromptVersion AgentPromptVersion?  @relation("PublishedAgentPromptVersion", fields: [publishedPromptVersionId], references: [id], onDelete: SetNull)
+
+  @@index([name])
+}
+
+model AgentPromptVersion {
+  id                String          @id @default(cuid())
+  agentDefinitionId String
+  version           Int
+  prompt            String
+  changeReason      String
+  authoredBy        String
+  createdAt         DateTime        @default(now())
+  publishedAt       DateTime?
+  publishedBy       String?
+
+  agentDefinition   AgentDefinition @relation(fields: [agentDefinitionId], references: [id], onDelete: Cascade)
+  author            User            @relation("AgentPromptVersionAuthor", fields: [authoredBy], references: [email], onDelete: Restrict)
+  publisher         User?           @relation("AgentPromptVersionPublisher", fields: [publishedBy], references: [email], onDelete: SetNull)
+  publishedFor       AgentDefinition? @relation("PublishedAgentPromptVersion")
+
+  @@unique([agentDefinitionId, version])
+  @@index([agentDefinitionId, createdAt])
+}
+
+model AgentInputRule {
+  id                String          @id @default(cuid())
+  agentDefinitionId String
+  inputType         InputType
+  domainIdentifier  String
+  createdAt         DateTime        @default(now())
+
+  agentDefinition   AgentDefinition @relation(fields: [agentDefinitionId], references: [id], onDelete: Cascade)
+
+  @@unique([agentDefinitionId, inputType, domainIdentifier])
+  @@index([inputType, domainIdentifier])
 }
