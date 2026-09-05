@@ -164,8 +164,8 @@ function EntryForm({
           {drafting ? "Drafting..." : "Draft with AI"}
         </button>
       </div>
-      {saved && <p role="status" className="text-xs text-[var(--success)]">Assessment saved</p>}
-      {error && <p className="text-xs text-red-600">{error}</p>}
+      {saved && <p role="status" className="text-xs text-[var(--success)]">Assessment saved and reloaded</p>}
+      {error && <p role="alert" className="text-xs text-red-600">{error}</p>}
     </div>
   );
 }
@@ -290,23 +290,24 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
     });
   }, [loadOrg]);
 
-  const loadHistory = useCallback(async (capId: string) => {
+  const loadHistory = useCallback(async (capId: string): Promise<boolean> => {
     setHistoryError(null);
     const res = await fetch(`/api/capabilities/${capId}/assessment-history`);
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
       setHistory(null);
       setHistoryError(typeof data.error === "string" ? data.error : "Unable to load this capability.");
-      return;
+      return false;
     }
     setHistory(data);
+    return true;
   }, []);
 
   useEffect(() => {
     if (selectedCapId) {
       // Remote history refresh intentionally updates state after the fetch resolves.
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      loadHistory(selectedCapId);
+      loadHistory(selectedCapId).catch(() => undefined);
     }
   }, [selectedCapId, loadHistory]);
 
@@ -483,7 +484,8 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
       const body = await res.json().catch(() => ({}));
       throw new Error(typeof body.error === "string" ? body.error : `Save failed (${res.status}).`);
     }
-    await Promise.all([loadHistory(selectedCapId), loadOrg(), loadPerspectives(selectedCapId)]);
+    const [historyReloaded] = await Promise.all([loadHistory(selectedCapId), loadOrg(), loadPerspectives(selectedCapId)]);
+    if (!historyReloaded) throw new Error("Assessment saved, but reload failed. Try again.");
   }
 
   async function saveToBe(data: { locationTag: string | null; score: number; text: string; committedBy?: string }) {
@@ -503,7 +505,8 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
       const body = await res.json().catch(() => ({}));
       throw new Error(typeof body.error === "string" ? body.error : `Save failed (${res.status}).`);
     }
-    await Promise.all([loadHistory(selectedCapId), loadOrg(), loadPerspectives(selectedCapId)]);
+    const [historyReloaded] = await Promise.all([loadHistory(selectedCapId), loadOrg(), loadPerspectives(selectedCapId)]);
+    if (!historyReloaded) throw new Error("Assessment saved, but reload failed. Try again.");
   }
 
   async function draftAsIs(): Promise<{ score: number; text: string }> {
@@ -586,6 +589,17 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
           </div>
           <div className="text-xs text-[var(--muted)]">{org.domains.reduce((count, domain) => count + domain.capabilities.length, 0)} capabilities</div>
         </div>
+        {(() => {
+          const capabilities = org.domains.flatMap((domain) => domain.capabilities);
+          const completedCapabilities = capabilities.filter((capability) => capability.currentAsIs.length > 0 && capability.currentToBe.length > 0).length;
+          const progressPercent = capabilities.length === 0 ? 0 : Math.round((completedCapabilities / capabilities.length) * 100);
+          return (
+            <div className="mt-3" aria-label="Assessment progress">
+              <div className="flex items-center justify-between text-xs text-[var(--muted)]"><span>Assessment progress</span><strong className="text-[var(--foreground)]">{completedCapabilities} of {capabilities.length} complete</strong></div>
+              <div className="mt-1 h-2 rounded-full bg-[var(--muted-bg)] overflow-hidden" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progressPercent} aria-label="Assessment progress"><div className="h-full rounded-full bg-[var(--accent)] transition-[width]" style={{ width: progressPercent + "%" }} /></div>
+            </div>
+          );
+        })()}
         <label className="assessment-selector-control">
           <span className="text-xs font-semibold text-[var(--foreground)]">Capability</span>
           <select
@@ -611,7 +625,8 @@ export default function AssessPage({ params }: { params: Promise<{ id: string }>
             {historyError ? (
               <div className="max-w-sm px-6 text-center">
                 <p className="font-medium text-[var(--foreground)]">Capability could not be loaded</p>
-                <p className="mt-1 text-sm">{historyError}</p>
+                <p className="mt-1 text-sm" role="alert">{historyError}</p>
+                <button type="button" onClick={() => selectedCapId && loadHistory(selectedCapId)} className="mt-3 px-3 py-1.5 rounded-lg border border-[var(--card-border)] text-xs text-[var(--foreground)]">Try again</button>
               </div>
             ) : "Select a capability to begin"}
           </div>
