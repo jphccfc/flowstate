@@ -35,6 +35,7 @@ export default function ScratchpadPage({ params }: { params: Promise<{ id: strin
     if (!canReconcileEditor({ dirty: dirtyRef.current, composing: composingRef.current })) return;
     if (editorRef.current && editorRef.current.innerHTML !== next) editorRef.current.innerHTML = next;
   };
+  useEffect(() => { if (!dirtyRef.current) { const cached = localStorage.getItem(cacheKey); if (cached) reconcile(sanitizeRichText(cached)); } }, [note, cacheKey]);
   useEffect(() => { contextRef.current = contextId; }, [contextId]);
 
   useEffect(() => {

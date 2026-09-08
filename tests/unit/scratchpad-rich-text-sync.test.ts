@@ -50,6 +50,13 @@ describe("scratchpad editor lifecycle", () => {
     expect(page).toContain("if (!cached) reconcile(plainTextToRichText(rows[0].rawText ?? \"\"));");
   });
 
+  it("reapplies the cached editor content after the note fetch rerenders the page", () => {
+    const page = readFileSync(resolve(process.cwd(), "app/clients/[id]/scratchpad/page.tsx"), "utf8");
+    expect(page).toContain("useEffect(() => { if (!dirtyRef.current)");
+    expect(page).toContain("localStorage.getItem(cacheKey)");
+    expect(page).toContain("reconcile(sanitizeRichText(cached))");
+  });
+
   it("waits for the initial note load and flushes the latest draft after it", () => {
     const page = readFileSync(resolve(process.cwd(), "app/clients/[id]/scratchpad/page.tsx"), "utf8");
     expect(page).toContain("const loadedRef = useRef(false)");
