@@ -35,6 +35,21 @@ describe("scratchpad editor reconciliation", () => {
 });
 
 describe("scratchpad editor lifecycle", () => {
+  it("renders an uncontrolled editor without React html binding", () => {
+    const page = readFileSync(resolve(process.cwd(), "app/clients/[id]/scratchpad/page.tsx"), "utf8");
+    expect(page).not.toContain("const [html, setHtml] = useState(\"\")");
+    expect(page).not.toContain("dangerouslySetInnerHTML");
+    expect(page).toContain("ref={editorRef}");
+  });
+
+  it("reconciles through the live editor ref instead of render state", () => {
+    const page = readFileSync(resolve(process.cwd(), "app/clients/[id]/scratchpad/page.tsx"), "utf8");
+    expect(page).toContain("if (editorRef.current && editorRef.current.innerHTML !== next) editorRef.current.innerHTML = next;");
+    expect(page).not.toContain("setHtml(");
+    expect(page).toContain("if (cached) reconcile(sanitizeRichText(cached));");
+    expect(page).toContain("if (!cached) reconcile(plainTextToRichText(rows[0].rawText ?? \"\"));");
+  });
+
   it("waits for the initial note load and flushes the latest draft after it", () => {
     const page = readFileSync(resolve(process.cwd(), "app/clients/[id]/scratchpad/page.tsx"), "utf8");
     expect(page).toContain("const loadedRef = useRef(false)");
