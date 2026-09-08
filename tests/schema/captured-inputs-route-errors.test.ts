@@ -47,7 +47,26 @@ describe("captured input POST error responses", () => {
     vi.unstubAllEnvs();
   });
 
-  it("returns the persistence error as JSON instead of an unstructured 500", async () => {
+  it("returns an explicit unavailable response when audio transcription is not configured", async () => {
+    vi.stubEnv("BLOB_READ_WRITE_TOKEN", "test-token");
+    vi.stubEnv("LITELLM_BASE_URL", "https://litellm.example.com");
+    vi.stubEnv("LITELLM_API_KEY", "");
+    const formData = new FormData();
+    formData.set("organizationId", "org-1");
+    formData.set("type", "AUDIO");
+    formData.set("file", new File(["audio"], "live.webm", { type: "audio/webm" }));
+
+    const response = await POST(new Request("http://localhost/api/captured-inputs", { method: "POST", body: formData }) as never);
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual({
+      error: "Audio transcription configuration is unavailable. Please contact your administrator.",
+    });
+    expect(db.prisma.capturedInput.create).not.toHaveBeenCalled();
+    vi.unstubAllEnvs();
+  });
+
+  it("returns a persistence error as JSON instead of an unstructured 500", async () => {
     db.prisma.capturedInput.create.mockRejectedValueOnce(new Error("database unavailable"));
 
     const response = await POST(request());

@@ -1,15 +1,15 @@
-import { getAIGatewayConfig } from "@/lib/ai/client";
+import { getTranscriptionGatewayConfig } from "@/lib/ai/client";
 
 export async function transcribeAudio(audioUrl: string): Promise<string> {
   const audioResponse = await fetch(audioUrl);
   if (!audioResponse.ok) throw new Error("Audio source could not be loaded");
   const audioBlob = await audioResponse.blob();
-  const { baseUrl, apiKey } = getAIGatewayConfig();
+  const { baseUrl, apiKey, model } = getTranscriptionGatewayConfig();
 
   const formData = new FormData();
   const name = audioUrl.split("/").pop() ?? "audio.m4a";
   formData.append("file", audioBlob, name);
-  formData.append("model", process.env.AI_TRANSCRIPTION_MODEL?.trim() || "whisper-1");
+  formData.append("model", model);
 
   const response = await fetch(`${baseUrl}/v1/audio/transcriptions`, {
     method: "POST",

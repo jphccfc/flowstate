@@ -39,7 +39,11 @@ function makeFormDataRequest(fields: Record<string, string | File>) {
 describe("captured-inputs routes", () => {
   let orgId: string;
 
-  beforeAll(() => vi.stubEnv("BLOB_READ_WRITE_TOKEN", "test-token"));
+  beforeAll(() => {
+    vi.stubEnv("BLOB_READ_WRITE_TOKEN", "test-token");
+    vi.stubEnv("LITELLM_BASE_URL", "https://litellm.example.com");
+    vi.stubEnv("LITELLM_API_KEY", "test-key");
+  });
 
   afterEach(() => {
     currentEmail = "advisor@test.com";

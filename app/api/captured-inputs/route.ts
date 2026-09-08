@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
 import { canAccessClient } from "@/lib/auth/organization";
 import { processCapturedInput } from "@/lib/ingestion/pipeline";
+import { getTranscriptionGatewayConfig } from "@/lib/ai/client";
 import { InputType } from "@/app/generated/prisma/enums";
 
 const VALID_TYPES = new Set<InputType>(["TEXT_NOTE", "EMAIL", "AUDIO", "DOCUMENT", "DATA_ROOM_FILE"]);
@@ -84,6 +85,16 @@ export async function POST(req: NextRequest) {
           { error: "File storage configuration is unavailable. Please contact your administrator." },
           { status: 503 },
         );
+      }
+      if (type === "AUDIO") {
+        try {
+          getTranscriptionGatewayConfig();
+        } catch {
+          return NextResponse.json(
+            { error: "Audio transcription configuration is unavailable. Please contact your administrator." },
+            { status: 503 },
+          );
+        }
       }
       const blob = await put(file.name, file, { access: "public", addRandomSuffix: true });
       capturedInput = await prisma.capturedInput.create({

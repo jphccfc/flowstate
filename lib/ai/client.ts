@@ -6,14 +6,27 @@ export type ChatCompletionRequest = {
   maxTokens: number;
 };
 
-export function getAIGatewayConfig() {
+function getGatewayCredentials() {
   const baseUrl = process.env.LITELLM_BASE_URL?.trim().replace(/\/$/, "");
   const apiKey = process.env.LITELLM_API_KEY?.trim();
+  if (!baseUrl || !apiKey) throw new Error("AI gateway is not configured");
+  return { baseUrl, apiKey };
+}
+
+export function getAIGatewayConfig() {
+  const { baseUrl, apiKey } = getGatewayCredentials();
   const model = process.env.AI_MODEL?.trim();
-  if (!baseUrl || !apiKey || !model) {
-    throw new Error("AI gateway is not configured");
-  }
+  if (!model) throw new Error("AI gateway is not configured");
   return { baseUrl, apiKey, model };
+}
+
+export function getTranscriptionGatewayConfig() {
+  const { baseUrl, apiKey } = getGatewayCredentials();
+  return {
+    baseUrl,
+    apiKey,
+    model: process.env.AI_TRANSCRIPTION_MODEL?.trim() || "whisper-1",
+  };
 }
 
 export async function requestChatCompletion({ system, user, maxTokens }: ChatCompletionRequest): Promise<string> {
