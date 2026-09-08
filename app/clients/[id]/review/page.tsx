@@ -2,9 +2,16 @@
 
 import { useState, useEffect, useCallback, use } from "react";
 import Link from "next/link";
+import { sanitizeRichText } from "@/lib/scratchpad/rich-text";
 
 type Candidate = { id: string; name: string };
-type ScratchpadNote = { id: string; rawText: string | null; status: string; updatedAt: string; meetingContext: { title: string | null; startsAt: string | null } | null };
+type ScratchpadNote = {
+  id: string;
+  rawText: string | null;
+  status: string;
+  updatedAt: string;
+  meetingContext: { title: string | null; startsAt: string | null } | null;
+};
 
 type PendingTag = {
   id: string;
@@ -37,25 +44,35 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
   const [error, setError] = useState<string | null>(null);
   const [actionId, setActionId] = useState<string | null>(null);
 
-  const loadTags = useCallback(async () => {
+  const loadReviewItems = useCallback(async () => {
     setError(null);
-    try {
-      const [tagsRes, notesRes] = await Promise.all([fetch(`/api/tags?organizationId=${organizationId}`), fetch(`/api/scratchpad?organizationId=${organizationId}`)]);
-      if (!tagsRes.ok || !notesRes.ok) throw new Error("Review items could not be loaded.");
-      setTags(await tagsRes.json());
-      setScratchpadNotes(await notesRes.json());
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Tags could not be loaded.");
-    } finally {
-      setLoading(false);
+    const [tagsResult, notesResult] = await Promise.allSettled([
+      fetch(`/api/tags?organizationId=${organizationId}`),
+      fetch(`/api/scratchpad?organizationId=${organizationId}`),
+    ]);
+    const errors: string[] = [];
+
+    if (tagsResult.status === "fulfilled" && tagsResult.value.ok) {
+      setTags(await tagsResult.value.json());
+    } else {
+      errors.push("AI tag suggestions could not be loaded.");
     }
+
+    if (notesResult.status === "fulfilled" && notesResult.value.ok) {
+      setScratchpadNotes(await notesResult.value.json());
+    } else {
+      errors.push("Scratch Pad notes could not be loaded.");
+    }
+
+    if (errors.length) setError(errors.join(" "));
+    setLoading(false);
   }, [organizationId]);
 
   useEffect(() => {
-    // This call intentionally synchronizes the page with the remote tag API.
+    // This call intentionally synchronizes the page with the remote review APIs.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    loadTags();
-  }, [loadTags]);
+    loadReviewItems();
+  }, [loadReviewItems]);
 
   async function act(tagId: string, action: "approve" | "reject") {
     setActionId(tagId);
@@ -98,22 +115,40 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
   if (loading) return <div className="p-6 text-sm text-[var(--muted)]">Loading…</div>;
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="mx-auto max-w-3xl p-6">
       <div className="mb-4">
         <Link href={`/clients/${organizationId}`} className="text-sm text-[var(--muted)]">
           &larr; Back to client
         </Link>
       </div>
-      <h1 className="text-2xl font-bold mb-6">Tag Review</h1>
+      <h1 className="mb-6 text-2xl font-bold">Tag Review</h1>
       {error && <div role="alert" className="mb-4 rounded-lg border border-[var(--destructive)] p-3 text-sm text-[var(--destructive)]">{error}</div>}
 
-      <section aria-labelledby="scratchpad-notes-heading" className="mb-8"><div className="mb-3 flex items-center justify-between"><h2 id="scratchpad-notes-heading" className="text-lg font-semibold">Scratch Pad notes</h2><span className="text-xs text-[var(--muted)]">Raw / provisional — not approved</span></div>{scratchpadNotes.length === 0 ? <p className="text-sm text-[var(--muted)]">No Scratch Pad notes yet.</p> : <div className="space-y-3">{scratchpadNotes.map((note) => <article key={note.id} className="rounded-lg border border-[var(--card-border)] p-4"><div className="mb-2 flex flex-wrap items-center justify-between gap-2"><h3 className="font-medium">{note.meetingContext?.title || (note.meetingContext?.startsAt ? new Date(note.meetingContext.startsAt).toLocaleString() : "Unlinked meeting")}</h3><span className="rounded-full border border-[var(--card-border)] px-2 py-1 text-[10px] uppercase tracking-wide text-[var(--muted)]">{note.status} · raw</span></div><div className="whitespace-pre-wrap text-sm">{note.rawText?.replace(/<[^>]*>/g, "") || "(empty note)"}</div><p className="mt-3 text-xs text-[var(--muted)]">Updated {new Date(note.updatedAt).toLocaleString()}. Review before using.</p></article>)}</div>}</section>
+      <section aria-labelledby="scratchpad-notes-heading" className="mb-8">
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <h2 id="scratchpad-notes-heading" className="text-lg font-semibold">Scratch Pad notes</h2>
+          <span className="text-xs text-[var(--muted)]">Raw / provisional — not approved</span>
+        </div>
+        {scratchpadNotes.length === 0 ? <p className="text-sm text-[var(--muted)]">No Scratch Pad notes yet.</p> : (
+          <div className="space-y-3">
+            {scratchpadNotes.map((note) => (
+              <article key={note.id} className="rounded-lg border border-[var(--card-border)] p-4">
+                <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="font-medium">{note.meetingContext?.title || (note.meetingContext?.startsAt ? new Date(note.meetingContext.startsAt).toLocaleString() : "Unlinked meeting")}</h3>
+                  <span className="rounded-full border border-[var(--card-border)] px-2 py-1 text-[10px] uppercase tracking-wide text-[var(--muted)]">{note.status} · raw</span>
+                </div>
+                <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: sanitizeRichText(note.rawText ?? "") || "<em>(empty note)</em>" }} />
+                <p className="mt-3 text-xs text-[var(--muted)]">Updated {new Date(note.updatedAt).toLocaleString()}. Review before using.</p>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
 
       {tags.length === 0 && <p className="text-sm text-[var(--muted)]">Nothing pending review.</p>}
-
       <div className="space-y-3">
         {tags.map((tag) => (
-          <div key={tag.id} className="bg-[var(--card)] border border-[var(--card-border)] rounded-lg p-4">
+          <div key={tag.id} className="rounded-lg border border-[var(--card-border)] bg-[var(--card)] p-4">
             <div className="mb-3 flex items-start justify-between gap-3">
               <p className="text-sm">&ldquo;{tag.provenance.segmentText}&rdquo;</p>
               <span className="shrink-0 rounded-full border border-[var(--card-border)] px-2 py-1 text-[10px] uppercase tracking-wide text-[var(--muted)]">AI suggestion</span>
@@ -125,56 +160,22 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
                 <span>Captured: {new Date(tag.provenance.capturedAt).toLocaleString()}</span>
               </div>
               {tag.provenance.locationTag && <div className="mt-1">Location: {tag.provenance.locationTag}</div>}
-              {tag.provenance.sourceRef && (
-                <a href={tag.provenance.sourceRef} target="_blank" rel="noreferrer" className="mt-1 block truncate text-[var(--accent)] underline">
-                  Open original source
-                </a>
-              )}
+              {tag.provenance.sourceRef && <a href={tag.provenance.sourceRef} target="_blank" rel="noreferrer" className="mt-1 block truncate text-[var(--accent)] underline">Open original source</a>}
             </div>
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-xs text-[var(--muted)]">
-                {tag.targetType}: {tag.targetName} &middot; {Math.round(tag.confidence * 100)}% confidence
-              </span>
+            <div className="mb-3 flex items-center justify-between">
+              <span className="text-xs text-[var(--muted)]">{tag.targetType}: {tag.targetName} &middot; {Math.round(tag.confidence * 100)}% confidence</span>
               <div className="flex gap-2">
-                <button
-                  onClick={() => act(tag.id, "approve")}
-                  disabled={actionId !== null}
-                  className="text-xs font-medium px-3 py-1 rounded flowstate-success-button text-white"
-                >
-                  Approve
-                </button>
-                <button
-                  onClick={() => act(tag.id, "reject")}
-                  disabled={actionId !== null}
-                  className="text-xs font-medium px-3 py-1 rounded bg-[var(--destructive)] text-white"
-                >
-                  Reject
-                </button>
+                <button onClick={() => act(tag.id, "approve")} disabled={actionId !== null} className="rounded px-3 py-1 text-xs font-medium text-white flowstate-success-button">Approve</button>
+                <button onClick={() => act(tag.id, "reject")} disabled={actionId !== null} className="rounded bg-[var(--destructive)] px-3 py-1 text-xs font-medium text-white">Reject</button>
               </div>
             </div>
             {tag.candidates.length > 1 && (
-              <div className="flex items-center gap-2 pt-3 border-t border-[var(--card-border)]">
-                <select
-                  value={reassignChoice[tag.id] ?? ""}
-                  onChange={(e) => setReassignChoice((prev) => ({ ...prev, [tag.id]: e.target.value }))}
-                  className="border border-[var(--card-border)] rounded px-2 py-1 text-xs flex-1"
-                >
+              <div className="flex items-center gap-2 border-t border-[var(--card-border)] pt-3">
+                <select value={reassignChoice[tag.id] ?? ""} onChange={(e) => setReassignChoice((prev) => ({ ...prev, [tag.id]: e.target.value }))} className="flex-1 rounded border border-[var(--card-border)] px-2 py-1 text-xs">
                   <option value="">Reassign to…</option>
-                  {tag.candidates
-                    .filter((c) => c.id !== tag.targetId)
-                    .map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name}
-                      </option>
-                    ))}
+                  {tag.candidates.filter((c) => c.id !== tag.targetId).map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
-                <button
-                  onClick={() => reassign(tag.id)}
-                  disabled={!reassignChoice[tag.id] || actionId !== null}
-                  className="text-xs font-medium px-3 py-1 rounded flowstate-accent-button text-white disabled:opacity-50"
-                >
-                  Reassign
-                </button>
+                <button onClick={() => reassign(tag.id)} disabled={!reassignChoice[tag.id] || actionId !== null} className="rounded px-3 py-1 text-xs font-medium text-white flowstate-accent-button disabled:opacity-50">Reassign</button>
               </div>
             )}
           </div>
