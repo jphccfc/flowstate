@@ -39,6 +39,8 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
   const [contextAgenda, setContextAgenda] = useState("");
   const [contextOutcome, setContextOutcome] = useState("");
   const [contextSaving, setContextSaving] = useState(false);
+  const [contextSaveStatus, setContextSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [contextSaveError, setContextSaveError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [startingSession, setStartingSession] = useState(false);
   const [inputs, setInputs] = useState<CapturedInput[]>([]);
@@ -112,10 +114,25 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
   async function saveMeetingContext() {
     if (!contextTitle.trim()) return;
     setContextSaving(true);
-    const payload = { organizationId, title: contextTitle, dateTime: contextDate || undefined, stakeholders: contextStakeholder ? [contextStakeholder] : [], domain: contextDomain || undefined, startsAt: contextDate || undefined, stakeholderName: contextStakeholder, domainName: contextDomain, objectives: contextObjectives, agendaItems: contextAgenda.split("\n").map((item) => item.trim()).filter(Boolean), desiredOutcome: contextOutcome };
-    const res = await fetch(meetingContextId ? `/api/meeting-contexts/${meetingContextId}` : "/api/meeting-contexts", { method: meetingContextId ? "PATCH" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-    if (res.ok) { const context: MeetingContext = await res.json(); setMeetingContextId(context.id); localStorage.removeItem(`flowstate-meeting-draft:${organizationId}`); }
-    setContextSaving(false);
+    setContextSaveStatus("saving");
+    setContextSaveError(null);
+    try {
+      const payload = { organizationId, title: contextTitle, dateTime: contextDate || undefined, stakeholders: contextStakeholder ? [contextStakeholder] : [], domain: contextDomain || undefined, startsAt: contextDate || undefined, stakeholderName: contextStakeholder, domainName: contextDomain, objectives: contextObjectives, agendaItems: contextAgenda.split("\n").map((item) => item.trim()).filter(Boolean), desiredOutcome: contextOutcome };
+      const res = await fetch(meetingContextId ? `/api/meeting-contexts/${meetingContextId}` : "/api/meeting-contexts", { method: meetingContextId ? "PATCH" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}: ${await readErrorMessage(res, "The meeting context could not be saved.")}`);
+      }
+      const context: MeetingContext = await res.json();
+      setMeetingContextId(context.id);
+      localStorage.removeItem(`flowstate-meeting-draft:${organizationId}`);
+      setContextSaveStatus("saved");
+      loadInputs();
+    } catch (error) {
+      setContextSaveStatus("error");
+      setContextSaveError(error instanceof Error ? error.message : "The meeting context could not be saved. Please try again.");
+    } finally {
+      setContextSaving(false);
+    }
   }
 
   function handleTypeChange(next: CapturedInputType) {
@@ -223,7 +240,7 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
           <textarea aria-label="Agenda items" value={contextAgenda} onChange={(e) => setContextAgenda(e.target.value)} placeholder="Agenda items (one per line)" rows={3} className="border border-[var(--card-border)] rounded px-2 py-2 text-sm" />
           <textarea aria-label="Desired outcome" value={contextOutcome} onChange={(e) => setContextOutcome(e.target.value)} placeholder="Desired outcome" rows={3} className="border border-[var(--card-border)] rounded px-2 py-2 text-sm" />
         </div>
-        <div className="mt-3 flex flex-wrap items-center gap-3"><button type="button" onClick={saveMeetingContext} disabled={contextSaving || !contextTitle.trim()} className="flowstate-accent-button rounded px-3 py-2 text-sm font-medium text-white disabled:opacity-50">{contextSaving ? "Saving…" : meetingContextId ? "Update meeting context" : "Save meeting context"}</button><span className="text-xs text-[var(--muted)]">Draft recovery is on for this browser; captures remain queued offline until connectivity returns.</span></div>
+        <div className="mt-3 flex flex-wrap items-center gap-3"><button type="button" onClick={saveMeetingContext} disabled={contextSaving || !contextTitle.trim()} className="flowstate-accent-button rounded px-3 py-2 text-sm font-medium text-white disabled:opacity-50">{contextSaving ? "Saving…" : meetingContextId ? "Update meeting context" : "Save meeting context"}</button><Link href={`/clients/${organizationId}/scratchpad`} className="rounded border border-[var(--card-border)] px-3 py-2 text-sm font-medium text-[var(--foreground)] hover:border-[var(--accent)]">Open Meeting Scratch Pad</Link><span role="status" aria-live="polite" className="text-xs text-[var(--muted)]">{contextSaveStatus === "saving" ? "Meeting context is being saved…" : contextSaveStatus === "saved" ? "Meeting context saved and stored in Meeting Context." : contextSaveStatus === "error" ? `Meeting context could not be saved: ${contextSaveError}` : "Draft recovery is on for this browser; captures remain queued offline until connectivity returns."}</span></div>
       </section>
 
       <section className="workspace-card mb-6 p-4" aria-labelledby="capture-status-title">
@@ -358,8 +375,7 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
   );
 }
 
-async function readErrorMessage(response: Response) {
-  const fallback = "Capture could not be submitted. Please try again.";
+async function readErrorMessage(response: Response, fallback = "Capture could not be submitted. Please try again.") {
   const body = await response.text();
   if (!body) return fallback;
   try {

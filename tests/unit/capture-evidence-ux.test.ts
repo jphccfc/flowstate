@@ -64,6 +64,20 @@ describe("capture evidence UX contract", () => {
     expect(capture).toContain("domain");
   });
 
+  it("makes the Meeting Scratch Pad discoverable from Capture Evidence", () => {
+    expect(capture).toContain("Open Meeting Scratch Pad");
+    expect(capture).toContain('href={`/clients/${organizationId}/scratchpad`}');
+  });
+
+  it("gives explicit meeting-context save feedback and refreshes persisted context", () => {
+    expect(capture).toContain("Meeting context is being saved…");
+    expect(capture).toContain("Meeting context saved and stored in Meeting Context.");
+    expect(capture).toContain("Meeting context could not be saved");
+    expect(capture).toContain("HTTP");
+    expect(capture).toContain("setContextSaveStatus");
+    expect(capture).toContain("loadInputs();");
+  });
+
   it("provides microphone capture controls and visible retry/status feedback in a live session", () => {
     const session = readFileSync(resolve(root, "app/clients/[id]/session/[sessionId]/page.tsx"), "utf8");
     expect(session).toContain("navigator.mediaDevices.getUserMedia");
