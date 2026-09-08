@@ -48,6 +48,7 @@ export default async function ClientOverviewPage({
 
   const cards = [
     { href: `/clients/${id}/capture`, label: "Capture evidence", desc: "Upload and capture traceable evidence for this client", cta: "Open capture evidence" },
+    { href: `/clients/${id}/scratchpad`, label: "Quick notes", desc: "Capture context-free quick notes whenever you need them", cta: "Open Scratch Pad" },
     { href: `/clients/${id}/meetings`, label: "Meeting Agendas", desc: "Prepare agendas and start Scratch Pads with linked meeting context", cta: "Manage meeting agendas" },
     { href: `/clients/${id}/configure`, label: "Blueprint", desc: "Set up domains, capabilities, KPIs, and target achievements", cta: "Configure blueprint" },
     { href: `/clients/${id}/assess`, label: "Assessment", desc: "Run a guided capability assessment interview", cta: "Start / continue assessment" },
