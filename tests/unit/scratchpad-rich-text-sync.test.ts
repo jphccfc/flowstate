@@ -8,6 +8,28 @@ describe("scratchpad rich text", () => {
     expect(sanitizeRichText('<p><strong>Bold</strong> <u>underlined</u></p><script>alert(1)</script><img src=x>'))
       .toBe("<p><strong>Bold</strong> <u>underlined</u></p>");
   });
+
+  it("is idempotent and decodes entities before escaping text", () => {
+    const sanitized = sanitizeRichText("<p>P&amp;L: 10 &lt; 20</p>");
+    expect(sanitized).toBe("<p>P&amp;L: 10 &lt; 20</p>");
+    expect(sanitizeRichText(sanitized)).toBe(sanitized);
+    expect(sanitizeRichText("P&amp;amp;L")).toBe("P&amp;L");
+  });
+
+  it("does not let encoded markup become executable markup", () => {
+    expect(sanitizeRichText("&lt;script&gt;alert(1)&lt;/script&gt;")).toBe(
+      "&lt;script&gt;alert(1)&lt;/script&gt;",
+    );
+  });
+});
+
+describe("scratchpad editor reconciliation", () => {
+  it("only reconciles external HTML when the editor is idle and clean", async () => {
+    const { canReconcileEditor } = await import("../../lib/scratchpad/editor-sync");
+    expect(canReconcileEditor({ dirty: false, composing: false })).toBe(true);
+    expect(canReconcileEditor({ dirty: true, composing: false })).toBe(false);
+    expect(canReconcileEditor({ dirty: false, composing: true })).toBe(false);
+  });
 });
 
 describe("scratchpad save queue", () => {
