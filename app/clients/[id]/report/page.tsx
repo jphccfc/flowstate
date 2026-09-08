@@ -26,6 +26,8 @@ type TraceableInsight = {
   title: string;
   description: string;
   priority: number | null;
+  sourceEvidenceIds: string[];
+  sourceEvidence: { id: string; segmentText: string; sourceType: string; sourceRef: string | null }[];
   decision: { id: string; status: string; score: number | null; rationale: string | null; decidedAt: string };
   growthActions: { id: string; title: string; description: string; status: string; recommendation: { id: string; title: string; status: string } | null }[];
 };
@@ -180,6 +182,16 @@ export default function ReportPage({ params }: { params: Promise<{ id: string }>
           {traceability.length === 0 ? <p className="text-sm text-[var(--muted)]">No approved insights are available for this report yet.</p> : <div className="space-y-3">{traceability.map((insight) => <article key={insight.id} className="border border-[var(--card-border)] rounded-lg p-4">
             <div className="flex items-start justify-between gap-3"><div><div className="text-xs text-[var(--muted)]">{insight.domainName} · {insight.capabilityName}</div><h4 className="font-semibold text-[var(--foreground)]">{insight.title}</h4><p className="text-sm text-[var(--muted)] mt-1">{insight.description}</p></div><span className="text-xs font-medium text-[var(--success)]">{insight.decision.status}</span></div>
             <div className="mt-3 pl-3 border-l-2 border-[var(--accent)] space-y-2">{insight.growthActions.length === 0 ? <p className="text-sm text-[var(--muted)]">No Growth Plan action linked yet.</p> : insight.growthActions.map((action) => <div key={action.id} className="text-sm"><div className="font-medium text-[var(--foreground)]">Growth Plan: {action.title}</div><div className="text-[var(--muted)]">{action.status}{action.recommendation ? ` · Recommendation: ${action.recommendation.title} (${action.recommendation.status})` : " · No recommendation linked yet"}</div></div>)}</div>
+            <div className="mt-4 border-t border-[var(--card-border)] pt-3">
+              <h5 className="text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Evidence sources</h5>
+              {insight.sourceEvidence.length === 0 ? <p className="mt-1 text-sm text-[var(--muted)]">No approved evidence source linked.</p> : <ul className="mt-2 space-y-2" aria-label={`Evidence sources for ${insight.title}`}>
+                {insight.sourceEvidence.map((evidence) => <li key={evidence.id} className="rounded-md bg-[var(--muted-bg)] p-2 text-sm">
+                  <div className="text-xs font-medium text-[var(--muted)]">{evidence.sourceType.replaceAll("_", " ")}</div>
+                  <div className="text-[var(--foreground)]">&ldquo;{evidence.segmentText}&rdquo;</div>
+                  {evidence.sourceRef && <a href={evidence.sourceRef} target="_blank" rel="noreferrer" className="text-xs text-[var(--accent)] underline">Open original source</a>}
+                </li>)}
+              </ul>}
+            </div>
           </article>)}</div>}
         </section>
 
