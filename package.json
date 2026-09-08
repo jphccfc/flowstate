@@ -16,7 +16,8 @@
     "test:integration": "npm run test:preflight && vitest run tests/schema",
     "db:test:start": "node scripts/start-test-db.mjs",
     "db:test:stop": "node scripts/stop-test-db.mjs",
-    "db:seed:local-qa": "tsx scripts/seed-local-qa.ts"
+    "db:seed:local-qa": "tsx scripts/seed-local-qa.ts",
+    "test:browser": "playwright test tests/e2e/scratchpad.spec.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -54,6 +55,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
