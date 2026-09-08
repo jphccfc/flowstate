@@ -1,4 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { sanitizeRichText } from "../../lib/scratchpad/rich-text";
 import { createScratchpadSaveQueue } from "../../lib/scratchpad/save-queue";
 
@@ -32,7 +34,42 @@ describe("scratchpad editor reconciliation", () => {
   });
 });
 
+describe("scratchpad editor lifecycle", () => {
+  it("waits for the initial note load and flushes the latest draft after it", () => {
+    const page = readFileSync(resolve(process.cwd(), "app/clients/[id]/scratchpad/page.tsx"), "utf8");
+    expect(page).toContain("const loadedRef = useRef(false)");
+    expect(page).toContain("if (!loadedRef.current) return");
+    expect(page).toContain("draftRef.current");
+  });
+
+  it("enqueues the final composition snapshot", () => {
+    const page = readFileSync(resolve(process.cwd(), "app/clients/[id]/scratchpad/page.tsx"), "utf8");
+    expect(page).toContain("onCompositionEnd={() => { composingRef.current = false; enqueue(editorRef.current?.innerHTML ?? \"\"); }}");
+  });
+});
+
+
 describe("scratchpad save queue", () => {
+  it("carries the saved revision into the coalesced next snapshot", async () => {
+    const calls: Array<{ text: string; revision: number }> = [];
+    let releaseFirst!: (result: { kind: "saved"; revision: number }) => void;
+    const firstSave = new Promise<{ kind: "saved"; revision: number }>(resolve => { releaseFirst = resolve; });
+    const save = vi.fn(async (payload: { text: string; revision: number }) => {
+      calls.push(payload);
+      if (calls.length === 1) return firstSave;
+      return { kind: "saved" as const, revision: payload.revision + 1 };
+    });
+    const queue = createScratchpadSaveQueue(save, vi.fn(async () => ({ revision: 99 })), () => {});
+
+    queue.enqueue({ text: "typed", revision: 0 });
+    await Promise.resolve();
+    queue.enqueue({ text: "typed more", revision: 0 });
+    releaseFirst({ kind: "saved", revision: 1 });
+    await queue.flush();
+
+    expect(calls).toEqual([{ text: "typed", revision: 0 }, { text: "typed more", revision: 1 }]);
+  });
+
   it("serializes rapid edits and retries a revision conflict against the latest revision", async () => {
     const calls: Array<{ text: string; revision: number }> = [];
     let first = true;

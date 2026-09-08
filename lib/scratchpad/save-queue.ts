@@ -16,6 +16,7 @@ export function createScratchpadSaveQueue(save: Save, reload: Reload, onState: (
   let running = false;
   let scheduled = false;
   let failed = false;
+  let latestRevision: number | null = null;
   let waiters: Array<() => void> = [];
   const settle = () => {
     if (!running && !pending && !scheduled) {
@@ -26,10 +27,11 @@ export function createScratchpadSaveQueue(save: Save, reload: Reload, onState: (
   const drain = async () => {
     scheduled = false;
     if (running || !pending) { settle(); return; }
-    running = true; const payload = pending; pending = null; failed = false; onState("Saving");
+    running = true; const payload = latestRevision !== null && pending.revision < latestRevision ? { ...pending, revision: latestRevision } : pending; pending = null; failed = false; onState("Saving");
     try {
       let result = await save(payload);
-      if (result.kind === "conflict") { const latest = await reload(); result = await save({ ...payload, revision: latest.revision }); }
+      if (result.kind === "conflict") { const latest = await reload(); latestRevision = latest.revision; result = await save({ ...payload, revision: latest.revision }); }
+      if (result.kind === "saved") latestRevision = result.revision;
       if (result.kind === "queued") { failed = true; onState("Offline/Queued"); }
       if (result.kind === "failed") { failed = true; onState("Failed"); }
     } catch { failed = true; onState("Failed"); }
