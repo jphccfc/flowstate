@@ -60,6 +60,7 @@ model Organization {
   projects     Project[]
   sessions       AssessmentSession[]
   capturedInputs CapturedInput[]
+  meetingContexts MeetingContext[]
   recommendations Recommendation[]
   maturityRubrics MaturityRubric[]
   assessmentTasks AssessmentTask[]
@@ -318,10 +319,33 @@ enum ProcessingStatus {
   QUARANTINED
 }
 
+model MeetingContext {
+  id              String   @id @default(cuid())
+  organizationId   String
+  title           String
+  startsAt        DateTime?
+  dateTime        DateTime?
+  stakeholderName String?
+  stakeholders    String[] @default([])
+  domainName      String?
+  domain          String?
+  objectives      String?
+  agendaItems     String[] @default([])
+  desiredOutcome  String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  capturedInputs CapturedInput[]
+
+  @@index([organizationId, startsAt])
+}
+
 model CapturedInput {
   id             String            @id @default(cuid())
   organizationId String
   sessionId      String?
+  meetingContextId String?
   type           InputType
   sourceRef      String?
   senderEmail    String?
@@ -339,11 +363,13 @@ model CapturedInput {
 
   organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   session      AssessmentSession? @relation(fields: [sessionId], references: [id])
+  meetingContext MeetingContext? @relation(fields: [meetingContextId], references: [id], onDelete: SetNull)
   segments     CapturedSegment[]
   attachments  CapturedInputAttachment[]
   agentRuns AgentRun[]
 
   @@unique([organizationId, idempotencyKey])
+  @@index([meetingContextId])
 }
 
 model CapturedInputAttachment {

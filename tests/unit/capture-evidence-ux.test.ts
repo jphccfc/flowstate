@@ -54,6 +54,16 @@ describe("capture evidence UX contract", () => {
     expect(capture).toContain("Review extracted tags");
   });
 
+  it("provides a fast meeting agenda and durable scratchpad controls", () => {
+    expect(capture).toContain("Meeting agenda (optional)");
+    expect(capture).toContain("dateTime");
+    expect(capture).toContain("agendaItems");
+    expect(capture).toContain("localStorage");
+    expect(capture).toContain("offline");
+    expect(capture).toContain("stakeholders");
+    expect(capture).toContain("domain");
+  });
+
   it("provides microphone capture controls and visible retry/status feedback in a live session", () => {
     const session = readFileSync(resolve(root, "app/clients/[id]/session/[sessionId]/page.tsx"), "utf8");
     expect(session).toContain("navigator.mediaDevices.getUserMedia");

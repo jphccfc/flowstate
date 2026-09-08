@@ -27,6 +27,7 @@ export async function POST(req: NextRequest) {
     const rawText = formData.get("rawText");
     const file = formData.get("file");
     const sessionIdField = formData.get("sessionId");
+    const meetingContextIdField = formData.get("meetingContextId");
 
     if (typeof organizationId !== "string" || !organizationId || typeof type !== "string" || !type) {
       return NextResponse.json({ error: "organizationId and type are required" }, { status: 400 });
@@ -39,6 +40,11 @@ export async function POST(req: NextRequest) {
     }
 
     const sessionId = typeof sessionIdField === "string" && sessionIdField ? sessionIdField : null;
+    const meetingContextId = typeof meetingContextIdField === "string" && meetingContextIdField ? meetingContextIdField : null;
+    if (meetingContextId) {
+      const context = await prisma.meetingContext.findUnique({ where: { id: meetingContextId }, select: { organizationId: true } });
+      if (!context || context.organizationId !== organizationId) return NextResponse.json({ error: "Meeting context not found" }, { status: 404 });
+    }
     if (sessionId) {
       const session = await prisma.assessmentSession.findUnique({ where: { id: sessionId }, select: { organizationId: true, status: true } });
       if (!session || session.organizationId !== organizationId) return NextResponse.json({ error: "Live session not found" }, { status: 404 });
@@ -59,6 +65,7 @@ export async function POST(req: NextRequest) {
           rawText,
           locationTag: resolvedLocationTag,
           sessionId,
+          meetingContextId,
           status: "TRANSCRIBED",
         },
       });
@@ -86,6 +93,7 @@ export async function POST(req: NextRequest) {
           sourceRef: blob.url,
           locationTag: resolvedLocationTag,
           sessionId,
+          meetingContextId,
           status: "PENDING",
         },
       });

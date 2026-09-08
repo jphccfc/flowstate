@@ -15,7 +15,10 @@ type CapturedInput = {
   status: string;
   error: string | null;
   createdAt: string;
+  meetingContextId?: string | null;
 };
+
+type MeetingContext = { id: string; title: string; startsAt: string | null; dateTime?: string | null; stakeholderName: string | null; stakeholders?: string[]; domainName: string | null; domain?: string | null; objectives: string | null; agendaItems: string[]; desiredOutcome: string | null };
 
 export default function CapturePage({ params }: { params: Promise<{ id: string }> }) {
   const { id: organizationId } = use(params);
@@ -27,6 +30,15 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
   const [fileError, setFileError] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [locationTag, setLocationTag] = useState("");
+  const [meetingContextId, setMeetingContextId] = useState("");
+  const [contextTitle, setContextTitle] = useState("");
+  const [contextDate, setContextDate] = useState("");
+  const [contextStakeholder, setContextStakeholder] = useState("");
+  const [contextDomain, setContextDomain] = useState("");
+  const [contextObjectives, setContextObjectives] = useState("");
+  const [contextAgenda, setContextAgenda] = useState("");
+  const [contextOutcome, setContextOutcome] = useState("");
+  const [contextSaving, setContextSaving] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [startingSession, setStartingSession] = useState(false);
   const [inputs, setInputs] = useState<CapturedInput[]>([]);
@@ -54,9 +66,17 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
   const loadInputs = useCallback(async () => {
     const res = await fetch(`/api/captured-inputs?organizationId=${organizationId}`);
     if (res.ok) setInputs(await res.json());
-  }, [organizationId]);
+    const contextRes = await fetch(`/api/meeting-contexts?organizationId=${organizationId}`);
+    if (contextRes.ok) {
+      const contexts: MeetingContext[] = await contextRes.json();
+      const last = contexts[0];
+      if (last && !meetingContextId) { setMeetingContextId(last.id); setContextTitle(last.title); setContextStakeholder(last.stakeholderName ?? ""); setContextDomain(last.domainName ?? ""); }
+    }
+  }, [organizationId, meetingContextId]);
 
   useEffect(() => {
+    const saved = localStorage.getItem(`flowstate-meeting-draft:${organizationId}`);
+    if (saved) { window.setTimeout(() => { try { const draft = JSON.parse(saved) as Partial<{ title: string; startsAt: string; stakeholderName: string; domainName: string; objectives: string; agendaItems: string; desiredOutcome: string }>; setContextTitle(draft.title ?? ""); setContextDate(draft.startsAt ?? ""); setContextStakeholder(draft.stakeholderName ?? ""); setContextDomain(draft.domainName ?? ""); setContextObjectives(draft.objectives ?? ""); setContextAgenda(draft.agendaItems ?? ""); setContextOutcome(draft.desiredOutcome ?? ""); } catch { /* ignore malformed local draft */ } }, 0); }
     // Remote capture polling intentionally updates state after each fetch.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     loadInputs();
@@ -64,6 +84,39 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
     const interval = setInterval(loadInputs, 3000);
     return () => clearInterval(interval);
   }, [loadInputs, organizationId]);
+
+  useEffect(() => { localStorage.setItem(`flowstate-meeting-draft:${organizationId}`, JSON.stringify({ title: contextTitle, startsAt: contextDate, stakeholderName: contextStakeholder, domainName: contextDomain, objectives: contextObjectives, agendaItems: contextAgenda, desiredOutcome: contextOutcome })); }, [organizationId, contextTitle, contextDate, contextStakeholder, contextDomain, contextObjectives, contextAgenda, contextOutcome]);
+  useEffect(() => {
+    const flushOfflineNotes = async () => {
+      if (!navigator.onLine) return;
+      const key = `flowstate-offline-captures:${organizationId}`;
+      const queued = JSON.parse(localStorage.getItem(key) ?? "[]") as Array<{ type: CapturedInputType; rawText: string; meetingContextId?: string }>;
+      if (queued.length === 0) return;
+      const remaining = [];
+      for (const item of queued) {
+        const formData = new FormData();
+        formData.append("organizationId", organizationId);
+        formData.append("type", item.type);
+        formData.append("rawText", item.rawText);
+        if (item.meetingContextId) formData.append("meetingContextId", item.meetingContextId);
+        try { if (!(await fetch("/api/captured-inputs", { method: "POST", body: formData })).ok) remaining.push(item); } catch { remaining.push(item); }
+      }
+      localStorage.setItem(key, JSON.stringify(remaining));
+      if (remaining.length !== queued.length) loadInputs();
+    };
+    window.addEventListener("online", flushOfflineNotes);
+    flushOfflineNotes();
+    return () => window.removeEventListener("online", flushOfflineNotes);
+  }, [organizationId, loadInputs]);
+
+  async function saveMeetingContext() {
+    if (!contextTitle.trim()) return;
+    setContextSaving(true);
+    const payload = { organizationId, title: contextTitle, dateTime: contextDate || undefined, stakeholders: contextStakeholder ? [contextStakeholder] : [], domain: contextDomain || undefined, startsAt: contextDate || undefined, stakeholderName: contextStakeholder, domainName: contextDomain, objectives: contextObjectives, agendaItems: contextAgenda.split("\n").map((item) => item.trim()).filter(Boolean), desiredOutcome: contextOutcome };
+    const res = await fetch(meetingContextId ? `/api/meeting-contexts/${meetingContextId}` : "/api/meeting-contexts", { method: meetingContextId ? "PATCH" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+    if (res.ok) { const context: MeetingContext = await res.json(); setMeetingContextId(context.id); localStorage.removeItem(`flowstate-meeting-draft:${organizationId}`); }
+    setContextSaving(false);
+  }
 
   function handleTypeChange(next: CapturedInputType) {
     setType(next);
@@ -85,6 +138,7 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
       formData.append("organizationId", organizationId);
       formData.append("type", type);
       if (locationTag) formData.append("locationTag", locationTag);
+      if (meetingContextId) formData.append("meetingContextId", meetingContextId);
       if (isFileType) {
         formData.append("file", file as File);
       } else {
@@ -102,7 +156,15 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
         setSubmitError(await readErrorMessage(res));
       }
     } catch {
-      setSubmitError("Capture could not be submitted. Please try again.");
+      if (!isFileType && rawText.trim()) {
+        const key = `flowstate-offline-captures:${organizationId}`;
+        const queued = JSON.parse(localStorage.getItem(key) ?? "[]") as Array<{ type: CapturedInputType; rawText: string; meetingContextId?: string }>;
+        queued.push({ type, rawText, meetingContextId: meetingContextId || undefined });
+        localStorage.setItem(key, JSON.stringify(queued));
+        setSubmitError("You are offline. This note is saved on this device and will sync when connectivity returns.");
+      } else {
+        setSubmitError("Capture could not be submitted. Please try again.");
+      }
     } finally {
       setSubmitting(false);
     }
@@ -148,6 +210,21 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
           Review extracted tags{statusCounts.needsReview > 0 ? ` (${statusCounts.needsReview})` : ""}
         </Link>
       </div>
+
+      <section className="workspace-card mb-6 p-4" aria-labelledby="meeting-context-title">
+        <h2 id="meeting-context-title" className="text-sm font-semibold text-[var(--foreground)]">Meeting agenda (optional)</h2>
+        <p className="mt-1 text-xs text-[var(--muted)]">Optional context keeps raw captures grouped. Save it now or capture first and complete it later.</p>
+        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          <input aria-label="Meeting title" value={contextTitle} onChange={(e) => setContextTitle(e.target.value)} placeholder="Meeting title" className="border border-[var(--card-border)] rounded px-2 py-2 text-sm" />
+          <input aria-label="Meeting date and time" type="datetime-local" value={contextDate} onChange={(e) => setContextDate(e.target.value)} className="border border-[var(--card-border)] rounded px-2 py-2 text-sm" />
+          <input aria-label="Stakeholder" value={contextStakeholder} onChange={(e) => setContextStakeholder(e.target.value)} placeholder="Stakeholder" className="border border-[var(--card-border)] rounded px-2 py-2 text-sm" />
+          <select aria-label="Domain" value={contextDomain} onChange={(e) => setContextDomain(e.target.value)} className="border border-[var(--card-border)] rounded px-2 py-2 text-sm"><option value="">Select domain</option>{["Operations", "Financial and Legal", "People", "Technology and Data", "Customers and Revenue"].map((domain) => <option key={domain}>{domain}</option>)}</select>
+          <textarea aria-label="Objectives" value={contextObjectives} onChange={(e) => setContextObjectives(e.target.value)} placeholder="Objectives" rows={2} className="border border-[var(--card-border)] rounded px-2 py-2 text-sm sm:col-span-2" />
+          <textarea aria-label="Agenda items" value={contextAgenda} onChange={(e) => setContextAgenda(e.target.value)} placeholder="Agenda items (one per line)" rows={3} className="border border-[var(--card-border)] rounded px-2 py-2 text-sm" />
+          <textarea aria-label="Desired outcome" value={contextOutcome} onChange={(e) => setContextOutcome(e.target.value)} placeholder="Desired outcome" rows={3} className="border border-[var(--card-border)] rounded px-2 py-2 text-sm" />
+        </div>
+        <div className="mt-3 flex flex-wrap items-center gap-3"><button type="button" onClick={saveMeetingContext} disabled={contextSaving || !contextTitle.trim()} className="flowstate-accent-button rounded px-3 py-2 text-sm font-medium text-white disabled:opacity-50">{contextSaving ? "Saving…" : meetingContextId ? "Update meeting context" : "Save meeting context"}</button><span className="text-xs text-[var(--muted)]">Draft recovery is on for this browser; captures remain queued offline until connectivity returns.</span></div>
+      </section>
 
       <section className="workspace-card mb-6 p-4" aria-labelledby="capture-status-title">
         <h2 id="capture-status-title" className="text-sm font-semibold text-[var(--foreground)]">Capture status</h2>
