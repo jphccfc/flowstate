@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, use } from "react";
 import Link from "next/link";
 
 type Candidate = { id: string; name: string };
+type ScratchpadNote = { id: string; rawText: string | null; status: string; updatedAt: string; meetingContext: { title: string | null; startsAt: string | null } | null };
 
 type PendingTag = {
   id: string;
@@ -30,6 +31,7 @@ type PendingTag = {
 export default function ReviewPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: organizationId } = use(params);
   const [tags, setTags] = useState<PendingTag[]>([]);
+  const [scratchpadNotes, setScratchpadNotes] = useState<ScratchpadNote[]>([]);
   const [loading, setLoading] = useState(true);
   const [reassignChoice, setReassignChoice] = useState<Record<string, string>>({});
   const [error, setError] = useState<string | null>(null);
@@ -38,9 +40,10 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
   const loadTags = useCallback(async () => {
     setError(null);
     try {
-      const res = await fetch(`/api/tags?organizationId=${organizationId}`);
-      if (!res.ok) throw new Error("Tags could not be loaded.");
-      setTags(await res.json());
+      const [tagsRes, notesRes] = await Promise.all([fetch(`/api/tags?organizationId=${organizationId}`), fetch(`/api/scratchpad?organizationId=${organizationId}`)]);
+      if (!tagsRes.ok || !notesRes.ok) throw new Error("Review items could not be loaded.");
+      setTags(await tagsRes.json());
+      setScratchpadNotes(await notesRes.json());
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Tags could not be loaded.");
     } finally {
@@ -103,6 +106,8 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
       </div>
       <h1 className="text-2xl font-bold mb-6">Tag Review</h1>
       {error && <div role="alert" className="mb-4 rounded-lg border border-[var(--destructive)] p-3 text-sm text-[var(--destructive)]">{error}</div>}
+
+      <section aria-labelledby="scratchpad-notes-heading" className="mb-8"><div className="mb-3 flex items-center justify-between"><h2 id="scratchpad-notes-heading" className="text-lg font-semibold">Scratch Pad notes</h2><span className="text-xs text-[var(--muted)]">Raw / provisional — not approved</span></div>{scratchpadNotes.length === 0 ? <p className="text-sm text-[var(--muted)]">No Scratch Pad notes yet.</p> : <div className="space-y-3">{scratchpadNotes.map((note) => <article key={note.id} className="rounded-lg border border-[var(--card-border)] p-4"><div className="mb-2 flex flex-wrap items-center justify-between gap-2"><h3 className="font-medium">{note.meetingContext?.title || (note.meetingContext?.startsAt ? new Date(note.meetingContext.startsAt).toLocaleString() : "Unlinked meeting")}</h3><span className="rounded-full border border-[var(--card-border)] px-2 py-1 text-[10px] uppercase tracking-wide text-[var(--muted)]">{note.status} · raw</span></div><div className="whitespace-pre-wrap text-sm">{note.rawText?.replace(/<[^>]*>/g, "") || "(empty note)"}</div><p className="mt-3 text-xs text-[var(--muted)]">Updated {new Date(note.updatedAt).toLocaleString()}. Review before using.</p></article>)}</div>}</section>
 
       {tags.length === 0 && <p className="text-sm text-[var(--muted)]">Nothing pending review.</p>}
 
