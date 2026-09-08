@@ -19,4 +19,12 @@ describe("executive report traceability", () => {
     expect(clientRoute).toContain("growthActions");
     expect(clientRoute).toContain("recommendation");
   });
+
+  it("shows approved evidence sources behind each traceable insight", () => {
+    expect(report).toContain("Evidence sources");
+    expect(report).toContain("sourceEvidence");
+    expect(clientRoute).toContain("prisma.tag.findMany");
+    expect(clientRoute).toContain('status: "APPROVED"');
+    expect(clientRoute).toContain("capturedInput: { select: { type: true, sourceRef: true }");
+  });
 });

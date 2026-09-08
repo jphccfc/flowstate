@@ -64,6 +64,28 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
     toBeByCapability.set(row.capabilityId, list);
   }
 
+  const insightEvidenceIds = org.domains.flatMap((domain) => domain.capabilities.flatMap((capability) => capability.approvedInsights.flatMap((insight) => insight.sourceEvidenceIds)));
+  const evidenceTags = insightEvidenceIds.length === 0 ? [] : await prisma.tag.findMany({
+    where: {
+      id: { in: Array.from(new Set(insightEvidenceIds)) },
+      status: "APPROVED",
+      targetType: "CAPABILITY",
+      segment: { capturedInput: { organizationId: id } },
+    },
+    select: {
+      id: true,
+      targetId: true,
+      segment: { select: { text: true, capturedInput: { select: { type: true, sourceRef: true } } } },
+    },
+  });
+  const evidenceById = new Map(evidenceTags.map((tag) => [tag.id, {
+    id: tag.id,
+    capabilityId: tag.targetId,
+    segmentText: tag.segment.text,
+    sourceType: tag.segment.capturedInput.type,
+    sourceRef: tag.segment.capturedInput.sourceRef,
+  }]));
+
   const enriched = {
     ...org,
     domains: org.domains.map((domain) => ({
@@ -72,6 +94,18 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
         ...cap,
         currentAsIs: asIsByCapability.get(cap.id) ?? [],
         currentToBe: toBeByCapability.get(cap.id) ?? [],
+        approvedInsights: cap.approvedInsights.map((insight) => ({
+          ...insight,
+          sourceEvidence: insight.sourceEvidenceIds
+            .map((evidenceId) => evidenceById.get(evidenceId))
+            .filter((evidence): evidence is NonNullable<typeof evidence> => evidence !== undefined && evidence.capabilityId === cap.id)
+            .map((evidence) => ({
+              id: evidence.id,
+              segmentText: evidence.segmentText,
+              sourceType: evidence.sourceType,
+              sourceRef: evidence.sourceRef,
+            })),
+        })),
       })),
     })),
   };
