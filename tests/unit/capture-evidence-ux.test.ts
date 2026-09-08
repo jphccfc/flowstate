@@ -66,7 +66,16 @@ describe("capture evidence UX contract", () => {
 
   it("makes the Meeting Scratch Pad discoverable from Capture Evidence", () => {
     expect(capture).toContain("Open Meeting Scratch Pad");
-    expect(capture).toContain('href={`/clients/${organizationId}/scratchpad`}');
+    expect(capture).toContain("/scratchpad");
+  });
+
+  it("links to agenda management and carries the selected context into Scratch Pad", () => {
+    expect(capture).toContain("Meeting Agendas");
+    expect(capture).toContain('href={`/clients/${organizationId}/meetings`}');
+    expect(capture).toContain('aria-label="Meeting context"');
+    expect(capture).toContain("contexts.map");
+    expect(capture).toContain('value={meetingContextId}');
+    expect(capture).toContain("contextId=${encodeURIComponent(meetingContextId)}");
   });
 
   it("gives explicit meeting-context save feedback and refreshes persisted context", () => {

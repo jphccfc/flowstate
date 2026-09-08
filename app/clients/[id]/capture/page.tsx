@@ -31,6 +31,7 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [locationTag, setLocationTag] = useState("");
   const [meetingContextId, setMeetingContextId] = useState("");
+  const [contexts, setContexts] = useState<MeetingContext[]>([]);
   const [contextTitle, setContextTitle] = useState("");
   const [contextDate, setContextDate] = useState("");
   const [contextStakeholder, setContextStakeholder] = useState("");
@@ -71,8 +72,9 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
     const contextRes = await fetch(`/api/meeting-contexts?organizationId=${organizationId}`);
     if (contextRes.ok) {
       const contexts: MeetingContext[] = await contextRes.json();
+      setContexts(contexts);
       const last = contexts[0];
-      if (last && !meetingContextId) { setMeetingContextId(last.id); setContextTitle(last.title); setContextStakeholder(last.stakeholderName ?? ""); setContextDomain(last.domainName ?? ""); }
+      if (last && !meetingContextId) { setMeetingContextId(last.id); setContextTitle(last.title); setContextDate((last.dateTime ?? last.startsAt ?? "").slice(0, 16)); setContextStakeholder(last.stakeholderName ?? last.stakeholders?.[0] ?? ""); setContextDomain(last.domainName ?? last.domain ?? ""); setContextObjectives(last.objectives ?? ""); setContextAgenda(last.agendaItems.join("\n")); setContextOutcome(last.desiredOutcome ?? ""); }
     }
   }, [organizationId, meetingContextId]);
 
@@ -142,6 +144,32 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
     setFileError(null);
     setSubmitError(null);
     setCaptureSubmitted(false);
+  }
+
+  function selectMeetingContext(nextId: string) {
+    setMeetingContextId(nextId);
+    const context = contexts.find((item) => item.id === nextId);
+    if (!context) {
+      setContextTitle("");
+      setContextDate("");
+      setContextStakeholder("");
+      setContextDomain("");
+      setContextObjectives("");
+      setContextAgenda("");
+      setContextOutcome("");
+      setContextSaveStatus("idle");
+      setContextSaveError(null);
+      return;
+    }
+    setContextTitle(context.title);
+    setContextDate((context.dateTime ?? context.startsAt ?? "").slice(0, 16));
+    setContextStakeholder(context.stakeholderName ?? context.stakeholders?.[0] ?? "");
+    setContextDomain(context.domainName ?? context.domain ?? "");
+    setContextObjectives(context.objectives ?? "");
+    setContextAgenda(context.agendaItems.join("\n"));
+    setContextOutcome(context.desiredOutcome ?? "");
+    setContextSaveStatus("idle");
+    setContextSaveError(null);
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -232,6 +260,7 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
         <h2 id="meeting-context-title" className="text-sm font-semibold text-[var(--foreground)]">Meeting agenda (optional)</h2>
         <p className="mt-1 text-xs text-[var(--muted)]">Optional context keeps raw captures grouped. Save it now or capture first and complete it later.</p>
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          <select aria-label="Meeting context" value={meetingContextId} onChange={(e) => selectMeetingContext(e.target.value)} className="border border-[var(--card-border)] rounded px-2 py-2 text-sm sm:col-span-2"><option value="">No context / start capturing now</option>{contexts.map((context) => <option key={context.id} value={context.id}>{context.title || "Untitled agenda"}</option>)}</select>
           <input aria-label="Meeting title" value={contextTitle} onChange={(e) => setContextTitle(e.target.value)} placeholder="Meeting title" className="border border-[var(--card-border)] rounded px-2 py-2 text-sm" />
           <input aria-label="Meeting date and time" type="datetime-local" value={contextDate} onChange={(e) => setContextDate(e.target.value)} className="border border-[var(--card-border)] rounded px-2 py-2 text-sm" />
           <input aria-label="Stakeholder" value={contextStakeholder} onChange={(e) => setContextStakeholder(e.target.value)} placeholder="Stakeholder" className="border border-[var(--card-border)] rounded px-2 py-2 text-sm" />
@@ -240,7 +269,7 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
           <textarea aria-label="Agenda items" value={contextAgenda} onChange={(e) => setContextAgenda(e.target.value)} placeholder="Agenda items (one per line)" rows={3} className="border border-[var(--card-border)] rounded px-2 py-2 text-sm" />
           <textarea aria-label="Desired outcome" value={contextOutcome} onChange={(e) => setContextOutcome(e.target.value)} placeholder="Desired outcome" rows={3} className="border border-[var(--card-border)] rounded px-2 py-2 text-sm" />
         </div>
-        <div className="mt-3 flex flex-wrap items-center gap-3"><button type="button" onClick={saveMeetingContext} disabled={contextSaving || !contextTitle.trim()} className="flowstate-accent-button rounded px-3 py-2 text-sm font-medium text-white disabled:opacity-50">{contextSaving ? "Saving…" : meetingContextId ? "Update meeting context" : "Save meeting context"}</button><Link href={`/clients/${organizationId}/scratchpad`} className="rounded border border-[var(--card-border)] px-3 py-2 text-sm font-medium text-[var(--foreground)] hover:border-[var(--accent)]">Open Meeting Scratch Pad</Link><span role="status" aria-live="polite" className="text-xs text-[var(--muted)]">{contextSaveStatus === "saving" ? "Meeting context is being saved…" : contextSaveStatus === "saved" ? "Meeting context saved and stored in Meeting Context." : contextSaveStatus === "error" ? `Meeting context could not be saved: ${contextSaveError}` : "Draft recovery is on for this browser; captures remain queued offline until connectivity returns."}</span></div>
+        <div className="mt-3 flex flex-wrap items-center gap-3"><button type="button" onClick={saveMeetingContext} disabled={contextSaving || !contextTitle.trim()} className="flowstate-accent-button rounded px-3 py-2 text-sm font-medium text-white disabled:opacity-50">{contextSaving ? "Saving…" : meetingContextId ? "Update meeting context" : "Save meeting context"}</button><Link href={`/clients/${organizationId}/meetings`} className="rounded border border-[var(--card-border)] px-3 py-2 text-sm font-medium text-[var(--foreground)] hover:border-[var(--accent)]">Meeting Agendas</Link><Link href={meetingContextId ? `/clients/${organizationId}/scratchpad?contextId=${encodeURIComponent(meetingContextId)}` : `/clients/${organizationId}/scratchpad`} className="rounded border border-[var(--card-border)] px-3 py-2 text-sm font-medium text-[var(--foreground)] hover:border-[var(--accent)]">Open Meeting Scratch Pad</Link><span role="status" aria-live="polite" className="text-xs text-[var(--muted)]">{contextSaveStatus === "saving" ? "Meeting context is being saved…" : contextSaveStatus === "saved" ? "Meeting context saved and stored in Meeting Context." : contextSaveStatus === "error" ? `Meeting context could not be saved: ${contextSaveError}` : "Draft recovery is on for this browser; captures remain queued offline until connectivity returns."}</span></div>
       </section>
 
       <section className="workspace-card mb-6 p-4" aria-labelledby="capture-status-title">
