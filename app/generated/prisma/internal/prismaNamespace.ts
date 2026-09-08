@@ -402,6 +402,7 @@ export const ModelName = {
   Achievement: 'Achievement',
   AchievementStakeholder: 'AchievementStakeholder',
   AssessmentSession: 'AssessmentSession',
+  MeetingContext: 'MeetingContext',
   CapturedInput: 'CapturedInput',
   CapturedInputAttachment: 'CapturedInputAttachment',
   InboundEmailEndpoint: 'InboundEmailEndpoint',
@@ -446,7 +447,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "capturedInput" | "capturedInputAttachment" | "inboundEmailEndpoint" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "growthAction" | "planningItem" | "communicationPack" | "communicationPackAcknowledgement" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob" | "assessmentTask" | "agentDefinition" | "agentPromptVersion" | "agentInputRule" | "agentRun" | "agentOutput"
+    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "meetingContext" | "capturedInput" | "capturedInputAttachment" | "inboundEmailEndpoint" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "growthAction" | "planningItem" | "communicationPack" | "communicationPackAcknowledgement" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob" | "assessmentTask" | "agentDefinition" | "agentPromptVersion" | "agentInputRule" | "agentRun" | "agentOutput"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1779,6 +1780,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.AssessmentSessionCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.AssessmentSessionCountAggregateOutputType> | number
+        }
+      }
+    }
+    MeetingContext: {
+      payload: Prisma.$MeetingContextPayload<ExtArgs>
+      fields: Prisma.MeetingContextFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MeetingContextFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MeetingContextPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MeetingContextFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MeetingContextPayload>
+        }
+        findFirst: {
+          args: Prisma.MeetingContextFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MeetingContextPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MeetingContextFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MeetingContextPayload>
+        }
+        findMany: {
+          args: Prisma.MeetingContextFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MeetingContextPayload>[]
+        }
+        create: {
+          args: Prisma.MeetingContextCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MeetingContextPayload>
+        }
+        createMany: {
+          args: Prisma.MeetingContextCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MeetingContextCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MeetingContextPayload>[]
+        }
+        delete: {
+          args: Prisma.MeetingContextDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MeetingContextPayload>
+        }
+        update: {
+          args: Prisma.MeetingContextUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MeetingContextPayload>
+        }
+        deleteMany: {
+          args: Prisma.MeetingContextDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MeetingContextUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MeetingContextUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MeetingContextPayload>[]
+        }
+        upsert: {
+          args: Prisma.MeetingContextUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MeetingContextPayload>
+        }
+        aggregate: {
+          args: Prisma.MeetingContextAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMeetingContext>
+        }
+        groupBy: {
+          args: Prisma.MeetingContextGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MeetingContextGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MeetingContextCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MeetingContextCountAggregateOutputType> | number
         }
       }
     }
@@ -4191,10 +4266,32 @@ export const AssessmentSessionScalarFieldEnum = {
 export type AssessmentSessionScalarFieldEnum = (typeof AssessmentSessionScalarFieldEnum)[keyof typeof AssessmentSessionScalarFieldEnum]
 
 
+export const MeetingContextScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  title: 'title',
+  startsAt: 'startsAt',
+  dateTime: 'dateTime',
+  stakeholderName: 'stakeholderName',
+  stakeholders: 'stakeholders',
+  domainName: 'domainName',
+  domain: 'domain',
+  objectives: 'objectives',
+  agendaItems: 'agendaItems',
+  desiredOutcome: 'desiredOutcome',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MeetingContextScalarFieldEnum = (typeof MeetingContextScalarFieldEnum)[keyof typeof MeetingContextScalarFieldEnum]
+
+
 export const CapturedInputScalarFieldEnum = {
   id: 'id',
   organizationId: 'organizationId',
   sessionId: 'sessionId',
+  meetingContextId: 'meetingContextId',
+  revision: 'revision',
   type: 'type',
   sourceRef: 'sourceRef',
   senderEmail: 'senderEmail',
@@ -5225,6 +5322,7 @@ export type GlobalOmitConfig = {
   achievement?: Prisma.AchievementOmit
   achievementStakeholder?: Prisma.AchievementStakeholderOmit
   assessmentSession?: Prisma.AssessmentSessionOmit
+  meetingContext?: Prisma.MeetingContextOmit
   capturedInput?: Prisma.CapturedInputOmit
   capturedInputAttachment?: Prisma.CapturedInputAttachmentOmit
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointOmit

@@ -346,6 +346,7 @@ model CapturedInput {
   organizationId String
   sessionId      String?
   meetingContextId String?
+  revision       Int               @default(0)
   type           InputType
   sourceRef      String?
   senderEmail    String?

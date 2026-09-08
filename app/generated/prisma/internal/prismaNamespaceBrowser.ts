@@ -69,6 +69,7 @@ export const ModelName = {
   Achievement: 'Achievement',
   AchievementStakeholder: 'AchievementStakeholder',
   AssessmentSession: 'AssessmentSession',
+  MeetingContext: 'MeetingContext',
   CapturedInput: 'CapturedInput',
   CapturedInputAttachment: 'CapturedInputAttachment',
   InboundEmailEndpoint: 'InboundEmailEndpoint',
@@ -340,10 +341,32 @@ export const AssessmentSessionScalarFieldEnum = {
 export type AssessmentSessionScalarFieldEnum = (typeof AssessmentSessionScalarFieldEnum)[keyof typeof AssessmentSessionScalarFieldEnum]
 
 
+export const MeetingContextScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  title: 'title',
+  startsAt: 'startsAt',
+  dateTime: 'dateTime',
+  stakeholderName: 'stakeholderName',
+  stakeholders: 'stakeholders',
+  domainName: 'domainName',
+  domain: 'domain',
+  objectives: 'objectives',
+  agendaItems: 'agendaItems',
+  desiredOutcome: 'desiredOutcome',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MeetingContextScalarFieldEnum = (typeof MeetingContextScalarFieldEnum)[keyof typeof MeetingContextScalarFieldEnum]
+
+
 export const CapturedInputScalarFieldEnum = {
   id: 'id',
   organizationId: 'organizationId',
   sessionId: 'sessionId',
+  meetingContextId: 'meetingContextId',
+  revision: 'revision',
   type: 'type',
   sourceRef: 'sourceRef',
   senderEmail: 'senderEmail',

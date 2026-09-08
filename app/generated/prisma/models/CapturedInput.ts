@@ -20,14 +20,26 @@ export type CapturedInputModel = runtime.Types.Result.DefaultSelection<Prisma.$C
 
 export type AggregateCapturedInput = {
   _count: CapturedInputCountAggregateOutputType | null
+  _avg: CapturedInputAvgAggregateOutputType | null
+  _sum: CapturedInputSumAggregateOutputType | null
   _min: CapturedInputMinAggregateOutputType | null
   _max: CapturedInputMaxAggregateOutputType | null
+}
+
+export type CapturedInputAvgAggregateOutputType = {
+  revision: number | null
+}
+
+export type CapturedInputSumAggregateOutputType = {
+  revision: number | null
 }
 
 export type CapturedInputMinAggregateOutputType = {
   id: string | null
   organizationId: string | null
   sessionId: string | null
+  meetingContextId: string | null
+  revision: number | null
   type: $Enums.InputType | null
   sourceRef: string | null
   senderEmail: string | null
@@ -48,6 +60,8 @@ export type CapturedInputMaxAggregateOutputType = {
   id: string | null
   organizationId: string | null
   sessionId: string | null
+  meetingContextId: string | null
+  revision: number | null
   type: $Enums.InputType | null
   sourceRef: string | null
   senderEmail: string | null
@@ -68,6 +82,8 @@ export type CapturedInputCountAggregateOutputType = {
   id: number
   organizationId: number
   sessionId: number
+  meetingContextId: number
+  revision: number
   type: number
   sourceRef: number
   senderEmail: number
@@ -86,10 +102,20 @@ export type CapturedInputCountAggregateOutputType = {
 }
 
 
+export type CapturedInputAvgAggregateInputType = {
+  revision?: true
+}
+
+export type CapturedInputSumAggregateInputType = {
+  revision?: true
+}
+
 export type CapturedInputMinAggregateInputType = {
   id?: true
   organizationId?: true
   sessionId?: true
+  meetingContextId?: true
+  revision?: true
   type?: true
   sourceRef?: true
   senderEmail?: true
@@ -110,6 +136,8 @@ export type CapturedInputMaxAggregateInputType = {
   id?: true
   organizationId?: true
   sessionId?: true
+  meetingContextId?: true
+  revision?: true
   type?: true
   sourceRef?: true
   senderEmail?: true
@@ -130,6 +158,8 @@ export type CapturedInputCountAggregateInputType = {
   id?: true
   organizationId?: true
   sessionId?: true
+  meetingContextId?: true
+  revision?: true
   type?: true
   sourceRef?: true
   senderEmail?: true
@@ -185,6 +215,18 @@ export type CapturedInputAggregateArgs<ExtArgs extends runtime.Types.Extensions.
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    *
+   * Select which fields to average
+  **/
+  _avg?: CapturedInputAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   *
+   * Select which fields to sum
+  **/
+  _sum?: CapturedInputSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   *
    * Select which fields to find the minimum value
   **/
   _min?: CapturedInputMinAggregateInputType
@@ -215,6 +257,8 @@ export type CapturedInputGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   _count?: CapturedInputCountAggregateInputType | true
+  _avg?: CapturedInputAvgAggregateInputType
+  _sum?: CapturedInputSumAggregateInputType
   _min?: CapturedInputMinAggregateInputType
   _max?: CapturedInputMaxAggregateInputType
 }
@@ -223,6 +267,8 @@ export type CapturedInputGroupByOutputType = {
   id: string
   organizationId: string
   sessionId: string | null
+  meetingContextId: string | null
+  revision: number
   type: $Enums.InputType
   sourceRef: string | null
   senderEmail: string | null
@@ -238,6 +284,8 @@ export type CapturedInputGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   _count: CapturedInputCountAggregateOutputType | null
+  _avg: CapturedInputAvgAggregateOutputType | null
+  _sum: CapturedInputSumAggregateOutputType | null
   _min: CapturedInputMinAggregateOutputType | null
   _max: CapturedInputMaxAggregateOutputType | null
 }
@@ -264,6 +312,8 @@ export type CapturedInputWhereInput = {
   id?: Prisma.StringFilter<"CapturedInput"> | string
   organizationId?: Prisma.StringFilter<"CapturedInput"> | string
   sessionId?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  meetingContextId?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  revision?: Prisma.IntFilter<"CapturedInput"> | number
   type?: Prisma.EnumInputTypeFilter<"CapturedInput"> | $Enums.InputType
   sourceRef?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   senderEmail?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
@@ -280,6 +330,7 @@ export type CapturedInputWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"CapturedInput"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   session?: Prisma.XOR<Prisma.AssessmentSessionNullableScalarRelationFilter, Prisma.AssessmentSessionWhereInput> | null
+  meetingContext?: Prisma.XOR<Prisma.MeetingContextNullableScalarRelationFilter, Prisma.MeetingContextWhereInput> | null
   segments?: Prisma.CapturedSegmentListRelationFilter
   attachments?: Prisma.CapturedInputAttachmentListRelationFilter
   agentRuns?: Prisma.AgentRunListRelationFilter
@@ -289,6 +340,8 @@ export type CapturedInputOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   sessionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  meetingContextId?: Prisma.SortOrderInput | Prisma.SortOrder
+  revision?: Prisma.SortOrder
   type?: Prisma.SortOrder
   sourceRef?: Prisma.SortOrderInput | Prisma.SortOrder
   senderEmail?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -305,6 +358,7 @@ export type CapturedInputOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   organization?: Prisma.OrganizationOrderByWithRelationInput
   session?: Prisma.AssessmentSessionOrderByWithRelationInput
+  meetingContext?: Prisma.MeetingContextOrderByWithRelationInput
   segments?: Prisma.CapturedSegmentOrderByRelationAggregateInput
   attachments?: Prisma.CapturedInputAttachmentOrderByRelationAggregateInput
   agentRuns?: Prisma.AgentRunOrderByRelationAggregateInput
@@ -318,6 +372,8 @@ export type CapturedInputWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.CapturedInputWhereInput | Prisma.CapturedInputWhereInput[]
   organizationId?: Prisma.StringFilter<"CapturedInput"> | string
   sessionId?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  meetingContextId?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  revision?: Prisma.IntFilter<"CapturedInput"> | number
   type?: Prisma.EnumInputTypeFilter<"CapturedInput"> | $Enums.InputType
   sourceRef?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   senderEmail?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
@@ -334,6 +390,7 @@ export type CapturedInputWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"CapturedInput"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   session?: Prisma.XOR<Prisma.AssessmentSessionNullableScalarRelationFilter, Prisma.AssessmentSessionWhereInput> | null
+  meetingContext?: Prisma.XOR<Prisma.MeetingContextNullableScalarRelationFilter, Prisma.MeetingContextWhereInput> | null
   segments?: Prisma.CapturedSegmentListRelationFilter
   attachments?: Prisma.CapturedInputAttachmentListRelationFilter
   agentRuns?: Prisma.AgentRunListRelationFilter
@@ -343,6 +400,8 @@ export type CapturedInputOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   sessionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  meetingContextId?: Prisma.SortOrderInput | Prisma.SortOrder
+  revision?: Prisma.SortOrder
   type?: Prisma.SortOrder
   sourceRef?: Prisma.SortOrderInput | Prisma.SortOrder
   senderEmail?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -358,8 +417,10 @@ export type CapturedInputOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.CapturedInputCountOrderByAggregateInput
+  _avg?: Prisma.CapturedInputAvgOrderByAggregateInput
   _max?: Prisma.CapturedInputMaxOrderByAggregateInput
   _min?: Prisma.CapturedInputMinOrderByAggregateInput
+  _sum?: Prisma.CapturedInputSumOrderByAggregateInput
 }
 
 export type CapturedInputScalarWhereWithAggregatesInput = {
@@ -369,6 +430,8 @@ export type CapturedInputScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"CapturedInput"> | string
   organizationId?: Prisma.StringWithAggregatesFilter<"CapturedInput"> | string
   sessionId?: Prisma.StringNullableWithAggregatesFilter<"CapturedInput"> | string | null
+  meetingContextId?: Prisma.StringNullableWithAggregatesFilter<"CapturedInput"> | string | null
+  revision?: Prisma.IntWithAggregatesFilter<"CapturedInput"> | number
   type?: Prisma.EnumInputTypeWithAggregatesFilter<"CapturedInput"> | $Enums.InputType
   sourceRef?: Prisma.StringNullableWithAggregatesFilter<"CapturedInput"> | string | null
   senderEmail?: Prisma.StringNullableWithAggregatesFilter<"CapturedInput"> | string | null
@@ -387,6 +450,7 @@ export type CapturedInputScalarWhereWithAggregatesInput = {
 
 export type CapturedInputCreateInput = {
   id?: string
+  revision?: number
   type: $Enums.InputType
   sourceRef?: string | null
   senderEmail?: string | null
@@ -403,6 +467,7 @@ export type CapturedInputCreateInput = {
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutCapturedInputsInput
   session?: Prisma.AssessmentSessionCreateNestedOneWithoutCapturedInputsInput
+  meetingContext?: Prisma.MeetingContextCreateNestedOneWithoutCapturedInputsInput
   segments?: Prisma.CapturedSegmentCreateNestedManyWithoutCapturedInputInput
   attachments?: Prisma.CapturedInputAttachmentCreateNestedManyWithoutCapturedInputInput
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutCapturedInputInput
@@ -412,6 +477,8 @@ export type CapturedInputUncheckedCreateInput = {
   id?: string
   organizationId: string
   sessionId?: string | null
+  meetingContextId?: string | null
+  revision?: number
   type: $Enums.InputType
   sourceRef?: string | null
   senderEmail?: string | null
@@ -433,6 +500,7 @@ export type CapturedInputUncheckedCreateInput = {
 
 export type CapturedInputUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -449,6 +517,7 @@ export type CapturedInputUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutCapturedInputsNestedInput
   session?: Prisma.AssessmentSessionUpdateOneWithoutCapturedInputsNestedInput
+  meetingContext?: Prisma.MeetingContextUpdateOneWithoutCapturedInputsNestedInput
   segments?: Prisma.CapturedSegmentUpdateManyWithoutCapturedInputNestedInput
   attachments?: Prisma.CapturedInputAttachmentUpdateManyWithoutCapturedInputNestedInput
   agentRuns?: Prisma.AgentRunUpdateManyWithoutCapturedInputNestedInput
@@ -458,6 +527,8 @@ export type CapturedInputUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  meetingContextId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -481,6 +552,8 @@ export type CapturedInputCreateManyInput = {
   id?: string
   organizationId: string
   sessionId?: string | null
+  meetingContextId?: string | null
+  revision?: number
   type: $Enums.InputType
   sourceRef?: string | null
   senderEmail?: string | null
@@ -499,6 +572,7 @@ export type CapturedInputCreateManyInput = {
 
 export type CapturedInputUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -519,6 +593,8 @@ export type CapturedInputUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  meetingContextId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -554,6 +630,8 @@ export type CapturedInputCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   sessionId?: Prisma.SortOrder
+  meetingContextId?: Prisma.SortOrder
+  revision?: Prisma.SortOrder
   type?: Prisma.SortOrder
   sourceRef?: Prisma.SortOrder
   senderEmail?: Prisma.SortOrder
@@ -570,10 +648,16 @@ export type CapturedInputCountOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type CapturedInputAvgOrderByAggregateInput = {
+  revision?: Prisma.SortOrder
+}
+
 export type CapturedInputMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   sessionId?: Prisma.SortOrder
+  meetingContextId?: Prisma.SortOrder
+  revision?: Prisma.SortOrder
   type?: Prisma.SortOrder
   sourceRef?: Prisma.SortOrder
   senderEmail?: Prisma.SortOrder
@@ -594,6 +678,8 @@ export type CapturedInputMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   sessionId?: Prisma.SortOrder
+  meetingContextId?: Prisma.SortOrder
+  revision?: Prisma.SortOrder
   type?: Prisma.SortOrder
   sourceRef?: Prisma.SortOrder
   senderEmail?: Prisma.SortOrder
@@ -608,6 +694,10 @@ export type CapturedInputMinOrderByAggregateInput = {
   capturedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type CapturedInputSumOrderByAggregateInput = {
+  revision?: Prisma.SortOrder
 }
 
 export type CapturedInputScalarRelationFilter = {
@@ -699,6 +789,48 @@ export type CapturedInputUncheckedUpdateManyWithoutSessionNestedInput = {
   deleteMany?: Prisma.CapturedInputScalarWhereInput | Prisma.CapturedInputScalarWhereInput[]
 }
 
+export type CapturedInputCreateNestedManyWithoutMeetingContextInput = {
+  create?: Prisma.XOR<Prisma.CapturedInputCreateWithoutMeetingContextInput, Prisma.CapturedInputUncheckedCreateWithoutMeetingContextInput> | Prisma.CapturedInputCreateWithoutMeetingContextInput[] | Prisma.CapturedInputUncheckedCreateWithoutMeetingContextInput[]
+  connectOrCreate?: Prisma.CapturedInputCreateOrConnectWithoutMeetingContextInput | Prisma.CapturedInputCreateOrConnectWithoutMeetingContextInput[]
+  createMany?: Prisma.CapturedInputCreateManyMeetingContextInputEnvelope
+  connect?: Prisma.CapturedInputWhereUniqueInput | Prisma.CapturedInputWhereUniqueInput[]
+}
+
+export type CapturedInputUncheckedCreateNestedManyWithoutMeetingContextInput = {
+  create?: Prisma.XOR<Prisma.CapturedInputCreateWithoutMeetingContextInput, Prisma.CapturedInputUncheckedCreateWithoutMeetingContextInput> | Prisma.CapturedInputCreateWithoutMeetingContextInput[] | Prisma.CapturedInputUncheckedCreateWithoutMeetingContextInput[]
+  connectOrCreate?: Prisma.CapturedInputCreateOrConnectWithoutMeetingContextInput | Prisma.CapturedInputCreateOrConnectWithoutMeetingContextInput[]
+  createMany?: Prisma.CapturedInputCreateManyMeetingContextInputEnvelope
+  connect?: Prisma.CapturedInputWhereUniqueInput | Prisma.CapturedInputWhereUniqueInput[]
+}
+
+export type CapturedInputUpdateManyWithoutMeetingContextNestedInput = {
+  create?: Prisma.XOR<Prisma.CapturedInputCreateWithoutMeetingContextInput, Prisma.CapturedInputUncheckedCreateWithoutMeetingContextInput> | Prisma.CapturedInputCreateWithoutMeetingContextInput[] | Prisma.CapturedInputUncheckedCreateWithoutMeetingContextInput[]
+  connectOrCreate?: Prisma.CapturedInputCreateOrConnectWithoutMeetingContextInput | Prisma.CapturedInputCreateOrConnectWithoutMeetingContextInput[]
+  upsert?: Prisma.CapturedInputUpsertWithWhereUniqueWithoutMeetingContextInput | Prisma.CapturedInputUpsertWithWhereUniqueWithoutMeetingContextInput[]
+  createMany?: Prisma.CapturedInputCreateManyMeetingContextInputEnvelope
+  set?: Prisma.CapturedInputWhereUniqueInput | Prisma.CapturedInputWhereUniqueInput[]
+  disconnect?: Prisma.CapturedInputWhereUniqueInput | Prisma.CapturedInputWhereUniqueInput[]
+  delete?: Prisma.CapturedInputWhereUniqueInput | Prisma.CapturedInputWhereUniqueInput[]
+  connect?: Prisma.CapturedInputWhereUniqueInput | Prisma.CapturedInputWhereUniqueInput[]
+  update?: Prisma.CapturedInputUpdateWithWhereUniqueWithoutMeetingContextInput | Prisma.CapturedInputUpdateWithWhereUniqueWithoutMeetingContextInput[]
+  updateMany?: Prisma.CapturedInputUpdateManyWithWhereWithoutMeetingContextInput | Prisma.CapturedInputUpdateManyWithWhereWithoutMeetingContextInput[]
+  deleteMany?: Prisma.CapturedInputScalarWhereInput | Prisma.CapturedInputScalarWhereInput[]
+}
+
+export type CapturedInputUncheckedUpdateManyWithoutMeetingContextNestedInput = {
+  create?: Prisma.XOR<Prisma.CapturedInputCreateWithoutMeetingContextInput, Prisma.CapturedInputUncheckedCreateWithoutMeetingContextInput> | Prisma.CapturedInputCreateWithoutMeetingContextInput[] | Prisma.CapturedInputUncheckedCreateWithoutMeetingContextInput[]
+  connectOrCreate?: Prisma.CapturedInputCreateOrConnectWithoutMeetingContextInput | Prisma.CapturedInputCreateOrConnectWithoutMeetingContextInput[]
+  upsert?: Prisma.CapturedInputUpsertWithWhereUniqueWithoutMeetingContextInput | Prisma.CapturedInputUpsertWithWhereUniqueWithoutMeetingContextInput[]
+  createMany?: Prisma.CapturedInputCreateManyMeetingContextInputEnvelope
+  set?: Prisma.CapturedInputWhereUniqueInput | Prisma.CapturedInputWhereUniqueInput[]
+  disconnect?: Prisma.CapturedInputWhereUniqueInput | Prisma.CapturedInputWhereUniqueInput[]
+  delete?: Prisma.CapturedInputWhereUniqueInput | Prisma.CapturedInputWhereUniqueInput[]
+  connect?: Prisma.CapturedInputWhereUniqueInput | Prisma.CapturedInputWhereUniqueInput[]
+  update?: Prisma.CapturedInputUpdateWithWhereUniqueWithoutMeetingContextInput | Prisma.CapturedInputUpdateWithWhereUniqueWithoutMeetingContextInput[]
+  updateMany?: Prisma.CapturedInputUpdateManyWithWhereWithoutMeetingContextInput | Prisma.CapturedInputUpdateManyWithWhereWithoutMeetingContextInput[]
+  deleteMany?: Prisma.CapturedInputScalarWhereInput | Prisma.CapturedInputScalarWhereInput[]
+}
+
 export type EnumInputTypeFieldUpdateOperationsInput = {
   set?: $Enums.InputType
 }
@@ -751,6 +883,7 @@ export type CapturedInputUpdateOneRequiredWithoutAgentRunsNestedInput = {
 
 export type CapturedInputCreateWithoutOrganizationInput = {
   id?: string
+  revision?: number
   type: $Enums.InputType
   sourceRef?: string | null
   senderEmail?: string | null
@@ -766,6 +899,7 @@ export type CapturedInputCreateWithoutOrganizationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   session?: Prisma.AssessmentSessionCreateNestedOneWithoutCapturedInputsInput
+  meetingContext?: Prisma.MeetingContextCreateNestedOneWithoutCapturedInputsInput
   segments?: Prisma.CapturedSegmentCreateNestedManyWithoutCapturedInputInput
   attachments?: Prisma.CapturedInputAttachmentCreateNestedManyWithoutCapturedInputInput
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutCapturedInputInput
@@ -774,6 +908,8 @@ export type CapturedInputCreateWithoutOrganizationInput = {
 export type CapturedInputUncheckedCreateWithoutOrganizationInput = {
   id?: string
   sessionId?: string | null
+  meetingContextId?: string | null
+  revision?: number
   type: $Enums.InputType
   sourceRef?: string | null
   senderEmail?: string | null
@@ -826,6 +962,8 @@ export type CapturedInputScalarWhereInput = {
   id?: Prisma.StringFilter<"CapturedInput"> | string
   organizationId?: Prisma.StringFilter<"CapturedInput"> | string
   sessionId?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  meetingContextId?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  revision?: Prisma.IntFilter<"CapturedInput"> | number
   type?: Prisma.EnumInputTypeFilter<"CapturedInput"> | $Enums.InputType
   sourceRef?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   senderEmail?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
@@ -844,6 +982,7 @@ export type CapturedInputScalarWhereInput = {
 
 export type CapturedInputCreateWithoutSessionInput = {
   id?: string
+  revision?: number
   type: $Enums.InputType
   sourceRef?: string | null
   senderEmail?: string | null
@@ -859,6 +998,7 @@ export type CapturedInputCreateWithoutSessionInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutCapturedInputsInput
+  meetingContext?: Prisma.MeetingContextCreateNestedOneWithoutCapturedInputsInput
   segments?: Prisma.CapturedSegmentCreateNestedManyWithoutCapturedInputInput
   attachments?: Prisma.CapturedInputAttachmentCreateNestedManyWithoutCapturedInputInput
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutCapturedInputInput
@@ -867,6 +1007,8 @@ export type CapturedInputCreateWithoutSessionInput = {
 export type CapturedInputUncheckedCreateWithoutSessionInput = {
   id?: string
   organizationId: string
+  meetingContextId?: string | null
+  revision?: number
   type: $Enums.InputType
   sourceRef?: string | null
   senderEmail?: string | null
@@ -912,8 +1054,9 @@ export type CapturedInputUpdateManyWithWhereWithoutSessionInput = {
   data: Prisma.XOR<Prisma.CapturedInputUpdateManyMutationInput, Prisma.CapturedInputUncheckedUpdateManyWithoutSessionInput>
 }
 
-export type CapturedInputCreateWithoutAttachmentsInput = {
+export type CapturedInputCreateWithoutMeetingContextInput = {
   id?: string
+  revision?: number
   type: $Enums.InputType
   sourceRef?: string | null
   senderEmail?: string | null
@@ -931,6 +1074,81 @@ export type CapturedInputCreateWithoutAttachmentsInput = {
   organization: Prisma.OrganizationCreateNestedOneWithoutCapturedInputsInput
   session?: Prisma.AssessmentSessionCreateNestedOneWithoutCapturedInputsInput
   segments?: Prisma.CapturedSegmentCreateNestedManyWithoutCapturedInputInput
+  attachments?: Prisma.CapturedInputAttachmentCreateNestedManyWithoutCapturedInputInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutCapturedInputInput
+}
+
+export type CapturedInputUncheckedCreateWithoutMeetingContextInput = {
+  id?: string
+  organizationId: string
+  sessionId?: string | null
+  revision?: number
+  type: $Enums.InputType
+  sourceRef?: string | null
+  senderEmail?: string | null
+  senderName?: string | null
+  subject?: string | null
+  idempotencyKey?: string | null
+  quarantineReason?: string | null
+  rawText?: string | null
+  locationTag?: string | null
+  status?: $Enums.ProcessingStatus
+  error?: string | null
+  capturedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  segments?: Prisma.CapturedSegmentUncheckedCreateNestedManyWithoutCapturedInputInput
+  attachments?: Prisma.CapturedInputAttachmentUncheckedCreateNestedManyWithoutCapturedInputInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutCapturedInputInput
+}
+
+export type CapturedInputCreateOrConnectWithoutMeetingContextInput = {
+  where: Prisma.CapturedInputWhereUniqueInput
+  create: Prisma.XOR<Prisma.CapturedInputCreateWithoutMeetingContextInput, Prisma.CapturedInputUncheckedCreateWithoutMeetingContextInput>
+}
+
+export type CapturedInputCreateManyMeetingContextInputEnvelope = {
+  data: Prisma.CapturedInputCreateManyMeetingContextInput | Prisma.CapturedInputCreateManyMeetingContextInput[]
+  skipDuplicates?: boolean
+}
+
+export type CapturedInputUpsertWithWhereUniqueWithoutMeetingContextInput = {
+  where: Prisma.CapturedInputWhereUniqueInput
+  update: Prisma.XOR<Prisma.CapturedInputUpdateWithoutMeetingContextInput, Prisma.CapturedInputUncheckedUpdateWithoutMeetingContextInput>
+  create: Prisma.XOR<Prisma.CapturedInputCreateWithoutMeetingContextInput, Prisma.CapturedInputUncheckedCreateWithoutMeetingContextInput>
+}
+
+export type CapturedInputUpdateWithWhereUniqueWithoutMeetingContextInput = {
+  where: Prisma.CapturedInputWhereUniqueInput
+  data: Prisma.XOR<Prisma.CapturedInputUpdateWithoutMeetingContextInput, Prisma.CapturedInputUncheckedUpdateWithoutMeetingContextInput>
+}
+
+export type CapturedInputUpdateManyWithWhereWithoutMeetingContextInput = {
+  where: Prisma.CapturedInputScalarWhereInput
+  data: Prisma.XOR<Prisma.CapturedInputUpdateManyMutationInput, Prisma.CapturedInputUncheckedUpdateManyWithoutMeetingContextInput>
+}
+
+export type CapturedInputCreateWithoutAttachmentsInput = {
+  id?: string
+  revision?: number
+  type: $Enums.InputType
+  sourceRef?: string | null
+  senderEmail?: string | null
+  senderName?: string | null
+  subject?: string | null
+  idempotencyKey?: string | null
+  quarantineReason?: string | null
+  rawText?: string | null
+  locationTag?: string | null
+  status?: $Enums.ProcessingStatus
+  error?: string | null
+  capturedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutCapturedInputsInput
+  session?: Prisma.AssessmentSessionCreateNestedOneWithoutCapturedInputsInput
+  meetingContext?: Prisma.MeetingContextCreateNestedOneWithoutCapturedInputsInput
+  segments?: Prisma.CapturedSegmentCreateNestedManyWithoutCapturedInputInput
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutCapturedInputInput
 }
 
@@ -938,6 +1156,8 @@ export type CapturedInputUncheckedCreateWithoutAttachmentsInput = {
   id?: string
   organizationId: string
   sessionId?: string | null
+  meetingContextId?: string | null
+  revision?: number
   type: $Enums.InputType
   sourceRef?: string | null
   senderEmail?: string | null
@@ -974,6 +1194,7 @@ export type CapturedInputUpdateToOneWithWhereWithoutAttachmentsInput = {
 
 export type CapturedInputUpdateWithoutAttachmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -990,6 +1211,7 @@ export type CapturedInputUpdateWithoutAttachmentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutCapturedInputsNestedInput
   session?: Prisma.AssessmentSessionUpdateOneWithoutCapturedInputsNestedInput
+  meetingContext?: Prisma.MeetingContextUpdateOneWithoutCapturedInputsNestedInput
   segments?: Prisma.CapturedSegmentUpdateManyWithoutCapturedInputNestedInput
   agentRuns?: Prisma.AgentRunUpdateManyWithoutCapturedInputNestedInput
 }
@@ -998,6 +1220,8 @@ export type CapturedInputUncheckedUpdateWithoutAttachmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  meetingContextId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1018,6 +1242,7 @@ export type CapturedInputUncheckedUpdateWithoutAttachmentsInput = {
 
 export type CapturedInputCreateWithoutSegmentsInput = {
   id?: string
+  revision?: number
   type: $Enums.InputType
   sourceRef?: string | null
   senderEmail?: string | null
@@ -1034,6 +1259,7 @@ export type CapturedInputCreateWithoutSegmentsInput = {
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutCapturedInputsInput
   session?: Prisma.AssessmentSessionCreateNestedOneWithoutCapturedInputsInput
+  meetingContext?: Prisma.MeetingContextCreateNestedOneWithoutCapturedInputsInput
   attachments?: Prisma.CapturedInputAttachmentCreateNestedManyWithoutCapturedInputInput
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutCapturedInputInput
 }
@@ -1042,6 +1268,8 @@ export type CapturedInputUncheckedCreateWithoutSegmentsInput = {
   id?: string
   organizationId: string
   sessionId?: string | null
+  meetingContextId?: string | null
+  revision?: number
   type: $Enums.InputType
   sourceRef?: string | null
   senderEmail?: string | null
@@ -1078,6 +1306,7 @@ export type CapturedInputUpdateToOneWithWhereWithoutSegmentsInput = {
 
 export type CapturedInputUpdateWithoutSegmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1094,6 +1323,7 @@ export type CapturedInputUpdateWithoutSegmentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutCapturedInputsNestedInput
   session?: Prisma.AssessmentSessionUpdateOneWithoutCapturedInputsNestedInput
+  meetingContext?: Prisma.MeetingContextUpdateOneWithoutCapturedInputsNestedInput
   attachments?: Prisma.CapturedInputAttachmentUpdateManyWithoutCapturedInputNestedInput
   agentRuns?: Prisma.AgentRunUpdateManyWithoutCapturedInputNestedInput
 }
@@ -1102,6 +1332,8 @@ export type CapturedInputUncheckedUpdateWithoutSegmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  meetingContextId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1122,6 +1354,7 @@ export type CapturedInputUncheckedUpdateWithoutSegmentsInput = {
 
 export type CapturedInputCreateWithoutAgentRunsInput = {
   id?: string
+  revision?: number
   type: $Enums.InputType
   sourceRef?: string | null
   senderEmail?: string | null
@@ -1138,6 +1371,7 @@ export type CapturedInputCreateWithoutAgentRunsInput = {
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutCapturedInputsInput
   session?: Prisma.AssessmentSessionCreateNestedOneWithoutCapturedInputsInput
+  meetingContext?: Prisma.MeetingContextCreateNestedOneWithoutCapturedInputsInput
   segments?: Prisma.CapturedSegmentCreateNestedManyWithoutCapturedInputInput
   attachments?: Prisma.CapturedInputAttachmentCreateNestedManyWithoutCapturedInputInput
 }
@@ -1146,6 +1380,8 @@ export type CapturedInputUncheckedCreateWithoutAgentRunsInput = {
   id?: string
   organizationId: string
   sessionId?: string | null
+  meetingContextId?: string | null
+  revision?: number
   type: $Enums.InputType
   sourceRef?: string | null
   senderEmail?: string | null
@@ -1182,6 +1418,7 @@ export type CapturedInputUpdateToOneWithWhereWithoutAgentRunsInput = {
 
 export type CapturedInputUpdateWithoutAgentRunsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1198,6 +1435,7 @@ export type CapturedInputUpdateWithoutAgentRunsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutCapturedInputsNestedInput
   session?: Prisma.AssessmentSessionUpdateOneWithoutCapturedInputsNestedInput
+  meetingContext?: Prisma.MeetingContextUpdateOneWithoutCapturedInputsNestedInput
   segments?: Prisma.CapturedSegmentUpdateManyWithoutCapturedInputNestedInput
   attachments?: Prisma.CapturedInputAttachmentUpdateManyWithoutCapturedInputNestedInput
 }
@@ -1206,6 +1444,8 @@ export type CapturedInputUncheckedUpdateWithoutAgentRunsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  meetingContextId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1227,6 +1467,8 @@ export type CapturedInputUncheckedUpdateWithoutAgentRunsInput = {
 export type CapturedInputCreateManyOrganizationInput = {
   id?: string
   sessionId?: string | null
+  meetingContextId?: string | null
+  revision?: number
   type: $Enums.InputType
   sourceRef?: string | null
   senderEmail?: string | null
@@ -1245,6 +1487,7 @@ export type CapturedInputCreateManyOrganizationInput = {
 
 export type CapturedInputUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1260,6 +1503,7 @@ export type CapturedInputUpdateWithoutOrganizationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   session?: Prisma.AssessmentSessionUpdateOneWithoutCapturedInputsNestedInput
+  meetingContext?: Prisma.MeetingContextUpdateOneWithoutCapturedInputsNestedInput
   segments?: Prisma.CapturedSegmentUpdateManyWithoutCapturedInputNestedInput
   attachments?: Prisma.CapturedInputAttachmentUpdateManyWithoutCapturedInputNestedInput
   agentRuns?: Prisma.AgentRunUpdateManyWithoutCapturedInputNestedInput
@@ -1268,6 +1512,8 @@ export type CapturedInputUpdateWithoutOrganizationInput = {
 export type CapturedInputUncheckedUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  meetingContextId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1290,6 +1536,8 @@ export type CapturedInputUncheckedUpdateWithoutOrganizationInput = {
 export type CapturedInputUncheckedUpdateManyWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  meetingContextId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1309,6 +1557,8 @@ export type CapturedInputUncheckedUpdateManyWithoutOrganizationInput = {
 export type CapturedInputCreateManySessionInput = {
   id?: string
   organizationId: string
+  meetingContextId?: string | null
+  revision?: number
   type: $Enums.InputType
   sourceRef?: string | null
   senderEmail?: string | null
@@ -1327,6 +1577,7 @@ export type CapturedInputCreateManySessionInput = {
 
 export type CapturedInputUpdateWithoutSessionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1342,6 +1593,7 @@ export type CapturedInputUpdateWithoutSessionInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutCapturedInputsNestedInput
+  meetingContext?: Prisma.MeetingContextUpdateOneWithoutCapturedInputsNestedInput
   segments?: Prisma.CapturedSegmentUpdateManyWithoutCapturedInputNestedInput
   attachments?: Prisma.CapturedInputAttachmentUpdateManyWithoutCapturedInputNestedInput
   agentRuns?: Prisma.AgentRunUpdateManyWithoutCapturedInputNestedInput
@@ -1350,6 +1602,8 @@ export type CapturedInputUpdateWithoutSessionInput = {
 export type CapturedInputUncheckedUpdateWithoutSessionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  meetingContextId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1372,6 +1626,98 @@ export type CapturedInputUncheckedUpdateWithoutSessionInput = {
 export type CapturedInputUncheckedUpdateManyWithoutSessionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  meetingContextId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
+  sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  senderName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type CapturedInputCreateManyMeetingContextInput = {
+  id?: string
+  organizationId: string
+  sessionId?: string | null
+  revision?: number
+  type: $Enums.InputType
+  sourceRef?: string | null
+  senderEmail?: string | null
+  senderName?: string | null
+  subject?: string | null
+  idempotencyKey?: string | null
+  quarantineReason?: string | null
+  rawText?: string | null
+  locationTag?: string | null
+  status?: $Enums.ProcessingStatus
+  error?: string | null
+  capturedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type CapturedInputUpdateWithoutMeetingContextInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
+  sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  senderName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutCapturedInputsNestedInput
+  session?: Prisma.AssessmentSessionUpdateOneWithoutCapturedInputsNestedInput
+  segments?: Prisma.CapturedSegmentUpdateManyWithoutCapturedInputNestedInput
+  attachments?: Prisma.CapturedInputAttachmentUpdateManyWithoutCapturedInputNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutCapturedInputNestedInput
+}
+
+export type CapturedInputUncheckedUpdateWithoutMeetingContextInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
+  sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  senderName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  segments?: Prisma.CapturedSegmentUncheckedUpdateManyWithoutCapturedInputNestedInput
+  attachments?: Prisma.CapturedInputAttachmentUncheckedUpdateManyWithoutCapturedInputNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutCapturedInputNestedInput
+}
+
+export type CapturedInputUncheckedUpdateManyWithoutMeetingContextInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
   type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
   sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1441,6 +1787,8 @@ export type CapturedInputSelect<ExtArgs extends runtime.Types.Extensions.Interna
   id?: boolean
   organizationId?: boolean
   sessionId?: boolean
+  meetingContextId?: boolean
+  revision?: boolean
   type?: boolean
   sourceRef?: boolean
   senderEmail?: boolean
@@ -1457,6 +1805,7 @@ export type CapturedInputSelect<ExtArgs extends runtime.Types.Extensions.Interna
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   session?: boolean | Prisma.CapturedInput$sessionArgs<ExtArgs>
+  meetingContext?: boolean | Prisma.CapturedInput$meetingContextArgs<ExtArgs>
   segments?: boolean | Prisma.CapturedInput$segmentsArgs<ExtArgs>
   attachments?: boolean | Prisma.CapturedInput$attachmentsArgs<ExtArgs>
   agentRuns?: boolean | Prisma.CapturedInput$agentRunsArgs<ExtArgs>
@@ -1467,6 +1816,8 @@ export type CapturedInputSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   id?: boolean
   organizationId?: boolean
   sessionId?: boolean
+  meetingContextId?: boolean
+  revision?: boolean
   type?: boolean
   sourceRef?: boolean
   senderEmail?: boolean
@@ -1483,12 +1834,15 @@ export type CapturedInputSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   session?: boolean | Prisma.CapturedInput$sessionArgs<ExtArgs>
+  meetingContext?: boolean | Prisma.CapturedInput$meetingContextArgs<ExtArgs>
 }, ExtArgs["result"]["capturedInput"]>
 
 export type CapturedInputSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   organizationId?: boolean
   sessionId?: boolean
+  meetingContextId?: boolean
+  revision?: boolean
   type?: boolean
   sourceRef?: boolean
   senderEmail?: boolean
@@ -1505,12 +1859,15 @@ export type CapturedInputSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   session?: boolean | Prisma.CapturedInput$sessionArgs<ExtArgs>
+  meetingContext?: boolean | Prisma.CapturedInput$meetingContextArgs<ExtArgs>
 }, ExtArgs["result"]["capturedInput"]>
 
 export type CapturedInputSelectScalar = {
   id?: boolean
   organizationId?: boolean
   sessionId?: boolean
+  meetingContextId?: boolean
+  revision?: boolean
   type?: boolean
   sourceRef?: boolean
   senderEmail?: boolean
@@ -1527,10 +1884,11 @@ export type CapturedInputSelectScalar = {
   updatedAt?: boolean
 }
 
-export type CapturedInputOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "sessionId" | "type" | "sourceRef" | "senderEmail" | "senderName" | "subject" | "idempotencyKey" | "quarantineReason" | "rawText" | "locationTag" | "status" | "error" | "capturedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["capturedInput"]>
+export type CapturedInputOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "sessionId" | "meetingContextId" | "revision" | "type" | "sourceRef" | "senderEmail" | "senderName" | "subject" | "idempotencyKey" | "quarantineReason" | "rawText" | "locationTag" | "status" | "error" | "capturedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["capturedInput"]>
 export type CapturedInputInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   session?: boolean | Prisma.CapturedInput$sessionArgs<ExtArgs>
+  meetingContext?: boolean | Prisma.CapturedInput$meetingContextArgs<ExtArgs>
   segments?: boolean | Prisma.CapturedInput$segmentsArgs<ExtArgs>
   attachments?: boolean | Prisma.CapturedInput$attachmentsArgs<ExtArgs>
   agentRuns?: boolean | Prisma.CapturedInput$agentRunsArgs<ExtArgs>
@@ -1539,10 +1897,12 @@ export type CapturedInputInclude<ExtArgs extends runtime.Types.Extensions.Intern
 export type CapturedInputIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   session?: boolean | Prisma.CapturedInput$sessionArgs<ExtArgs>
+  meetingContext?: boolean | Prisma.CapturedInput$meetingContextArgs<ExtArgs>
 }
 export type CapturedInputIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   session?: boolean | Prisma.CapturedInput$sessionArgs<ExtArgs>
+  meetingContext?: boolean | Prisma.CapturedInput$meetingContextArgs<ExtArgs>
 }
 
 export type $CapturedInputPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1550,6 +1910,7 @@ export type $CapturedInputPayload<ExtArgs extends runtime.Types.Extensions.Inter
   objects: {
     organization: Prisma.$OrganizationPayload<ExtArgs>
     session: Prisma.$AssessmentSessionPayload<ExtArgs> | null
+    meetingContext: Prisma.$MeetingContextPayload<ExtArgs> | null
     segments: Prisma.$CapturedSegmentPayload<ExtArgs>[]
     attachments: Prisma.$CapturedInputAttachmentPayload<ExtArgs>[]
     agentRuns: Prisma.$AgentRunPayload<ExtArgs>[]
@@ -1558,6 +1919,8 @@ export type $CapturedInputPayload<ExtArgs extends runtime.Types.Extensions.Inter
     id: string
     organizationId: string
     sessionId: string | null
+    meetingContextId: string | null
+    revision: number
     type: $Enums.InputType
     sourceRef: string | null
     senderEmail: string | null
@@ -1968,6 +2331,7 @@ export interface Prisma__CapturedInputClient<T, Null = never, ExtArgs extends ru
   readonly [Symbol.toStringTag]: "PrismaPromise"
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   session<T extends Prisma.CapturedInput$sessionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapturedInput$sessionArgs<ExtArgs>>): Prisma.Prisma__AssessmentSessionClient<runtime.Types.Result.GetResult<Prisma.$AssessmentSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  meetingContext<T extends Prisma.CapturedInput$meetingContextArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapturedInput$meetingContextArgs<ExtArgs>>): Prisma.Prisma__MeetingContextClient<runtime.Types.Result.GetResult<Prisma.$MeetingContextPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   segments<T extends Prisma.CapturedInput$segmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapturedInput$segmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CapturedSegmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   attachments<T extends Prisma.CapturedInput$attachmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapturedInput$attachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CapturedInputAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   agentRuns<T extends Prisma.CapturedInput$agentRunsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapturedInput$agentRunsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2003,6 +2367,8 @@ export interface CapturedInputFieldRefs {
   readonly id: Prisma.FieldRef<"CapturedInput", 'String'>
   readonly organizationId: Prisma.FieldRef<"CapturedInput", 'String'>
   readonly sessionId: Prisma.FieldRef<"CapturedInput", 'String'>
+  readonly meetingContextId: Prisma.FieldRef<"CapturedInput", 'String'>
+  readonly revision: Prisma.FieldRef<"CapturedInput", 'Int'>
   readonly type: Prisma.FieldRef<"CapturedInput", 'InputType'>
   readonly sourceRef: Prisma.FieldRef<"CapturedInput", 'String'>
   readonly senderEmail: Prisma.FieldRef<"CapturedInput", 'String'>
@@ -2434,6 +2800,25 @@ export type CapturedInput$sessionArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   include?: Prisma.AssessmentSessionInclude<ExtArgs> | null
   where?: Prisma.AssessmentSessionWhereInput
+}
+
+/**
+ * CapturedInput.meetingContext
+ */
+export type CapturedInput$meetingContextArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MeetingContext
+   */
+  select?: Prisma.MeetingContextSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MeetingContext
+   */
+  omit?: Prisma.MeetingContextOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MeetingContextInclude<ExtArgs> | null
+  where?: Prisma.MeetingContextWhereInput
 }
 
 /**
