@@ -9,9 +9,10 @@ export type ScratchpadQueueState = "Saved" | "Saving" | "Failed" | "Offline/Queu
 
 type Save = (payload: ScratchpadPayload) => Promise<ScratchpadSaveResult>;
 type Reload = () => Promise<{ revision: number }>;
+type OnError = (message: string) => void;
 
 /** Coalesces edits, serializes requests, and reconciles optimistic-lock conflicts. */
-export function createScratchpadSaveQueue(save: Save, reload: Reload, onState: (state: ScratchpadQueueState) => void) {
+export function createScratchpadSaveQueue(save: Save, reload: Reload, onState: (state: ScratchpadQueueState) => void, onError?: OnError) {
   let pending: ScratchpadPayload | null = null;
   let running = false;
   let scheduled = false;
@@ -34,7 +35,7 @@ export function createScratchpadSaveQueue(save: Save, reload: Reload, onState: (
       if (result.kind === "saved") latestRevision = result.revision;
       if (result.kind === "queued") { failed = true; onState("Offline/Queued"); }
       if (result.kind === "failed") { failed = true; onState("Failed"); }
-    } catch { failed = true; onState("Failed"); }
+    } catch (cause) { failed = true; onError?.(cause instanceof Error ? cause.message : "Scratch Pad save failed."); onState("Failed"); }
     finally { running = false; if (pending) { scheduled = true; queueMicrotask(() => void drain()); } else settle(); }
   };
   return {

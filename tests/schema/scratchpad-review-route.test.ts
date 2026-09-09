@@ -10,7 +10,7 @@ vi.mock("@/lib/supabase/server", () => ({
   createClient: async () => ({ auth: { getUser: async () => ({ data: { user: { email: currentEmail } } }) } }),
 }));
 
-import { POST, PATCH } from "../../app/api/scratchpad/route";
+import { GET, POST, PATCH } from "../../app/api/scratchpad/route";
 
 const request = (body: unknown, method = "PATCH") => new Request("http://localhost/api/scratchpad", {
   method,
@@ -39,6 +39,32 @@ describe("Scratch Pad review route", () => {
     expect(created).toMatchObject({ organizationId: organization.id, sessionId: session.id, type: "TEXT_NOTE", rawText: "Unstructured workshop thought", status: "TRANSCRIBED" });
     expect(processCapturedInput).toHaveBeenCalledWith(created.id);
   });
+  it("rejects new session-scoped captures after the live session is completed", async () => {
+    const organization = await createTestOrganization({ name: "Scratch Pad Completed Session Org" });
+    organizationIds.push(organization.id);
+    const advisor = await prisma.user.upsert({ where: { email: "advisor@test.com" }, update: {}, create: { email: "advisor@test.com", role: "ADVISOR" } });
+    const session = await prisma.assessmentSession.create({ data: { organizationId: organization.id, advisorId: advisor.id, status: "completed", completedAt: new Date() } });
+
+    const response = await POST(request({ organizationId: organization.id, sessionId: session.id, text: "Must not be discarded" }, "POST"));
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({ error: "Live session is not active" });
+    expect(await prisma.capturedInput.count({ where: { organizationId: organization.id } })).toBe(0);
+  });
+
+  it("loads notes from a completed session without treating completion as missing data", async () => {
+    const organization = await createTestOrganization({ name: "Scratch Pad Completed Review Org" });
+    organizationIds.push(organization.id);
+    const advisor = await prisma.user.upsert({ where: { email: "advisor@test.com" }, update: {}, create: { email: "advisor@test.com", role: "ADVISOR" } });
+    const session = await prisma.assessmentSession.create({ data: { organizationId: organization.id, advisorId: advisor.id, status: "completed", completedAt: new Date() } });
+    await prisma.capturedInput.create({ data: { organizationId: organization.id, sessionId: session.id, type: "TEXT_NOTE", rawText: "Recovered note", status: "TRANSCRIBED" } });
+
+    const response = await GET(new Request(`http://localhost/api/scratchpad?organizationId=${organization.id}&sessionId=${session.id}`) as never);
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(expect.arrayContaining([expect.objectContaining({ rawText: "Recovered note", sessionId: session.id })]));
+  });
+
   it("edits a note and explicitly approves it with reviewer audit fields", async () => {
     const organization = await createTestOrganization({ name: "Scratch Pad Review Org" });
     organizationIds.push(organization.id);

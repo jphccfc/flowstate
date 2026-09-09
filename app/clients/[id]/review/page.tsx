@@ -5,6 +5,12 @@ import Link from "next/link";
 import { sanitizeRichText } from "@/lib/scratchpad/rich-text";
 
 type Candidate = { id: string; name: string };
+
+async function readErrorMessage(response: Response) {
+  const body = await response.json().catch(() => ({})) as { error?: unknown };
+  return typeof body.error === "string" ? body.error : `HTTP ${response.status}`;
+}
+
 type ScratchpadNote = {
   id: string;
   rawText: string | null;
@@ -67,7 +73,9 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
     if (notesResult.status === "fulfilled" && notesResult.value.ok) {
       setScratchpadNotes(await notesResult.value.json());
     } else {
-      errors.push("Scratch Pad notes could not be loaded.");
+      const detail = notesResult.status === "fulfilled" ? await readErrorMessage(notesResult.value) : "network request failed";
+      const status = notesResult.status === "fulfilled" ? `HTTP ${notesResult.value.status}` : "HTTP network";
+      errors.push(`Scratch Pad notes could not be loaded (${status}): ${detail}`);
     }
 
     if (errors.length) setError(errors.join(" "));
