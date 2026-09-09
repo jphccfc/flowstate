@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -58,7 +59,7 @@ export function WorkspaceNav({ clientId, clientName }: { clientId: string; clien
     <aside className={`workspace-rail${open ? " is-open" : ""}`}>
       <div className="workspace-rail-header">
         <Link href="/dashboard" className="workspace-brand" onClick={() => setOpen(false)}>
-          <span className="workspace-brand-mark" aria-hidden="true">FS</span>
+          <Image src="/flowstate-mark.svg" alt="" className="workspace-brand-mark" aria-hidden="true" width={32} height={32} priority />
           <span className="workspace-brand-name">Flowstate</span>
         </Link>
         <button

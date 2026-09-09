@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 type Source = { id: string; kind: string; title: string; date: string; excerpt: string; href?: string };
 type AssistantMessage = { role: "assistant"; content: string; sources: Source[]; limitation?: string };
@@ -59,9 +60,12 @@ export function AskAIAssistant({ clientId }: { clientId: string }) {
       {open && (
         <section className="ask-ai-panel" aria-labelledby="ask-ai-title">
           <div className="ask-ai-panel-header">
-            <div>
-              <p className="workspace-eyebrow">Workspace assistant</p>
-              <h2 id="ask-ai-title" className="ask-ai-title">FlowCoach</h2>
+            <div className="flowcoach-heading">
+              <Image src="/flowstate-mark.svg" alt="" aria-hidden="true" className="flowcoach-mark flowcoach-panel-mark" width={32} height={32} />
+              <div>
+                <p className="workspace-eyebrow">Workspace assistant</p>
+                <h2 id="ask-ai-title" className="ask-ai-title">FlowCoach</h2>
+              </div>
             </div>
             <div className="ask-ai-header-actions">
               <button type="button" className="ask-ai-new-chat" onClick={newChat} disabled={busy}>New chat</button>
@@ -88,7 +92,7 @@ export function AskAIAssistant({ clientId }: { clientId: string }) {
           {error && <div role="alert" className="ask-ai-error">{error}</div>}
         </section>
       )}
-      {!open && <button type="button" className="ask-ai-launcher" onClick={() => setOpen(true)} aria-label="Open FlowCoach" aria-expanded={open}>FlowCoach</button>}
+      {!open && <button type="button" className="ask-ai-launcher" onClick={() => setOpen(true)} aria-label="Open FlowCoach" aria-expanded={open}><Image src="/flowstate-mark.svg" alt="" aria-hidden="true" className="flowcoach-mark" width={22} height={22} />FlowCoach</button>}
     </div>
   );
 }

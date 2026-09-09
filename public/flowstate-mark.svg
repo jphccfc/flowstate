@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Flowstate</title>
+  <desc id="desc">Flowstate blue and cyan brand mark</desc>
+  <rect width="64" height="64" rx="14" fill="#0642bf"/>
+  <path d="M10 32c0-12.15 9.85-22 22-22h22v22c0 12.15-9.85 22-22 22H10V32Z" fill="#28d7fa"/>
+  <path d="M24 32a8 8 0 0 1 8-8h8v8a8 8 0 0 1-8 8h-8v-8Z" fill="#0642bf"/>
+</svg>

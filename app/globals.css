@@ -140,11 +140,12 @@ body {
 
 .workspace-brand { display: flex; align-items: center; gap: 0.65rem; padding: 0.25rem 0.65rem; color: var(--workspace-text); }
 .workspace-brand-mark {
-  display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 0.7rem;
-  color: #071018; font-size: 0.7rem; font-weight: 800;
-  background: linear-gradient(135deg, var(--accent), var(--accent-purple));
+  display: block; width: 2rem; height: 2rem; border-radius: 0.7rem;
   box-shadow: 0 8px 24px rgba(40, 215, 250, 0.22);
 }
+.flowcoach-heading { display: flex; align-items: center; gap: 0.6rem; }
+.flowcoach-mark { display: block; width: 1.35rem; height: 1.35rem; flex: 0 0 auto; border-radius: 0.35rem; }
+.flowcoach-panel-mark { width: 2rem; height: 2rem; border-radius: 0.55rem; }
 .workspace-brand-name { font-family: "Poppins", "Inter", sans-serif; font-weight: 700; letter-spacing: -0.02em; }
 .workspace-context { padding: 0.85rem 0.75rem; border: 1px solid var(--workspace-border); border-radius: 0.85rem; background: rgba(24, 34, 48, 0.75); }
 .workspace-context-label { color: var(--workspace-muted); font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; }

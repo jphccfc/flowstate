@@ -44,6 +44,6 @@ describe("persistent client FlowCoach assistant contract", () => {
   it("uses the local Flowstate mark in the launcher and popup header", () => {
     expect(assistant).toContain('src="/flowstate-mark.svg"');
     expect(assistant).toContain('alt=""');
-    expect(assistant).toContain("ask-ai-brand-mark");
+    expect(assistant).toContain("flowcoach-mark");
   });
 });

@@ -22,6 +22,12 @@ describe("client AI Hub contract", () => {
     expect(route).toContain('key: "client_ai_hub"');
   });
 
+  it("uses the local Flowstate mark for the platform brand", () => {
+    expect(nav).toContain('src="/flowstate-mark.svg"');
+    expect(nav).toContain('alt=""');
+    expect(nav).toContain("workspace-brand-mark");
+  });
+
   it("authenticates and scopes every workspace query to the route organization", () => {
     expect(route).toContain("canAccessClient(user.email, organizationId)");
     expect(route).toContain("where: { organizationId");
