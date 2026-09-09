@@ -43,4 +43,12 @@ describe("PlanningItem contract", () => {
     expect(page).toContain("stakeholderType");
     expect(page).toContain("statement");
   });
+
+  it("makes planning item lifecycle and human review actionable", () => {
+    expect(page).toContain("Update lifecycle status");
+    expect(page).toContain("Update human approval");
+    expect(page).toContain('lifecycleStatus: nextStatus');
+    expect(page).toContain('humanApprovalState: nextState');
+    expect(route).toContain("assessment.review");
+  });
 });
