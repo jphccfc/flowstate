@@ -46,8 +46,8 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     ...achievements.map((achievement) => ({ id: achievement.id, kind: "achievement record", title: achievement.description, date: achievement.updatedAt, text: [achievement.description, achievement.successMetrics, achievement.status, achievement.targetDate?.toISOString()].filter(Boolean).join("\n") })),
   ];
   const rankedSources = rankWorkspaceSources(question, sources);
-  if (rankedSources.length === 0) return NextResponse.json({ answer: "I could not find a matching source in this workspace.", sources: [], limitation: "AI Hub searches authorized workspace text and records using keyword relevance; it does not search external systems or unindexed content." });
-  if (!agent?.publishedPromptVersion) return NextResponse.json({ error: "AI Hub is not configured with a published agent prompt." }, { status: 503 });
+  if (rankedSources.length === 0) return NextResponse.json({ answer: "I could not find a matching source in this workspace.", sources: [], limitation: "FlowCoach searches authorized workspace text and records using keyword relevance; it does not search external systems or unindexed content." });
+  if (!agent?.publishedPromptVersion) return NextResponse.json({ error: "FlowCoach is not configured with a published agent prompt." }, { status: 503 });
 
   try {
     const answer = await requestChatCompletion({
@@ -56,7 +56,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       user: `Current question: ${question}\n\nAuthorized workspace context (retrieved for the current question only):\n${formatWorkspaceContext(rankedSources)}`,
       maxTokens: 700,
     });
-    return NextResponse.json({ answer, sources: rankedSources.map((source) => ({ id: source.id, kind: source.kind, title: source.title, date: source.date.toISOString(), excerpt: source.excerpt, href: sourceHref(organizationId, source.kind, source.id) })), agent: { name: agent.name, promptVersion: agent.publishedPromptVersion.version }, limitation: "AI Hub uses deterministic keyword relevance over currently indexed workspace records and the published agent prompt. Verify important answers against the cited source." });
+    return NextResponse.json({ answer, sources: rankedSources.map((source) => ({ id: source.id, kind: source.kind, title: source.title, date: source.date.toISOString(), excerpt: source.excerpt, href: sourceHref(organizationId, source.kind, source.id) })), agent: { name: agent.name, promptVersion: agent.publishedPromptVersion.version }, limitation: "FlowCoach uses deterministic keyword relevance over currently indexed workspace records and the published agent prompt. Verify important answers against the cited source." });
   } catch (error) {
     const message = error instanceof Error ? error.message : "AI provider request failed";
     const configurationError = [

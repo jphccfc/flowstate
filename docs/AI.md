@@ -20,7 +20,7 @@ A LiteLLM-compatible gateway remains available as an explicit future seam, but i
 
 ## Current capabilities
 
-- Client AI Hub questions grounded in authorized workspace sources.
+- FlowCoach questions grounded in authorized workspace sources.
 - Evidence tagging and confidence scoring.
 - Live-session follow-up questions.
 - As-is and to-be maturity drafting.
@@ -35,4 +35,4 @@ Audio and document capture require a Vercel Blob store and the deployment variab
 
 ## Testing
 
-Tests stub `fetch` at the provider's OpenAI-compatible `/v1/chat/completions` or `/v1/audio/transcriptions` boundary. They never require provider credentials or call external model services. Live execution requires a real server-side key and model, plus a published Client AI Hub agent.
+Tests stub `fetch` at the provider's OpenAI-compatible `/v1/chat/completions` or `/v1/audio/transcriptions` boundary. They never require provider credentials or call external model services. Live execution requires a real server-side key and model, plus a published client AI agent.

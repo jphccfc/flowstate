@@ -34,7 +34,7 @@ export function WorkspaceNav({ clientId, clientName }: { clientId: string; clien
 
   const items: NavItem[] = [
     { href: `/clients/${clientId}`, label: "Overview" },
-    { href: `/clients/${clientId}/ai`, label: "AI Hub" },
+    { href: `/clients/${clientId}/ai`, label: "FlowCoach" },
     { href: `/clients/${clientId}/capture`, label: "Capture evidence" },
     { href: `/clients/${clientId}/integrations/sharepoint`, label: "Integrations" },
     { href: `/clients/${clientId}/configure`, label: "Blueprint" },

@@ -45,10 +45,10 @@ export function AskAIAssistant({ clientId }: { clientId: string }) {
         body: JSON.stringify({ question: trimmedQuestion, conversation: priorConversation }),
       });
       const data = await response.json() as Result;
-      if (!response.ok) throw new Error(data.error || "AI Hub could not answer that question.");
+      if (!response.ok) throw new Error(data.error || "FlowCoach could not answer that question.");
       setMessages((current) => [...current, { role: "assistant", content: data.answer, sources: data.sources, limitation: data.limitation }]);
     } catch (requestError) {
-      setError(requestError instanceof Error ? requestError.message : "AI Hub could not answer that question.");
+      setError(requestError instanceof Error ? requestError.message : "FlowCoach could not answer that question.");
     } finally {
       setBusy(false);
     }
@@ -61,15 +61,15 @@ export function AskAIAssistant({ clientId }: { clientId: string }) {
           <div className="ask-ai-panel-header">
             <div>
               <p className="workspace-eyebrow">Workspace assistant</p>
-              <h2 id="ask-ai-title" className="ask-ai-title">Ask AI</h2>
+              <h2 id="ask-ai-title" className="ask-ai-title">FlowCoach</h2>
             </div>
             <div className="ask-ai-header-actions">
               <button type="button" className="ask-ai-new-chat" onClick={newChat} disabled={busy}>New chat</button>
-              <button type="button" className="ask-ai-close" onClick={() => setOpen(false)} aria-label="Close Ask AI">×</button>
+              <button type="button" className="ask-ai-close" onClick={() => setOpen(false)} aria-label="Close FlowCoach">×</button>
             </div>
           </div>
-          <div className="ask-ai-thread" aria-live="polite" aria-label="Ask AI conversation">
-            {messages.length === 0 && <p className="ask-ai-empty">Ask about this workspace’s authorized records. Follow-up questions keep this chat’s recent context.</p>}
+          <div className="ask-ai-thread" aria-live="polite" aria-label="FlowCoach conversation">
+            {messages.length === 0 && <p className="ask-ai-empty">Ask FlowCoach about this workspace’s authorized records. Follow-up questions keep this chat’s recent context.</p>}
             {messages.map((message, index) => message.role === "user" ? (
               <div className="ask-ai-message ask-ai-user-message" key={`user-${index}`}><p className="workspace-eyebrow">You</p><p className="ask-ai-answer-text">{message.content}</p></div>
             ) : (
@@ -80,15 +80,15 @@ export function AskAIAssistant({ clientId }: { clientId: string }) {
             ))}
             {busy && <p className="ask-ai-muted" role="status">Searching authorized workspace sources…</p>}
           </div>
-          <form onSubmit={ask} aria-label="Ask AI Hub">
-            <label htmlFor="ask-ai-question" className="sr-only">Ask AI Hub question</label>
-            <textarea ref={questionRef} id="ask-ai-question" value={question} onChange={(event) => setQuestion(event.target.value)} rows={3} maxLength={1000} required placeholder="Ask about this workspace…" className="ask-ai-input" aria-label="Ask AI Hub question" />
+          <form onSubmit={ask} aria-label="Ask FlowCoach">
+            <label htmlFor="ask-ai-question" className="sr-only">FlowCoach question</label>
+            <textarea ref={questionRef} id="ask-ai-question" value={question} onChange={(event) => setQuestion(event.target.value)} rows={3} maxLength={1000} required placeholder="Ask FlowCoach about this workspace…" className="ask-ai-input" aria-label="FlowCoach question" />
             <div className="ask-ai-actions"><span className="ask-ai-hint">Read-only · human review required</span><button type="submit" className="flowstate-accent-button ask-ai-submit" disabled={busy || !question.trim()}>{busy ? "Searching…" : "Ask"}</button></div>
           </form>
           {error && <div role="alert" className="ask-ai-error">{error}</div>}
         </section>
       )}
-      {!open && <button type="button" className="ask-ai-launcher" onClick={() => setOpen(true)} aria-label="Ask AI" aria-expanded={open}>Ask AI</button>}
+      {!open && <button type="button" className="ask-ai-launcher" onClick={() => setOpen(true)} aria-label="Open FlowCoach" aria-expanded={open}>FlowCoach</button>}
     </div>
   );
 }

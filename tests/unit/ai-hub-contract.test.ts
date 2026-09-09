@@ -8,12 +8,18 @@ const nav = readFileSync(resolve(process.cwd(), "components/layout/WorkspaceNav.
 
 describe("client AI Hub contract", () => {
   it("exposes a client-facing question flow with citations and no-results state", () => {
-    expect(nav).toContain('label: "AI Hub"');
-    expect(page).toContain("Ask AI Hub");
+    expect(nav).toContain('label: "FlowCoach"');
+    expect(page).toContain("FlowCoach");
+    expect(page).toContain("Ask FlowCoach");
     expect(page).toContain("Sources");
     expect(page).toContain("No matching authorized workspace sources");
     expect(page).toContain("source.href");
     expect(page).toContain("<a");
+  });
+
+  it("preserves the API route and agent identity while renaming the UI", () => {
+    expect(page).toContain("/api/clients/${organizationId}/ai");
+    expect(route).toContain('key: "client_ai_hub"');
   });
 
   it("authenticates and scopes every workspace query to the route organization", () => {
