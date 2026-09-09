@@ -39,6 +39,16 @@ describe("system-admin agent catalogue contract", () => {
     const published = await prisma.agentDefinition.findUniqueOrThrow({ where: { id: agent.id }, include: { publishedPromptVersion: true } });
     expect(published.publishedPromptVersion?.id).toBe(version.id); expect(published.publishedPromptVersion?.publishedBy).toBe("agent-admin@test.com"); expect(published.publishedPromptVersion?.publishedAt).toBeTruthy();
   });
+  it("creates and publishes the client AI Hub without input boundaries", async () => {
+    const created = (await POST(jsonRequest("http://localhost/api/admin/agents", { key: `test-agent-${Date.now()}-ai-hub`, name: "Client AI Hub", prompt: "Answer from the server-built workspace context only.", changeReason: "Initial orchestrator", inputRules: [] })))!;
+    expect(created.status).toBe(201);
+    const agent = (await created.json()).agent;
+    expect(agent.inputRules).toEqual([]);
+
+    const publishResponse = await publishVersion(jsonRequest(`http://localhost/api/admin/agents/${agent.id}/publish`, { versionId: agent.promptVersions[0].id }), { params: Promise.resolve({ id: agent.id }) });
+    expect(publishResponse.status).toBe(200);
+    expect((await prisma.agentDefinition.findUniqueOrThrow({ where: { id: agent.id } })).publishedPromptVersionId).toBe(agent.promptVersions[0].id);
+  });
   it("rejects unsafe input scope identifiers", async () => {
     const response = (await POST(jsonRequest("http://localhost/api/admin/agents", { key: `test-agent-${Date.now()}-unsafe`, name: "Unsafe", prompt: "No execution", changeReason: "Test", inputRules: [{ inputType: "TEXT_NOTE", domainIdentifier: "operations; DROP TABLE users" }] })))!;
     expect(response.status).toBe(400);

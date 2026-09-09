@@ -23,4 +23,11 @@ describe("SYSTEM_ADMIN agent catalogue UI contract", () => {
     expect(page).not.toMatch(/execute|model/i);
     expect(page).not.toMatch(/apiKey|secret|token/i);
   });
+
+  it("treats input boundaries as optional for orchestrator agents", () => {
+    expect(page).toContain("Optional for orchestrator agents");
+    expect(page).toContain("useState<Rule[]>([])");
+    expect(page).toContain("inputRules: inputRules.length ? inputRules : []");
+    expect(page).toContain("Remove rule");
+  });
 });
