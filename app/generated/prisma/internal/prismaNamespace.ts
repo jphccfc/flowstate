@@ -4717,6 +4717,7 @@ export const AgentDefinitionScalarFieldEnum = {
   key: 'key',
   name: 'name',
   description: 'description',
+  agentType: 'agentType',
   createdBy: 'createdBy',
   publishedPromptVersionId: 'publishedPromptVersionId',
   createdAt: 'createdAt',
@@ -5181,6 +5182,20 @@ export type EnumAssessmentTaskReviewStateFieldRefInput<$PrismaModel> = FieldRefI
  * Reference to a field of type 'AssessmentTaskReviewState[]'
  */
 export type ListEnumAssessmentTaskReviewStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AssessmentTaskReviewState[]'>
+
+
+
+/**
+ * Reference to a field of type 'AgentType'
+ */
+export type EnumAgentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AgentType'>
+
+
+
+/**
+ * Reference to a field of type 'AgentType[]'
+ */
+export type ListEnumAgentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AgentType[]'>
 
 
 

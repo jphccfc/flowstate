@@ -308,6 +308,11 @@ enum InputType {
   DATA_ROOM_FILE
 }
 
+enum AgentType {
+  SPECIALIST
+  ORCHESTRATOR
+}
+
 enum ProcessingStatus {
   PENDING
   TRANSCRIBING
@@ -935,6 +940,7 @@ model AgentDefinition {
   key                    String               @unique
   name                   String
   description            String?
+  agentType              AgentType            @default(SPECIALIST)
   createdBy              String
   publishedPromptVersionId String?            @unique
   createdAt              DateTime             @default(now())

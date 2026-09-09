@@ -25,9 +25,11 @@ describe("SYSTEM_ADMIN agent catalogue UI contract", () => {
   });
 
   it("treats input boundaries as optional for orchestrator agents", () => {
-    expect(page).toContain("Optional for orchestrator agents");
+    expect(page).toContain("Orchestrator");
+    expect(page).toContain("agentType");
+    expect(page).toContain("input boundaries are not applicable");
+    expect(page).toContain("form.agentType === \"ORCHESTRATOR\" ? []");
     expect(page).toContain("useState<Rule[]>([])");
-    expect(page).toContain("inputRules: inputRules.length ? inputRules : []");
     expect(page).toContain("Remove rule");
   });
 });

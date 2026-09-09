@@ -31,6 +31,14 @@ export const InputType = {
 export type InputType = (typeof InputType)[keyof typeof InputType]
 
 
+export const AgentType = {
+  SPECIALIST: 'SPECIALIST',
+  ORCHESTRATOR: 'ORCHESTRATOR'
+} as const
+
+export type AgentType = (typeof AgentType)[keyof typeof AgentType]
+
+
 export const ProcessingStatus = {
   PENDING: 'PENDING',
   TRANSCRIBING: 'TRANSCRIBING',

@@ -29,6 +29,7 @@ export type AgentDefinitionMinAggregateOutputType = {
   key: string | null
   name: string | null
   description: string | null
+  agentType: $Enums.AgentType | null
   createdBy: string | null
   publishedPromptVersionId: string | null
   createdAt: Date | null
@@ -40,6 +41,7 @@ export type AgentDefinitionMaxAggregateOutputType = {
   key: string | null
   name: string | null
   description: string | null
+  agentType: $Enums.AgentType | null
   createdBy: string | null
   publishedPromptVersionId: string | null
   createdAt: Date | null
@@ -51,6 +53,7 @@ export type AgentDefinitionCountAggregateOutputType = {
   key: number
   name: number
   description: number
+  agentType: number
   createdBy: number
   publishedPromptVersionId: number
   createdAt: number
@@ -64,6 +67,7 @@ export type AgentDefinitionMinAggregateInputType = {
   key?: true
   name?: true
   description?: true
+  agentType?: true
   createdBy?: true
   publishedPromptVersionId?: true
   createdAt?: true
@@ -75,6 +79,7 @@ export type AgentDefinitionMaxAggregateInputType = {
   key?: true
   name?: true
   description?: true
+  agentType?: true
   createdBy?: true
   publishedPromptVersionId?: true
   createdAt?: true
@@ -86,6 +91,7 @@ export type AgentDefinitionCountAggregateInputType = {
   key?: true
   name?: true
   description?: true
+  agentType?: true
   createdBy?: true
   publishedPromptVersionId?: true
   createdAt?: true
@@ -170,6 +176,7 @@ export type AgentDefinitionGroupByOutputType = {
   key: string
   name: string
   description: string | null
+  agentType: $Enums.AgentType
   createdBy: string
   publishedPromptVersionId: string | null
   createdAt: Date
@@ -202,6 +209,7 @@ export type AgentDefinitionWhereInput = {
   key?: Prisma.StringFilter<"AgentDefinition"> | string
   name?: Prisma.StringFilter<"AgentDefinition"> | string
   description?: Prisma.StringNullableFilter<"AgentDefinition"> | string | null
+  agentType?: Prisma.EnumAgentTypeFilter<"AgentDefinition"> | $Enums.AgentType
   createdBy?: Prisma.StringFilter<"AgentDefinition"> | string
   publishedPromptVersionId?: Prisma.StringNullableFilter<"AgentDefinition"> | string | null
   createdAt?: Prisma.DateTimeFilter<"AgentDefinition"> | Date | string
@@ -218,6 +226,7 @@ export type AgentDefinitionOrderByWithRelationInput = {
   key?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  agentType?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   publishedPromptVersionId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -238,6 +247,7 @@ export type AgentDefinitionWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.AgentDefinitionWhereInput | Prisma.AgentDefinitionWhereInput[]
   name?: Prisma.StringFilter<"AgentDefinition"> | string
   description?: Prisma.StringNullableFilter<"AgentDefinition"> | string | null
+  agentType?: Prisma.EnumAgentTypeFilter<"AgentDefinition"> | $Enums.AgentType
   createdBy?: Prisma.StringFilter<"AgentDefinition"> | string
   createdAt?: Prisma.DateTimeFilter<"AgentDefinition"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AgentDefinition"> | Date | string
@@ -253,6 +263,7 @@ export type AgentDefinitionOrderByWithAggregationInput = {
   key?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  agentType?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   publishedPromptVersionId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -270,6 +281,7 @@ export type AgentDefinitionScalarWhereWithAggregatesInput = {
   key?: Prisma.StringWithAggregatesFilter<"AgentDefinition"> | string
   name?: Prisma.StringWithAggregatesFilter<"AgentDefinition"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"AgentDefinition"> | string | null
+  agentType?: Prisma.EnumAgentTypeWithAggregatesFilter<"AgentDefinition"> | $Enums.AgentType
   createdBy?: Prisma.StringWithAggregatesFilter<"AgentDefinition"> | string
   publishedPromptVersionId?: Prisma.StringNullableWithAggregatesFilter<"AgentDefinition"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AgentDefinition"> | Date | string
@@ -281,6 +293,7 @@ export type AgentDefinitionCreateInput = {
   key: string
   name: string
   description?: string | null
+  agentType?: $Enums.AgentType
   createdAt?: Date | string
   updatedAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutCreatedAgentDefinitionsInput
@@ -295,6 +308,7 @@ export type AgentDefinitionUncheckedCreateInput = {
   key: string
   name: string
   description?: string | null
+  agentType?: $Enums.AgentType
   createdBy: string
   publishedPromptVersionId?: string | null
   createdAt?: Date | string
@@ -309,6 +323,7 @@ export type AgentDefinitionUpdateInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agentType?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAgentDefinitionsNestedInput
@@ -323,6 +338,7 @@ export type AgentDefinitionUncheckedUpdateInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agentType?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   publishedPromptVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -337,6 +353,7 @@ export type AgentDefinitionCreateManyInput = {
   key: string
   name: string
   description?: string | null
+  agentType?: $Enums.AgentType
   createdBy: string
   publishedPromptVersionId?: string | null
   createdAt?: Date | string
@@ -348,6 +365,7 @@ export type AgentDefinitionUpdateManyMutationInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agentType?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -357,6 +375,7 @@ export type AgentDefinitionUncheckedUpdateManyInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agentType?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   publishedPromptVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -378,6 +397,7 @@ export type AgentDefinitionCountOrderByAggregateInput = {
   key?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  agentType?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   publishedPromptVersionId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -389,6 +409,7 @@ export type AgentDefinitionMaxOrderByAggregateInput = {
   key?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  agentType?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   publishedPromptVersionId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -400,6 +421,7 @@ export type AgentDefinitionMinOrderByAggregateInput = {
   key?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  agentType?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   publishedPromptVersionId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -456,6 +478,10 @@ export type AgentDefinitionUncheckedUpdateManyWithoutCreatorNestedInput = {
   update?: Prisma.AgentDefinitionUpdateWithWhereUniqueWithoutCreatorInput | Prisma.AgentDefinitionUpdateWithWhereUniqueWithoutCreatorInput[]
   updateMany?: Prisma.AgentDefinitionUpdateManyWithWhereWithoutCreatorInput | Prisma.AgentDefinitionUpdateManyWithWhereWithoutCreatorInput[]
   deleteMany?: Prisma.AgentDefinitionScalarWhereInput | Prisma.AgentDefinitionScalarWhereInput[]
+}
+
+export type EnumAgentTypeFieldUpdateOperationsInput = {
+  set?: $Enums.AgentType
 }
 
 export type AgentDefinitionCreateNestedOneWithoutPromptVersionsInput = {
@@ -537,6 +563,7 @@ export type AgentDefinitionCreateWithoutCreatorInput = {
   key: string
   name: string
   description?: string | null
+  agentType?: $Enums.AgentType
   createdAt?: Date | string
   updatedAt?: Date | string
   promptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAgentDefinitionInput
@@ -550,6 +577,7 @@ export type AgentDefinitionUncheckedCreateWithoutCreatorInput = {
   key: string
   name: string
   description?: string | null
+  agentType?: $Enums.AgentType
   publishedPromptVersionId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -592,6 +620,7 @@ export type AgentDefinitionScalarWhereInput = {
   key?: Prisma.StringFilter<"AgentDefinition"> | string
   name?: Prisma.StringFilter<"AgentDefinition"> | string
   description?: Prisma.StringNullableFilter<"AgentDefinition"> | string | null
+  agentType?: Prisma.EnumAgentTypeFilter<"AgentDefinition"> | $Enums.AgentType
   createdBy?: Prisma.StringFilter<"AgentDefinition"> | string
   publishedPromptVersionId?: Prisma.StringNullableFilter<"AgentDefinition"> | string | null
   createdAt?: Prisma.DateTimeFilter<"AgentDefinition"> | Date | string
@@ -603,6 +632,7 @@ export type AgentDefinitionCreateWithoutPromptVersionsInput = {
   key: string
   name: string
   description?: string | null
+  agentType?: $Enums.AgentType
   createdAt?: Date | string
   updatedAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutCreatedAgentDefinitionsInput
@@ -616,6 +646,7 @@ export type AgentDefinitionUncheckedCreateWithoutPromptVersionsInput = {
   key: string
   name: string
   description?: string | null
+  agentType?: $Enums.AgentType
   createdBy: string
   publishedPromptVersionId?: string | null
   createdAt?: Date | string
@@ -634,6 +665,7 @@ export type AgentDefinitionCreateWithoutPublishedPromptVersionInput = {
   key: string
   name: string
   description?: string | null
+  agentType?: $Enums.AgentType
   createdAt?: Date | string
   updatedAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutCreatedAgentDefinitionsInput
@@ -647,6 +679,7 @@ export type AgentDefinitionUncheckedCreateWithoutPublishedPromptVersionInput = {
   key: string
   name: string
   description?: string | null
+  agentType?: $Enums.AgentType
   createdBy: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -676,6 +709,7 @@ export type AgentDefinitionUpdateWithoutPromptVersionsInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agentType?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAgentDefinitionsNestedInput
@@ -689,6 +723,7 @@ export type AgentDefinitionUncheckedUpdateWithoutPromptVersionsInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agentType?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   publishedPromptVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -713,6 +748,7 @@ export type AgentDefinitionUpdateWithoutPublishedPromptVersionInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agentType?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAgentDefinitionsNestedInput
@@ -726,6 +762,7 @@ export type AgentDefinitionUncheckedUpdateWithoutPublishedPromptVersionInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agentType?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -739,6 +776,7 @@ export type AgentDefinitionCreateWithoutInputRulesInput = {
   key: string
   name: string
   description?: string | null
+  agentType?: $Enums.AgentType
   createdAt?: Date | string
   updatedAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutCreatedAgentDefinitionsInput
@@ -752,6 +790,7 @@ export type AgentDefinitionUncheckedCreateWithoutInputRulesInput = {
   key: string
   name: string
   description?: string | null
+  agentType?: $Enums.AgentType
   createdBy: string
   publishedPromptVersionId?: string | null
   createdAt?: Date | string
@@ -781,6 +820,7 @@ export type AgentDefinitionUpdateWithoutInputRulesInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agentType?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAgentDefinitionsNestedInput
@@ -794,6 +834,7 @@ export type AgentDefinitionUncheckedUpdateWithoutInputRulesInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agentType?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   publishedPromptVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -807,6 +848,7 @@ export type AgentDefinitionCreateWithoutRunsInput = {
   key: string
   name: string
   description?: string | null
+  agentType?: $Enums.AgentType
   createdAt?: Date | string
   updatedAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutCreatedAgentDefinitionsInput
@@ -820,6 +862,7 @@ export type AgentDefinitionUncheckedCreateWithoutRunsInput = {
   key: string
   name: string
   description?: string | null
+  agentType?: $Enums.AgentType
   createdBy: string
   publishedPromptVersionId?: string | null
   createdAt?: Date | string
@@ -849,6 +892,7 @@ export type AgentDefinitionUpdateWithoutRunsInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agentType?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedAgentDefinitionsNestedInput
@@ -862,6 +906,7 @@ export type AgentDefinitionUncheckedUpdateWithoutRunsInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agentType?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   publishedPromptVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -875,6 +920,7 @@ export type AgentDefinitionCreateManyCreatorInput = {
   key: string
   name: string
   description?: string | null
+  agentType?: $Enums.AgentType
   publishedPromptVersionId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -885,6 +931,7 @@ export type AgentDefinitionUpdateWithoutCreatorInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agentType?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   promptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAgentDefinitionNestedInput
@@ -898,6 +945,7 @@ export type AgentDefinitionUncheckedUpdateWithoutCreatorInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agentType?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType
   publishedPromptVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -911,6 +959,7 @@ export type AgentDefinitionUncheckedUpdateManyWithoutCreatorInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agentType?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType
   publishedPromptVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -970,6 +1019,7 @@ export type AgentDefinitionSelect<ExtArgs extends runtime.Types.Extensions.Inter
   key?: boolean
   name?: boolean
   description?: boolean
+  agentType?: boolean
   createdBy?: boolean
   publishedPromptVersionId?: boolean
   createdAt?: boolean
@@ -987,6 +1037,7 @@ export type AgentDefinitionSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   key?: boolean
   name?: boolean
   description?: boolean
+  agentType?: boolean
   createdBy?: boolean
   publishedPromptVersionId?: boolean
   createdAt?: boolean
@@ -1000,6 +1051,7 @@ export type AgentDefinitionSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   key?: boolean
   name?: boolean
   description?: boolean
+  agentType?: boolean
   createdBy?: boolean
   publishedPromptVersionId?: boolean
   createdAt?: boolean
@@ -1013,13 +1065,14 @@ export type AgentDefinitionSelectScalar = {
   key?: boolean
   name?: boolean
   description?: boolean
+  agentType?: boolean
   createdBy?: boolean
   publishedPromptVersionId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AgentDefinitionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "key" | "name" | "description" | "createdBy" | "publishedPromptVersionId" | "createdAt" | "updatedAt", ExtArgs["result"]["agentDefinition"]>
+export type AgentDefinitionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "key" | "name" | "description" | "agentType" | "createdBy" | "publishedPromptVersionId" | "createdAt" | "updatedAt", ExtArgs["result"]["agentDefinition"]>
 export type AgentDefinitionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   promptVersions?: boolean | Prisma.AgentDefinition$promptVersionsArgs<ExtArgs>
@@ -1051,6 +1104,7 @@ export type $AgentDefinitionPayload<ExtArgs extends runtime.Types.Extensions.Int
     key: string
     name: string
     description: string | null
+    agentType: $Enums.AgentType
     createdBy: string
     publishedPromptVersionId: string | null
     createdAt: Date
@@ -1487,6 +1541,7 @@ export interface AgentDefinitionFieldRefs {
   readonly key: Prisma.FieldRef<"AgentDefinition", 'String'>
   readonly name: Prisma.FieldRef<"AgentDefinition", 'String'>
   readonly description: Prisma.FieldRef<"AgentDefinition", 'String'>
+  readonly agentType: Prisma.FieldRef<"AgentDefinition", 'AgentType'>
   readonly createdBy: Prisma.FieldRef<"AgentDefinition", 'String'>
   readonly publishedPromptVersionId: Prisma.FieldRef<"AgentDefinition", 'String'>
   readonly createdAt: Prisma.FieldRef<"AgentDefinition", 'DateTime'>

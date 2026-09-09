@@ -792,6 +792,7 @@ export const AgentDefinitionScalarFieldEnum = {
   key: 'key',
   name: 'name',
   description: 'description',
+  agentType: 'agentType',
   createdBy: 'createdBy',
   publishedPromptVersionId: 'publishedPromptVersionId',
   createdAt: 'createdAt',
