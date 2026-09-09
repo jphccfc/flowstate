@@ -1,8 +1,9 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 
-type Source = { id: string; kind: string; title: string; date: string; excerpt: string };
+type Source = { id: string; kind: string; title: string; date: string; excerpt: string; href?: string };
 type AssistantMessage = { role: "assistant"; content: string; sources: Source[]; limitation?: string };
 type ConversationMessage = { role: "user"; content: string } | AssistantMessage;
 type Result = { answer: string; sources: Source[]; limitation?: string; error?: string };
@@ -74,7 +75,7 @@ export function AskAIAssistant({ clientId }: { clientId: string }) {
             ) : (
               <div className="ask-ai-message ask-ai-assistant-message" key={`assistant-${index}`}>
                 <p className="workspace-eyebrow">Provisional answer</p><p className="ask-ai-answer-text">{message.content}</p>
-                <div className="ask-ai-sources"><h3>Sources ({message.sources.length})</h3>{message.sources.length === 0 ? <p className="ask-ai-muted">No matching authorized workspace sources were found.</p> : message.sources.map((source) => <article key={source.id} className="ask-ai-source-card"><div className="ask-ai-source-heading"><strong>{source.title}</strong><span>{source.kind} · {new Date(source.date).toLocaleDateString()}</span></div><p>{source.excerpt}</p></article>)}{message.limitation && <p className="ask-ai-muted ask-ai-limitation">{message.limitation}</p>}</div>
+                <div className="ask-ai-sources"><h3>Sources ({message.sources.length})</h3>{message.sources.length === 0 ? <p className="ask-ai-muted">No matching authorized workspace sources were found.</p> : message.sources.map((source) => <article key={source.id} className="ask-ai-source-card"><div className="ask-ai-source-heading"><strong>{source.href ? <Link href={source.href}>{source.title}</Link> : source.title}</strong><span>{source.kind} · {new Date(source.date).toLocaleDateString()}</span></div><p>{source.excerpt}</p></article>)}{message.limitation && <p className="ask-ai-muted ask-ai-limitation">{message.limitation}</p>}</div>
               </div>
             ))}
             {busy && <p className="ask-ai-muted" role="status">Searching authorized workspace sources…</p>}

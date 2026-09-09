@@ -5,6 +5,7 @@ import { canAccessClient } from "@/lib/auth/organization";
 import { requestChatCompletion } from "@/lib/ai/client";
 import { formatWorkspaceContext, formatMeetingAgendaSource, rankWorkspaceSources, type WorkspaceSource } from "@/lib/ai/hub";
 import { parseConversation } from "@/lib/ai/conversation";
+import { sourceHref } from "@/lib/ai/source-links";
 
 const MAX_QUESTION_LENGTH = 1000;
 
@@ -55,7 +56,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       user: `Current question: ${question}\n\nAuthorized workspace context (retrieved for the current question only):\n${formatWorkspaceContext(rankedSources)}`,
       maxTokens: 700,
     });
-    return NextResponse.json({ answer, sources: rankedSources.map((source) => ({ id: source.id, kind: source.kind, title: source.title, date: source.date.toISOString(), excerpt: source.excerpt })), agent: { name: agent.name, promptVersion: agent.publishedPromptVersion.version }, limitation: "AI Hub uses deterministic keyword relevance over currently indexed workspace records and the published agent prompt. Verify important answers against the cited source." });
+    return NextResponse.json({ answer, sources: rankedSources.map((source) => ({ id: source.id, kind: source.kind, title: source.title, date: source.date.toISOString(), excerpt: source.excerpt, href: sourceHref(organizationId, source.kind, source.id) })), agent: { name: agent.name, promptVersion: agent.publishedPromptVersion.version }, limitation: "AI Hub uses deterministic keyword relevance over currently indexed workspace records and the published agent prompt. Verify important answers against the cited source." });
   } catch (error) {
     const message = error instanceof Error ? error.message : "AI provider request failed";
     const configurationError = [

@@ -25,6 +25,8 @@ describe("persistent client Ask AI assistant contract", () => {
     expect(assistant).toContain("source.title");
     expect(assistant).toContain("source.kind");
     expect(assistant).toContain("source.excerpt");
+    expect(assistant).toContain("source.href");
+    expect(assistant).toContain("<a");
     expect(assistant).toContain("conversation");
     expect(assistant).toContain("New chat");
     expect(assistant).toContain("aria-live=\"polite\"");

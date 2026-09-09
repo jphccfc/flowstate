@@ -1,8 +1,9 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import Link from "next/link";
 
-type Source = { id: string; kind: string; title: string; date: string; excerpt: string };
+type Source = { id: string; kind: string; title: string; date: string; excerpt: string; href?: string };
 type Result = { answer: string; sources: Source[]; limitation?: string; error?: string };
 
 export default function AIHubPage({ params }: { params: Promise<{ id: string }> }) {
@@ -37,7 +38,7 @@ export default function AIHubPage({ params }: { params: Promise<{ id: string }> 
         <div className="mt-3 flex flex-wrap items-center gap-3"><button type="submit" disabled={busy || !question.trim()} className="flowstate-accent-button rounded-lg px-4 py-2 text-sm font-medium text-white disabled:opacity-50">{busy ? "Searching…" : "Ask AI Hub"}</button><span className="text-xs text-[var(--muted)]">Read-only · human review required</span></div>
       </form>
       {error && <div role="alert" className="mt-4 rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800 dark:border-red-900 dark:bg-red-950/30 dark:text-red-200">{error}</div>}
-      {result && <section className="mt-6 space-y-4" aria-live="polite"><div className="workspace-card p-4 sm:p-6"><div className="workspace-eyebrow mb-2">Provisional answer</div><p className="whitespace-pre-wrap text-sm leading-6 text-[var(--foreground)]">{result.answer}</p></div><div className="workspace-card p-4 sm:p-6"><h2 className="font-semibold text-[var(--foreground)]">Sources ({result.sources.length})</h2>{result.sources.length === 0 ? <p className="mt-2 text-sm text-[var(--muted)]">No matching authorized workspace sources were found.</p> : <div className="mt-3 space-y-3">{result.sources.map((source, index) => <article key={source.id} className="rounded-lg border border-[var(--card-border)] p-3"><div className="flex flex-wrap items-baseline justify-between gap-2"><h3 className="text-sm font-medium text-[var(--foreground)]">[{index + 1}] {source.title}</h3><span className="text-xs text-[var(--muted)]">{source.kind} · {new Date(source.date).toLocaleDateString()}</span></div><p className="mt-2 text-sm text-[var(--muted)]">{source.excerpt}</p></article>)}</div>}<p className="mt-4 text-xs text-[var(--muted)]">{result.limitation}</p></div></section>}
+      {result && <section className="mt-6 space-y-4" aria-live="polite"><div className="workspace-card p-4 sm:p-6"><div className="workspace-eyebrow mb-2">Provisional answer</div><p className="whitespace-pre-wrap text-sm leading-6 text-[var(--foreground)]">{result.answer}</p></div><div className="workspace-card p-4 sm:p-6"><h2 className="font-semibold text-[var(--foreground)]">Sources ({result.sources.length})</h2>{result.sources.length === 0 ? <p className="mt-2 text-sm text-[var(--muted)]">No matching authorized workspace sources were found.</p> : <div className="mt-3 space-y-3">{result.sources.map((source, index) => <article key={source.id} className="rounded-lg border border-[var(--card-border)] p-3"><div className="flex flex-wrap items-baseline justify-between gap-2"><h3 className="text-sm font-medium text-[var(--foreground)]">[{index + 1}] {source.href ? <Link href={source.href}>{source.title}</Link> : source.title}</h3><span className="text-xs text-[var(--muted)]">{source.kind} · {new Date(source.date).toLocaleDateString()}</span></div><p className="mt-2 text-sm text-[var(--muted)]">{source.excerpt}</p></article>)}</div>}<p className="mt-4 text-xs text-[var(--muted)]">{result.limitation}</p></div></section>}
     </main>
   );
 }

@@ -12,6 +12,8 @@ describe("client AI Hub contract", () => {
     expect(page).toContain("Ask AI Hub");
     expect(page).toContain("Sources");
     expect(page).toContain("No matching authorized workspace sources");
+    expect(page).toContain("source.href");
+    expect(page).toContain("<a");
   });
 
   it("authenticates and scopes every workspace query to the route organization", () => {
