@@ -25,6 +25,9 @@ describe("persistent client Ask AI assistant contract", () => {
     expect(assistant).toContain("source.title");
     expect(assistant).toContain("source.kind");
     expect(assistant).toContain("source.excerpt");
+    expect(assistant).toContain("conversation");
+    expect(assistant).toContain("New chat");
+    expect(assistant).toContain("aria-live=\"polite\"");
   });
 
   it("keeps the floating panel responsive and above workspace content", () => {

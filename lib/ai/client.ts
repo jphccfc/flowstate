@@ -1,10 +1,11 @@
-type ChatMessage = { role: "system" | "user"; content: string };
+type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 
 type AIProviderName = "openai" | "litellm";
 
 export type ChatCompletionRequest = {
   system: string;
   user: string;
+  conversation?: Array<{ role: "user" | "assistant"; content: string }>;
   maxTokens: number;
 };
 
@@ -44,7 +45,7 @@ export function getAIGatewayConfig(): AIConfig {
   return { provider, baseUrl, apiKey, model };
 }
 
-export async function requestChatCompletion({ system, user, maxTokens }: ChatCompletionRequest): Promise<string> {
+export async function requestChatCompletion({ system, user, conversation = [], maxTokens }: ChatCompletionRequest): Promise<string> {
   const { baseUrl, apiKey, model } = getAIGatewayConfig();
   const response = await fetch(`${baseUrl}/v1/chat/completions`, {
     method: "POST",
@@ -57,6 +58,7 @@ export async function requestChatCompletion({ system, user, maxTokens }: ChatCom
       max_tokens: maxTokens,
       messages: [
         { role: "system", content: system },
+        ...conversation,
         { role: "user", content: user },
       ] satisfies ChatMessage[],
     }),

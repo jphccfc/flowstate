@@ -18,6 +18,9 @@ describe("client AI Hub contract", () => {
     expect(route).toContain("canAccessClient(user.email, organizationId)");
     expect(route).toContain("where: { organizationId");
     expect(route).toContain("publishedPromptVersion");
+    expect(route).toContain("parseConversation");
+    expect(route).toContain("conversation");
+    expect(route).toContain("retrieved for the current question only");
     expect(route).not.toMatch(/\$queryRaw|SELECT\s+\*|tableName|sql/i);
   });
 });

@@ -99,6 +99,27 @@ describe("OpenAI client", () => {
     expect(JSON.parse(fetchMock.mock.calls[0][1]?.body as string).model).toBe("app-wide-test-model");
   });
 
+  it("places bounded conversation messages after system instructions", async () => {
+    vi.stubEnv("OPENAI_API_KEY", "openai-test-key");
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(JSON.stringify({ choices: [{ message: { content: "ok" } }] }), { status: 200 })
+    );
+
+    await requestChatCompletion({
+      system: "system",
+      conversation: [{ role: "user", content: "Earlier question" }, { role: "assistant", content: "Earlier answer" }],
+      user: "Current question",
+      maxTokens: 64,
+    });
+
+    expect(JSON.parse(fetchMock.mock.calls[0][1]?.body as string).messages).toEqual([
+      { role: "system", content: "system" },
+      { role: "user", content: "Earlier question" },
+      { role: "assistant", content: "Earlier answer" },
+      { role: "user", content: "Current question" },
+    ]);
+  });
+
   it("fails clearly when the OpenAI API key is missing", async () => {
     vi.stubEnv("OPENAI_API_KEY", "");
     vi.stubEnv("OPENAI_MODEL", "gpt-test-model");

@@ -213,7 +213,16 @@ body {
 .ask-ai-launcher:hover, .ask-ai-launcher:focus-visible { transform: translateY(-1px); box-shadow: 0 16px 40px rgba(7, 16, 24, 0.38); outline: 3px solid rgba(40, 215, 250, 0.24); outline-offset: 2px; }
 .ask-ai-panel { max-height: min(42rem, calc(100vh - 2rem)); overflow-y: auto; border: 1px solid var(--card-border); border-radius: 1rem; background: var(--card); color: var(--foreground); box-shadow: 0 20px 65px rgba(7, 16, 24, 0.35); }
 .ask-ai-panel-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1rem 1rem 0.75rem; }
-.ask-ai-title { margin-top: 0.2rem; font-family: "Poppins", "Inter", sans-serif; font-size: 1.1rem; font-weight: 700; }
+.ask-ai-header-actions { display: flex; align-items: center; gap: 0.35rem; }
+.ask-ai-new-chat { min-height: 2rem; padding: 0.35rem 0.55rem; border-radius: 0.45rem; color: var(--muted); font-size: 0.7rem; font-weight: 700; }
+.ask-ai-new-chat:hover, .ask-ai-new-chat:focus-visible { color: var(--foreground); background: var(--muted-bg); outline: 2px solid var(--accent); }
+.ask-ai-new-chat:disabled { cursor: not-allowed; opacity: 0.5; }
+.ask-ai-thread { display: grid; gap: 0.75rem; max-height: 25rem; overflow-y: auto; margin: 0 1rem 1rem; }
+.ask-ai-empty { padding: 0.8rem; border-radius: 0.6rem; color: var(--muted); background: var(--muted-bg); font-size: 0.75rem; line-height: 1.45; }
+.ask-ai-message { border: 1px solid var(--card-border); border-radius: 0.7rem; padding: 0.7rem; }
+.ask-ai-user-message { background: var(--muted-bg); }
+.ask-ai-assistant-message { background: var(--card); }
+.ask-ai-panel form, .ask-ai-error { margin: 0 1rem 1rem; }
 .ask-ai-close { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 0.5rem; color: var(--muted); font-size: 1.35rem; line-height: 1; }
 .ask-ai-close:hover, .ask-ai-close:focus-visible { color: var(--foreground); background: var(--muted-bg); outline: 2px solid var(--accent); }
 .ask-ai-panel form, .ask-ai-results, .ask-ai-error { margin: 0 1rem 1rem; }
