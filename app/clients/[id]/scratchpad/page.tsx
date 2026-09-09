@@ -66,7 +66,7 @@ export default function ScratchpadPage({ params }: { params: Promise<{ id: strin
       if (rows[0]) {
         applyNote(rows[0]);
         if (!cached) reconcile(plainTextToRichText(rows[0].rawText ?? ""));
-        const linkedContextId = requestedContextId || rows[0].meetingContextId;
+        const linkedContextId = requestedContextId;
         if (linkedContextId) { setContextId(linkedContextId); contextRef.current = linkedContextId; }
       }
       loadedRef.current = true;

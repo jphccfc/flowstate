@@ -40,4 +40,10 @@ describe("scratch pad agenda linkage contract", () => {
     expect(scratchpad).toContain("Selected agenda context");
     expect(scratchpad).toContain("No context / start capturing now");
   });
+
+  it("does not infer a context from the first saved note when no agenda is requested", () => {
+    expect(scratchpad).toContain("const linkedContextId = requestedContextId;");
+    expect(scratchpad).not.toContain("requestedContextId || rows[0].meetingContextId");
+    expect(scratchpad).toContain("contextId: contextRef.current || null");
+  });
 });
