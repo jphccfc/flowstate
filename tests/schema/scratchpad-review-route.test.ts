@@ -1,15 +1,19 @@
 import { afterAll, describe, expect, it, vi } from "vitest";
 import { cleanupOrganization, createTestOrganization, prisma } from "../helpers/db";
 
+const { processCapturedInput } = vi.hoisted(() => ({ processCapturedInput: vi.fn().mockResolvedValue(undefined) }));
+vi.mock("@/lib/ingestion/pipeline", () => ({ processCapturedInput }));
+vi.mock("next/server", async (importOriginal) => ({ ...(await importOriginal<typeof import("next/server")>()), after: (fn: () => unknown) => fn() }));
+
 let currentEmail = "advisor@test.com";
 vi.mock("@/lib/supabase/server", () => ({
   createClient: async () => ({ auth: { getUser: async () => ({ data: { user: { email: currentEmail } } }) } }),
 }));
 
-import { PATCH } from "../../app/api/scratchpad/route";
+import { POST, PATCH } from "../../app/api/scratchpad/route";
 
-const request = (body: unknown) => new Request("http://localhost/api/scratchpad", {
-  method: "PATCH",
+const request = (body: unknown, method = "PATCH") => new Request("http://localhost/api/scratchpad", {
+  method,
   headers: { "content-type": "application/json" },
   body: JSON.stringify(body),
 }) as never;
@@ -22,6 +26,19 @@ describe("Scratch Pad review route", () => {
     await prisma.$disconnect();
   });
 
+  it("creates a session-linked raw scratch pad capture and schedules AI processing", async () => {
+    const organization = await createTestOrganization({ name: "Scratch Pad Live Session Org" });
+    organizationIds.push(organization.id);
+    const advisor = await prisma.user.upsert({ where: { email: "advisor@test.com" }, update: {}, create: { email: "advisor@test.com", role: "ADVISOR" } });
+    const session = await prisma.assessmentSession.create({ data: { organizationId: organization.id, advisorId: advisor.id, status: "active" } });
+
+    const response = await POST(request({ organizationId: organization.id, sessionId: session.id, text: "Unstructured workshop thought" }, "POST"));
+
+    expect(response.status).toBe(201);
+    const created = await response.json();
+    expect(created).toMatchObject({ organizationId: organization.id, sessionId: session.id, type: "TEXT_NOTE", rawText: "Unstructured workshop thought", status: "TRANSCRIBED" });
+    expect(processCapturedInput).toHaveBeenCalledWith(created.id);
+  });
   it("edits a note and explicitly approves it with reviewer audit fields", async () => {
     const organization = await createTestOrganization({ name: "Scratch Pad Review Org" });
     organizationIds.push(organization.id);

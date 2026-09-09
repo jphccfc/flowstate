@@ -166,14 +166,17 @@ export default function SessionPage({ params }: { params: Promise<{ id: string; 
         <Link href={`/clients/${organizationId}/capture`} className="text-sm text-[var(--muted)]">
           &larr; Back to capture
         </Link>
-        {isActive && (
-          <button
-            onClick={endSession}
-            className="text-xs font-medium px-3 py-1 rounded bg-[var(--destructive)] text-white"
-          >
-            End Session
-          </button>
-        )}
+        <div className="flex items-center gap-2">
+          <Link href={`/clients/${organizationId}/scratchpad?sessionId=${encodeURIComponent(sessionId)}`} className="rounded border border-[var(--card-border)] px-3 py-1 text-xs font-medium">Open Scratch Pad</Link>
+          {isActive && (
+            <button
+              onClick={endSession}
+              className="text-xs font-medium px-3 py-1 rounded bg-[var(--destructive)] text-white"
+            >
+              End Session
+            </button>
+          )}
+        </div>
       </div>
       <h1 className="text-2xl font-bold mb-2">Live Session</h1>
       <p className="text-sm text-[var(--muted)] mb-6">

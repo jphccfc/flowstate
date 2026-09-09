@@ -13,6 +13,10 @@ Configure these environment variable names in the deployment environment without
 
 If the gateway is not configured, the application returns a clear AI configuration error. It does not silently make a direct provider call.
 
+## File capture configuration
+
+Audio and document capture require a Vercel Blob store and the deployment variable `BLOB_READ_WRITE_TOKEN`. Without it, `POST /api/captured-inputs` returns HTTP 503 before creating a `CapturedInput`; raw capture is not falsely reported as saved. Provision the store and configure the token in the target deployment before validating microphone uploads end to end.
+
 ## Current gateway-backed capabilities
 
 - Evidence tagging and confidence scoring.

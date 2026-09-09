@@ -7,13 +7,14 @@ import { canReconcileEditor } from "@/lib/scratchpad/editor-sync";
 import { createScratchpadSaveQueue, type ScratchpadSavePayload } from "@/lib/scratchpad/save-queue";
 
 type Context = { id: string; title: string; startsAt: string | null; objectives: string | null; agendaItems: string[]; desiredOutcome: string | null };
-type Note = { id: string; rawText: string | null; revision: number; meetingContextId: string | null; updatedAt: string; senderName: string | null; senderEmail: string | null };
+type Note = { id: string; rawText: string | null; revision: number; meetingContextId: string | null; sessionId: string | null; updatedAt: string; senderName: string | null; senderEmail: string | null };
 type Queue = ReturnType<typeof createScratchpadSaveQueue>;
 
 export default function ScratchpadPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: organizationId } = use(params);
   const searchParams = useSearchParams();
   const requestedContextId = searchParams.get("contextId") ?? "";
+  const requestedSessionId = searchParams.get("sessionId") ?? "";
 
   const [contexts, setContexts] = useState<Context[]>([]);
   const [contextId, setContextId] = useState(requestedContextId);
@@ -28,7 +29,7 @@ export default function ScratchpadPage({ params }: { params: Promise<{ id: strin
   const draftRef = useRef<string | null>(null);
   const composingRef = useRef(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const cacheKey = `flowstate-scratchpad-${organizationId}`;
+  const cacheKey = `flowstate-scratchpad-${organizationId}${requestedSessionId ? `-session-${requestedSessionId}` : ""}`;
 
   const applyNote = (saved: Note) => { noteRef.current = saved; setNote(saved); };
   const reconcile = (next: string) => {
@@ -44,7 +45,7 @@ export default function ScratchpadPage({ params }: { params: Promise<{ id: strin
     if (cached) reconcile(sanitizeRichText(cached));
     const save = async (payload: ScratchpadSavePayload) => {
       const current = noteRef.current;
-      const body = current ? { id: current.id, text: payload.text, revision: payload.revision, contextId: payload.contextId ?? null } : { organizationId, text: payload.text, contextId: payload.contextId ?? null };
+      const body = current ? { id: current.id, text: payload.text, revision: payload.revision, contextId: payload.contextId ?? null, sessionId: current.sessionId ?? (requestedSessionId || null) } : { organizationId, text: payload.text, contextId: payload.contextId ?? null, sessionId: requestedSessionId || null };
       const res = await fetch("/api/scratchpad", { method: current ? "PATCH" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
       if (res.status === 409) return { kind: "conflict" as const };
       if (!res.ok) throw new Error(`Save failed: ${res.status}`);
@@ -53,7 +54,8 @@ export default function ScratchpadPage({ params }: { params: Promise<{ id: strin
       return { kind: "saved" as const, revision: saved.revision };
     };
     const reload = async () => {
-      const res = await fetch(`/api/scratchpad?organizationId=${organizationId}`);
+      const scratchpadQuery = `/api/scratchpad?organizationId=${encodeURIComponent(organizationId)}${requestedSessionId ? `&sessionId=${encodeURIComponent(requestedSessionId)}` : ""}`;
+      const res = await fetch(scratchpadQuery);
       if (!res.ok) throw new Error("Could not reload scratch pad");
       const rows = await res.json() as Note[];
       if (!rows[0]) throw new Error("Scratch pad note disappeared");
@@ -61,7 +63,8 @@ export default function ScratchpadPage({ params }: { params: Promise<{ id: strin
       return { revision: rows[0].revision };
     };
     queueRef.current = createScratchpadSaveQueue(save, reload, next => setStatus(next));
-    fetch(`/api/scratchpad?organizationId=${organizationId}`).then(r => r.ok ? r.json() : []).then((rows: Note[]) => {
+    const scratchpadQuery = `/api/scratchpad?organizationId=${encodeURIComponent(organizationId)}${requestedSessionId ? `&sessionId=${encodeURIComponent(requestedSessionId)}` : ""}`;
+    fetch(scratchpadQuery).then(r => r.ok ? r.json() : []).then((rows: Note[]) => {
       if (!active) return;
       if (rows[0]) {
         applyNote(rows[0]);
@@ -74,7 +77,7 @@ export default function ScratchpadPage({ params }: { params: Promise<{ id: strin
     });
     fetch(`/api/meeting-contexts?organizationId=${organizationId}`).then(r => r.ok ? r.json() : []).then((value: Context[]) => { if (active) setContexts(Array.isArray(value) ? value : []); });
     return () => { active = false; if (debounceRef.current) clearTimeout(debounceRef.current); };
-  }, [cacheKey, organizationId, requestedContextId]);
+  }, [cacheKey, organizationId, requestedContextId, requestedSessionId]);
 
   function enqueue(next: string) {
     dirtyRef.current = true;

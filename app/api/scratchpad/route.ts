@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
 import { canAccessClient, hasOrganizationPermission } from "@/lib/auth/organization";
+import { processCapturedInput } from "@/lib/ingestion/pipeline";
 import { sanitizeRichText } from "@/lib/scratchpad/rich-text";
 async function access(email: string | null | undefined, org: string) { return canAccessClient(email, org); }
 async function actorFor(email: string) {
@@ -9,10 +10,13 @@ async function actorFor(email: string) {
   return { senderName: user?.name?.trim() || email, senderEmail: user?.email || email };
 }
 export async function GET(req: NextRequest) {
-  const org = new URL(req.url).searchParams.get("organizationId"); if (!org) return NextResponse.json({ error: "organizationId is required" }, { status: 400 });
+  const params = new URL(req.url).searchParams;
+  const org = params.get("organizationId"); if (!org) return NextResponse.json({ error: "organizationId is required" }, { status: 400 });
+  const sessionId = params.get("sessionId");
   const { data: { user } } = await (await createClient()).auth.getUser(); if (!user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   if (!(await access(user.email, org))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  return NextResponse.json(await prisma.capturedInput.findMany({ where: { organizationId: org, type: "TEXT_NOTE" }, orderBy: { updatedAt: "desc" }, include: { meetingContext: true } }));
+  if (sessionId && !(await prisma.assessmentSession.findFirst({ where: { id: sessionId, organizationId: org }, select: { id: true } }))) return NextResponse.json({ error: "Live session not found" }, { status: 404 });
+  return NextResponse.json(await prisma.capturedInput.findMany({ where: { organizationId: org, type: "TEXT_NOTE", ...(sessionId ? { sessionId } : {}) }, orderBy: { updatedAt: "desc" }, include: { meetingContext: true } }));
 }
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({})); const org = body.organizationId;
@@ -21,8 +25,15 @@ export async function POST(req: NextRequest) {
   if (!(await access(user.email, org))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   const actor = await actorFor(user.email);
   const contextId = typeof body.contextId === "string" ? body.contextId : null;
+  const sessionId = typeof body.sessionId === "string" ? body.sessionId : null;
+  if (sessionId) {
+    const session = await prisma.assessmentSession.findFirst({ where: { id: sessionId, organizationId: org }, select: { id: true, status: true } });
+    if (!session) return NextResponse.json({ error: "Live session not found" }, { status: 404 });
+    if (session.status !== "active") return NextResponse.json({ error: "Live session is not active" }, { status: 400 });
+  }
   if (contextId && !(await prisma.meetingContext.findFirst({ where: { id: contextId, organizationId: org }, select: { id: true } }))) return NextResponse.json({ error: "Meeting context not found" }, { status: 404 });
-  const note = await prisma.capturedInput.create({ data: { organizationId: org, type: "TEXT_NOTE", rawText: sanitizeRichText(typeof body.text === "string" ? body.text : ""), status: "TRANSCRIBED", meetingContextId: contextId, senderName: actor.senderName, senderEmail: actor.senderEmail } });
+  const note = await prisma.capturedInput.create({ data: { organizationId: org, type: "TEXT_NOTE", rawText: sanitizeRichText(typeof body.text === "string" ? body.text : ""), status: "TRANSCRIBED", sessionId, meetingContextId: contextId, senderName: actor.senderName, senderEmail: actor.senderEmail } });
+  after(() => processCapturedInput(note.id));
   return NextResponse.json(note, { status: 201 });
 }
 export async function PATCH(req: NextRequest) {
