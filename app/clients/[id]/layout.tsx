@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { prisma } from "@/lib/db";
 import { WorkspaceNav } from "@/components/layout/WorkspaceNav";
+import { AskAIAssistant } from "@/components/ai/AskAIAssistant";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { canAccessClient } from "@/lib/auth/organization";
@@ -25,6 +26,7 @@ export default async function ClientLayout({
       <div className="workspace-frame">
         <WorkspaceNav clientName={org.name} clientId={id} />
         <div className="workspace-content">{children}</div>
+        <AskAIAssistant clientId={id} />
       </div>
     </div>
   );
