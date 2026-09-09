@@ -14,5 +14,7 @@ export default defineConfig({
     hookTimeout: 15000,
     // Schema tests share stable fixture users; run files serially to avoid cross-file upsert races.
     fileParallelism: false,
+    // Keep Vitest scoped to application unit/schema tests; Playwright specs use `test:browser`.
+    include: ["tests/unit/**/*.test.ts", "tests/schema/**/*.test.ts"],
   },
 });
