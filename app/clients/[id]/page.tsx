@@ -47,6 +47,7 @@ export default async function ClientOverviewPage({
   );
 
   const cards = [
+    { href: `/clients/${id}/ai`, label: "AI Hub", desc: "Ask grounded questions over this workspace's authorized data", cta: "Ask AI Hub" },
     { href: `/clients/${id}/capture`, label: "Capture evidence", desc: "Upload and capture traceable evidence for this client", cta: "Open capture evidence" },
     { href: `/clients/${id}/scratchpad`, label: "Quick notes", desc: "Capture context-free quick notes whenever you need them", cta: "Open Scratch Pad" },
     { href: `/clients/${id}/meetings`, label: "Meeting Agendas", desc: "Prepare agendas and start Scratch Pads with linked meeting context", cta: "Manage meeting agendas" },
