@@ -7,6 +7,23 @@ describe("AI gateway client", () => {
     vi.unstubAllEnvs();
   });
 
+  it("normalizes a LiteLLM base URL that already includes the v1 path", async () => {
+    vi.stubEnv("LITELLM_BASE_URL", "http://litellm.test:4000/v1/");
+    vi.stubEnv("LITELLM_API_KEY", "gateway-test-key");
+    vi.stubEnv("AI_MODEL", "flowstate-test-model");
+
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(JSON.stringify({ choices: [{ message: { content: "ok" } }] }), { status: 200 })
+    );
+
+    await requestChatCompletion({ system: "system", user: "user", maxTokens: 64 });
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      "http://litellm.test:4000/v1/chat/completions",
+      expect.anything()
+    );
+  });
+
   it("sends chat requests through LiteLLM using configured model and bearer auth", async () => {
     vi.stubEnv("LITELLM_BASE_URL", "http://litellm.test:4000");
     vi.stubEnv("LITELLM_API_KEY", "gateway-test-key");
@@ -46,6 +63,16 @@ describe("AI gateway client", () => {
         }),
       })
     );
+  });
+
+  it("fails clearly when AI_MODEL is missing", async () => {
+    vi.stubEnv("LITELLM_BASE_URL", "http://litellm.test:4000");
+    vi.stubEnv("LITELLM_API_KEY", "gateway-test-key");
+    vi.stubEnv("AI_MODEL", "");
+
+    await expect(
+      requestChatCompletion({ system: "system", user: "user", maxTokens: 64 })
+    ).rejects.toThrow("AI gateway is not configured");
   });
 
   it("fails clearly when the gateway is not configured", async () => {

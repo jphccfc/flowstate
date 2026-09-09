@@ -7,7 +7,7 @@ export type ChatCompletionRequest = {
 };
 
 export function getAIGatewayConfig() {
-  const baseUrl = process.env.LITELLM_BASE_URL?.trim().replace(/\/$/, "");
+  const baseUrl = process.env.LITELLM_BASE_URL?.trim().replace(/\/v1\/?$/, "").replace(/\/$/, "");
   const apiKey = process.env.LITELLM_API_KEY?.trim();
   const model = process.env.AI_MODEL?.trim();
   if (!baseUrl || !apiKey || !model) {
