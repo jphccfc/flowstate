@@ -5,11 +5,12 @@ import Link from "next/link";
 import { renderAnswerWithCitations } from "@/lib/ai/citations";
 
 type Source = { id: string; kind: string; title: string; date: string; excerpt: string; href?: string };
-type Result = { answer: string; sources: Source[]; limitation?: string; error?: string };
+type Result = { answer: string; sources: Source[]; limitation?: string; error?: string; agent?: { key: string; name: string; type: string; promptVersion: number } };
 
 export default function AIHubPage({ params }: { params: Promise<{ id: string }> }) {
   const [organizationId, setOrganizationId] = useState<string>();
   const [question, setQuestion] = useState("");
+  const [agentKey, setAgentKey] = useState("client_ai_hub");
   const [result, setResult] = useState<Result | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -21,7 +22,7 @@ export default function AIHubPage({ params }: { params: Promise<{ id: string }> 
     if (!organizationId || !question.trim()) return;
     setBusy(true); setError(""); setResult(null);
     try {
-      const response = await fetch(`/api/clients/${organizationId}/ai`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question }) });
+      const response = await fetch(`/api/clients/${organizationId}/ai`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question, agentKey }) });
       const data = await response.json() as Result;
       if (!response.ok) throw new Error(data.error || "FlowCoach could not answer that question.");
       setResult(data);
@@ -36,6 +37,9 @@ export default function AIHubPage({ params }: { params: Promise<{ id: string }> 
       <form onSubmit={ask} className="workspace-card p-4 sm:p-6" aria-label="Ask FlowCoach">
         <label htmlFor="ai-question" className="block text-sm font-semibold text-[var(--foreground)]">Your question</label>
         <textarea id="ai-question" value={question} onChange={(event) => setQuestion(event.target.value)} rows={5} maxLength={1000} required placeholder="Where is the request for the data room export?" className="mt-2 w-full resize-y rounded-lg border border-[var(--card-border)] bg-[var(--card)] p-3 text-sm text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]" />
+        <label htmlFor="ai-agent" className="mt-4 block text-sm font-semibold text-[var(--foreground)]">Analysis mode</label>
+        <select id="ai-agent" value={agentKey} onChange={(event) => setAgentKey(event.target.value)} className="mt-2 w-full rounded-lg border border-[var(--card-border)] bg-[var(--card)] p-3 text-sm text-[var(--foreground)]"><option value="client_ai_hub">FlowCoach (orchestrator)</option><option value="financial_analyst">Financial Analyst specialist</option></select>
+        <p className="mt-2 text-xs text-[var(--muted)]">Specialists must be reviewed and published by a system administrator before use.</p>
         <div className="mt-3 flex flex-wrap items-center gap-3"><button type="submit" disabled={busy || !question.trim()} className="flowstate-accent-button rounded-lg px-4 py-2 text-sm font-medium text-white disabled:opacity-50">{busy ? "Searching…" : "Ask FlowCoach"}</button><span className="text-xs text-[var(--muted)]">Read-only · human review required</span></div>
       </form>
       {error && <div role="alert" className="mt-4 rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800 dark:border-red-900 dark:bg-red-950/30 dark:text-red-200">{error}</div>}

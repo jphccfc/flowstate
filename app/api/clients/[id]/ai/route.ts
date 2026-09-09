@@ -6,6 +6,7 @@ import { requestChatCompletion } from "@/lib/ai/client";
 import { formatWorkspaceContext, formatMeetingAgendaSource, rankWorkspaceSources, type WorkspaceSource } from "@/lib/ai/hub";
 import { parseConversation } from "@/lib/ai/conversation";
 import { sourceHref } from "@/lib/ai/source-links";
+import { safeAgentIdentifier } from "@/lib/agents/validation";
 
 const MAX_QUESTION_LENGTH = 1000;
 
@@ -20,6 +21,8 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (!(await canAccessClient(user.email, organizationId))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const body = await req.json().catch(() => null) as Record<string, unknown> | null;
+  const requestedAgentKey = typeof body?.agentKey === "string" ? body.agentKey : "client_ai_hub";
+  if (!safeAgentIdentifier.test(requestedAgentKey)) return NextResponse.json({ error: "agentKey must be a safe catalogue identifier" }, { status: 400 });
   const question = typeof body?.question === "string" ? body.question.trim() : "";
   if (!question) return NextResponse.json({ error: "question is required" }, { status: 400 });
   if (question.length > MAX_QUESTION_LENGTH) return NextResponse.json({ error: "question is too long" }, { status: 400 });
@@ -35,7 +38,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     prisma.project.findMany({ where: { organizationId }, select: { id: true, name: true, objective: true, status: true, timeline: true, outcomes: true, updatedAt: true } }),
     prisma.kPI.findMany({ where: { organizationId }, select: { id: true, name: true, description: true, targetValue: true, currentValue: true, dataSource: true, updatedAt: true } }),
     prisma.achievement.findMany({ where: { organizationId }, select: { id: true, description: true, targetDate: true, successMetrics: true, status: true, updatedAt: true } }),
-    prisma.agentDefinition.findFirst({ where: { publishedPromptVersionId: { not: null }, OR: [{ key: "client_ai_hub" }, { name: { contains: "AI Hub", mode: "insensitive" } }] }, select: { name: true, publishedPromptVersion: { select: { prompt: true, version: true } } } }),
+    prisma.agentDefinition.findFirst({ where: requestedAgentKey === "client_ai_hub" ? { publishedPromptVersionId: { not: null }, OR: [{ key: "client_ai_hub" }, { name: { contains: "AI Hub", mode: "insensitive" } }] } : { key: requestedAgentKey, agentType: "SPECIALIST", publishedPromptVersionId: { not: null } }, select: { key: true, name: true, agentType: true, publishedPromptVersion: { select: { prompt: true, version: true } } } }),
   ]);
 
   const sources: WorkspaceSource[] = [
@@ -56,7 +59,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       user: `Current question: ${question}\n\nAuthorized workspace context (retrieved for the current question only):\n${formatWorkspaceContext(rankedSources)}`,
       maxTokens: 700,
     });
-    return NextResponse.json({ answer, sources: rankedSources.map((source) => ({ id: source.id, kind: source.kind, title: source.title, date: source.date.toISOString(), excerpt: source.excerpt, href: sourceHref(organizationId, source.kind, source.id) })), agent: { name: agent.name, promptVersion: agent.publishedPromptVersion.version }, limitation: "FlowCoach uses deterministic keyword relevance over currently indexed workspace records and the published agent prompt. Verify important answers against the cited source." });
+    return NextResponse.json({ answer, sources: rankedSources.map((source) => ({ id: source.id, kind: source.kind, title: source.title, date: source.date.toISOString(), excerpt: source.excerpt, href: sourceHref(organizationId, source.kind, source.id) })), agent: { key: agent.key, name: agent.name, type: agent.agentType, promptVersion: agent.publishedPromptVersion.version }, limitation: "FlowCoach uses deterministic keyword relevance over currently indexed workspace records and the published agent prompt. Verify important answers against the cited source." });
   } catch (error) {
     const message = error instanceof Error ? error.message : "AI provider request failed";
     const configurationError = [
