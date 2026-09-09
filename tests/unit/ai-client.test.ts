@@ -108,14 +108,17 @@ describe("OpenAI client", () => {
     ).rejects.toThrow("OpenAI API key is not configured");
   });
 
-  it("fails clearly when the OpenAI model is missing", async () => {
+  it("uses the lightweight default when no OpenAI model is configured", async () => {
     vi.stubEnv("OPENAI_API_KEY", "openai-test-key");
     vi.stubEnv("OPENAI_MODEL", "");
     vi.stubEnv("AI_MODEL", "");
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(JSON.stringify({ choices: [{ message: { content: "ok" } }] }), { status: 200 })
+    );
 
-    await expect(
-      requestChatCompletion({ system: "system", user: "user", maxTokens: 64 })
-    ).rejects.toThrow("AI model is not configured");
+    await requestChatCompletion({ system: "system", user: "user", maxTokens: 64 });
+
+    expect(JSON.parse(fetchMock.mock.calls[0][1]?.body as string).model).toBe("gpt-4o-mini");
   });
 
   it("only uses LiteLLM when explicitly selected", async () => {

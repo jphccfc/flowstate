@@ -7,7 +7,7 @@ Flowstate uses direct OpenAI as its initial server-side AI provider. All AI requ
 Configure these environment variable names in the deployment environment without committing their values:
 
 - `OPENAI_API_KEY` — server-only OpenAI credential. Never expose it as a client/public variable.
-- `OPENAI_MODEL` — required model name. Flowstate does not choose a model automatically.
+- `OPENAI_MODEL` — optional model name. Defaults to `gpt-4o-mini` for the initial lightweight setup.
 - `OPENAI_BASE_URL` — optional OpenAI-compatible API base URL for tests or compatible deployments. It defaults to `https://api.openai.com`; a trailing slash and optional `/v1` are normalized before Flowstate requests `/v1/chat/completions`.
 
 `AI_MODEL` is supported only as a backward-compatible fallback when `OPENAI_MODEL` is absent. New deployments should set `OPENAI_MODEL` explicitly.

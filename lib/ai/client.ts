@@ -39,9 +39,8 @@ export function getAIGatewayConfig(): AIConfig {
 
   const baseUrl = normalizeBaseUrl(process.env.OPENAI_BASE_URL || "https://api.openai.com");
   const apiKey = process.env.OPENAI_API_KEY?.trim() ?? "";
-  const model = (process.env.OPENAI_MODEL || process.env.AI_MODEL)?.trim() ?? "";
+  const model = (process.env.OPENAI_MODEL || process.env.AI_MODEL)?.trim() || "gpt-4o-mini";
   if (!apiKey) throw new Error("OpenAI API key is not configured");
-  if (!model) throw new Error("AI model is not configured");
   return { provider, baseUrl, apiKey, model };
 }
 
