@@ -45,6 +45,15 @@ export const ProcessingStatus = {
 export type ProcessingStatus = (typeof ProcessingStatus)[keyof typeof ProcessingStatus]
 
 
+export const ScratchpadReviewStatus = {
+  PENDING_REVIEW: 'PENDING_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type ScratchpadReviewStatus = (typeof ScratchpadReviewStatus)[keyof typeof ScratchpadReviewStatus]
+
+
 export const TagTargetType = {
   DOMAIN: 'DOMAIN',
   CAPABILITY: 'CAPABILITY',

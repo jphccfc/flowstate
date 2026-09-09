@@ -4302,6 +4302,9 @@ export const CapturedInputScalarFieldEnum = {
   rawText: 'rawText',
   locationTag: 'locationTag',
   status: 'status',
+  reviewStatus: 'reviewStatus',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
   error: 'error',
   capturedAt: 'capturedAt',
   createdAt: 'createdAt',
@@ -4947,6 +4950,20 @@ export type EnumProcessingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'ProcessingStatus[]'
  */
 export type ListEnumProcessingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProcessingStatus[]'>
+
+
+
+/**
+ * Reference to a field of type 'ScratchpadReviewStatus'
+ */
+export type EnumScratchpadReviewStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScratchpadReviewStatus'>
+
+
+
+/**
+ * Reference to a field of type 'ScratchpadReviewStatus[]'
+ */
+export type ListEnumScratchpadReviewStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScratchpadReviewStatus[]'>
 
 
 

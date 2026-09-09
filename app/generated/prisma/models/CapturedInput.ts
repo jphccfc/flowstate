@@ -50,6 +50,9 @@ export type CapturedInputMinAggregateOutputType = {
   rawText: string | null
   locationTag: string | null
   status: $Enums.ProcessingStatus | null
+  reviewStatus: $Enums.ScratchpadReviewStatus | null
+  reviewedBy: string | null
+  reviewedAt: Date | null
   error: string | null
   capturedAt: Date | null
   createdAt: Date | null
@@ -72,6 +75,9 @@ export type CapturedInputMaxAggregateOutputType = {
   rawText: string | null
   locationTag: string | null
   status: $Enums.ProcessingStatus | null
+  reviewStatus: $Enums.ScratchpadReviewStatus | null
+  reviewedBy: string | null
+  reviewedAt: Date | null
   error: string | null
   capturedAt: Date | null
   createdAt: Date | null
@@ -94,6 +100,9 @@ export type CapturedInputCountAggregateOutputType = {
   rawText: number
   locationTag: number
   status: number
+  reviewStatus: number
+  reviewedBy: number
+  reviewedAt: number
   error: number
   capturedAt: number
   createdAt: number
@@ -126,6 +135,9 @@ export type CapturedInputMinAggregateInputType = {
   rawText?: true
   locationTag?: true
   status?: true
+  reviewStatus?: true
+  reviewedBy?: true
+  reviewedAt?: true
   error?: true
   capturedAt?: true
   createdAt?: true
@@ -148,6 +160,9 @@ export type CapturedInputMaxAggregateInputType = {
   rawText?: true
   locationTag?: true
   status?: true
+  reviewStatus?: true
+  reviewedBy?: true
+  reviewedAt?: true
   error?: true
   capturedAt?: true
   createdAt?: true
@@ -170,6 +185,9 @@ export type CapturedInputCountAggregateInputType = {
   rawText?: true
   locationTag?: true
   status?: true
+  reviewStatus?: true
+  reviewedBy?: true
+  reviewedAt?: true
   error?: true
   capturedAt?: true
   createdAt?: true
@@ -279,6 +297,9 @@ export type CapturedInputGroupByOutputType = {
   rawText: string | null
   locationTag: string | null
   status: $Enums.ProcessingStatus
+  reviewStatus: $Enums.ScratchpadReviewStatus
+  reviewedBy: string | null
+  reviewedAt: Date | null
   error: string | null
   capturedAt: Date
   createdAt: Date
@@ -324,6 +345,9 @@ export type CapturedInputWhereInput = {
   rawText?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   locationTag?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   status?: Prisma.EnumProcessingStatusFilter<"CapturedInput"> | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFilter<"CapturedInput"> | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"CapturedInput"> | Date | string | null
   error?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   capturedAt?: Prisma.DateTimeFilter<"CapturedInput"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"CapturedInput"> | Date | string
@@ -352,6 +376,9 @@ export type CapturedInputOrderByWithRelationInput = {
   rawText?: Prisma.SortOrderInput | Prisma.SortOrder
   locationTag?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  reviewStatus?: Prisma.SortOrder
+  reviewedBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   error?: Prisma.SortOrderInput | Prisma.SortOrder
   capturedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -384,6 +411,9 @@ export type CapturedInputWhereUniqueInput = Prisma.AtLeast<{
   rawText?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   locationTag?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   status?: Prisma.EnumProcessingStatusFilter<"CapturedInput"> | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFilter<"CapturedInput"> | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"CapturedInput"> | Date | string | null
   error?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   capturedAt?: Prisma.DateTimeFilter<"CapturedInput"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"CapturedInput"> | Date | string
@@ -412,6 +442,9 @@ export type CapturedInputOrderByWithAggregationInput = {
   rawText?: Prisma.SortOrderInput | Prisma.SortOrder
   locationTag?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  reviewStatus?: Prisma.SortOrder
+  reviewedBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   error?: Prisma.SortOrderInput | Prisma.SortOrder
   capturedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -442,6 +475,9 @@ export type CapturedInputScalarWhereWithAggregatesInput = {
   rawText?: Prisma.StringNullableWithAggregatesFilter<"CapturedInput"> | string | null
   locationTag?: Prisma.StringNullableWithAggregatesFilter<"CapturedInput"> | string | null
   status?: Prisma.EnumProcessingStatusWithAggregatesFilter<"CapturedInput"> | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusWithAggregatesFilter<"CapturedInput"> | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.StringNullableWithAggregatesFilter<"CapturedInput"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CapturedInput"> | Date | string | null
   error?: Prisma.StringNullableWithAggregatesFilter<"CapturedInput"> | string | null
   capturedAt?: Prisma.DateTimeWithAggregatesFilter<"CapturedInput"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CapturedInput"> | Date | string
@@ -461,6 +497,9 @@ export type CapturedInputCreateInput = {
   rawText?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
   error?: string | null
   capturedAt?: Date | string
   createdAt?: Date | string
@@ -489,6 +528,9 @@ export type CapturedInputUncheckedCreateInput = {
   rawText?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
   error?: string | null
   capturedAt?: Date | string
   createdAt?: Date | string
@@ -511,6 +553,9 @@ export type CapturedInputUpdateInput = {
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -539,6 +584,9 @@ export type CapturedInputUncheckedUpdateInput = {
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -564,6 +612,9 @@ export type CapturedInputCreateManyInput = {
   rawText?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
   error?: string | null
   capturedAt?: Date | string
   createdAt?: Date | string
@@ -583,6 +634,9 @@ export type CapturedInputUpdateManyMutationInput = {
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -605,6 +659,9 @@ export type CapturedInputUncheckedUpdateManyInput = {
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -642,6 +699,9 @@ export type CapturedInputCountOrderByAggregateInput = {
   rawText?: Prisma.SortOrder
   locationTag?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  reviewStatus?: Prisma.SortOrder
+  reviewedBy?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
   error?: Prisma.SortOrder
   capturedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -668,6 +728,9 @@ export type CapturedInputMaxOrderByAggregateInput = {
   rawText?: Prisma.SortOrder
   locationTag?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  reviewStatus?: Prisma.SortOrder
+  reviewedBy?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
   error?: Prisma.SortOrder
   capturedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -690,6 +753,9 @@ export type CapturedInputMinOrderByAggregateInput = {
   rawText?: Prisma.SortOrder
   locationTag?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  reviewStatus?: Prisma.SortOrder
+  reviewedBy?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
   error?: Prisma.SortOrder
   capturedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -839,6 +905,10 @@ export type EnumProcessingStatusFieldUpdateOperationsInput = {
   set?: $Enums.ProcessingStatus
 }
 
+export type EnumScratchpadReviewStatusFieldUpdateOperationsInput = {
+  set?: $Enums.ScratchpadReviewStatus
+}
+
 export type CapturedInputCreateNestedOneWithoutAttachmentsInput = {
   create?: Prisma.XOR<Prisma.CapturedInputCreateWithoutAttachmentsInput, Prisma.CapturedInputUncheckedCreateWithoutAttachmentsInput>
   connectOrCreate?: Prisma.CapturedInputCreateOrConnectWithoutAttachmentsInput
@@ -894,6 +964,9 @@ export type CapturedInputCreateWithoutOrganizationInput = {
   rawText?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
   error?: string | null
   capturedAt?: Date | string
   createdAt?: Date | string
@@ -920,6 +993,9 @@ export type CapturedInputUncheckedCreateWithoutOrganizationInput = {
   rawText?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
   error?: string | null
   capturedAt?: Date | string
   createdAt?: Date | string
@@ -974,6 +1050,9 @@ export type CapturedInputScalarWhereInput = {
   rawText?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   locationTag?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   status?: Prisma.EnumProcessingStatusFilter<"CapturedInput"> | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFilter<"CapturedInput"> | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"CapturedInput"> | Date | string | null
   error?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   capturedAt?: Prisma.DateTimeFilter<"CapturedInput"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"CapturedInput"> | Date | string
@@ -993,6 +1072,9 @@ export type CapturedInputCreateWithoutSessionInput = {
   rawText?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
   error?: string | null
   capturedAt?: Date | string
   createdAt?: Date | string
@@ -1019,6 +1101,9 @@ export type CapturedInputUncheckedCreateWithoutSessionInput = {
   rawText?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
   error?: string | null
   capturedAt?: Date | string
   createdAt?: Date | string
@@ -1067,6 +1152,9 @@ export type CapturedInputCreateWithoutMeetingContextInput = {
   rawText?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
   error?: string | null
   capturedAt?: Date | string
   createdAt?: Date | string
@@ -1093,6 +1181,9 @@ export type CapturedInputUncheckedCreateWithoutMeetingContextInput = {
   rawText?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
   error?: string | null
   capturedAt?: Date | string
   createdAt?: Date | string
@@ -1141,6 +1232,9 @@ export type CapturedInputCreateWithoutAttachmentsInput = {
   rawText?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
   error?: string | null
   capturedAt?: Date | string
   createdAt?: Date | string
@@ -1168,6 +1262,9 @@ export type CapturedInputUncheckedCreateWithoutAttachmentsInput = {
   rawText?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
   error?: string | null
   capturedAt?: Date | string
   createdAt?: Date | string
@@ -1205,6 +1302,9 @@ export type CapturedInputUpdateWithoutAttachmentsInput = {
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1232,6 +1332,9 @@ export type CapturedInputUncheckedUpdateWithoutAttachmentsInput = {
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1253,6 +1356,9 @@ export type CapturedInputCreateWithoutSegmentsInput = {
   rawText?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
   error?: string | null
   capturedAt?: Date | string
   createdAt?: Date | string
@@ -1280,6 +1386,9 @@ export type CapturedInputUncheckedCreateWithoutSegmentsInput = {
   rawText?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
   error?: string | null
   capturedAt?: Date | string
   createdAt?: Date | string
@@ -1317,6 +1426,9 @@ export type CapturedInputUpdateWithoutSegmentsInput = {
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1344,6 +1456,9 @@ export type CapturedInputUncheckedUpdateWithoutSegmentsInput = {
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1365,6 +1480,9 @@ export type CapturedInputCreateWithoutAgentRunsInput = {
   rawText?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
   error?: string | null
   capturedAt?: Date | string
   createdAt?: Date | string
@@ -1392,6 +1510,9 @@ export type CapturedInputUncheckedCreateWithoutAgentRunsInput = {
   rawText?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
   error?: string | null
   capturedAt?: Date | string
   createdAt?: Date | string
@@ -1429,6 +1550,9 @@ export type CapturedInputUpdateWithoutAgentRunsInput = {
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1456,6 +1580,9 @@ export type CapturedInputUncheckedUpdateWithoutAgentRunsInput = {
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1479,6 +1606,9 @@ export type CapturedInputCreateManyOrganizationInput = {
   rawText?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
   error?: string | null
   capturedAt?: Date | string
   createdAt?: Date | string
@@ -1498,6 +1628,9 @@ export type CapturedInputUpdateWithoutOrganizationInput = {
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1524,6 +1657,9 @@ export type CapturedInputUncheckedUpdateWithoutOrganizationInput = {
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1548,6 +1684,9 @@ export type CapturedInputUncheckedUpdateManyWithoutOrganizationInput = {
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1569,6 +1708,9 @@ export type CapturedInputCreateManySessionInput = {
   rawText?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
   error?: string | null
   capturedAt?: Date | string
   createdAt?: Date | string
@@ -1588,6 +1730,9 @@ export type CapturedInputUpdateWithoutSessionInput = {
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1614,6 +1759,9 @@ export type CapturedInputUncheckedUpdateWithoutSessionInput = {
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1638,6 +1786,9 @@ export type CapturedInputUncheckedUpdateManyWithoutSessionInput = {
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1659,6 +1810,9 @@ export type CapturedInputCreateManyMeetingContextInput = {
   rawText?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
   error?: string | null
   capturedAt?: Date | string
   createdAt?: Date | string
@@ -1678,6 +1832,9 @@ export type CapturedInputUpdateWithoutMeetingContextInput = {
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1704,6 +1861,9 @@ export type CapturedInputUncheckedUpdateWithoutMeetingContextInput = {
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1728,6 +1888,9 @@ export type CapturedInputUncheckedUpdateManyWithoutMeetingContextInput = {
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1799,6 +1962,9 @@ export type CapturedInputSelect<ExtArgs extends runtime.Types.Extensions.Interna
   rawText?: boolean
   locationTag?: boolean
   status?: boolean
+  reviewStatus?: boolean
+  reviewedBy?: boolean
+  reviewedAt?: boolean
   error?: boolean
   capturedAt?: boolean
   createdAt?: boolean
@@ -1828,6 +1994,9 @@ export type CapturedInputSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   rawText?: boolean
   locationTag?: boolean
   status?: boolean
+  reviewStatus?: boolean
+  reviewedBy?: boolean
+  reviewedAt?: boolean
   error?: boolean
   capturedAt?: boolean
   createdAt?: boolean
@@ -1853,6 +2022,9 @@ export type CapturedInputSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   rawText?: boolean
   locationTag?: boolean
   status?: boolean
+  reviewStatus?: boolean
+  reviewedBy?: boolean
+  reviewedAt?: boolean
   error?: boolean
   capturedAt?: boolean
   createdAt?: boolean
@@ -1878,13 +2050,16 @@ export type CapturedInputSelectScalar = {
   rawText?: boolean
   locationTag?: boolean
   status?: boolean
+  reviewStatus?: boolean
+  reviewedBy?: boolean
+  reviewedAt?: boolean
   error?: boolean
   capturedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type CapturedInputOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "sessionId" | "meetingContextId" | "revision" | "type" | "sourceRef" | "senderEmail" | "senderName" | "subject" | "idempotencyKey" | "quarantineReason" | "rawText" | "locationTag" | "status" | "error" | "capturedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["capturedInput"]>
+export type CapturedInputOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "sessionId" | "meetingContextId" | "revision" | "type" | "sourceRef" | "senderEmail" | "senderName" | "subject" | "idempotencyKey" | "quarantineReason" | "rawText" | "locationTag" | "status" | "reviewStatus" | "reviewedBy" | "reviewedAt" | "error" | "capturedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["capturedInput"]>
 export type CapturedInputInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   session?: boolean | Prisma.CapturedInput$sessionArgs<ExtArgs>
@@ -1931,6 +2106,9 @@ export type $CapturedInputPayload<ExtArgs extends runtime.Types.Extensions.Inter
     rawText: string | null
     locationTag: string | null
     status: $Enums.ProcessingStatus
+    reviewStatus: $Enums.ScratchpadReviewStatus
+    reviewedBy: string | null
+    reviewedAt: Date | null
     error: string | null
     capturedAt: Date
     createdAt: Date
@@ -2379,6 +2557,9 @@ export interface CapturedInputFieldRefs {
   readonly rawText: Prisma.FieldRef<"CapturedInput", 'String'>
   readonly locationTag: Prisma.FieldRef<"CapturedInput", 'String'>
   readonly status: Prisma.FieldRef<"CapturedInput", 'ProcessingStatus'>
+  readonly reviewStatus: Prisma.FieldRef<"CapturedInput", 'ScratchpadReviewStatus'>
+  readonly reviewedBy: Prisma.FieldRef<"CapturedInput", 'String'>
+  readonly reviewedAt: Prisma.FieldRef<"CapturedInput", 'DateTime'>
   readonly error: Prisma.FieldRef<"CapturedInput", 'String'>
   readonly capturedAt: Prisma.FieldRef<"CapturedInput", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"CapturedInput", 'DateTime'>

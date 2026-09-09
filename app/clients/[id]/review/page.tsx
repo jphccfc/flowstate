@@ -8,6 +8,10 @@ type Candidate = { id: string; name: string };
 type ScratchpadNote = {
   id: string;
   rawText: string | null;
+  revision: number;
+  reviewStatus: string;
+  reviewedBy: string | null;
+  reviewedAt: string | null;
   status: string;
   updatedAt: string;
   meetingContext: { title: string | null; startsAt: string | null } | null;
@@ -43,6 +47,8 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
   const [reassignChoice, setReassignChoice] = useState<Record<string, string>>({});
   const [error, setError] = useState<string | null>(null);
   const [actionId, setActionId] = useState<string | null>(null);
+  const [noteDrafts, setNoteDrafts] = useState<Record<string, string>>({});
+  const sanitizedRawText = (note: ScratchpadNote) => sanitizeRichText(note.rawText ?? "");
 
   const loadReviewItems = useCallback(async () => {
     setError(null);
@@ -112,6 +118,31 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
     }
   }
 
+  async function saveNote(note: ScratchpadNote) {
+    const text = noteDrafts[note.id];
+    if (text === undefined) return;
+    setActionId(note.id); setError(null);
+    try {
+      const res = await fetch("/api/scratchpad", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: note.id, text, revision: note.revision }) });
+      if (!res.ok) throw new Error(res.status === 409 ? "This note changed elsewhere; refresh and try again." : "The note could not be saved.");
+      await loadReviewItems();
+    } catch (cause) { setError(cause instanceof Error ? cause.message : "The note could not be saved."); }
+    finally { setActionId(null); }
+  }
+
+  async function reviewNote(note: ScratchpadNote, action: "approve" | "reject") {
+    // API decisions are sent as { action: "approve" } or { action: "reject" }.
+
+    if (!window.confirm(`Are you sure you want to ${action} this Scratch Pad note?`)) return;
+    setActionId(note.id); setError(null);
+    try {
+      const res = await fetch("/api/scratchpad", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: note.id, action }) });
+      if (!res.ok) throw new Error("The note review decision could not be saved.");
+      await loadReviewItems();
+    } catch (cause) { setError(cause instanceof Error ? cause.message : "The note review decision could not be saved."); }
+    finally { setActionId(null); }
+  }
+
   if (loading) return <div className="p-6 text-sm text-[var(--muted)]">Loading…</div>;
 
   return (
@@ -121,7 +152,10 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
           &larr; Back to client
         </Link>
       </div>
-      <h1 className="mb-6 text-2xl font-bold">Tag Review</h1>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-bold">Tag Review</h1>
+        <Link href={`/clients/${organizationId}/scratchpad`} className="rounded px-3 py-2 text-sm font-medium text-white flowstate-accent-button">New Scratch Pad note</Link>
+      </div>
       {error && <div role="alert" className="mb-4 rounded-lg border border-[var(--destructive)] p-3 text-sm text-[var(--destructive)]">{error}</div>}
 
       <section aria-labelledby="scratchpad-notes-heading" className="mb-8">
@@ -135,10 +169,25 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
               <article key={note.id} className="rounded-lg border border-[var(--card-border)] p-4">
                 <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
                   <h3 className="font-medium">{note.meetingContext?.title || (note.meetingContext?.startsAt ? new Date(note.meetingContext.startsAt).toLocaleString() : "Unlinked meeting")}</h3>
-                  <span className="rounded-full border border-[var(--card-border)] px-2 py-1 text-[10px] uppercase tracking-wide text-[var(--muted)]">{note.status} · raw</span>
+                  <span className="rounded-full border border-[var(--card-border)] px-2 py-1 text-[10px] uppercase tracking-wide text-[var(--muted)]">{note.reviewStatus} · raw</span>
                 </div>
-                <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: sanitizeRichText(note.rawText ?? "") || "<em>(empty note)</em>" }} />
-                <p className="mt-3 text-xs text-[var(--muted)]">Updated {new Date(note.updatedAt).toLocaleString()}. Review before using.</p>
+                <div
+                  contentEditable
+                  suppressContentEditableWarning
+                  role="textbox"
+                  aria-label={`Edit Scratch Pad note ${note.id}`}
+                  onInput={(event) => setNoteDrafts((prev) => ({ ...prev, [note.id]: event.currentTarget.innerHTML }))}
+                  dangerouslySetInnerHTML={{ __html: sanitizeRichText(noteDrafts[note.id] ?? "") || sanitizedRawText(note) || "<em>(empty note)</em>" }}
+                  className="prose prose-sm max-w-none rounded border border-[var(--card-border)] p-3 outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+                />
+                <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+                  <p className="text-xs text-[var(--muted)]">Updated {new Date(note.updatedAt).toLocaleString()}. Raw content stays visible during review.</p>
+                  <div className="flex flex-wrap gap-2">
+                    <button type="button" onClick={() => saveNote(note)} disabled={actionId !== null || noteDrafts[note.id] === undefined} className="rounded border border-[var(--card-border)] px-3 py-1 text-xs font-medium disabled:opacity-50">Save edit</button>
+                    <button type="button" onClick={() => reviewNote(note, "approve")} disabled={actionId !== null || note.reviewStatus !== "PENDING_REVIEW"} className="rounded px-3 py-1 text-xs font-medium text-white flowstate-success-button disabled:opacity-50">Approve</button>
+                    <button type="button" onClick={() => reviewNote(note, "reject")} disabled={actionId !== null || note.reviewStatus !== "PENDING_REVIEW"} className="rounded bg-[var(--destructive)] px-3 py-1 text-xs font-medium text-white disabled:opacity-50">Reject</button>
+                  </div>
+                </div>
               </article>
             ))}
           </div>

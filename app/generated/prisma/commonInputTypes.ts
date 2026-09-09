@@ -298,6 +298,13 @@ export type EnumProcessingStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumProcessingStatusFilter<$PrismaModel> | $Enums.ProcessingStatus
 }
 
+export type EnumScratchpadReviewStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScratchpadReviewStatus | Prisma.EnumScratchpadReviewStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ScratchpadReviewStatus[] | Prisma.ListEnumScratchpadReviewStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScratchpadReviewStatus[] | Prisma.ListEnumScratchpadReviewStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScratchpadReviewStatusFilter<$PrismaModel> | $Enums.ScratchpadReviewStatus
+}
+
 export type EnumInputTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.InputType | Prisma.EnumInputTypeFieldRefInput<$PrismaModel>
   in?: $Enums.InputType[] | Prisma.ListEnumInputTypeFieldRefInput<$PrismaModel>
@@ -316,6 +323,16 @@ export type EnumProcessingStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumProcessingStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumProcessingStatusFilter<$PrismaModel>
+}
+
+export type EnumScratchpadReviewStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScratchpadReviewStatus | Prisma.EnumScratchpadReviewStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ScratchpadReviewStatus[] | Prisma.ListEnumScratchpadReviewStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScratchpadReviewStatus[] | Prisma.ListEnumScratchpadReviewStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScratchpadReviewStatusWithAggregatesFilter<$PrismaModel> | $Enums.ScratchpadReviewStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumScratchpadReviewStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumScratchpadReviewStatusFilter<$PrismaModel>
 }
 
 export type BoolFilter<$PrismaModel = never> = {
@@ -957,6 +974,13 @@ export type NestedEnumProcessingStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumProcessingStatusFilter<$PrismaModel> | $Enums.ProcessingStatus
 }
 
+export type NestedEnumScratchpadReviewStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScratchpadReviewStatus | Prisma.EnumScratchpadReviewStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ScratchpadReviewStatus[] | Prisma.ListEnumScratchpadReviewStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScratchpadReviewStatus[] | Prisma.ListEnumScratchpadReviewStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScratchpadReviewStatusFilter<$PrismaModel> | $Enums.ScratchpadReviewStatus
+}
+
 export type NestedEnumInputTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.InputType | Prisma.EnumInputTypeFieldRefInput<$PrismaModel>
   in?: $Enums.InputType[] | Prisma.ListEnumInputTypeFieldRefInput<$PrismaModel>
@@ -975,6 +999,16 @@ export type NestedEnumProcessingStatusWithAggregatesFilter<$PrismaModel = never>
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumProcessingStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumProcessingStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumScratchpadReviewStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScratchpadReviewStatus | Prisma.EnumScratchpadReviewStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ScratchpadReviewStatus[] | Prisma.ListEnumScratchpadReviewStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScratchpadReviewStatus[] | Prisma.ListEnumScratchpadReviewStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScratchpadReviewStatusWithAggregatesFilter<$PrismaModel> | $Enums.ScratchpadReviewStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumScratchpadReviewStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumScratchpadReviewStatusFilter<$PrismaModel>
 }
 
 export type NestedBoolFilter<$PrismaModel = never> = {

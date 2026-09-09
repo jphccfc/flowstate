@@ -319,6 +319,12 @@ enum ProcessingStatus {
   QUARANTINED
 }
 
+enum ScratchpadReviewStatus {
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+}
+
 model MeetingContext {
   id              String   @id @default(cuid())
   organizationId   String
@@ -357,6 +363,9 @@ model CapturedInput {
   rawText        String?
   locationTag    String?
   status         ProcessingStatus  @default(PENDING)
+  reviewStatus   ScratchpadReviewStatus @default(PENDING_REVIEW)
+  reviewedBy     String?
+  reviewedAt     DateTime?
   error          String?
   capturedAt     DateTime          @default(now())
   createdAt      DateTime          @default(now())

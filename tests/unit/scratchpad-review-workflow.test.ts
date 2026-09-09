@@ -14,7 +14,7 @@ const scratchpad = readFileSync(resolve(root, "app/clients/[id]/scratchpad/page.
 
   it("renders raw notes through the existing rich-text sanitizer and keeps tag review independent", () => {
     expect(review).toContain('import { sanitizeRichText } from "@/lib/scratchpad/rich-text";');
-    expect(review).toContain("sanitizeRichText(note.rawText ?? \"\")");
+    expect(review).toMatch(/sanitizeRichText\([^)]*note\.rawText/);
     expect(review).toContain("/api/scratchpad?organizationId=${organizationId}");
     expect(review).toContain("Scratch Pad notes");
     expect(review).toContain("Raw / provisional");
@@ -26,5 +26,18 @@ const scratchpad = readFileSync(resolve(root, "app/clients/[id]/scratchpad/page.
   it("does not render Scratch Pad note HTML with an unsanitized HTML sink", () => {
     expect(review).not.toContain("dangerouslySetInnerHTML={{ __html: note.rawText");
     expect(review).not.toContain("note.rawText?.replace(/<[^>]*>/g, \"\")");
+  });
+
+  it("provides an editable note review with explicit approve and reject actions", () => {
+    expect(review).toContain("contentEditable");
+    expect(review).toContain("/api/scratchpad");
+    expect(review).toMatch(/reviewNote\([^)]*,\s*"approve"\)/);
+    expect(review).toMatch(/reviewNote\([^)]*,\s*"reject"\)/);
+    expect(review).toContain("Are you sure");
+  });
+
+  it("offers a prominent context-free note entry point from review", () => {
+    expect(review).toContain("New Scratch Pad note");
+    expect(review).toContain("/clients/${organizationId}/scratchpad");
   });
 });

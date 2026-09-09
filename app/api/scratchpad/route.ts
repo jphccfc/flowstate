@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
-import { canAccessClient } from "@/lib/auth/organization";
+import { canAccessClient, hasOrganizationPermission } from "@/lib/auth/organization";
 import { sanitizeRichText } from "@/lib/scratchpad/rich-text";
 async function access(email: string | null | undefined, org: string) { return canAccessClient(email, org); }
 async function actorFor(email: string) {
@@ -27,13 +27,24 @@ export async function POST(req: NextRequest) {
 }
 export async function PATCH(req: NextRequest) {
   const body = await req.json().catch(() => ({})); const id = body.id; if (typeof id !== "string") return NextResponse.json({ error: "id is required" }, { status: 400 });
-  const existing = await prisma.capturedInput.findUnique({ where: { id }, select: { organizationId: true, revision: true } }); if (!existing) return NextResponse.json({ error: "Note not found" }, { status: 404 });
+  const existing = await prisma.capturedInput.findUnique({ where: { id }, select: { organizationId: true, revision: true, reviewStatus: true } }); if (!existing) return NextResponse.json({ error: "Note not found" }, { status: 404 });
   const { data: { user } } = await (await createClient()).auth.getUser(); if (!user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const action = body.action;
+  const canReview = await hasOrganizationPermission(user.email, existing.organizationId, "assessment.review");
+  if (action === "approve" || action === "reject") {
+    if (!canReview) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    const actor = await actorFor(user.email);
+    if (existing.reviewStatus !== "PENDING_REVIEW") return NextResponse.json({ error: "Note has already been reviewed" }, { status: 409 });
+    const updated = await prisma.capturedInput.update({ where: { id }, data: { reviewStatus: action === "approve" ? "APPROVED" : "REJECTED", reviewedBy: actor.senderEmail, reviewedAt: new Date() } });
+    return NextResponse.json(updated);
+  }
+  if (action !== undefined) return NextResponse.json({ error: "action must be approve or reject" }, { status: 400 });
   if (!(await access(user.email, existing.organizationId))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  const actor = await actorFor(user.email);
-  const revision = Number(body.revision); if (!Number.isInteger(revision) || revision !== existing.revision) return NextResponse.json({ error: "Revision conflict", revision: existing.revision }, { status: 409 });
+  const revision = Number(body.revision);
+  const actor = await actorFor(user.email); if (!Number.isInteger(revision) || revision !== existing.revision) return NextResponse.json({ error: "Revision conflict", revision: existing.revision }, { status: 409 });
   const contextId = typeof body.contextId === "string" ? body.contextId : null;
   if (contextId && !(await prisma.meetingContext.findFirst({ where: { id: contextId, organizationId: existing.organizationId }, select: { id: true } }))) return NextResponse.json({ error: "Meeting context not found" }, { status: 404 });
-  const updated = await prisma.capturedInput.updateMany({ where: { id, organizationId: existing.organizationId, revision }, data: { rawText: sanitizeRichText(typeof body.text === "string" ? body.text : ""), meetingContextId: contextId, senderName: actor.senderName, senderEmail: actor.senderEmail, revision: { increment: 1 } } });
+  if (typeof body.text !== "string") return NextResponse.json({ error: "text is required" }, { status: 400 });
+  const updated = await prisma.capturedInput.updateMany({ where: { id, organizationId: existing.organizationId, revision }, data: { rawText: sanitizeRichText(body.text), meetingContextId: contextId, senderName: actor.senderName, senderEmail: actor.senderEmail, revision: { increment: 1 }, reviewStatus: "PENDING_REVIEW", reviewedBy: null, reviewedAt: null } });
   if (!updated.count) return NextResponse.json({ error: "Revision conflict" }, { status: 409 }); return NextResponse.json(await prisma.capturedInput.findUnique({ where: { id } }));
 }
