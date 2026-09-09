@@ -4,12 +4,14 @@ import { createClient } from "@/lib/supabase/server";
 import { canAccessClient, hasOrganizationPermission } from "@/lib/auth/organization";
 import { processCapturedInput } from "@/lib/ingestion/pipeline";
 import { sanitizeRichText } from "@/lib/scratchpad/rich-text";
+import { apiError } from "@/lib/api/errors";
 async function access(email: string | null | undefined, org: string) { return canAccessClient(email, org); }
 async function actorFor(email: string) {
   const user = await prisma.user.findUnique({ where: { email }, select: { name: true, email: true } });
   return { senderName: user?.name?.trim() || email, senderEmail: user?.email || email };
 }
 export async function GET(req: NextRequest) {
+  try {
   const params = new URL(req.url).searchParams;
   const org = params.get("organizationId"); if (!org) return NextResponse.json({ error: "organizationId is required" }, { status: 400 });
   const sessionId = params.get("sessionId");
@@ -17,8 +19,12 @@ export async function GET(req: NextRequest) {
   if (!(await access(user.email, org))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   if (sessionId && !(await prisma.assessmentSession.findFirst({ where: { id: sessionId, organizationId: org }, select: { id: true } }))) return NextResponse.json({ error: "Live session not found" }, { status: 404 });
   return NextResponse.json(await prisma.capturedInput.findMany({ where: { organizationId: org, type: "TEXT_NOTE", ...(sessionId ? { sessionId } : {}) }, orderBy: { updatedAt: "desc" }, include: { meetingContext: true } }));
+  } catch (error) {
+    return apiError(error, "Unable to load Scratch Pad");
+  }
 }
 export async function POST(req: NextRequest) {
+  try {
   const body = await req.json().catch(() => ({})); const org = body.organizationId;
   if (typeof org !== "string" || !org) return NextResponse.json({ error: "organizationId is required" }, { status: 400 });
   const { data: { user } } = await (await createClient()).auth.getUser(); if (!user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -35,8 +41,12 @@ export async function POST(req: NextRequest) {
   const note = await prisma.capturedInput.create({ data: { organizationId: org, type: "TEXT_NOTE", rawText: sanitizeRichText(typeof body.text === "string" ? body.text : ""), status: "TRANSCRIBED", sessionId, meetingContextId: contextId, senderName: actor.senderName, senderEmail: actor.senderEmail } });
   after(() => processCapturedInput(note.id));
   return NextResponse.json(note, { status: 201 });
+  } catch (error) {
+    return apiError(error, "Unable to save Scratch Pad note");
+  }
 }
 export async function PATCH(req: NextRequest) {
+  try {
   const body = await req.json().catch(() => ({})); const id = body.id; if (typeof id !== "string") return NextResponse.json({ error: "id is required" }, { status: 400 });
   const existing = await prisma.capturedInput.findUnique({ where: { id }, select: { organizationId: true, revision: true, reviewStatus: true } }); if (!existing) return NextResponse.json({ error: "Note not found" }, { status: 404 });
   const { data: { user } } = await (await createClient()).auth.getUser(); if (!user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -58,4 +68,7 @@ export async function PATCH(req: NextRequest) {
   if (typeof body.text !== "string") return NextResponse.json({ error: "text is required" }, { status: 400 });
   const updated = await prisma.capturedInput.updateMany({ where: { id, organizationId: existing.organizationId, revision }, data: { rawText: sanitizeRichText(body.text), meetingContextId: contextId, senderName: actor.senderName, senderEmail: actor.senderEmail, revision: { increment: 1 }, reviewStatus: "PENDING_REVIEW", reviewedBy: null, reviewedAt: null } });
   if (!updated.count) return NextResponse.json({ error: "Revision conflict" }, { status: 409 }); return NextResponse.json(await prisma.capturedInput.findUnique({ where: { id } }));
+  } catch (error) {
+    return apiError(error, "Unable to update Scratch Pad note");
+  }
 }

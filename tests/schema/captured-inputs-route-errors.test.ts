@@ -53,6 +53,8 @@ describe("captured input POST error responses", () => {
     const response = await POST(request());
 
     expect(response.status).toBe(500);
-    expect(await response.json()).toEqual({ error: "database unavailable" });
+    const body = await response.json();
+    expect(body).toMatchObject({ error: "Capture could not be submitted" });
+    expect(body.requestId).toEqual(expect.any(String));
   });
 });

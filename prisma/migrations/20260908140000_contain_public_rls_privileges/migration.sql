@@ -25,12 +25,38 @@ END
 $$;
 
 -- Remove broad access from the current public-schema tables. Do not revoke from
--- service_role: Supabase uses it for trusted server-side access.
-REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM PUBLIC, anon, authenticated;
-REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM PUBLIC, anon, authenticated;
+-- service_role: Supabase uses it for trusted server-side access. PostgreSQL does
+-- not accept a missing role in a REVOKE statement, so only target roles present
+-- in the current database.
+REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM PUBLIC;
+REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM PUBLIC;
+DO $$
+DECLARE
+    role_name TEXT;
+BEGIN
+    FOR role_name IN SELECT rolname FROM pg_roles WHERE rolname IN ('anon', 'authenticated') LOOP
+        EXECUTE format('REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM %I', role_name);
+        EXECUTE format('REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM %I', role_name);
+    END LOOP;
+END
+$$;
 
--- Prevent newly-created application objects from regaining broad access.
-ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public
-    REVOKE ALL PRIVILEGES ON TABLES FROM PUBLIC, anon, authenticated;
-ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public
-    REVOKE ALL PRIVILEGES ON SEQUENCES FROM PUBLIC, anon, authenticated;
+-- Prevent newly-created application objects from regaining broad access. Guard
+-- the owner role as well because local PostgreSQL test clusters may not define
+-- Supabase's postgres role.
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+    REVOKE ALL PRIVILEGES ON TABLES FROM PUBLIC;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+    REVOKE ALL PRIVILEGES ON SEQUENCES FROM PUBLIC;
+DO $$
+DECLARE
+    role_name TEXT;
+BEGIN
+    IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'postgres') THEN
+        FOR role_name IN SELECT rolname FROM pg_roles WHERE rolname IN ('anon', 'authenticated') LOOP
+            EXECUTE format('ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public REVOKE ALL PRIVILEGES ON TABLES FROM %I', role_name);
+            EXECUTE format('ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public REVOKE ALL PRIVILEGES ON SEQUENCES FROM %I', role_name);
+        END LOOP;
+    END IF;
+END
+$$;

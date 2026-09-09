@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { canAccessClient } from "@/lib/auth/organization";
 import { processCapturedInput } from "@/lib/ingestion/pipeline";
 import { InputType } from "@/app/generated/prisma/enums";
+import { apiError } from "@/lib/api/errors";
 
 const VALID_TYPES = new Set<InputType>(["TEXT_NOTE", "EMAIL", "AUDIO", "DOCUMENT", "DATA_ROOM_FILE"]);
 const TEXT_TYPES = new Set<InputType>(["TEXT_NOTE", "EMAIL"]);
@@ -15,11 +16,11 @@ function isInputType(value: string): value is InputType {
 }
 
 export async function POST(req: NextRequest) {
+  try {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  try {
     const formData = await req.formData();
     const organizationId = formData.get("organizationId");
     const type = formData.get("type");
@@ -103,12 +104,12 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(capturedInput, { status: 201 });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Capture could not be submitted";
-    return NextResponse.json({ error: message }, { status: 500 });
+    return apiError(error, "Capture could not be submitted");
   }
 }
 
 export async function GET(req: NextRequest) {
+  try {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -121,10 +122,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const inputs = await prisma.capturedInput.findMany({
-    where: { organizationId },
-    orderBy: { createdAt: "desc" },
-  });
-
-  return NextResponse.json(inputs);
+    const inputs = await prisma.capturedInput.findMany({
+      where: { organizationId },
+      orderBy: { createdAt: "desc" },
+    });
+    return NextResponse.json(inputs);
+  } catch (error) {
+    return apiError(error, "Unable to load captured inputs");
+  }
 }
