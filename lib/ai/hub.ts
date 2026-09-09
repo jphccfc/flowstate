@@ -8,6 +8,22 @@ export type WorkspaceSource = {
 
 export type RankedWorkspaceSource = WorkspaceSource & { excerpt: string; score: number };
 
+export type MeetingAgendaFields = {
+  title: string;
+  objectives: string | null;
+  agendaItems: string[];
+  desiredOutcome: string | null;
+};
+
+export function formatMeetingAgendaSource(meeting: MeetingAgendaFields): string {
+  return [
+    `Title: ${meeting.title}`,
+    meeting.objectives?.trim() ? `Objectives: ${meeting.objectives.trim()}` : null,
+    meeting.agendaItems.length > 0 ? `Agenda items: ${meeting.agendaItems.join("; ")}` : null,
+    meeting.desiredOutcome?.trim() ? `Desired outcome: ${meeting.desiredOutcome.trim()}` : null,
+  ].filter((value): value is string => Boolean(value)).join("\n");
+}
+
 const STOP_WORDS = new Set(["a", "an", "and", "are", "for", "from", "how", "is", "of", "the", "to", "what", "where", "when", "with"]);
 
 function terms(question: string): string[] {
@@ -20,7 +36,7 @@ export function rankWorkspaceSources(question: string, sources: WorkspaceSource[
 
   return sources
     .map((source) => {
-      const haystack = `${source.title} ${source.text}`.toLowerCase();
+      const haystack = `${source.kind} ${source.title} ${source.text}`.toLowerCase();
       const score = queryTerms.reduce((total, term) => total + (haystack.includes(term) ? (source.title.toLowerCase().includes(term) ? 3 : 1) : 0), 0);
       const firstMatch = queryTerms.find((term) => haystack.includes(term));
       const start = firstMatch ? Math.max(0, source.text.toLowerCase().indexOf(firstMatch) - 180) : 0;

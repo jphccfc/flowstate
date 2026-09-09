@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
 import { canAccessClient } from "@/lib/auth/organization";
 import { requestChatCompletion } from "@/lib/ai/client";
-import { formatWorkspaceContext, rankWorkspaceSources, type WorkspaceSource } from "@/lib/ai/hub";
+import { formatWorkspaceContext, formatMeetingAgendaSource, rankWorkspaceSources, type WorkspaceSource } from "@/lib/ai/hub";
 
 const MAX_QUESTION_LENGTH = 1000;
 
@@ -33,7 +33,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
   const sources: WorkspaceSource[] = [
     ...capturedInputs.filter((input) => input.rawText?.trim()).map((input) => ({ id: input.id, kind: input.type === "DOCUMENT" || input.type === "DATA_ROOM_FILE" ? "document" : input.type.toLowerCase(), title: input.subject || input.sourceRef || `${input.type} capture`, date: input.capturedAt, text: input.rawText! })),
-    ...meetingContexts.map((meeting) => ({ id: meeting.id, kind: "meeting agenda", title: meeting.title, date: meeting.startsAt ?? meeting.dateTime ?? new Date(), text: [meeting.objectives, meeting.agendaItems.join("; "), meeting.desiredOutcome].filter(Boolean).join("\n") })),
+    ...meetingContexts.map((meeting) => ({ id: meeting.id, kind: "meeting agenda", title: meeting.title, date: meeting.startsAt ?? meeting.dateTime ?? new Date(), text: formatMeetingAgendaSource(meeting) })),
     ...projects.map((project) => ({ id: project.id, kind: "project record", title: project.name, date: project.updatedAt, text: [project.objective, project.status, project.timeline, project.outcomes].filter(Boolean).join("\n") })),
     ...kpis.map((kpi) => ({ id: kpi.id, kind: "KPI record", title: kpi.name, date: kpi.updatedAt, text: [kpi.description, `Target: ${kpi.targetValue ?? "not set"}`, `Current: ${kpi.currentValue ?? "not set"}`, kpi.dataSource].filter(Boolean).join("\n") })),
     ...achievements.map((achievement) => ({ id: achievement.id, kind: "achievement record", title: achievement.description, date: achievement.updatedAt, text: [achievement.description, achievement.successMetrics, achievement.status, achievement.targetDate?.toISOString()].filter(Boolean).join("\n") })),
