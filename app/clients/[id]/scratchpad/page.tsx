@@ -1,5 +1,5 @@
 "use client";
-import { use, useEffect, useRef, useState } from "react";
+import { use, useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { plainTextToRichText, sanitizeRichText } from "@/lib/scratchpad/rich-text";
@@ -35,7 +35,7 @@ export default function ScratchpadPage({ params }: { params: Promise<{ id: strin
     if (!canReconcileEditor({ dirty: dirtyRef.current, composing: composingRef.current })) return;
     if (editorRef.current && editorRef.current.innerHTML !== next) editorRef.current.innerHTML = next;
   };
-  useEffect(() => { if (!dirtyRef.current) { const cached = localStorage.getItem(cacheKey); if (cached) reconcile(sanitizeRichText(cached)); } }, [note, cacheKey]);
+  useLayoutEffect(() => { if (!dirtyRef.current) { const cached = localStorage.getItem(cacheKey); if (cached) reconcile(sanitizeRichText(cached)); } }, [note, cacheKey]);
   useEffect(() => { contextRef.current = contextId; }, [contextId]);
 
   useEffect(() => {
