@@ -52,4 +52,23 @@ describe("Assessment Tasks and profile workflow", () => {
     expect(schema).toContain("enum AssessmentTaskStatus");
     expect(schema).toContain("humanReviewState");
   });
+
+  it("exposes structured assessment context and completion controls", () => {
+    expect(tasks).toContain("linkedEvidenceId");
+    expect(tasks).toContain("linkedCapabilityId");
+    expect(tasks).toContain("linkedDecisionId");
+    expect(tasks).toContain("linkedReportSection");
+    expect(tasks).toContain("completionNote");
+    expect(tasks).toContain("Complete task");
+    expect(tasks).toContain("Reopen task");
+    expect(tasks).toContain("tasks/context");
+  });
+
+  it("validates linked context against the organisation", () => {
+    expect(taskRoute).toContain("linkedEvidenceId");
+    expect(taskRoute).toContain("linkedCapabilityId");
+    expect(taskRoute).toContain("linkedDecisionId");
+    expect(taskRoute).toContain("linkedReportSection");
+    expect(taskRoute).toContain("organisation");
+  });
 });

@@ -10,6 +10,18 @@ const reviewStates = ["NOT_REQUIRED", "PENDING_HUMAN_REVIEW", "APPROVED", "REJEC
 async function user() { return (await (await createClient()).auth.getUser()).data.user; }
 function valid(value: unknown, values: readonly string[]): value is string { return typeof value === "string" && values.includes(value); }
 
+async function validateLinks(body: Record<string, unknown>, organizationId: string) {
+  const linkedEvidenceId = typeof body.linkedEvidenceId === "string" ? body.linkedEvidenceId.trim() : "";
+  const linkedCapabilityId = typeof body.linkedCapabilityId === "string" ? body.linkedCapabilityId.trim() : "";
+  const linkedDecisionId = typeof body.linkedDecisionId === "string" ? body.linkedDecisionId.trim() : "";
+  const linkedReportSection = typeof body.linkedReportSection === "string" ? body.linkedReportSection.trim() : "";
+  if (linkedReportSection.length > 200) return { error: "Report section must be 200 characters or fewer" };
+  if (linkedEvidenceId && !(await prisma.tag.findFirst({ where: { id: linkedEvidenceId, status: { in: ["AUTO_APPROVED", "APPROVED"] }, segment: { capturedInput: { organizationId } } }, select: { id: true } }))) return { error: "Linked evidence must belong to this organisation" };
+  if (linkedCapabilityId && !(await prisma.capability.findFirst({ where: { id: linkedCapabilityId, domain: { organizationId } }, select: { id: true } }))) return { error: "Linked capability must belong to this organisation" };
+  if (linkedDecisionId && !(await prisma.assessmentDecision.findFirst({ where: { id: linkedDecisionId, capability: { domain: { organizationId } } }, select: { id: true } }))) return { error: "Linked decision must belong to this organisation" };
+  return { linkedEvidenceId: linkedEvidenceId || null, linkedCapabilityId: linkedCapabilityId || null, linkedDecisionId: linkedDecisionId || null, linkedReportSection: linkedReportSection || null };
+}
+
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const current = await user(); const { id } = await params;
   if (!current) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -32,7 +44,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   const assigneeId = typeof body.assigneeId === "string" ? body.assigneeId : membership.userId;
   const assignee = await prisma.userOrganization.findFirst({ where: { organizationId: id, userId: assigneeId }, select: { userId: true } });
   if (!assignee) return NextResponse.json({ error: "Assignee must belong to this organisation" }, { status: 400 });
-  const task = await prisma.assessmentTask.create({ data: { organizationId: id, requesterId: membership.userId, assigneeId, type: body.type, title, description, context: typeof body.context === "string" ? body.context.trim() || null : null, dueDate, priority: Number.isInteger(body.priority) ? Math.min(5, Math.max(1, body.priority)) : 3, humanReviewState: body.type === "REVIEW" || body.type === "SIGN_OFF" ? "PENDING_HUMAN_REVIEW" : "NOT_REQUIRED", linkedEvidenceId: typeof body.linkedEvidenceId === "string" ? body.linkedEvidenceId : null, linkedCapabilityId: typeof body.linkedCapabilityId === "string" ? body.linkedCapabilityId : null, linkedDecisionId: typeof body.linkedDecisionId === "string" ? body.linkedDecisionId : null, linkedReportSection: typeof body.linkedReportSection === "string" ? body.linkedReportSection : null }, include: { assignee: { select: { id: true, name: true, email: true } } } });
+  const links = await validateLinks(body, id); if ("error" in links) return NextResponse.json({ error: links.error }, { status: 400 });
+  const task = await prisma.assessmentTask.create({ data: { organizationId: id, requesterId: membership.userId, assigneeId, type: body.type, title, description, context: typeof body.context === "string" ? body.context.trim() || null : null, dueDate, priority: Number.isInteger(body.priority) ? Math.min(5, Math.max(1, body.priority)) : 3, humanReviewState: body.type === "REVIEW" || body.type === "SIGN_OFF" ? "PENDING_HUMAN_REVIEW" : "NOT_REQUIRED", ...links }, include: { assignee: { select: { id: true, name: true, email: true } } } });
   return NextResponse.json(task, { status: 201 });
 }
 
@@ -50,10 +63,12 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   if (typeof body.dueDate === "string") { const dueDate = new Date(body.dueDate); if (Number.isNaN(dueDate.getTime())) return NextResponse.json({ error: "A valid due date is required" }, { status: 400 }); data.dueDate = dueDate; }
   if (Number.isInteger(body.priority)) data.priority = Math.min(5, Math.max(1, body.priority));
   if (typeof body.assigneeId === "string") { const assignee = await prisma.userOrganization.findFirst({ where: { organizationId: id, userId: body.assigneeId }, select: { userId: true } }); if (!assignee) return NextResponse.json({ error: "Assignee must belong to this organisation" }, { status: 400 }); data.assigneeId = assignee.userId; }
+  if (["linkedEvidenceId", "linkedCapabilityId", "linkedDecisionId", "linkedReportSection"].some((key) => key in body)) { const links = await validateLinks(body, id); if ("error" in links) return NextResponse.json({ error: links.error }, { status: 400 }); Object.assign(data, links); }
   if (valid(body.status, statuses)) data.status = body.status;
   if (valid(body.humanReviewState, reviewStates)) { if (!(await hasOrganizationPermission(current.email, id, "assessment.review"))) return NextResponse.json({ error: "Human review permission required" }, { status: 403 }); data.humanReviewState = body.humanReviewState; }
   if (typeof body.completionNote === "string") data.completionNote = body.completionNote.trim() || null;
   if (data.status === "COMPLETED") { if (task.type === "SIGN_OFF" && data.humanReviewState !== "APPROVED" && task.humanReviewState !== "APPROVED") return NextResponse.json({ error: "Sign-off tasks require authorised human approval before completion" }, { status: 400 }); data.completedAt = new Date(); const completed = await prisma.user.findUnique({ where: { email: current.email }, select: { id: true } }); data.completedById = completed?.id ?? null; }
+  else if (data.status && data.status !== "COMPLETED") { data.completedAt = null; data.completedById = null; }
   const updated = await prisma.assessmentTask.update({ where: { id: task.id }, data, include: { assignee: { select: { id: true, name: true, email: true } }, requester: { select: { name: true, email: true } } } });
   return NextResponse.json(updated);
 }
