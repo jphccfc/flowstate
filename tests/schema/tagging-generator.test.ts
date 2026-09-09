@@ -13,8 +13,8 @@ describe("generateTagSuggestions", () => {
       { targetType: "KPI", targetId: "kpi-1", name: "On-time Delivery Rate" },
     ];
 
-    vi.stubEnv("LITELLM_BASE_URL", "http://litellm.test:4000");
-    vi.stubEnv("LITELLM_API_KEY", "gateway-test-key");
+    vi.stubEnv("OPENAI_BASE_URL", "http://openai.test:4000");
+    vi.stubEnv("OPENAI_API_KEY", "openai-test-key");
     vi.stubEnv("AI_MODEL", "flowstate-test-model");
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,
@@ -36,7 +36,7 @@ describe("generateTagSuggestions", () => {
       { targetType: "CAPABILITY", targetId: "cap-1", confidence: 0.92 },
     ]);
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://litellm.test:4000/v1/chat/completions",
+      "http://openai.test:4000/v1/chat/completions",
       expect.objectContaining({ method: "POST" })
     );
   });

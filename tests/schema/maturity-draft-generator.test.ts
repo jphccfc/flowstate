@@ -3,15 +3,15 @@ import { draftAsIsScore, draftToBeScore } from "../../lib/ai/maturity-draft";
 
 describe("draftAsIsScore", () => {
   beforeEach(() => {
-    vi.stubEnv("LITELLM_BASE_URL", "http://litellm.test:4000");
-    vi.stubEnv("LITELLM_API_KEY", "gateway-test-key");
+    vi.stubEnv("OPENAI_BASE_URL", "http://openai.test:4000");
+    vi.stubEnv("OPENAI_API_KEY", "openai-test-key");
     vi.stubEnv("AI_MODEL", "flowstate-test-model");
   });
   afterEach(() => { vi.unstubAllGlobals(); vi.unstubAllEnvs(); });
 
   it("parses a score and evidence from the Claude response", async () => {
-    vi.stubEnv("LITELLM_BASE_URL", "http://litellm.test:4000");
-    vi.stubEnv("LITELLM_API_KEY", "gateway-test-key");
+    vi.stubEnv("OPENAI_BASE_URL", "http://openai.test:4000");
+    vi.stubEnv("OPENAI_API_KEY", "openai-test-key");
     vi.stubEnv("AI_MODEL", "flowstate-test-model");
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,
@@ -21,7 +21,7 @@ describe("draftAsIsScore", () => {
 
     const result = await draftAsIsScore("Shift Scheduling", ["We schedule shifts on a whiteboard."]);
     expect(result).toEqual({ score: 2, evidence: "Manual, ad hoc process." });
-    expect(mockFetch).toHaveBeenCalledWith("http://litellm.test:4000/v1/chat/completions", expect.objectContaining({ method: "POST" }));
+    expect(mockFetch).toHaveBeenCalledWith("http://openai.test:4000/v1/chat/completions", expect.objectContaining({ method: "POST" }));
     const body = JSON.parse(mockFetch.mock.calls[0][1].body);
     expect(body.messages[1].content).toContain("We schedule shifts on a whiteboard.");
   });
@@ -40,15 +40,15 @@ describe("draftAsIsScore", () => {
 
 describe("draftToBeScore", () => {
   beforeEach(() => {
-    vi.stubEnv("LITELLM_BASE_URL", "http://litellm.test:4000");
-    vi.stubEnv("LITELLM_API_KEY", "gateway-test-key");
+    vi.stubEnv("OPENAI_BASE_URL", "http://openai.test:4000");
+    vi.stubEnv("OPENAI_API_KEY", "openai-test-key");
     vi.stubEnv("AI_MODEL", "flowstate-test-model");
   });
   afterEach(() => { vi.unstubAllGlobals(); vi.unstubAllEnvs(); });
 
   it("includes engagement motive and KPI targets in the prompt", async () => {
-    vi.stubEnv("LITELLM_BASE_URL", "http://litellm.test:4000");
-    vi.stubEnv("LITELLM_API_KEY", "gateway-test-key");
+    vi.stubEnv("OPENAI_BASE_URL", "http://openai.test:4000");
+    vi.stubEnv("OPENAI_API_KEY", "openai-test-key");
     vi.stubEnv("AI_MODEL", "flowstate-test-model");
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,

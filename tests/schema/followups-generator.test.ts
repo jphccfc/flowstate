@@ -8,8 +8,8 @@ describe("generateFollowUpSuggestions", () => {
   });
 
   it("returns suggested follow-up questions parsed from the Claude response", async () => {
-    vi.stubEnv("LITELLM_BASE_URL", "http://litellm.test:4000");
-    vi.stubEnv("LITELLM_API_KEY", "gateway-test-key");
+    vi.stubEnv("OPENAI_BASE_URL", "http://openai.test:4000");
+    vi.stubEnv("OPENAI_API_KEY", "openai-test-key");
     vi.stubEnv("AI_MODEL", "flowstate-test-model");
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,
@@ -30,14 +30,14 @@ describe("generateFollowUpSuggestions", () => {
       "Has this been an issue since the extrusion line changes?",
     ]);
     expect(mockFetch).toHaveBeenCalledWith(
-      "http://litellm.test:4000/v1/chat/completions",
+      "http://openai.test:4000/v1/chat/completions",
       expect.objectContaining({ method: "POST" })
     );
   });
 
   it("returns an empty array when Claude has nothing to suggest", async () => {
-    vi.stubEnv("LITELLM_BASE_URL", "http://litellm.test:4000");
-    vi.stubEnv("LITELLM_API_KEY", "gateway-test-key");
+    vi.stubEnv("OPENAI_BASE_URL", "http://openai.test:4000");
+    vi.stubEnv("OPENAI_API_KEY", "openai-test-key");
     vi.stubEnv("AI_MODEL", "flowstate-test-model");
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,

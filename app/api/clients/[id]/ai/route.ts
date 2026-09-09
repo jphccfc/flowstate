@@ -51,6 +51,11 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     return NextResponse.json({ answer, sources: rankedSources.map((source) => ({ id: source.id, kind: source.kind, title: source.title, date: source.date.toISOString(), excerpt: source.excerpt })), agent: { name: agent.name, promptVersion: agent.publishedPromptVersion.version }, limitation: "AI Hub uses deterministic keyword relevance over currently indexed workspace records and the published agent prompt. Verify important answers against the cited source." });
   } catch (error) {
     const message = error instanceof Error ? error.message : "AI provider request failed";
-    return NextResponse.json({ error: message }, { status: message === "AI gateway is not configured" ? 503 : 502 });
+    const configurationError = [
+      "AI gateway is not configured",
+      "OpenAI API key is not configured",
+      "AI model is not configured",
+    ].includes(message);
+    return NextResponse.json({ error: message }, { status: configurationError ? 503 : 502 });
   }
 }
