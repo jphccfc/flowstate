@@ -2,6 +2,7 @@
 
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
+import { mergeDomainNames } from "@/lib/organization-domains";
 
 type Agenda = {
   id: string;
@@ -27,7 +28,6 @@ type AgendaForm = {
 };
 
 const emptyForm: AgendaForm = { title: "", dateTime: "", domain: "", objectives: "", agendaItems: "", desiredOutcome: "" };
-const domains = ["Operations", "Financial and Legal", "People", "Technology and Data", "Customers and Revenue"];
 
 function scratchpadHref(context: Agenda, organizationId: string) {
   return `/clients/${organizationId}/scratchpad?contextId=${encodeURIComponent(context.id)}`;
@@ -42,6 +42,7 @@ export default function MeetingAgendasPage({ params }: { params: Promise<{ id: s
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
+  const [organizationDomains, setOrganizationDomains] = useState<string[]>(() => mergeDomainNames());
 
   async function loadAgendas() {
     setLoading(true);
@@ -60,6 +61,15 @@ export default function MeetingAgendasPage({ params }: { params: Promise<{ id: s
 
   // Loading is an external request; the state updates happen in its completion handlers.
   useEffect(() => { loadAgendas(); }, [organizationId]); // eslint-disable-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
+
+  useEffect(() => {
+    fetch(`/api/clients/${organizationId}`)
+      .then((response) => response.ok ? response.json() : null)
+      .then((organization: { domains?: { name?: string | null }[] } | null) => {
+        if (organization) setOrganizationDomains(mergeDomainNames(organization.domains));
+      })
+      .catch(() => { /* Keep default domains when organization data is unavailable. */ });
+  }, [organizationId]);
 
   function editAgenda(agenda: Agenda) {
     setEditingId(agenda.id);
@@ -99,7 +109,7 @@ export default function MeetingAgendasPage({ params }: { params: Promise<{ id: s
         <form onSubmit={saveAgenda} className="mt-4 grid gap-3 sm:grid-cols-2">
           <input required aria-label="Meeting title" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} placeholder="Meeting title" className="rounded border border-[var(--card-border)] bg-transparent px-3 py-2 text-sm" />
           <input aria-label="Meeting date and time" type="datetime-local" value={form.dateTime} onChange={e => setForm({ ...form, dateTime: e.target.value })} className="rounded border border-[var(--card-border)] bg-transparent px-3 py-2 text-sm" />
-          <select aria-label="Domain" value={form.domain} onChange={e => setForm({ ...form, domain: e.target.value })} className="rounded border border-[var(--card-border)] bg-transparent px-3 py-2 text-sm"><option value="">Select domain</option>{domains.map(domain => <option key={domain}>{domain}</option>)}</select>
+          <select aria-label="Domain" value={form.domain} onChange={e => setForm({ ...form, domain: e.target.value })} className="rounded border border-[var(--card-border)] bg-transparent px-3 py-2 text-sm"><option value="">Select domain</option>{organizationDomains.map(domain => <option key={domain}>{domain}</option>)}</select>
           <input aria-label="Desired outcome" value={form.desiredOutcome} onChange={e => setForm({ ...form, desiredOutcome: e.target.value })} placeholder="Desired outcome" className="rounded border border-[var(--card-border)] bg-transparent px-3 py-2 text-sm" />
           <textarea aria-label="Objectives" value={form.objectives} onChange={e => setForm({ ...form, objectives: e.target.value })} placeholder="Objectives" rows={3} className="rounded border border-[var(--card-border)] bg-transparent px-3 py-2 text-sm sm:col-span-2" />
           <textarea aria-label="Paste agenda text" value={form.agendaItems} onChange={e => setForm({ ...form, agendaItems: e.target.value })} placeholder="Paste agenda text (one item per line)" rows={5} className="rounded border border-[var(--card-border)] bg-transparent px-3 py-2 text-sm sm:col-span-2" />

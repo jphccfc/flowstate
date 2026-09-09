@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, use, useRef } from "react";
 import { validateDocumentFile } from "./document-validation";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { mergeDomainNames } from "@/lib/organization-domains";
 
 type CapturedInputType = "TEXT_NOTE" | "EMAIL" | "AUDIO" | "DOCUMENT" | "DATA_ROOM_FILE";
 
@@ -48,6 +49,7 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
   const [captureSubmitted, setCaptureSubmitted] = useState(false);
   const [inboundEmail, setInboundEmail] = useState<{ inboundAddress: string; active: boolean } | null>(null);
   const [inboundEmailLoading, setInboundEmailLoading] = useState(false);
+  const [organizationDomains, setOrganizationDomains] = useState<string[]>(() => mergeDomainNames());
 
   const isFileType = FILE_TYPES.has(type);
   const statusCounts = {
@@ -77,6 +79,15 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
       if (last && !meetingContextId) { setMeetingContextId(last.id); setContextTitle(last.title); setContextDate((last.dateTime ?? last.startsAt ?? "").slice(0, 16)); setContextStakeholder(last.stakeholderName ?? last.stakeholders?.[0] ?? ""); setContextDomain(last.domainName ?? last.domain ?? ""); setContextObjectives(last.objectives ?? ""); setContextAgenda(last.agendaItems.join("\n")); setContextOutcome(last.desiredOutcome ?? ""); }
     }
   }, [organizationId, meetingContextId]);
+
+  useEffect(() => {
+    fetch(`/api/clients/${organizationId}`)
+      .then((response) => response.ok ? response.json() : null)
+      .then((organization: { domains?: { name?: string | null }[] } | null) => {
+        if (organization) setOrganizationDomains(mergeDomainNames(organization.domains));
+      })
+      .catch(() => { /* Keep default domains when organization data is unavailable. */ });
+  }, [organizationId]);
 
   useEffect(() => {
     const saved = localStorage.getItem(`flowstate-meeting-draft:${organizationId}`);
@@ -264,7 +275,7 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
           <input aria-label="Meeting title" value={contextTitle} onChange={(e) => setContextTitle(e.target.value)} placeholder="Meeting title" className="border border-[var(--card-border)] rounded px-2 py-2 text-sm" />
           <input aria-label="Meeting date and time" type="datetime-local" value={contextDate} onChange={(e) => setContextDate(e.target.value)} className="border border-[var(--card-border)] rounded px-2 py-2 text-sm" />
           <input aria-label="Stakeholder" value={contextStakeholder} onChange={(e) => setContextStakeholder(e.target.value)} placeholder="Stakeholder" className="border border-[var(--card-border)] rounded px-2 py-2 text-sm" />
-          <select aria-label="Domain" value={contextDomain} onChange={(e) => setContextDomain(e.target.value)} className="border border-[var(--card-border)] rounded px-2 py-2 text-sm"><option value="">Select domain</option>{["Operations", "Financial and Legal", "People", "Technology and Data", "Customers and Revenue"].map((domain) => <option key={domain}>{domain}</option>)}</select>
+          <select aria-label="Domain" value={contextDomain} onChange={(e) => setContextDomain(e.target.value)} className="border border-[var(--card-border)] rounded px-2 py-2 text-sm"><option value="">Select domain</option>{organizationDomains.map((domain) => <option key={domain}>{domain}</option>)}</select>
           <textarea aria-label="Objectives" value={contextObjectives} onChange={(e) => setContextObjectives(e.target.value)} placeholder="Objectives" rows={2} className="border border-[var(--card-border)] rounded px-2 py-2 text-sm sm:col-span-2" />
           <textarea aria-label="Agenda items" value={contextAgenda} onChange={(e) => setContextAgenda(e.target.value)} placeholder="Agenda items (one per line)" rows={3} className="border border-[var(--card-border)] rounded px-2 py-2 text-sm" />
           <textarea aria-label="Desired outcome" value={contextOutcome} onChange={(e) => setContextOutcome(e.target.value)} placeholder="Desired outcome" rows={3} className="border border-[var(--card-border)] rounded px-2 py-2 text-sm" />

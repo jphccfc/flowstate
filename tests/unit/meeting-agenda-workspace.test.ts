@@ -5,6 +5,7 @@ import { resolve } from "node:path";
 const workspace = readFileSync(resolve(process.cwd(), "app/clients/[id]/meetings/page.tsx"), "utf8");
 const overview = readFileSync(resolve(process.cwd(), "app/clients/[id]/page.tsx"), "utf8");
 const scratchpad = readFileSync(resolve(process.cwd(), "app/clients/[id]/scratchpad/page.tsx"), "utf8");
+const capture = readFileSync(resolve(process.cwd(), "app/clients/[id]/capture/page.tsx"), "utf8");
 
 describe("meeting agenda workspace contract", () => {
   it("provides a client workspace entry point and agenda management controls", () => {
@@ -45,5 +46,19 @@ describe("scratch pad agenda linkage contract", () => {
     expect(scratchpad).toContain("const linkedContextId = requestedContextId;");
     expect(scratchpad).not.toContain("requestedContextId || rows[0].meetingContextId");
     expect(scratchpad).toContain("contextId: contextRef.current || null");
+  });
+});
+
+describe("organization domain selector contract", () => {
+  it("loads authorized organization domains for the meeting agenda selector", () => {
+    expect(workspace).toContain("/api/clients/${organizationId}");
+    expect(workspace).toContain("organizationDomains");
+    expect(workspace).not.toContain("const domains = [");
+  });
+
+  it("loads the same organization domains for Capture and keeps selected values available", () => {
+    expect(capture).toContain("/api/clients/${organizationId}");
+    expect(capture).toContain("organizationDomains");
+    expect(capture).not.toContain("[\"Operations\", \"Financial and Legal\", \"People\", \"Technology and Data\", \"Customers and Revenue\"]");
   });
 });
