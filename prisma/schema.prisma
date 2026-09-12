@@ -68,6 +68,7 @@ model Organization {
   communicationPacks CommunicationPack[]
   inboundEmailEndpoint InboundEmailEndpoint?
   agentRuns AgentRun[]
+  integrationConnections IntegrationConnection[]
 }
 
 model UserOrganization {
@@ -1041,4 +1042,26 @@ model AgentOutput {
 
   run AgentRun @relation(fields: [runId], references: [id], onDelete: Cascade)
   reviewer User? @relation("AgentOutputReviewer", fields: [reviewedBy], references: [email], onDelete: SetNull)
+}
+
+/// Credentials for an external evidence source, scoped to one organisation.
+/// Tokens are stored encrypted (AES-256-GCM) in `encryptedTokens`; the key lives
+/// in the environment, never in the database.
+model IntegrationConnection {
+  id               String    @id @default(cuid())
+  organizationId   String
+  provider         String
+  externalTenantId String?
+  accountEmail     String?
+  encryptedTokens  String
+  scope            String?
+  status           String    @default("CONNECTED")
+  lastSyncedAt     DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, provider])
+  @@index([organizationId])
 }
