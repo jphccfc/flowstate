@@ -36,6 +36,17 @@ const scratchpad = readFileSync(resolve(root, "app/clients/[id]/scratchpad/page.
     expect(review).toContain("Are you sure");
   });
 
+  it("surfaces the review API error instead of replacing it with a generic message", () => {
+    expect(review).toContain("const detail = await readErrorMessage(res)");
+    expect(review).toContain("The note review decision could not be saved: ${detail}");
+  });
+
+  it("keeps the review editor uncontrolled while typing", () => {
+    expect(review).toContain("function ScratchpadNoteEditor");
+    expect(review).toContain("editorRef.current.innerHTML = sanitizeRichText(note.rawText ?? \"\")");
+    expect(review).not.toContain("dangerouslySetInnerHTML={{ __html: sanitizeRichText(noteDrafts[note.id] ?? \"\")");
+  });
+
   it("offers a prominent context-free note entry point from review", () => {
     expect(review).toContain("New Scratch Pad note");
     expect(review).toContain("/clients/${organizationId}/scratchpad");

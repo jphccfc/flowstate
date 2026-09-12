@@ -2,7 +2,6 @@ import { prisma } from "@/lib/db";
 import { segmentText } from "@/lib/ai/segmenting";
 import { generateTagSuggestions, type TaggableEntity } from "@/lib/ai/tagging";
 import { transcribeAudio } from "@/lib/ai/transcription";
-import { extractDocumentText } from "@/lib/documents/extraction";
 import { generateFollowUpSuggestions } from "@/lib/ai/followups";
 
 const AUTO_APPROVE_THRESHOLD = 0.85;
@@ -29,7 +28,7 @@ export async function processCapturedInput(capturedInputId: string): Promise<voi
         const text =
           input.type === "AUDIO"
             ? await transcribeAudio(input.sourceRef!)
-            : await extractDocumentText(input.sourceRef!);
+            : await (await import("@/lib/documents/extraction")).extractDocumentText(input.sourceRef!);
 
         await prisma.capturedInput.update({
           where: { id: capturedInputId },

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, use } from "react";
+import { useState, useEffect, useCallback, use, useRef } from "react";
 import Link from "next/link";
 import { sanitizeRichText } from "@/lib/scratchpad/rich-text";
 
@@ -44,6 +44,26 @@ type PendingTag = {
   decision: { status: string; reviewedBy: string | null; reviewedAt: string | null };
   candidates: Candidate[];
 };
+
+function ScratchpadNoteEditor({ note, onChange }: { note: ScratchpadNote; onChange: (html: string) => void }) {
+  const editorRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (editorRef.current) editorRef.current.innerHTML = sanitizeRichText(note.rawText ?? "");
+  }, [note.id]);
+
+  return (
+    <div
+      ref={editorRef}
+      contentEditable
+      suppressContentEditableWarning
+      role="textbox"
+      aria-label={`Edit Scratch Pad note ${note.id}`}
+      onInput={(event) => onChange(event.currentTarget.innerHTML)}
+      className="prose prose-sm max-w-none rounded border border-[var(--card-border)] p-3 outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+    />
+  );
+}
 
 export default function ReviewPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: organizationId } = use(params);
@@ -145,13 +165,32 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
     setActionId(note.id); setError(null);
     try {
       const res = await fetch("/api/scratchpad", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: note.id, action }) });
-      if (!res.ok) throw new Error("The note review decision could not be saved.");
+      if (!res.ok) {
+        const detail = await readErrorMessage(res);
+        throw new Error(`The note review decision could not be saved: ${detail}`);
+      }
       await loadReviewItems();
     } catch (cause) { setError(cause instanceof Error ? cause.message : "The note review decision could not be saved."); }
     finally { setActionId(null); }
   }
 
-  if (loading) return <div className="p-6 text-sm text-[var(--muted)]">Loading…</div>;
+  async function deleteNote(note: ScratchpadNote) {
+    if (!window.confirm("Delete this Scratch Pad note permanently?")) return;
+    setActionId(note.id); setError(null);
+    try {
+      const res = await fetch(`/api/scratchpad?id=${encodeURIComponent(note.id)}`, { method: "DELETE" });
+      if (!res.ok) {
+        const detail = await readErrorMessage(res);
+        throw new Error(`The note could not be deleted: ${detail}`);
+      }
+      setScratchpadNotes((prev) => prev.filter((item) => item.id !== note.id));
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The note could not be deleted.");
+    } finally {
+      setActionId(null);
+    }
+  }
+
 
   return (
     <div className="mx-auto max-w-3xl p-6">
@@ -179,21 +218,14 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
                   <h3 className="font-medium">{note.meetingContext?.title || (note.meetingContext?.startsAt ? new Date(note.meetingContext.startsAt).toLocaleString() : "Unlinked meeting")}</h3>
                   <span className="rounded-full border border-[var(--card-border)] px-2 py-1 text-[10px] uppercase tracking-wide text-[var(--muted)]">{note.reviewStatus} · raw</span>
                 </div>
-                <div
-                  contentEditable
-                  suppressContentEditableWarning
-                  role="textbox"
-                  aria-label={`Edit Scratch Pad note ${note.id}`}
-                  onInput={(event) => setNoteDrafts((prev) => ({ ...prev, [note.id]: event.currentTarget.innerHTML }))}
-                  dangerouslySetInnerHTML={{ __html: sanitizeRichText(noteDrafts[note.id] ?? "") || sanitizedRawText(note) || "<em>(empty note)</em>" }}
-                  className="prose prose-sm max-w-none rounded border border-[var(--card-border)] p-3 outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-                />
+                <ScratchpadNoteEditor note={note} onChange={(html) => setNoteDrafts((prev) => ({ ...prev, [note.id]: html }))} />
                 <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
                   <p className="text-xs text-[var(--muted)]">Updated {new Date(note.updatedAt).toLocaleString()}. Raw content stays visible during review.</p>
                   <div className="flex flex-wrap gap-2">
                     <button type="button" onClick={() => saveNote(note)} disabled={actionId !== null || noteDrafts[note.id] === undefined} className="rounded border border-[var(--card-border)] px-3 py-1 text-xs font-medium disabled:opacity-50">Save edit</button>
                     <button type="button" onClick={() => reviewNote(note, "approve")} disabled={actionId !== null || note.reviewStatus !== "PENDING_REVIEW"} className="rounded px-3 py-1 text-xs font-medium text-white flowstate-success-button disabled:opacity-50">Approve</button>
                     <button type="button" onClick={() => reviewNote(note, "reject")} disabled={actionId !== null || note.reviewStatus !== "PENDING_REVIEW"} className="rounded bg-[var(--destructive)] px-3 py-1 text-xs font-medium text-white disabled:opacity-50">Reject</button>
+                    <button type="button" onClick={() => void deleteNote(note)} disabled={actionId !== null} className="rounded border border-[var(--destructive)] px-3 py-1 text-xs font-medium text-[var(--destructive)] disabled:opacity-50">Delete</button>
                   </div>
                 </div>
               </article>

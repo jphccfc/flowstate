@@ -45,6 +45,21 @@ export async function POST(req: NextRequest) {
     return apiError(error, "Unable to save Scratch Pad note");
   }
 }
+export async function DELETE(req: NextRequest) {
+  try {
+    const id = new URL(req.url).searchParams.get("id");
+    if (!id) return NextResponse.json({ error: "id is required" }, { status: 400 });
+    const existing = await prisma.capturedInput.findUnique({ where: { id }, select: { organizationId: true, type: true } });
+    if (!existing || existing.type !== "TEXT_NOTE") return NextResponse.json({ error: "Note not found" }, { status: 404 });
+    const { data: { user } } = await (await createClient()).auth.getUser();
+    if (!user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!(await access(user.email, existing.organizationId))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    await prisma.capturedInput.delete({ where: { id } });
+    return NextResponse.json({ deleted: true, id });
+  } catch (error) {
+    return apiError(error, "Unable to delete Scratch Pad note");
+  }
+}
 export async function PATCH(req: NextRequest) {
   try {
   const body = await req.json().catch(() => ({})); const id = body.id; if (typeof id !== "string") return NextResponse.json({ error: "id is required" }, { status: 400 });

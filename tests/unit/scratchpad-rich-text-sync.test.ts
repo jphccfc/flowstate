@@ -47,20 +47,20 @@ describe("scratchpad editor lifecycle", () => {
     expect(page).toContain("if (editorRef.current && editorRef.current.innerHTML !== next) editorRef.current.innerHTML = next;");
     expect(page).not.toContain("setHtml(");
     expect(page).toContain("if (cached) reconcile(sanitizeRichText(cached));");
-    expect(page).toContain("if (!cached) reconcile(plainTextToRichText(rows[0].rawText ?? \"\"));");
+    expect(page).toContain("if (cached) reconcile(sanitizeRichText(cached));");
   });
 
   it("reconciles cached editor content before paint after the note fetch rerenders the page", () => {
     const page = readFileSync(resolve(process.cwd(), "app/clients/[id]/scratchpad/page.tsx"), "utf8");
-    expect(page).toContain("useLayoutEffect(() => { if (!dirtyRef.current)");
-    expect(page).toContain("localStorage.getItem(cacheKey)");
+    expect(page).toContain("if (!dirtyRef.current) {");
+    expect(page).toContain("const cached = saved ? localStorage.getItem(cacheKeyFor(saved.id)) : null;");
     expect(page).toContain("reconcile(sanitizeRichText(cached))");
   });
 
   it("waits for the initial note load and flushes the latest draft after it", () => {
     const page = readFileSync(resolve(process.cwd(), "app/clients/[id]/scratchpad/page.tsx"), "utf8");
     expect(page).toContain("const loadedRef = useRef(false)");
-    expect(page).toContain("if (!loadedRef.current) return");
+    expect(page).toContain("if (loadedRef.current) queueRef.current?.enqueue");
     expect(page).toContain("draftRef.current");
   });
 

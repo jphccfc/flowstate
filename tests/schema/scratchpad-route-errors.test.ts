@@ -1,4 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 
 const db = vi.hoisted(() => ({
   prisma: {
@@ -32,6 +34,11 @@ async function expectSafeDatabaseError(response: Response) {
 }
 
 describe("captured input read failures", () => {
+  it("does not eagerly import document extraction for Scratch Pad routes", () => {
+    const pipeline = readFileSync(resolve(process.cwd(), "lib/ingestion/pipeline.ts"), "utf8");
+    expect(pipeline).not.toMatch(/^import .*extractDocumentText .*from .*documents\/extraction/m);
+  });
+
   it("returns a safe correlated error instead of throwing a Prisma schema error", async () => {
     db.prisma.capturedInput.findMany.mockRejectedValueOnce(new Error("column CapturedInput.reviewStatus does not exist"));
 

@@ -7,11 +7,32 @@ const scratchpad = readFileSync(resolve(root, "app/clients/[id]/scratchpad/page.
 const review = readFileSync(resolve(root, "app/clients/[id]/review/page.tsx"), "utf8");
 
 describe("Scratch Pad failure recovery contract", () => {
+  it("supports an independent collection of notes instead of one reusable note", () => {
+    const page = readFileSync(resolve(process.cwd(), "app/clients/[id]/scratchpad/page.tsx"), "utf8");
+    expect(page).toContain("const [notes, setNotes] = useState<Note[]>([])");
+    expect(page).toContain("New note");
+    expect(page).toContain("setNoteCollection(rows)");
+    expect(page).not.toContain("if (rows[0]) {");
+  });
+
+  it("supports deleting an individual note through the API", () => {
+    const route = readFileSync(resolve(process.cwd(), "app/api/scratchpad/route.ts"), "utf8");
+    expect(route).toContain("export async function DELETE");
+    expect(route).toContain("prisma.capturedInput.delete");
+    expect(route).toContain("if (!(await access(user.email, existing.organizationId)))");
+  });
+
+  it("clears the shared new-note draft instead of restoring prior text", () => {
+    const page = readFileSync(resolve(process.cwd(), "app/clients/[id]/scratchpad/page.tsx"), "utf8");
+    expect(page).toContain("localStorage.removeItem(cacheKeyFor(null))");
+    expect(page).toContain("setContextId(\"\")");
+  });
+
   it("surfaces the API error while retaining the local draft", () => {
-    expect(scratchpad).toContain("localStorage.setItem(cacheKey, safe)");
-    expect(scratchpad).toContain("Save failed: ${message}");
+    expect(scratchpad).toContain("localStorage.setItem(cacheKeyFor(noteRef.current?.id ?? null), safe)");
+    expect(scratchpad).toContain("Save failed: ${typeof result.error === \"string\" ? result.error : res.status}");
     expect(scratchpad).toContain("role=\"alert\"");
-    expect(scratchpad).toContain("fetch(scratchpadQuery).then(async r =>");
+    expect(scratchpad).toContain("fetch(scratchpadQuery).then(async response =>");
     expect(scratchpad).not.toContain("fetch(scratchpadQuery).then(r => r.ok ? r.json() : [])");
   });
 

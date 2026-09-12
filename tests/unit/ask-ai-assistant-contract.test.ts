@@ -31,6 +31,8 @@ describe("persistent client FlowCoach assistant contract", () => {
     expect(assistant).toContain("conversation");
     expect(assistant).toContain("New chat");
     expect(assistant).toContain("aria-live=\"polite\"");
+    expect(assistant).toContain("CopyAnswerButton");
+    expect(assistant).toContain("message.content");
   });
 
   it("keeps the floating panel responsive and above workspace content", () => {

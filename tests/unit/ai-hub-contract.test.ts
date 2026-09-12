@@ -15,6 +15,8 @@ describe("client AI Hub contract", () => {
     expect(page).toContain("No matching authorized workspace sources");
     expect(page).toContain("source.href");
     expect(page).toContain("<a");
+    expect(page).toContain("CopyAnswerButton");
+    expect(page).toContain("result.answer");
   });
 
   it("preserves the API route and agent identity while renaming the UI", () => {
