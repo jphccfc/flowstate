@@ -4,7 +4,8 @@ import { resolve } from "node:path";
 
 const root = process.cwd();
 const authorizePath = resolve(root, "app/api/clients/[id]/integrations/sharepoint/authorize/route.ts");
-const callbackPath = resolve(root, "app/api/clients/[id]/integrations/sharepoint/callback/route.ts");
+const callbackPath = resolve(root, "app/api/integrations/sharepoint/callback/route.ts");
+const oldCallbackPath = resolve(root, "app/api/clients/[id]/integrations/sharepoint/callback/route.ts");
 const authorize = readFileSync(authorizePath, "utf8");
 const callback = readFileSync(callbackPath, "utf8");
 
@@ -35,6 +36,11 @@ describe("SharePoint OAuth start route", () => {
     expect(authorize).toContain("organizationId: id");
   });
 
+  it("uses the single shared redirect URI so one app registration serves every client", () => {
+    expect(authorize).toContain("redirectUri: process.env.MICROSOFT_ENTRA_REDIRECT_URI as string");
+    expect(authorize).not.toContain("`${request.nextUrl.origin}/clients/");
+  });
+
   it("persists nothing and returns no tokens while starting the flow", () => {
     expect(authorize).not.toContain("saveConnection");
     expect(authorize).not.toContain("accessToken");
@@ -43,6 +49,13 @@ describe("SharePoint OAuth start route", () => {
 });
 
 describe("SharePoint OAuth callback route", () => {
+  it("is organisation-agnostic so Entra needs only one redirect URI", () => {
+    expect(existsSync(callbackPath)).toBe(true);
+    expect(existsSync(oldCallbackPath)).toBe(false);
+    expect(callback).not.toContain("params: Promise<{ id: string }>");
+    expect(callback).toContain("const { organizationId } = payload");
+  });
+
   it("verifies the signed state before doing anything else with the code", () => {
     const verifyAt = callback.indexOf("verifyOAuthState(");
     const exchangeAt = callback.indexOf("exchangeAuthorizationCode(");
@@ -50,20 +63,23 @@ describe("SharePoint OAuth callback route", () => {
     expect(exchangeAt).toBeGreaterThan(verifyAt);
   });
 
-  it("binds the callback to the organisation and the issued state", () => {
-    expect(callback).toContain("payload.organizationId !== id");
+  it("re-checks permission on the organisation from the cookie", () => {
+    expect(callback).toContain('hasOrganizationPermission(user.email, organizationId, "client.configure")');
+  });
+
+  it("binds the callback to the issued state", () => {
     expect(callback).toContain("isOAuthStateValid(returnedState, payload.state)");
   });
 
   it("fails closed on every error path instead of claiming a connection", () => {
-    for (const code of ["state_invalid", "organization_mismatch", "state_mismatch", "consent_denied", "code_missing", "not_configured", "exchange_failed", "persist_failed"]) {
-      expect(callback).toContain(`fail("${code}")`);
+    for (const code of ["state_invalid", "forbidden", "state_mismatch", "consent_denied", "code_missing", "not_configured", "exchange_failed", "persist_failed"]) {
+      expect(callback).toContain(`"${code}"`);
     }
   });
 
-  it("stores tokens through the encrypting store and never returns them", () => {
+  it("stores tokens through the encrypting store, scoped to the cookie organisation", () => {
     expect(callback).toContain("saveConnection(prisma");
-    expect(callback).toContain("organizationId: id");
+    expect(callback).toContain("organizationId,");
     expect(callback).not.toContain("accessToken");
     expect(callback).not.toMatch(/NextResponse\.json\([^)]*access_token/);
     expect(callback).toContain("response.cookies.delete(OAUTH_STATE_COOKIE)");
