@@ -11,7 +11,7 @@ import { prisma } from "@/lib/db";
 const MAX_ITEMS_PER_REQUEST = 50;
 /** Documents imported per request when walking a folder. Kept below the ceiling
  *  above because each imported document is an extraction, not just a read. */
-const MAX_IMPORT_PER_REQUEST = 5;
+const MAX_IMPORT_PER_REQUEST = 1;
 
 type ImportBody = {
   driveId?: string;
