@@ -5,6 +5,7 @@ const SOURCE_ROUTES: Record<string, string> = {
   note: "capture",
   email: "capture",
   transcript: "capture",
+  "document finding": "findings",
   "project record": "planning",
 };
 

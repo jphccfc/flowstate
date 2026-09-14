@@ -4,6 +4,9 @@ export type WorkspaceSource = {
   title: string;
   date: Date;
   text: string;
+  /** Optional structured finding fields used for higher-quality retrieval. */
+  domainName?: string | null;
+  capabilityName?: string | null;
 };
 
 export type RankedWorkspaceSource = WorkspaceSource & { excerpt: string; score: number };
@@ -33,14 +36,20 @@ function terms(question: string): string[] {
 export function rankWorkspaceSources(question: string, sources: WorkspaceSource[], limit = 8): RankedWorkspaceSource[] {
   const queryTerms = terms(question);
   if (queryTerms.length === 0) return [];
+  const normalQuestion = question.toLowerCase().replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
 
   return sources
     .map((source) => {
-      const haystack = `${source.kind} ${source.title} ${source.text}`.toLowerCase();
-      const score = queryTerms.reduce((total, term) => total + (haystack.includes(term) ? (source.title.toLowerCase().includes(term) ? 3 : 1) : 0), 0);
+      const haystack = `${source.kind} ${source.title} ${source.domainName ?? ""} ${source.capabilityName ?? ""} ${source.text}`.toLowerCase();
+      const title = source.title.toLowerCase();
+      const termHits = queryTerms.filter((term) => haystack.includes(term));
+      const frequency = queryTerms.reduce((total, term) => total + (haystack.match(new RegExp(`\\b${term}\\b`, "g")) ?? []).length, 0);
+      const phraseBoost = normalQuestion.length >= 5 && haystack.includes(normalQuestion) ? 12 : 0;
+      const allTermsBoost = termHits.length === queryTerms.length ? 6 : 0;
+      const score = phraseBoost + allTermsBoost + termHits.reduce((total, term) => total + (title.includes(term) ? 5 : 2), 0) + Math.min(frequency, 12);
       const firstMatch = queryTerms.find((term) => haystack.includes(term));
-      const start = firstMatch ? Math.max(0, source.text.toLowerCase().indexOf(firstMatch) - 180) : 0;
-      return { ...source, score, excerpt: source.text.slice(start, start + 600).trim() };
+      const start = firstMatch ? Math.max(0, source.text.toLowerCase().indexOf(firstMatch) - 240) : 0;
+      return { ...source, score, excerpt: source.text.slice(start, start + 900).trim() };
     })
     .filter((source) => source.score > 0)
     .sort((a, b) => b.score - a.score || b.date.getTime() - a.date.getTime())
