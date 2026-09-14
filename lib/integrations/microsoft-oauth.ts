@@ -124,6 +124,57 @@ export async function exchangeAuthorizationCode({
 }
 
 
+export type RefreshParams = {
+  refreshToken: string;
+  clientId: string;
+  tenantId: string;
+  clientSecret: string;
+  /** Injectable for tests; defaults to the global fetch. */
+  fetchImpl?: typeof fetch;
+};
+
+/** Refreshes an expired delegated access token without another user consent round-trip. */
+export async function refreshAccessToken({
+  refreshToken,
+  clientId,
+  tenantId,
+  clientSecret,
+  fetchImpl = fetch,
+}: RefreshParams): Promise<MicrosoftTokenSet> {
+  const url = `https://login.microsoftonline.com/${encodeURIComponent(tenantId)}/oauth2/v2.0/token`;
+  const body = new URLSearchParams({
+    client_id: clientId,
+    client_secret: clientSecret,
+    refresh_token: refreshToken,
+    grant_type: "refresh_token",
+    scope: MICROSOFT_GRAPH_SCOPES.join(" "),
+  });
+  const response = await fetchImpl(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: body.toString(),
+  });
+  const payload = (await response.json().catch(() => ({}))) as {
+    access_token?: string;
+    refresh_token?: string;
+    expires_in?: number;
+    scope?: string;
+    error?: string;
+  };
+  if (!response.ok || !payload.access_token) {
+    throw new Error(`Microsoft token refresh failed: ${payload.error ?? `HTTP ${response.status}`}`);
+  }
+  const expiresIn = typeof payload.expires_in === "number" ? payload.expires_in : 3600;
+  return {
+    accessToken: payload.access_token,
+    // Microsoft may rotate refresh tokens. Keep the old one only when no new
+    // value is returned, otherwise the next refresh could fail unexpectedly.
+    refreshToken: payload.refresh_token ?? refreshToken,
+    expiresAt: new Date(Date.now() + expiresIn * 1000),
+    scope: payload.scope ?? null,
+  };
+}
+
 /**
  * Constant-time comparison of the callback state against the value issued at
  * the start of the flow. Missing or different-length values fail closed.

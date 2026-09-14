@@ -1,6 +1,7 @@
 import type { PrismaClient } from "@/app/generated/prisma/client";
 import { decryptSecret, encryptSecret } from "@/lib/integrations/secret-vault";
 import type { MicrosoftTokenSet } from "@/lib/integrations/microsoft-oauth";
+import { refreshAccessToken } from "@/lib/integrations/microsoft-oauth";
 
 /**
  * Persistence boundary for integration credentials.
@@ -129,7 +130,7 @@ export async function getConnectionStatus(
   return toStatus(record, expiresAt);
 }
 
-/** Server-side only. Returns the decrypted token set for Graph calls. */
+/** Server-side only. Returns a valid decrypted token set for Graph calls. */
 export async function getAccessToken(
   client: PrismaClient,
   organizationId: string,
@@ -139,7 +140,29 @@ export async function getAccessToken(
     where: { organizationId_provider: { organizationId, provider } },
   });
   if (!record || record.status !== "CONNECTED") return null;
-  return parseTokens(record.encryptedTokens, integrationSecretKey());
+  const stored = parseTokens(record.encryptedTokens, integrationSecretKey());
+  const expiresAt = Date.parse(stored.expiresAt);
+  // Refresh one minute early to avoid a token expiring between the Graph request
+  // and Microsoft validating it. Refresh tokens remain encrypted at rest and
+  // Microsoft may rotate them, so persist the complete returned token set.
+  if (!stored.refreshToken || !Number.isFinite(expiresAt) || expiresAt > Date.now() + 60_000) return stored;
+
+  const refreshed = await refreshAccessToken({
+    refreshToken: stored.refreshToken,
+    clientId: process.env.MICROSOFT_ENTRA_CLIENT_ID ?? "",
+    tenantId: process.env.MICROSOFT_ENTRA_TENANT_ID ?? "",
+    clientSecret: process.env.MICROSOFT_ENTRA_CLIENT_SECRET ?? "",
+  });
+  await client.integrationConnection.update({
+    where: { id: record.id },
+    data: { encryptedTokens: serialiseTokens(refreshed, integrationSecretKey()), scope: refreshed.scope },
+  });
+  return {
+    accessToken: refreshed.accessToken,
+    refreshToken: refreshed.refreshToken,
+    expiresAt: refreshed.expiresAt.toISOString(),
+    scope: refreshed.scope,
+  };
 }
 
 export async function disconnect(

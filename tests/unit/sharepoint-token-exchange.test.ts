@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { decryptSecret, encryptSecret, generateSecretKey } from "../../lib/integrations/secret-vault";
-import { exchangeAuthorizationCode } from "../../lib/integrations/microsoft-oauth";
+import { exchangeAuthorizationCode, refreshAccessToken } from "../../lib/integrations/microsoft-oauth";
 
 const KEY = generateSecretKey();
 
