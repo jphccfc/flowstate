@@ -5052,6 +5052,7 @@ export const DocumentFindingScalarFieldEnum = {
   citedExcerpts: 'citedExcerpts',
   status: 'status',
   sourceHash: 'sourceHash',
+  reanalysisOfId: 'reanalysisOfId',
   reviewedBy: 'reviewedBy',
   reviewedAt: 'reviewedAt',
   createdAt: 'createdAt',

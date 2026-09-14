@@ -56,6 +56,7 @@ export type DocumentFindingMinAggregateOutputType = {
   confidence: number | null
   status: $Enums.FindingStatus | null
   sourceHash: string | null
+  reanalysisOfId: string | null
   reviewedBy: string | null
   reviewedAt: Date | null
   createdAt: Date | null
@@ -78,6 +79,7 @@ export type DocumentFindingMaxAggregateOutputType = {
   confidence: number | null
   status: $Enums.FindingStatus | null
   sourceHash: string | null
+  reanalysisOfId: string | null
   reviewedBy: string | null
   reviewedAt: Date | null
   createdAt: Date | null
@@ -102,6 +104,7 @@ export type DocumentFindingCountAggregateOutputType = {
   citedExcerpts: number
   status: number
   sourceHash: number
+  reanalysisOfId: number
   reviewedBy: number
   reviewedAt: number
   createdAt: number
@@ -134,6 +137,7 @@ export type DocumentFindingMinAggregateInputType = {
   confidence?: true
   status?: true
   sourceHash?: true
+  reanalysisOfId?: true
   reviewedBy?: true
   reviewedAt?: true
   createdAt?: true
@@ -156,6 +160,7 @@ export type DocumentFindingMaxAggregateInputType = {
   confidence?: true
   status?: true
   sourceHash?: true
+  reanalysisOfId?: true
   reviewedBy?: true
   reviewedAt?: true
   createdAt?: true
@@ -180,6 +185,7 @@ export type DocumentFindingCountAggregateInputType = {
   citedExcerpts?: true
   status?: true
   sourceHash?: true
+  reanalysisOfId?: true
   reviewedBy?: true
   reviewedAt?: true
   createdAt?: true
@@ -291,6 +297,7 @@ export type DocumentFindingGroupByOutputType = {
   citedExcerpts: string[]
   status: $Enums.FindingStatus
   sourceHash: string | null
+  reanalysisOfId: string | null
   reviewedBy: string | null
   reviewedAt: Date | null
   createdAt: Date
@@ -338,6 +345,7 @@ export type DocumentFindingWhereInput = {
   citedExcerpts?: Prisma.StringNullableListFilter<"DocumentFinding">
   status?: Prisma.EnumFindingStatusFilter<"DocumentFinding"> | $Enums.FindingStatus
   sourceHash?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  reanalysisOfId?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   reviewedBy?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   reviewedAt?: Prisma.DateTimeNullableFilter<"DocumentFinding"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"DocumentFinding"> | Date | string
@@ -364,6 +372,7 @@ export type DocumentFindingOrderByWithRelationInput = {
   citedExcerpts?: Prisma.SortOrder
   status?: Prisma.SortOrder
   sourceHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  reanalysisOfId?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -393,6 +402,7 @@ export type DocumentFindingWhereUniqueInput = Prisma.AtLeast<{
   citedExcerpts?: Prisma.StringNullableListFilter<"DocumentFinding">
   status?: Prisma.EnumFindingStatusFilter<"DocumentFinding"> | $Enums.FindingStatus
   sourceHash?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  reanalysisOfId?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   reviewedBy?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   reviewedAt?: Prisma.DateTimeNullableFilter<"DocumentFinding"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"DocumentFinding"> | Date | string
@@ -419,6 +429,7 @@ export type DocumentFindingOrderByWithAggregationInput = {
   citedExcerpts?: Prisma.SortOrder
   status?: Prisma.SortOrder
   sourceHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  reanalysisOfId?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -451,6 +462,7 @@ export type DocumentFindingScalarWhereWithAggregatesInput = {
   citedExcerpts?: Prisma.StringNullableListFilter<"DocumentFinding">
   status?: Prisma.EnumFindingStatusWithAggregatesFilter<"DocumentFinding"> | $Enums.FindingStatus
   sourceHash?: Prisma.StringNullableWithAggregatesFilter<"DocumentFinding"> | string | null
+  reanalysisOfId?: Prisma.StringNullableWithAggregatesFilter<"DocumentFinding"> | string | null
   reviewedBy?: Prisma.StringNullableWithAggregatesFilter<"DocumentFinding"> | string | null
   reviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DocumentFinding"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"DocumentFinding"> | Date | string
@@ -473,6 +485,7 @@ export type DocumentFindingCreateInput = {
   citedExcerpts?: Prisma.DocumentFindingCreatecitedExcerptsInput | string[]
   status?: $Enums.FindingStatus
   sourceHash?: string | null
+  reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
   createdAt?: Date | string
@@ -499,6 +512,7 @@ export type DocumentFindingUncheckedCreateInput = {
   citedExcerpts?: Prisma.DocumentFindingCreatecitedExcerptsInput | string[]
   status?: $Enums.FindingStatus
   sourceHash?: string | null
+  reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
   createdAt?: Date | string
@@ -521,6 +535,7 @@ export type DocumentFindingUpdateInput = {
   citedExcerpts?: Prisma.DocumentFindingUpdatecitedExcerptsInput | string[]
   status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus
   sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -547,6 +562,7 @@ export type DocumentFindingUncheckedUpdateInput = {
   citedExcerpts?: Prisma.DocumentFindingUpdatecitedExcerptsInput | string[]
   status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus
   sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -571,6 +587,7 @@ export type DocumentFindingCreateManyInput = {
   citedExcerpts?: Prisma.DocumentFindingCreatecitedExcerptsInput | string[]
   status?: $Enums.FindingStatus
   sourceHash?: string | null
+  reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
   createdAt?: Date | string
@@ -593,6 +610,7 @@ export type DocumentFindingUpdateManyMutationInput = {
   citedExcerpts?: Prisma.DocumentFindingUpdatecitedExcerptsInput | string[]
   status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus
   sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -617,6 +635,7 @@ export type DocumentFindingUncheckedUpdateManyInput = {
   citedExcerpts?: Prisma.DocumentFindingUpdatecitedExcerptsInput | string[]
   status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus
   sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -651,6 +670,7 @@ export type DocumentFindingCountOrderByAggregateInput = {
   citedExcerpts?: Prisma.SortOrder
   status?: Prisma.SortOrder
   sourceHash?: Prisma.SortOrder
+  reanalysisOfId?: Prisma.SortOrder
   reviewedBy?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -677,6 +697,7 @@ export type DocumentFindingMaxOrderByAggregateInput = {
   confidence?: Prisma.SortOrder
   status?: Prisma.SortOrder
   sourceHash?: Prisma.SortOrder
+  reanalysisOfId?: Prisma.SortOrder
   reviewedBy?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -699,6 +720,7 @@ export type DocumentFindingMinOrderByAggregateInput = {
   confidence?: Prisma.SortOrder
   status?: Prisma.SortOrder
   sourceHash?: Prisma.SortOrder
+  reanalysisOfId?: Prisma.SortOrder
   reviewedBy?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -835,6 +857,7 @@ export type DocumentFindingCreateWithoutOrganizationInput = {
   citedExcerpts?: Prisma.DocumentFindingCreatecitedExcerptsInput | string[]
   status?: $Enums.FindingStatus
   sourceHash?: string | null
+  reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
   createdAt?: Date | string
@@ -859,6 +882,7 @@ export type DocumentFindingUncheckedCreateWithoutOrganizationInput = {
   citedExcerpts?: Prisma.DocumentFindingCreatecitedExcerptsInput | string[]
   status?: $Enums.FindingStatus
   sourceHash?: string | null
+  reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
   createdAt?: Date | string
@@ -912,6 +936,7 @@ export type DocumentFindingScalarWhereInput = {
   citedExcerpts?: Prisma.StringNullableListFilter<"DocumentFinding">
   status?: Prisma.EnumFindingStatusFilter<"DocumentFinding"> | $Enums.FindingStatus
   sourceHash?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  reanalysisOfId?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   reviewedBy?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   reviewedAt?: Prisma.DateTimeNullableFilter<"DocumentFinding"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"DocumentFinding"> | Date | string
@@ -934,6 +959,7 @@ export type DocumentFindingCreateWithoutCapturedInputInput = {
   citedExcerpts?: Prisma.DocumentFindingCreatecitedExcerptsInput | string[]
   status?: $Enums.FindingStatus
   sourceHash?: string | null
+  reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
   createdAt?: Date | string
@@ -958,6 +984,7 @@ export type DocumentFindingUncheckedCreateWithoutCapturedInputInput = {
   citedExcerpts?: Prisma.DocumentFindingCreatecitedExcerptsInput | string[]
   status?: $Enums.FindingStatus
   sourceHash?: string | null
+  reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
   createdAt?: Date | string
@@ -1007,6 +1034,7 @@ export type DocumentFindingCreateManyOrganizationInput = {
   citedExcerpts?: Prisma.DocumentFindingCreatecitedExcerptsInput | string[]
   status?: $Enums.FindingStatus
   sourceHash?: string | null
+  reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
   createdAt?: Date | string
@@ -1029,6 +1057,7 @@ export type DocumentFindingUpdateWithoutOrganizationInput = {
   citedExcerpts?: Prisma.DocumentFindingUpdatecitedExcerptsInput | string[]
   status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus
   sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1053,6 +1082,7 @@ export type DocumentFindingUncheckedUpdateWithoutOrganizationInput = {
   citedExcerpts?: Prisma.DocumentFindingUpdatecitedExcerptsInput | string[]
   status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus
   sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1076,6 +1106,7 @@ export type DocumentFindingUncheckedUpdateManyWithoutOrganizationInput = {
   citedExcerpts?: Prisma.DocumentFindingUpdatecitedExcerptsInput | string[]
   status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus
   sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1099,6 +1130,7 @@ export type DocumentFindingCreateManyCapturedInputInput = {
   citedExcerpts?: Prisma.DocumentFindingCreatecitedExcerptsInput | string[]
   status?: $Enums.FindingStatus
   sourceHash?: string | null
+  reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
   createdAt?: Date | string
@@ -1121,6 +1153,7 @@ export type DocumentFindingUpdateWithoutCapturedInputInput = {
   citedExcerpts?: Prisma.DocumentFindingUpdatecitedExcerptsInput | string[]
   status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus
   sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1145,6 +1178,7 @@ export type DocumentFindingUncheckedUpdateWithoutCapturedInputInput = {
   citedExcerpts?: Prisma.DocumentFindingUpdatecitedExcerptsInput | string[]
   status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus
   sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1168,6 +1202,7 @@ export type DocumentFindingUncheckedUpdateManyWithoutCapturedInputInput = {
   citedExcerpts?: Prisma.DocumentFindingUpdatecitedExcerptsInput | string[]
   status?: Prisma.EnumFindingStatusFieldUpdateOperationsInput | $Enums.FindingStatus
   sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1194,6 +1229,7 @@ export type DocumentFindingSelect<ExtArgs extends runtime.Types.Extensions.Inter
   citedExcerpts?: boolean
   status?: boolean
   sourceHash?: boolean
+  reanalysisOfId?: boolean
   reviewedBy?: boolean
   reviewedAt?: boolean
   createdAt?: boolean
@@ -1220,6 +1256,7 @@ export type DocumentFindingSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   citedExcerpts?: boolean
   status?: boolean
   sourceHash?: boolean
+  reanalysisOfId?: boolean
   reviewedBy?: boolean
   reviewedAt?: boolean
   createdAt?: boolean
@@ -1246,6 +1283,7 @@ export type DocumentFindingSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   citedExcerpts?: boolean
   status?: boolean
   sourceHash?: boolean
+  reanalysisOfId?: boolean
   reviewedBy?: boolean
   reviewedAt?: boolean
   createdAt?: boolean
@@ -1272,13 +1310,14 @@ export type DocumentFindingSelectScalar = {
   citedExcerpts?: boolean
   status?: boolean
   sourceHash?: boolean
+  reanalysisOfId?: boolean
   reviewedBy?: boolean
   reviewedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type DocumentFindingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "capturedInputId" | "documentType" | "title" | "summary" | "capabilityId" | "capabilityName" | "domainId" | "domainName" | "evidenceDemonstrated" | "strength" | "confidence" | "citedSegmentIds" | "citedExcerpts" | "status" | "sourceHash" | "reviewedBy" | "reviewedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["documentFinding"]>
+export type DocumentFindingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "capturedInputId" | "documentType" | "title" | "summary" | "capabilityId" | "capabilityName" | "domainId" | "domainName" | "evidenceDemonstrated" | "strength" | "confidence" | "citedSegmentIds" | "citedExcerpts" | "status" | "sourceHash" | "reanalysisOfId" | "reviewedBy" | "reviewedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["documentFinding"]>
 export type DocumentFindingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   capturedInput?: boolean | Prisma.CapturedInputDefaultArgs<ExtArgs>
@@ -1341,6 +1380,7 @@ export type $DocumentFindingPayload<ExtArgs extends runtime.Types.Extensions.Int
      * the finding STALE rather than leaving a stale finding looking current.
      */
     sourceHash: string | null
+    reanalysisOfId: string | null
     reviewedBy: string | null
     reviewedAt: Date | null
     createdAt: Date
@@ -1787,6 +1827,7 @@ export interface DocumentFindingFieldRefs {
   readonly citedExcerpts: Prisma.FieldRef<"DocumentFinding", 'String[]'>
   readonly status: Prisma.FieldRef<"DocumentFinding", 'FindingStatus'>
   readonly sourceHash: Prisma.FieldRef<"DocumentFinding", 'String'>
+  readonly reanalysisOfId: Prisma.FieldRef<"DocumentFinding", 'String'>
   readonly reviewedBy: Prisma.FieldRef<"DocumentFinding", 'String'>
   readonly reviewedAt: Prisma.FieldRef<"DocumentFinding", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"DocumentFinding", 'DateTime'>

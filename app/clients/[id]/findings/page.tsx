@@ -57,6 +57,27 @@ export default function DocumentFindingsPage({ params }: { params: Promise<{ id:
 
   useEffect(() => { load().catch(() => setError("Findings could not be loaded.")); }, [load]);
 
+  async function reanalyze(findingId: string) {
+    setBusy(findingId);
+    setError(null);
+    setNotice(null);
+    try {
+      const response = await fetch(`${api}/reanalyze`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ findingId }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error ?? "The finding could not be queued for re-analysis.");
+      setNotice("Re-analysis queued. The old finding is preserved as stale; refresh shortly for the new result.");
+      await load();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The finding could not be re-analysed.");
+    } finally {
+      setBusy(null);
+    }
+  }
+
   async function decide(findingId: string, action: "approve" | "reject") {
     setBusy(findingId);
     setError(null);
@@ -128,6 +149,7 @@ export default function DocumentFindingsPage({ params }: { params: Promise<{ id:
         </div> : null}
 
         {finding.status === "PENDING_REVIEW" ? <div className="mt-3 flex flex-wrap gap-2">
+          <button type="button" disabled={busy === finding.id} onClick={() => reanalyze(finding.id)} className="rounded border border-[var(--card-border)] px-3 py-1.5 text-sm font-medium text-[var(--foreground)] disabled:opacity-50">Re-analyse</button>
           <button type="button" disabled={busy === finding.id} onClick={() => decide(finding.id, "approve")} className="flowstate-accent-button rounded px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50">Approve</button>
           <button type="button" disabled={busy === finding.id} onClick={() => decide(finding.id, "reject")} className="rounded border border-[var(--card-border)] px-3 py-1.5 text-sm font-medium text-[var(--foreground)] disabled:opacity-50">Reject</button>
         </div> : <p className="mt-3 text-xs text-[var(--muted)]">

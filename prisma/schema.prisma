@@ -1105,6 +1105,7 @@ model DocumentFinding {
   /// Content hash of the source at the time of analysis. A changed file makes
   /// the finding STALE rather than leaving a stale finding looking current.
   sourceHash           String?
+  reanalysisOfId       String?
   reviewedBy           String?
   reviewedAt           DateTime?
   createdAt            DateTime        @default(now())
