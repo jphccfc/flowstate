@@ -108,3 +108,44 @@ export async function listDriveChildren(
     webUrl: item.webUrl ?? null,
   }));
 }
+
+export type GraphSignedInUser = {
+  id: string;
+  displayName: string | null;
+  userPrincipalName: string | null;
+  mail: string | null;
+};
+
+/**
+ * Identifies which Microsoft account a connection belongs to.
+ *
+ * Used so a client can see *whose* Microsoft 365 the evidence is coming from,
+ * rather than the Flowstate user who happened to click Connect. Requires only
+ * the User.Read delegated scope.
+ */
+export async function getSignedInUser(
+  accessToken: string,
+  options: { fetchImpl?: FetchImpl } = {},
+): Promise<GraphSignedInUser> {
+  if (!accessToken?.trim()) throw new Error("Microsoft Graph requires an access token");
+  const response = await (options.fetchImpl ?? fetch)(
+    `${GRAPH_BASE}/me?$select=id,displayName,userPrincipalName,mail`,
+    { headers: { Authorization: `Bearer ${accessToken}`, Accept: "application/json" } },
+  );
+  const payload = (await response.json().catch(() => ({}))) as {
+    id?: string;
+    displayName?: string;
+    userPrincipalName?: string;
+    mail?: string;
+    error?: { code?: string };
+  };
+  if (!response.ok || !payload.id) {
+    throw new Error(`Microsoft Graph request failed (${payload.error?.code ?? `HTTP ${response.status}`})`);
+  }
+  return {
+    id: payload.id,
+    displayName: payload.displayName ?? null,
+    userPrincipalName: payload.userPrincipalName ?? null,
+    mail: payload.mail ?? null,
+  };
+}

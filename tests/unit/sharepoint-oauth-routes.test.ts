@@ -80,8 +80,14 @@ describe("SharePoint OAuth callback route", () => {
   it("stores tokens through the encrypting store, scoped to the cookie organisation", () => {
     expect(callback).toContain("saveConnection(prisma");
     expect(callback).toContain("organizationId,");
-    expect(callback).not.toContain("accessToken");
-    expect(callback).not.toMatch(/NextResponse\.json\([^)]*access_token/);
+    // The only permitted use of the raw access token is the in-process identity
+    // lookup; it must never reach a response body, URL or log line.
+    const tokenUses = callback.split("tokens.accessToken").length - 1;
+    expect(tokenUses).toBe(1);
+    expect(callback).toContain("getSignedInUser(tokens.accessToken)");
+    expect(callback).not.toMatch(/NextResponse\.json\([^)]*accessToken/);
+    expect(callback).not.toMatch(/NextResponse\.redirect\([^)]*accessToken/);
+    expect(callback).not.toContain("console.log");
     expect(callback).toContain("response.cookies.delete(OAUTH_STATE_COOKIE)");
   });
 
@@ -91,5 +97,29 @@ describe("SharePoint OAuth callback route", () => {
     const persistAt = callback.indexOf("await saveConnection(");
     expect(connectedAt).toBeGreaterThan(exchangeAt);
     expect(connectedAt).toBeGreaterThan(persistAt);
+  });
+});
+
+describe("connection identity", () => {
+  it("records whose Microsoft 365 connected, not which Flowstate user clicked", () => {
+    expect(callback).toContain("getSignedInUser(tokens.accessToken)");
+    expect(callback).toContain("signedIn.userPrincipalName ?? signedIn.mail ?? null");
+  });
+
+  it("still completes the connection when identity lookup fails", () => {
+    // The identity call sits in its own try/catch BEFORE saveConnection, so a
+    // /me failure must not turn a successful connection into persist_failed.
+    const identityAt = callback.indexOf("getSignedInUser(tokens.accessToken)");
+    const saveAt = callback.indexOf("await saveConnection(");
+    expect(identityAt).toBeGreaterThan(-1);
+    expect(saveAt).toBeGreaterThan(identityAt);
+    const between = callback.slice(identityAt, saveAt);
+    expect(between).toContain("catch {");
+    expect(between).toContain("accountEmail = null");
+  });
+
+  it("requires User.Read for identity, and requests it among the scopes", () => {
+    const oauth = readFileSync(resolve(process.cwd(), "lib/integrations/microsoft-oauth.ts"), "utf8");
+    expect(oauth).toContain('"User.Read"');
   });
 });

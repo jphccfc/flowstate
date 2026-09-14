@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import {
+  getSignedInUser,
   listDocumentLibraries,
   listDriveChildren,
   listSharePointSites,
@@ -69,5 +70,32 @@ describe("Graph site and library discovery", () => {
     const fetchImpl = vi.fn();
     await expect(listSharePointSites("", { fetchImpl })).rejects.toThrow(/token/i);
     expect(fetchImpl).not.toHaveBeenCalled();
+  });
+});
+
+describe("Graph signed-in user identity", () => {
+  it("identifies whose Microsoft 365 the connection belongs to", async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse({
+      id: "user-1",
+      displayName: "Jon H",
+      userPrincipalName: "jon@woodburysolutions.onmicrosoft.com",
+      mail: "jon@woodburysolutions.ca",
+    }));
+    const user = await getSignedInUser(TOKEN, { fetchImpl });
+    const [url, init] = fetchImpl.mock.calls[0] as unknown as [string, RequestInit];
+    expect(url).toContain(`${GRAPH_BASE}/me`);
+    expect((init.headers as Record<string, string>).Authorization).toBe(`Bearer ${TOKEN}`);
+    expect(user.userPrincipalName).toBe("jon@woodburysolutions.onmicrosoft.com");
+    expect(user.mail).toBe("jon@woodburysolutions.ca");
+  });
+
+  it("throws on a Graph error rather than reporting an anonymous connection", async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse({ error: { code: "InvalidAuthenticationToken" } }, 401));
+    await expect(getSignedInUser(TOKEN, { fetchImpl })).rejects.toThrow(/401|InvalidAuthenticationToken/);
+  });
+
+  it("never includes the access token in an error message", async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse({ error: { code: "Forbidden" } }, 403));
+    await expect(getSignedInUser(TOKEN, { fetchImpl })).rejects.toSatisfy((e: Error) => !e.message.includes(TOKEN));
   });
 });

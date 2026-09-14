@@ -4,6 +4,7 @@ import { hasOrganizationPermission } from "@/lib/auth/organization";
 import { exchangeAuthorizationCode, isOAuthStateValid } from "@/lib/integrations/microsoft-oauth";
 import { OAUTH_STATE_COOKIE, verifyOAuthState } from "@/lib/integrations/oauth-state";
 import { integrationSecretKey, saveConnection } from "@/lib/integrations/connection-store";
+import { getSignedInUser } from "@/lib/integrations/graph";
 import { prisma } from "@/lib/db";
 
 /**
@@ -79,11 +80,21 @@ export async function GET(request: NextRequest) {
     return fail(organizationId, "exchange_failed");
   }
 
+  // Best effort: the connection is valid even if we cannot name the account.
+  // Identifies whose Microsoft 365 this is, not which Flowstate user clicked Connect.
+  let accountEmail: string | null = null;
+  try {
+    const signedIn = await getSignedInUser(tokens.accessToken);
+    accountEmail = signedIn.userPrincipalName ?? signedIn.mail ?? null;
+  } catch {
+    accountEmail = null;
+  }
+
   try {
     await saveConnection(prisma, {
       organizationId,
       tokens,
-      accountEmail: user.email,
+      accountEmail,
       externalTenantId: process.env.MICROSOFT_ENTRA_TENANT_ID ?? null,
     });
   } catch {
