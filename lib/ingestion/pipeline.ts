@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db";
 import { segmentText } from "@/lib/ai/segmenting";
 import { generateTagSuggestions, type TaggableEntity } from "@/lib/ai/tagging";
+import { generateDocumentFinding, normaliseForMatch } from "@/lib/ai/document-findings";
 import { transcribeAudio } from "@/lib/ai/transcription";
 import { generateFollowUpSuggestions } from "@/lib/ai/followups";
 
@@ -81,6 +82,81 @@ export async function processCapturedInput(capturedInputId: string): Promise<voi
         }
       }
     });
+
+    if (input.type === "DOCUMENT") {
+      await runJob("finding", capturedInputId, async () => {
+        const attachment = await prisma.capturedInputAttachment.findFirst({
+          where: { capturedInputId },
+          select: { filename: true },
+        });
+        const capabilities = (await getTaggableEntities(input.organizationId)).filter(
+          (entity) => entity.targetType === "CAPABILITY",
+        );
+        const draft = await generateDocumentFinding({
+          documentName: attachment?.filename ?? "document",
+          text: rawText ?? "",
+          capabilities: capabilities.map((entity) => ({
+            capabilityId: entity.targetId,
+            name: entity.name,
+          })),
+        });
+        // No verified citation means no finding. An uncited claim is an opinion,
+        // and this pipeline must not present opinions as evidence.
+        if (!draft) return;
+
+        // Link each verified excerpt back to the segment it came from, so the
+        // review UI can highlight the passage in the document.
+        const citedSegmentIds = segments
+          .filter((segment) => {
+            const haystack = normaliseForMatch(segment.text);
+            return draft.citedExcerpts.some((excerpt) => haystack.includes(normaliseForMatch(excerpt)));
+          })
+          .map((segment) => segment.id);
+
+        // Only unresolved findings are replaced. A human's approve or reject is a
+        // decision, not a cache entry: re-analysis must never silently discard it.
+        await prisma.documentFinding.deleteMany({
+          where: { capturedInputId, status: "PENDING_REVIEW" },
+        });
+
+        await prisma.documentFinding.create({
+          data: {
+            organizationId: input.organizationId,
+            capturedInputId,
+            documentType: draft.documentType,
+            title: draft.title,
+            summary: draft.summary,
+            capabilityId: draft.capabilityId,
+            capabilityName: draft.capabilityName,
+            evidenceDemonstrated: draft.evidenceDemonstrated,
+            strength: draft.strength,
+            confidence: draft.confidence,
+            citedSegmentIds,
+            citedExcerpts: draft.citedExcerpts,
+            status: "PENDING_REVIEW",
+            // The idempotency key embeds the drive item and content hash, so it
+            // changes exactly when the source content changes — which is the
+            // property staleness detection needs.
+            sourceHash: input.idempotencyKey ?? null,
+          },
+        });
+
+        // A later version of the same source supersedes this finding. Marking it
+        // STALE is what stops an old approval from reading as current.
+        if (input.sourceRef) {
+          const superseded = await prisma.capturedInput.findMany({
+            where: { organizationId: input.organizationId, sourceRef: input.sourceRef, id: { not: capturedInputId } },
+            select: { id: true },
+          });
+          if (superseded.length > 0) {
+            await prisma.documentFinding.updateMany({
+              where: { capturedInputId: { in: superseded.map((row) => row.id) }, status: { not: "STALE" } },
+              data: { status: "STALE" },
+            });
+          }
+        }
+      });
+    }
 
     if (input.sessionId) {
       const sessionId = input.sessionId;

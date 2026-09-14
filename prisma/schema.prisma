@@ -16,59 +16,60 @@ enum UserRole {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  role      UserRole @default(ADVISOR)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String?
+  role        UserRole @default(ADVISOR)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   preferences Json?
 
-  organizations   UserOrganization[]
-  sessions        AssessmentSession[]
-  requestedAssessmentTasks AssessmentTask[] @relation("TaskRequester")
-  assignedAssessmentTasks AssessmentTask[] @relation("TaskAssignee")
-  completedAssessmentTasks AssessmentTask[] @relation("TaskCompleter")
-  createdPlanningItems PlanningItem[] @relation("PlanningItemCreator")
-  approvedPlanningItems PlanningItem[] @relation("PlanningItemApprover")
-  createdCommunicationPacks CommunicationPack[] @relation("CommunicationPackCreator")
-  reviewedCommunicationPacks CommunicationPack[] @relation("CommunicationPackReviewer")
+  organizations                     UserOrganization[]
+  sessions                          AssessmentSession[]
+  requestedAssessmentTasks          AssessmentTask[]                   @relation("TaskRequester")
+  assignedAssessmentTasks           AssessmentTask[]                   @relation("TaskAssignee")
+  completedAssessmentTasks          AssessmentTask[]                   @relation("TaskCompleter")
+  createdPlanningItems              PlanningItem[]                     @relation("PlanningItemCreator")
+  approvedPlanningItems             PlanningItem[]                     @relation("PlanningItemApprover")
+  createdCommunicationPacks         CommunicationPack[]                @relation("CommunicationPackCreator")
+  reviewedCommunicationPacks        CommunicationPack[]                @relation("CommunicationPackReviewer")
   communicationPackAcknowledgements CommunicationPackAcknowledgement[] @relation("CommunicationPackActor")
-  createdAgentDefinitions AgentDefinition[] @relation("AgentDefinitionCreator")
-  authoredAgentPromptVersions AgentPromptVersion[] @relation("AgentPromptVersionAuthor")
-  publishedAgentPromptVersions AgentPromptVersion[] @relation("AgentPromptVersionPublisher")
-  reviewedAgentOutputs AgentOutput[] @relation("AgentOutputReviewer")
+  createdAgentDefinitions           AgentDefinition[]                  @relation("AgentDefinitionCreator")
+  authoredAgentPromptVersions       AgentPromptVersion[]               @relation("AgentPromptVersionAuthor")
+  publishedAgentPromptVersions      AgentPromptVersion[]               @relation("AgentPromptVersionPublisher")
+  reviewedAgentOutputs              AgentOutput[]                      @relation("AgentOutputReviewer")
 }
 
 model Organization {
-  id        String   @id @default(cuid())
-  name      String
-  industry  String?
-  size      String?
-  notes     String?
+  id               String   @id @default(cuid())
+  name             String
+  industry         String?
+  size             String?
+  notes            String?
   engagementMotive String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
-  users        UserOrganization[]
-  domains      BusinessDomain[]
-  stakeholders Stakeholder[]
-  kpis         KPI[]
-  achievements Achievement[]
-  technologies Technology[]
-  processes    Process[]
-  projects     Project[]
-  sessions       AssessmentSession[]
-  capturedInputs CapturedInput[]
-  meetingContexts MeetingContext[]
-  recommendations Recommendation[]
-  maturityRubrics MaturityRubric[]
-  assessmentTasks AssessmentTask[]
-  planningItems PlanningItem[]
-  communicationPacks CommunicationPack[]
-  inboundEmailEndpoint InboundEmailEndpoint?
-  agentRuns AgentRun[]
+  users                  UserOrganization[]
+  domains                BusinessDomain[]
+  stakeholders           Stakeholder[]
+  kpis                   KPI[]
+  achievements           Achievement[]
+  technologies           Technology[]
+  processes              Process[]
+  projects               Project[]
+  sessions               AssessmentSession[]
+  capturedInputs         CapturedInput[]
+  meetingContexts        MeetingContext[]
+  recommendations        Recommendation[]
+  maturityRubrics        MaturityRubric[]
+  assessmentTasks        AssessmentTask[]
+  planningItems          PlanningItem[]
+  communicationPacks     CommunicationPack[]
+  inboundEmailEndpoint   InboundEmailEndpoint?
+  agentRuns              AgentRun[]
   integrationConnections IntegrationConnection[]
+  documentFindings       DocumentFinding[]
 }
 
 model UserOrganization {
@@ -113,20 +114,20 @@ model Capability {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  domain       BusinessDomain @relation(fields: [domainId], references: [id], onDelete: Cascade)
-  stakeholders CapabilityStakeholder[]
-  kpis         CapabilityKPI[]
-  processes    CapabilityProcess[]
-  technologies CapabilityTechnology[]
-  projects     ProjectCapability[]
-  maturityAssessments MaturityAssessment[]
-  assessmentDecisions AssessmentDecision[]
-  approvedInsights ApprovedInsight[]
+  domain               BusinessDomain                 @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  stakeholders         CapabilityStakeholder[]
+  kpis                 CapabilityKPI[]
+  processes            CapabilityProcess[]
+  technologies         CapabilityTechnology[]
+  projects             ProjectCapability[]
+  maturityAssessments  MaturityAssessment[]
+  assessmentDecisions  AssessmentDecision[]
+  approvedInsights     ApprovedInsight[]
   maturityPerspectives MaturityPerspective[]
   maturityProposals    MaturityProposal[]
   targetMaturities     TargetMaturity[]
   kpiCeilings          CapabilityKPIMaturityCeiling[]
-  followUpSuggestions FollowUpSuggestion[]
+  followUpSuggestions  FollowUpSuggestion[]
 }
 
 model Stakeholder {
@@ -139,10 +140,10 @@ model Stakeholder {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  organization  Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  capabilities  CapabilityStakeholder[]
-  perspectives  MaturityPerspective[]
-  achievements  AchievementStakeholder[]
+  organization Organization             @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  capabilities CapabilityStakeholder[]
+  perspectives MaturityPerspective[]
+  achievements AchievementStakeholder[]
 }
 
 model CapabilityStakeholder {
@@ -167,8 +168,8 @@ model KPI {
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
 
-  organization Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  capabilities CapabilityKPI[]
+  organization       Organization                   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  capabilities       CapabilityKPI[]
   capabilityCeilings CapabilityKPIMaturityCeiling[]
 }
 
@@ -193,7 +194,7 @@ model Process {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organization Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   capabilities CapabilityProcess[]
 }
 
@@ -217,7 +218,7 @@ model Technology {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  organization Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organization Organization           @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   capabilities CapabilityTechnology[]
 }
 
@@ -243,15 +244,15 @@ model Project {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organization Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   capabilities ProjectCapability[]
 }
 
 model ProjectCapability {
-  projectId        String
-  capabilityId     String
-  projectedImpact  Float?
-  actualImpact     Float?
+  projectId       String
+  capabilityId    String
+  projectedImpact Float?
+  actualImpact    Float?
 
   project    Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
   capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
@@ -270,7 +271,7 @@ model Achievement {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
-  organization Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organization Organization             @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   stakeholders AchievementStakeholder[]
 }
 
@@ -295,9 +296,9 @@ model AssessmentSession {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
-  organization  Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  advisor       User            @relation(fields: [advisorId], references: [id])
-  capturedInputs CapturedInput[]
+  organization        Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  advisor             User                 @relation(fields: [advisorId], references: [id])
+  capturedInputs      CapturedInput[]
   followUpSuggestions FollowUpSuggestion[]
 }
 
@@ -332,83 +333,84 @@ enum ScratchpadReviewStatus {
 }
 
 model MeetingContext {
-  id              String   @id @default(cuid())
-  organizationId   String
+  id              String    @id @default(cuid())
+  organizationId  String
   title           String
   startsAt        DateTime?
   dateTime        DateTime?
   stakeholderName String?
-  stakeholders    String[] @default([])
+  stakeholders    String[]  @default([])
   domainName      String?
   domain          String?
   objectives      String?
-  agendaItems     String[] @default([])
+  agendaItems     String[]  @default([])
   desiredOutcome  String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   capturedInputs CapturedInput[]
 
   @@index([organizationId, startsAt])
 }
 
 model CapturedInput {
-  id             String            @id @default(cuid())
-  organizationId String
-  sessionId      String?
+  id               String                 @id @default(cuid())
+  organizationId   String
+  sessionId        String?
   meetingContextId String?
-  revision       Int               @default(0)
-  type           InputType
-  sourceRef      String?
-  senderEmail    String?
-  senderName     String?
-  subject        String?
-  idempotencyKey String?
+  revision         Int                    @default(0)
+  type             InputType
+  sourceRef        String?
+  senderEmail      String?
+  senderName       String?
+  subject          String?
+  idempotencyKey   String?
   quarantineReason String?
-  rawText        String?
-  locationTag    String?
-  status         ProcessingStatus  @default(PENDING)
-  reviewStatus   ScratchpadReviewStatus @default(PENDING_REVIEW)
-  reviewedBy     String?
-  reviewedAt     DateTime?
-  error          String?
-  capturedAt     DateTime          @default(now())
-  createdAt      DateTime          @default(now())
-  updatedAt      DateTime          @updatedAt
+  rawText          String?
+  locationTag      String?
+  status           ProcessingStatus       @default(PENDING)
+  reviewStatus     ScratchpadReviewStatus @default(PENDING_REVIEW)
+  reviewedBy       String?
+  reviewedAt       DateTime?
+  error            String?
+  capturedAt       DateTime               @default(now())
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
 
-  organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  session      AssessmentSession? @relation(fields: [sessionId], references: [id])
-  meetingContext MeetingContext? @relation(fields: [meetingContextId], references: [id], onDelete: SetNull)
-  segments     CapturedSegment[]
-  attachments  CapturedInputAttachment[]
-  agentRuns AgentRun[]
+  organization   Organization              @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  session        AssessmentSession?        @relation(fields: [sessionId], references: [id])
+  meetingContext MeetingContext?           @relation(fields: [meetingContextId], references: [id], onDelete: SetNull)
+  segments       CapturedSegment[]
+  attachments    CapturedInputAttachment[]
+  findings       DocumentFinding[]
+  agentRuns      AgentRun[]
 
   @@unique([organizationId, idempotencyKey])
   @@index([meetingContextId])
 }
 
 model CapturedInputAttachment {
-  id             String   @id @default(cuid())
+  id              String        @id @default(cuid())
   capturedInputId String
-  filename       String
-  contentType    String
-  sizeBytes      Int?
-  sourceRef      String?
-  createdAt      DateTime @default(now())
-  capturedInput  CapturedInput @relation(fields: [capturedInputId], references: [id], onDelete: Cascade)
+  filename        String
+  contentType     String
+  sizeBytes       Int?
+  sourceRef       String?
+  createdAt       DateTime      @default(now())
+  capturedInput   CapturedInput @relation(fields: [capturedInputId], references: [id], onDelete: Cascade)
 }
 
 model InboundEmailEndpoint {
-  id             String   @id @default(cuid())
-  organizationId String   @unique
-  addressKey     String   @unique
-  inboundAddress String   @unique
+  id             String       @id @default(cuid())
+  organizationId String       @unique
+  addressKey     String       @unique
+  inboundAddress String       @unique
   tokenHash      String
-  active         Boolean  @default(true)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  organization  Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  active         Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 }
 
 model CapturedSegment {
@@ -421,9 +423,9 @@ model CapturedSegment {
   endMs           Int?
   createdAt       DateTime @default(now())
 
-  capturedInput CapturedInput @relation(fields: [capturedInputId], references: [id], onDelete: Cascade)
+  capturedInput CapturedInput        @relation(fields: [capturedInputId], references: [id], onDelete: Cascade)
   tags          Tag[]
-  followUps FollowUpSuggestion[]
+  followUps     FollowUpSuggestion[]
 }
 
 enum TagTargetType {
@@ -475,7 +477,7 @@ model MaturityRubric {
 }
 
 model MaturityPerspective {
-  id                String   @id @default(cuid())
+  id                String    @id @default(cuid())
   capabilityId      String
   stakeholderId     String?
   assessorEmail     String?
@@ -488,16 +490,16 @@ model MaturityPerspective {
   originalStatement String
   rationale         String?
   confidence        Float?
-  sourceEvidenceIds String[] @default([])
+  sourceEvidenceIds String[]  @default([])
   rubricVersion     Int?
-  status            String   @default("SUBMITTED")
-  reviewedBy       String?
-  reviewNotes      String?
-  reviewedAt       DateTime?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  status            String    @default("SUBMITTED")
+  reviewedBy        String?
+  reviewNotes       String?
+  reviewedAt        DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 
-  capability  Capability  @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+  capability  Capability   @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
   stakeholder Stakeholder? @relation(fields: [stakeholderId], references: [id], onDelete: SetNull)
 
   @@index([capabilityId, createdAt])
@@ -505,24 +507,24 @@ model MaturityPerspective {
 }
 
 model MaturityProposal {
-  id                  String   @id @default(cuid())
-  capabilityId        String
-  proposalType        String
-  interpretation      String
-  suggestedScore      Float?
-  scoreRangeMin       Float?
-  scoreRangeMax       Float?
-  confidence          Float?
-  missingEvidence     String[] @default([])
-  conflictingEvidence String[] @default([])
-  sourceEvidenceIds   String[] @default([])
-  sourcePerspectiveIds String[] @default([])
-  status              String   @default("PENDING_REVIEW")
-  reviewedBy          String?
-  reviewNotes         String?
-  reviewedAt          DateTime?
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  id                   String    @id @default(cuid())
+  capabilityId         String
+  proposalType         String
+  interpretation       String
+  suggestedScore       Float?
+  scoreRangeMin        Float?
+  scoreRangeMax        Float?
+  confidence           Float?
+  missingEvidence      String[]  @default([])
+  conflictingEvidence  String[]  @default([])
+  sourceEvidenceIds    String[]  @default([])
+  sourcePerspectiveIds String[]  @default([])
+  status               String    @default("PENDING_REVIEW")
+  reviewedBy           String?
+  reviewNotes          String?
+  reviewedAt           DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
 
   capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
 
@@ -561,8 +563,8 @@ model AssessmentDecision {
   supersedesId         String?
   createdAt            DateTime @default(now())
 
-  capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
-  approvedInsights ApprovedInsight[]
+  capability         Capability          @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+  approvedInsights   ApprovedInsight[]
   communicationPacks CommunicationPack[]
 
   @@index([capabilityId, createdAt])
@@ -584,10 +586,10 @@ model ApprovedInsight {
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
 
-  capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
-  decision   AssessmentDecision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
-  growthActions GrowthAction[]
-  planningItems PlanningItem[]
+  capability         Capability          @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
+  decision           AssessmentDecision  @relation(fields: [decisionId], references: [id], onDelete: Cascade)
+  growthActions      GrowthAction[]
+  planningItems      PlanningItem[]
   communicationPacks CommunicationPack[]
 
   @@index([capabilityId, createdAt])
@@ -595,28 +597,27 @@ model ApprovedInsight {
 }
 
 model GrowthAction {
-  id          String   @id @default(cuid())
-  insightId   String
-  title       String
-  description String
-  outcomeScenario String @default("PROFIT_GROWTH")
-  expectedValue Float?
+  id               String    @id @default(cuid())
+  insightId        String
+  title            String
+  description      String
+  outcomeScenario  String    @default("PROFIT_GROWTH")
+  expectedValue    Float?
   valueAssumptions String?
-  ownerEmail  String?
-  dueDate     DateTime?
-  priority    Int?     @default(5)
-  status      String   @default("PLANNED")
-  createdBy   String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  ownerEmail       String?
+  dueDate          DateTime?
+  priority         Int?      @default(5)
+  status           String    @default("PLANNED")
+  createdBy        String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
-  insight ApprovedInsight @relation(fields: [insightId], references: [id], onDelete: Cascade)
+  insight        ApprovedInsight @relation(fields: [insightId], references: [id], onDelete: Cascade)
   recommendation Recommendation?
 
   @@index([insightId, status])
   @@index([ownerEmail, status])
 }
-
 
 enum PlanningItemType {
   REQUIREMENT
@@ -640,29 +641,29 @@ enum PlanningItemApprovalState {
 }
 
 model PlanningItem {
-  id                  String                    @id @default(cuid())
-  organizationId      String
-  type                PlanningItemType
-  title               String
-  description         String
-  ownerEmail          String?
-  targetDate          DateTime?
-  lifecycleStatus     PlanningItemLifecycleStatus @default(DRAFT)
-  humanApprovalState  PlanningItemApprovalState @default(NOT_REQUIRED)
-  createdBy           String?
-  approvedBy          String?
-  createdAt           DateTime                  @default(now())
-  approvedAt          DateTime?
-  updatedAt           DateTime                  @updatedAt
-  parentId            String?
-  approvedInsightId   String?
+  id                 String                      @id @default(cuid())
+  organizationId     String
+  type               PlanningItemType
+  title              String
+  description        String
+  ownerEmail         String?
+  targetDate         DateTime?
+  lifecycleStatus    PlanningItemLifecycleStatus @default(DRAFT)
+  humanApprovalState PlanningItemApprovalState   @default(NOT_REQUIRED)
+  createdBy          String?
+  approvedBy         String?
+  createdAt          DateTime                    @default(now())
+  approvedAt         DateTime?
+  updatedAt          DateTime                    @updatedAt
+  parentId           String?
+  approvedInsightId  String?
 
-  organization        Organization              @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  creator             User?                     @relation("PlanningItemCreator", fields: [createdBy], references: [email], onDelete: SetNull)
-  approver            User?                     @relation("PlanningItemApprover", fields: [approvedBy], references: [email], onDelete: SetNull)
-  parent              PlanningItem?             @relation("PlanningItemHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
-  children            PlanningItem[]            @relation("PlanningItemHierarchy")
-  approvedInsight     ApprovedInsight?          @relation(fields: [approvedInsightId], references: [id], onDelete: SetNull)
+  organization    Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  creator         User?            @relation("PlanningItemCreator", fields: [createdBy], references: [email], onDelete: SetNull)
+  approver        User?            @relation("PlanningItemApprover", fields: [approvedBy], references: [email], onDelete: SetNull)
+  parent          PlanningItem?    @relation("PlanningItemHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children        PlanningItem[]   @relation("PlanningItemHierarchy")
+  approvedInsight ApprovedInsight? @relation(fields: [approvedInsightId], references: [id], onDelete: SetNull)
 
   @@index([organizationId, type, lifecycleStatus])
   @@index([organizationId, targetDate])
@@ -671,70 +672,72 @@ model PlanningItem {
 }
 
 model CommunicationPack {
- id String @id @default(cuid())
- organizationId String
- decisionId String?
- insightId String?
- recipientContext Json
- stakeholderContext Json
- title String
- content String
- status CommunicationPackStatus @default(DRAFT)
- createdBy String
- reviewedBy String?
- reviewedAt DateTime?
- createdAt DateTime @default(now())
- updatedAt DateTime @updatedAt
- organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
- decision AssessmentDecision? @relation(fields: [decisionId], references: [id], onDelete: Restrict)
- insight ApprovedInsight? @relation(fields: [insightId], references: [id], onDelete: Restrict)
- creator User @relation("CommunicationPackCreator", fields: [createdBy], references: [email], onDelete: Restrict)
- reviewer User? @relation("CommunicationPackReviewer", fields: [reviewedBy], references: [email], onDelete: SetNull)
- acknowledgements CommunicationPackAcknowledgement[]
- @@index([organizationId, status, createdAt])
- @@index([decisionId])
- @@index([insightId])
+  id                 String                             @id @default(cuid())
+  organizationId     String
+  decisionId         String?
+  insightId          String?
+  recipientContext   Json
+  stakeholderContext Json
+  title              String
+  content            String
+  status             CommunicationPackStatus            @default(DRAFT)
+  createdBy          String
+  reviewedBy         String?
+  reviewedAt         DateTime?
+  createdAt          DateTime                           @default(now())
+  updatedAt          DateTime                           @updatedAt
+  organization       Organization                       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  decision           AssessmentDecision?                @relation(fields: [decisionId], references: [id], onDelete: Restrict)
+  insight            ApprovedInsight?                   @relation(fields: [insightId], references: [id], onDelete: Restrict)
+  creator            User                               @relation("CommunicationPackCreator", fields: [createdBy], references: [email], onDelete: Restrict)
+  reviewer           User?                              @relation("CommunicationPackReviewer", fields: [reviewedBy], references: [email], onDelete: SetNull)
+  acknowledgements   CommunicationPackAcknowledgement[]
+
+  @@index([organizationId, status, createdAt])
+  @@index([decisionId])
+  @@index([insightId])
 }
 
 enum CommunicationPackStatus {
- DRAFT
- READY_FOR_REVIEW
- CHANGES_REQUESTED
- APPROVED_FOR_DISTRIBUTION
- ACKNOWLEDGED
+  DRAFT
+  READY_FOR_REVIEW
+  CHANGES_REQUESTED
+  APPROVED_FOR_DISTRIBUTION
+  ACKNOWLEDGED
 }
 
 enum CommunicationPackAction {
- SUBMITTED
- REQUEST_CHANGES
- APPROVED
- ACKNOWLEDGED
+  SUBMITTED
+  REQUEST_CHANGES
+  APPROVED
+  ACKNOWLEDGED
 }
 
 model CommunicationPackAcknowledgement {
- id String @id @default(cuid())
- communicationPackId String
- action CommunicationPackAction
- note String?
- actedBy String
- createdAt DateTime @default(now())
- communicationPack CommunicationPack @relation(fields: [communicationPackId], references: [id], onDelete: Cascade)
- actor User @relation("CommunicationPackActor", fields: [actedBy], references: [email], onDelete: Restrict)
- @@index([communicationPackId, createdAt])
+  id                  String                  @id @default(cuid())
+  communicationPackId String
+  action              CommunicationPackAction
+  note                String?
+  actedBy             String
+  createdAt           DateTime                @default(now())
+  communicationPack   CommunicationPack       @relation(fields: [communicationPackId], references: [id], onDelete: Cascade)
+  actor               User                    @relation("CommunicationPackActor", fields: [actedBy], references: [email], onDelete: Restrict)
+
+  @@index([communicationPackId, createdAt])
 }
 
 model TargetMaturity {
-  id                String   @id @default(cuid())
-  capabilityId      String
-  locationTag       String?
-  score             Int
-  rationale         String?
-  committedBy       String?
-  source            String   @default("manual")
-  sourceSegmentIds  String[] @default([])
-  setBy             String?
-  setAt             DateTime @default(now())
-  createdAt         DateTime @default(now())
+  id               String   @id @default(cuid())
+  capabilityId     String
+  locationTag      String?
+  score            Int
+  rationale        String?
+  committedBy      String?
+  source           String   @default("manual")
+  sourceSegmentIds String[] @default([])
+  setBy            String?
+  setAt            DateTime @default(now())
+  createdAt        DateTime @default(now())
 
   capability Capability @relation(fields: [capabilityId], references: [id], onDelete: Cascade)
 
@@ -805,24 +808,24 @@ enum RecommendationStatus {
 }
 
 model Recommendation {
-  id                    String                @id @default(cuid())
-  organizationId        String
-  title                 String
-  description           String
-  relatedCapabilityIds  String[]
-  relatedKPIIds         String[]
-  estimatedValue        Float?
-  priorityScore         Float?
-  status                RecommendationStatus  @default(DRAFT)
-  reviewedBy            String?
-  reviewNotes           String?
-  createdAt             DateTime              @default(now())
-  updatedAt             DateTime              @updatedAt
+  id                   String               @id @default(cuid())
+  organizationId       String
+  title                String
+  description          String
+  relatedCapabilityIds String[]
+  relatedKPIIds        String[]
+  estimatedValue       Float?
+  priorityScore        Float?
+  status               RecommendationStatus @default(DRAFT)
+  reviewedBy           String?
+  reviewNotes          String?
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
 
-  organization Organization             @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  feedback          RecommendationFeedback[]
-  sourceGrowthActionId String? @unique
-  sourceGrowthAction GrowthAction? @relation(fields: [sourceGrowthActionId], references: [id], onDelete: SetNull)
+  organization         Organization             @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  feedback             RecommendationFeedback[]
+  sourceGrowthActionId String?                  @unique
+  sourceGrowthAction   GrowthAction?            @relation(fields: [sourceGrowthActionId], references: [id], onDelete: SetNull)
 }
 
 model RecommendationFeedback {
@@ -876,7 +879,6 @@ model ProcessingJob {
   updatedAt DateTime  @updatedAt
 }
 
-
 enum AssessmentTaskType {
   EVIDENCE_REQUEST
   INTERVIEW
@@ -904,48 +906,47 @@ enum AssessmentTaskReviewState {
 }
 
 model AssessmentTask {
-  id              String                    @id @default(cuid())
-  organizationId  String
-  requesterId     String
-  assigneeId      String
-  type            AssessmentTaskType
-  title           String
-  description     String
-  context         String?
-  dueDate         DateTime
-  priority        Int                       @default(3)
-  status          AssessmentTaskStatus      @default(OPEN)
-  humanReviewState AssessmentTaskReviewState @default(NOT_REQUIRED)
-  linkedEvidenceId String?
-  linkedCapabilityId String?
-  linkedDecisionId String?
+  id                  String                    @id @default(cuid())
+  organizationId      String
+  requesterId         String
+  assigneeId          String
+  type                AssessmentTaskType
+  title               String
+  description         String
+  context             String?
+  dueDate             DateTime
+  priority            Int                       @default(3)
+  status              AssessmentTaskStatus      @default(OPEN)
+  humanReviewState    AssessmentTaskReviewState @default(NOT_REQUIRED)
+  linkedEvidenceId    String?
+  linkedCapabilityId  String?
+  linkedDecisionId    String?
   linkedReportSection String?
-  completedAt     DateTime?
-  completedById   String?
-  completionNote  String?
-  createdAt       DateTime                  @default(now())
-  updatedAt       DateTime                  @updatedAt
+  completedAt         DateTime?
+  completedById       String?
+  completionNote      String?
+  createdAt           DateTime                  @default(now())
+  updatedAt           DateTime                  @updatedAt
 
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  requester User @relation("TaskRequester", fields: [requesterId], references: [id])
-  assignee User @relation("TaskAssignee", fields: [assigneeId], references: [id])
-  completedBy User? @relation("TaskCompleter", fields: [completedById], references: [id])
+  requester    User         @relation("TaskRequester", fields: [requesterId], references: [id])
+  assignee     User         @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  completedBy  User?        @relation("TaskCompleter", fields: [completedById], references: [id])
 
   @@index([organizationId, status, dueDate])
   @@index([assigneeId, status])
 }
 
-
 model AgentDefinition {
-  id                     String               @id @default(cuid())
-  key                    String               @unique
-  name                   String
-  description            String?
-  agentType              AgentType            @default(SPECIALIST)
-  createdBy              String
-  publishedPromptVersionId String?            @unique
-  createdAt              DateTime             @default(now())
-  updatedAt              DateTime             @updatedAt
+  id                       String    @id @default(cuid())
+  key                      String    @unique
+  name                     String
+  description              String?
+  agentType                AgentType @default(SPECIALIST)
+  createdBy                String
+  publishedPromptVersionId String?   @unique
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
 
   creator                User                 @relation("AgentDefinitionCreator", fields: [createdBy], references: [email], onDelete: Restrict)
   promptVersions         AgentPromptVersion[]
@@ -957,39 +958,38 @@ model AgentDefinition {
 }
 
 model AgentPromptVersion {
-  id                String          @id @default(cuid())
+  id                String    @id @default(cuid())
   agentDefinitionId String
   version           Int
   prompt            String
   changeReason      String
   authoredBy        String
-  createdAt         DateTime        @default(now())
+  createdAt         DateTime  @default(now())
   publishedAt       DateTime?
   publishedBy       String?
 
-  agentDefinition   AgentDefinition @relation(fields: [agentDefinitionId], references: [id], onDelete: Cascade)
-  author            User            @relation("AgentPromptVersionAuthor", fields: [authoredBy], references: [email], onDelete: Restrict)
-  publisher         User?           @relation("AgentPromptVersionPublisher", fields: [publishedBy], references: [email], onDelete: SetNull)
-  publishedFor       AgentDefinition? @relation("PublishedAgentPromptVersion")
-  runs              AgentRun[]
+  agentDefinition AgentDefinition  @relation(fields: [agentDefinitionId], references: [id], onDelete: Cascade)
+  author          User             @relation("AgentPromptVersionAuthor", fields: [authoredBy], references: [email], onDelete: Restrict)
+  publisher       User?            @relation("AgentPromptVersionPublisher", fields: [publishedBy], references: [email], onDelete: SetNull)
+  publishedFor    AgentDefinition? @relation("PublishedAgentPromptVersion")
+  runs            AgentRun[]
 
   @@unique([agentDefinitionId, version])
   @@index([agentDefinitionId, createdAt])
 }
 
 model AgentInputRule {
-  id                String          @id @default(cuid())
+  id                String    @id @default(cuid())
   agentDefinitionId String
   inputType         InputType
   domainIdentifier  String
-  createdAt         DateTime        @default(now())
+  createdAt         DateTime  @default(now())
 
-  agentDefinition   AgentDefinition @relation(fields: [agentDefinitionId], references: [id], onDelete: Cascade)
+  agentDefinition AgentDefinition @relation(fields: [agentDefinitionId], references: [id], onDelete: Cascade)
 
   @@unique([agentDefinitionId, inputType, domainIdentifier])
   @@index([inputType, domainIdentifier])
 }
-
 
 enum AgentRunStatus {
   PENDING
@@ -1004,44 +1004,44 @@ enum AgentOutputStatus {
 }
 
 model AgentRun {
-  id String @id @default(cuid())
-  organizationId String
-  capturedInputId String
+  id                String         @id @default(cuid())
+  organizationId    String
+  capturedInputId   String
   agentDefinitionId String
-  promptVersionId String
-  status AgentRunStatus @default(PENDING)
-  provider String?
-  model String?
-  error String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  promptVersionId   String
+  status            AgentRunStatus @default(PENDING)
+  provider          String?
+  model             String?
+  error             String?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
 
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  capturedInput CapturedInput @relation(fields: [capturedInputId], references: [id], onDelete: Cascade)
-  agentDefinition AgentDefinition @relation(fields: [agentDefinitionId], references: [id], onDelete: Restrict)
-  promptVersion AgentPromptVersion @relation(fields: [promptVersionId], references: [id], onDelete: Restrict)
-  output AgentOutput?
+  organization    Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  capturedInput   CapturedInput      @relation(fields: [capturedInputId], references: [id], onDelete: Cascade)
+  agentDefinition AgentDefinition    @relation(fields: [agentDefinitionId], references: [id], onDelete: Restrict)
+  promptVersion   AgentPromptVersion @relation(fields: [promptVersionId], references: [id], onDelete: Restrict)
+  output          AgentOutput?
 
   @@index([organizationId, createdAt])
   @@index([capturedInputId])
 }
 
 model AgentOutput {
-  id String @id @default(cuid())
-  runId String @unique
-  status AgentOutputStatus @default(PROVISIONAL)
+  id                String            @id @default(cuid())
+  runId             String            @unique
+  status            AgentOutputStatus @default(PROVISIONAL)
   provisionalOutput Json
-  provider String?
-  model String?
-  error String?
-  reviewedBy String?
-  reviewedAt DateTime?
-  reviewNotes String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  provider          String?
+  model             String?
+  error             String?
+  reviewedBy        String?
+  reviewedAt        DateTime?
+  reviewNotes       String?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
 
-  run AgentRun @relation(fields: [runId], references: [id], onDelete: Cascade)
-  reviewer User? @relation("AgentOutputReviewer", fields: [reviewedBy], references: [email], onDelete: SetNull)
+  run      AgentRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  reviewer User?    @relation("AgentOutputReviewer", fields: [reviewedBy], references: [email], onDelete: SetNull)
 }
 
 /// Credentials for an external evidence source, scoped to one organisation.
@@ -1064,4 +1064,63 @@ model IntegrationConnection {
 
   @@unique([organizationId, provider])
   @@index([organizationId])
+}
+
+/// A structured finding about one document: what it is, and what it proves.
+///
+/// Exists because segment-level tags alone do not answer the review question.
+/// A reviewer needs one row per document that says what the document is, what
+/// it demonstrates about which capability, and which passages support that —
+/// then approves or rejects it. Approved findings feed the assessment and the
+/// Flowstate Score.
+model DocumentFinding {
+  id                   String          @id @default(cuid())
+  organizationId       String
+  capturedInputId      String
+  /// What the document is: "CIM", "email thread", "financial model", "meeting note".
+  documentType         String?
+  /// Short human title, so the review queue is scannable without opening the file.
+  title                String
+  /// The analysis, in prose, readable on its own.
+  summary              String
+  /// The capability this evidences. Nullable: a document may evidence none.
+  capabilityId         String?
+  capabilityName       String?
+  /// What the document specifically proves about that capability.
+  evidenceDemonstrated String?
+  strength             FindingStrength @default(NONE)
+  confidence           Float           @default(0)
+  /// The exact passages supporting the finding, so a claim can be checked.
+  citedSegmentIds      String[]        @default([])
+  /// Verbatim excerpts, so a finding survives even if its segments are removed.
+  citedExcerpts        String[]        @default([])
+  status               FindingStatus   @default(PENDING_REVIEW)
+  /// Content hash of the source at the time of analysis. A changed file makes
+  /// the finding STALE rather than leaving a stale finding looking current.
+  sourceHash           String?
+  reviewedBy           String?
+  reviewedAt           DateTime?
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+
+  organization  Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  capturedInput CapturedInput @relation(fields: [capturedInputId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, status])
+  @@index([capturedInputId])
+  @@index([capabilityId])
+}
+
+enum FindingStatus {
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+  STALE
+}
+
+enum FindingStrength {
+  NONE
+  WEAK
+  MODERATE
+  STRONG
 }

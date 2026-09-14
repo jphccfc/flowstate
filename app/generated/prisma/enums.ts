@@ -232,3 +232,23 @@ export const AgentOutputStatus = {
 } as const
 
 export type AgentOutputStatus = (typeof AgentOutputStatus)[keyof typeof AgentOutputStatus]
+
+
+export const FindingStatus = {
+  PENDING_REVIEW: 'PENDING_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  STALE: 'STALE'
+} as const
+
+export type FindingStatus = (typeof FindingStatus)[keyof typeof FindingStatus]
+
+
+export const FindingStrength = {
+  NONE: 'NONE',
+  WEAK: 'WEAK',
+  MODERATE: 'MODERATE',
+  STRONG: 'STRONG'
+} as const
+
+export type FindingStrength = (typeof FindingStrength)[keyof typeof FindingStrength]

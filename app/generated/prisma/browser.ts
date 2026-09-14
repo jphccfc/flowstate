@@ -264,3 +264,14 @@ export type AgentOutput = Prisma.AgentOutputModel
  * in the environment, never in the database.
  */
 export type IntegrationConnection = Prisma.IntegrationConnectionModel
+/**
+ * Model DocumentFinding
+ * A structured finding about one document: what it is, and what it proves.
+ * 
+ * Exists because segment-level tags alone do not answer the review question.
+ * A reviewer needs one row per document that says what the document is, what
+ * it demonstrates about which capability, and which passages support that —
+ * then approves or rejects it. Approved findings feed the assessment and the
+ * Flowstate Score.
+ */
+export type DocumentFinding = Prisma.DocumentFindingModel

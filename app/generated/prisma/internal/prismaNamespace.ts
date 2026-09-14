@@ -432,7 +432,8 @@ export const ModelName = {
   AgentInputRule: 'AgentInputRule',
   AgentRun: 'AgentRun',
   AgentOutput: 'AgentOutput',
-  IntegrationConnection: 'IntegrationConnection'
+  IntegrationConnection: 'IntegrationConnection',
+  DocumentFinding: 'DocumentFinding'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -448,7 +449,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "meetingContext" | "capturedInput" | "capturedInputAttachment" | "inboundEmailEndpoint" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "growthAction" | "planningItem" | "communicationPack" | "communicationPackAcknowledgement" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob" | "assessmentTask" | "agentDefinition" | "agentPromptVersion" | "agentInputRule" | "agentRun" | "agentOutput" | "integrationConnection"
+    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "meetingContext" | "capturedInput" | "capturedInputAttachment" | "inboundEmailEndpoint" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "growthAction" | "planningItem" | "communicationPack" | "communicationPackAcknowledgement" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob" | "assessmentTask" | "agentDefinition" | "agentPromptVersion" | "agentInputRule" | "agentRun" | "agentOutput" | "integrationConnection" | "documentFinding"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -4078,6 +4079,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    DocumentFinding: {
+      payload: Prisma.$DocumentFindingPayload<ExtArgs>
+      fields: Prisma.DocumentFindingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DocumentFindingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentFindingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DocumentFindingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentFindingPayload>
+        }
+        findFirst: {
+          args: Prisma.DocumentFindingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentFindingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DocumentFindingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentFindingPayload>
+        }
+        findMany: {
+          args: Prisma.DocumentFindingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentFindingPayload>[]
+        }
+        create: {
+          args: Prisma.DocumentFindingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentFindingPayload>
+        }
+        createMany: {
+          args: Prisma.DocumentFindingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DocumentFindingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentFindingPayload>[]
+        }
+        delete: {
+          args: Prisma.DocumentFindingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentFindingPayload>
+        }
+        update: {
+          args: Prisma.DocumentFindingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentFindingPayload>
+        }
+        deleteMany: {
+          args: Prisma.DocumentFindingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DocumentFindingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DocumentFindingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentFindingPayload>[]
+        }
+        upsert: {
+          args: Prisma.DocumentFindingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentFindingPayload>
+        }
+        aggregate: {
+          args: Prisma.DocumentFindingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentFinding>
+        }
+        groupBy: {
+          args: Prisma.DocumentFindingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentFindingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DocumentFindingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentFindingCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -4880,6 +4955,31 @@ export const IntegrationConnectionScalarFieldEnum = {
 export type IntegrationConnectionScalarFieldEnum = (typeof IntegrationConnectionScalarFieldEnum)[keyof typeof IntegrationConnectionScalarFieldEnum]
 
 
+export const DocumentFindingScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  capturedInputId: 'capturedInputId',
+  documentType: 'documentType',
+  title: 'title',
+  summary: 'summary',
+  capabilityId: 'capabilityId',
+  capabilityName: 'capabilityName',
+  evidenceDemonstrated: 'evidenceDemonstrated',
+  strength: 'strength',
+  confidence: 'confidence',
+  citedSegmentIds: 'citedSegmentIds',
+  citedExcerpts: 'citedExcerpts',
+  status: 'status',
+  sourceHash: 'sourceHash',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocumentFindingScalarFieldEnum = (typeof DocumentFindingScalarFieldEnum)[keyof typeof DocumentFindingScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -5318,6 +5418,34 @@ export type EnumAgentOutputStatusFieldRefInput<$PrismaModel> = FieldRefInputType
 export type ListEnumAgentOutputStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AgentOutputStatus[]'>
     
 
+
+/**
+ * Reference to a field of type 'FindingStrength'
+ */
+export type EnumFindingStrengthFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FindingStrength'>
+    
+
+
+/**
+ * Reference to a field of type 'FindingStrength[]'
+ */
+export type ListEnumFindingStrengthFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FindingStrength[]'>
+    
+
+
+/**
+ * Reference to a field of type 'FindingStatus'
+ */
+export type EnumFindingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FindingStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'FindingStatus[]'
+ */
+export type ListEnumFindingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FindingStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -5477,6 +5605,7 @@ export type GlobalOmitConfig = {
   agentRun?: Prisma.AgentRunOmit
   agentOutput?: Prisma.AgentOutputOmit
   integrationConnection?: Prisma.IntegrationConnectionOmit
+  documentFinding?: Prisma.DocumentFindingOmit
 }
 
 /* Types for Logging */

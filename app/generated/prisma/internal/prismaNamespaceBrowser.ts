@@ -99,7 +99,8 @@ export const ModelName = {
   AgentInputRule: 'AgentInputRule',
   AgentRun: 'AgentRun',
   AgentOutput: 'AgentOutput',
-  IntegrationConnection: 'IntegrationConnection'
+  IntegrationConnection: 'IntegrationConnection',
+  DocumentFinding: 'DocumentFinding'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -879,6 +880,31 @@ export const IntegrationConnectionScalarFieldEnum = {
 } as const
 
 export type IntegrationConnectionScalarFieldEnum = (typeof IntegrationConnectionScalarFieldEnum)[keyof typeof IntegrationConnectionScalarFieldEnum]
+
+
+export const DocumentFindingScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  capturedInputId: 'capturedInputId',
+  documentType: 'documentType',
+  title: 'title',
+  summary: 'summary',
+  capabilityId: 'capabilityId',
+  capabilityName: 'capabilityName',
+  evidenceDemonstrated: 'evidenceDemonstrated',
+  strength: 'strength',
+  confidence: 'confidence',
+  citedSegmentIds: 'citedSegmentIds',
+  citedExcerpts: 'citedExcerpts',
+  status: 'status',
+  sourceHash: 'sourceHash',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocumentFindingScalarFieldEnum = (typeof DocumentFindingScalarFieldEnum)[keyof typeof DocumentFindingScalarFieldEnum]
 
 
 export const SortOrder = {

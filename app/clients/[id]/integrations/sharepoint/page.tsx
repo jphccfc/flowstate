@@ -309,6 +309,6 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
       <strong>{importing ? "Importing…" : "Import finished"}</strong>
       <p className="mt-1 text-[var(--muted)]">{importResult.imported} imported · {importResult.duplicate} already present · {importResult.skipped} skipped · {importResult.failed} failed</p>
       {analysisQueued > 0 ? <p className="mt-1 text-[var(--muted)]">{analysisQueued} document{analysisQueued === 1 ? "" : "s"} queued for analysis — Flowstate is reading them and proposing capability tags for review.</p> : null}
-      {importResult.imported > 0 ? <p className="mt-1">Imported evidence and proposed tags are waiting in the <Link href={`/clients/${organizationId}/review`} className="underline decoration-dotted">Review queue</Link>.</p> : null}
+      {importResult.imported > 0 ? <p className="mt-1">Document findings are being prepared — review them in <Link href={`/clients/${organizationId}/findings`} className="underline decoration-dotted">Document findings</Link>.</p> : null}
     </div>}</form></main>;
 }
