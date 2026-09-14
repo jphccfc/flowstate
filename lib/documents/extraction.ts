@@ -1,6 +1,3 @@
-import { PDFParse } from "pdf-parse";
-import * as mammoth from "mammoth";
-
 export type SupportedDocumentExtension = "pdf" | "docx";
 
 function extensionFromName(name: string): string {
@@ -11,6 +8,10 @@ function extensionFromName(name: string): string {
 /**
  * Extracts text from already-fetched bytes. The caller owns the transient buffer;
  * this function never writes it to disk or external storage.
+ *
+ * Parsers are deliberately loaded lazily. pdf-parse requires DOMMatrix in some
+ * versions; loading it at module initialisation made every DOCX import fail in
+ * the serverless runtime before the DOCX parser was even selected.
  */
 export async function extractDocumentTextFromBuffer(
   buffer: Buffer,
@@ -18,6 +19,7 @@ export async function extractDocumentTextFromBuffer(
 ): Promise<string> {
   const extension = extensionFromName(filename);
   if (extension === "pdf") {
+    const { PDFParse } = await import("pdf-parse");
     const parser = new PDFParse({ data: buffer });
     try {
       const result = await parser.getText();
@@ -27,17 +29,14 @@ export async function extractDocumentTextFromBuffer(
     }
   }
   if (extension === "docx") {
+    const mammoth = await import("mammoth");
     const result = await mammoth.extractRawText({ buffer });
     return result.value;
   }
   throw new Error(`Unsupported document file extension: ${extension || "unknown"}`);
 }
 
-/**
- * Compatibility helper for non-SharePoint callers that provide a URL with a
- * meaningful filename extension. SharePoint imports use the buffer helper above
- * because Graph's pre-authenticated download URLs have opaque names.
- */
+/** Compatibility helper for callers that provide a URL with a meaningful filename. */
 export async function extractDocumentText(fileUrl: string): Promise<string> {
   const response = await fetch(fileUrl);
   if (response.ok === false) throw new Error(`Document download failed (HTTP ${response.status})`);
