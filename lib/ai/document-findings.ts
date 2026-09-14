@@ -27,6 +27,8 @@ export type DocumentFindingDraft = {
   summary: string;
   capabilityId: string | null;
   capabilityName: string | null;
+  domainId: string | null;
+  domainName: string | null;
   evidenceDemonstrated: string | null;
   strength: "NONE" | "WEAK" | "MODERATE" | "STRONG";
   confidence: number;
@@ -84,6 +86,8 @@ export async function generateDocumentFinding(input: {
   documentName: string;
   /** SharePoint path is a classification signal, not just display metadata. */
   sourcePath?: string | null;
+  domainId?: string | null;
+  domainName?: string | null;
   text: string;
   capabilities: FindingCandidate[];
   /** Injectable for tests; defaults to the project's chat completion client. */
@@ -105,8 +109,9 @@ export async function generateDocumentFinding(input: {
       "Every excerpt you quote must be copied verbatim from the document. Never paraphrase a quote.",
     user: `Document name: ${input.documentName}
 SharePoint path/context: ${input.sourcePath?.trim() || "(not provided)"}
+Resolved primary domain: ${input.domainName ?? "(not resolved — choose only from configured domains)"}
 
-Capabilities (id: name):
+Capabilities (id: name) — these are already constrained to the resolved domain:
 ${capabilityList}
 
 Document text:
@@ -174,6 +179,8 @@ document is unreadable or carries no assessable content.`,
     // stored as a dangling reference.
     capabilityId: matched ? matched.capabilityId : null,
     capabilityName: matched ? matched.name : null,
+    domainId: input.domainId ?? null,
+    domainName: input.domainName ?? null,
     evidenceDemonstrated:
       typeof raw.evidenceDemonstrated === "string" && raw.evidenceDemonstrated.trim()
         ? raw.evidenceDemonstrated.trim()

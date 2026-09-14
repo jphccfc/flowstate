@@ -49,6 +49,8 @@ export type DocumentFindingMinAggregateOutputType = {
   summary: string | null
   capabilityId: string | null
   capabilityName: string | null
+  domainId: string | null
+  domainName: string | null
   evidenceDemonstrated: string | null
   strength: $Enums.FindingStrength | null
   confidence: number | null
@@ -69,6 +71,8 @@ export type DocumentFindingMaxAggregateOutputType = {
   summary: string | null
   capabilityId: string | null
   capabilityName: string | null
+  domainId: string | null
+  domainName: string | null
   evidenceDemonstrated: string | null
   strength: $Enums.FindingStrength | null
   confidence: number | null
@@ -89,6 +93,8 @@ export type DocumentFindingCountAggregateOutputType = {
   summary: number
   capabilityId: number
   capabilityName: number
+  domainId: number
+  domainName: number
   evidenceDemonstrated: number
   strength: number
   confidence: number
@@ -121,6 +127,8 @@ export type DocumentFindingMinAggregateInputType = {
   summary?: true
   capabilityId?: true
   capabilityName?: true
+  domainId?: true
+  domainName?: true
   evidenceDemonstrated?: true
   strength?: true
   confidence?: true
@@ -141,6 +149,8 @@ export type DocumentFindingMaxAggregateInputType = {
   summary?: true
   capabilityId?: true
   capabilityName?: true
+  domainId?: true
+  domainName?: true
   evidenceDemonstrated?: true
   strength?: true
   confidence?: true
@@ -161,6 +171,8 @@ export type DocumentFindingCountAggregateInputType = {
   summary?: true
   capabilityId?: true
   capabilityName?: true
+  domainId?: true
+  domainName?: true
   evidenceDemonstrated?: true
   strength?: true
   confidence?: true
@@ -270,6 +282,8 @@ export type DocumentFindingGroupByOutputType = {
   summary: string
   capabilityId: string | null
   capabilityName: string | null
+  domainId: string | null
+  domainName: string | null
   evidenceDemonstrated: string | null
   strength: $Enums.FindingStrength
   confidence: number
@@ -315,6 +329,8 @@ export type DocumentFindingWhereInput = {
   summary?: Prisma.StringFilter<"DocumentFinding"> | string
   capabilityId?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   capabilityName?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  domainId?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  domainName?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   evidenceDemonstrated?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   strength?: Prisma.EnumFindingStrengthFilter<"DocumentFinding"> | $Enums.FindingStrength
   confidence?: Prisma.FloatFilter<"DocumentFinding"> | number
@@ -339,6 +355,8 @@ export type DocumentFindingOrderByWithRelationInput = {
   summary?: Prisma.SortOrder
   capabilityId?: Prisma.SortOrderInput | Prisma.SortOrder
   capabilityName?: Prisma.SortOrderInput | Prisma.SortOrder
+  domainId?: Prisma.SortOrderInput | Prisma.SortOrder
+  domainName?: Prisma.SortOrderInput | Prisma.SortOrder
   evidenceDemonstrated?: Prisma.SortOrderInput | Prisma.SortOrder
   strength?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
@@ -366,6 +384,8 @@ export type DocumentFindingWhereUniqueInput = Prisma.AtLeast<{
   summary?: Prisma.StringFilter<"DocumentFinding"> | string
   capabilityId?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   capabilityName?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  domainId?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  domainName?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   evidenceDemonstrated?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   strength?: Prisma.EnumFindingStrengthFilter<"DocumentFinding"> | $Enums.FindingStrength
   confidence?: Prisma.FloatFilter<"DocumentFinding"> | number
@@ -390,6 +410,8 @@ export type DocumentFindingOrderByWithAggregationInput = {
   summary?: Prisma.SortOrder
   capabilityId?: Prisma.SortOrderInput | Prisma.SortOrder
   capabilityName?: Prisma.SortOrderInput | Prisma.SortOrder
+  domainId?: Prisma.SortOrderInput | Prisma.SortOrder
+  domainName?: Prisma.SortOrderInput | Prisma.SortOrder
   evidenceDemonstrated?: Prisma.SortOrderInput | Prisma.SortOrder
   strength?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
@@ -420,6 +442,8 @@ export type DocumentFindingScalarWhereWithAggregatesInput = {
   summary?: Prisma.StringWithAggregatesFilter<"DocumentFinding"> | string
   capabilityId?: Prisma.StringNullableWithAggregatesFilter<"DocumentFinding"> | string | null
   capabilityName?: Prisma.StringNullableWithAggregatesFilter<"DocumentFinding"> | string | null
+  domainId?: Prisma.StringNullableWithAggregatesFilter<"DocumentFinding"> | string | null
+  domainName?: Prisma.StringNullableWithAggregatesFilter<"DocumentFinding"> | string | null
   evidenceDemonstrated?: Prisma.StringNullableWithAggregatesFilter<"DocumentFinding"> | string | null
   strength?: Prisma.EnumFindingStrengthWithAggregatesFilter<"DocumentFinding"> | $Enums.FindingStrength
   confidence?: Prisma.FloatWithAggregatesFilter<"DocumentFinding"> | number
@@ -440,6 +464,8 @@ export type DocumentFindingCreateInput = {
   summary: string
   capabilityId?: string | null
   capabilityName?: string | null
+  domainId?: string | null
+  domainName?: string | null
   evidenceDemonstrated?: string | null
   strength?: $Enums.FindingStrength
   confidence?: number
@@ -464,6 +490,8 @@ export type DocumentFindingUncheckedCreateInput = {
   summary: string
   capabilityId?: string | null
   capabilityName?: string | null
+  domainId?: string | null
+  domainName?: string | null
   evidenceDemonstrated?: string | null
   strength?: $Enums.FindingStrength
   confidence?: number
@@ -484,6 +512,8 @@ export type DocumentFindingUpdateInput = {
   summary?: Prisma.StringFieldUpdateOperationsInput | string
   capabilityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidenceDemonstrated?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   strength?: Prisma.EnumFindingStrengthFieldUpdateOperationsInput | $Enums.FindingStrength
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -508,6 +538,8 @@ export type DocumentFindingUncheckedUpdateInput = {
   summary?: Prisma.StringFieldUpdateOperationsInput | string
   capabilityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidenceDemonstrated?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   strength?: Prisma.EnumFindingStrengthFieldUpdateOperationsInput | $Enums.FindingStrength
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -530,6 +562,8 @@ export type DocumentFindingCreateManyInput = {
   summary: string
   capabilityId?: string | null
   capabilityName?: string | null
+  domainId?: string | null
+  domainName?: string | null
   evidenceDemonstrated?: string | null
   strength?: $Enums.FindingStrength
   confidence?: number
@@ -550,6 +584,8 @@ export type DocumentFindingUpdateManyMutationInput = {
   summary?: Prisma.StringFieldUpdateOperationsInput | string
   capabilityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidenceDemonstrated?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   strength?: Prisma.EnumFindingStrengthFieldUpdateOperationsInput | $Enums.FindingStrength
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -572,6 +608,8 @@ export type DocumentFindingUncheckedUpdateManyInput = {
   summary?: Prisma.StringFieldUpdateOperationsInput | string
   capabilityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidenceDemonstrated?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   strength?: Prisma.EnumFindingStrengthFieldUpdateOperationsInput | $Enums.FindingStrength
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -604,6 +642,8 @@ export type DocumentFindingCountOrderByAggregateInput = {
   summary?: Prisma.SortOrder
   capabilityId?: Prisma.SortOrder
   capabilityName?: Prisma.SortOrder
+  domainId?: Prisma.SortOrder
+  domainName?: Prisma.SortOrder
   evidenceDemonstrated?: Prisma.SortOrder
   strength?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
@@ -630,6 +670,8 @@ export type DocumentFindingMaxOrderByAggregateInput = {
   summary?: Prisma.SortOrder
   capabilityId?: Prisma.SortOrder
   capabilityName?: Prisma.SortOrder
+  domainId?: Prisma.SortOrder
+  domainName?: Prisma.SortOrder
   evidenceDemonstrated?: Prisma.SortOrder
   strength?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
@@ -650,6 +692,8 @@ export type DocumentFindingMinOrderByAggregateInput = {
   summary?: Prisma.SortOrder
   capabilityId?: Prisma.SortOrder
   capabilityName?: Prisma.SortOrder
+  domainId?: Prisma.SortOrder
+  domainName?: Prisma.SortOrder
   evidenceDemonstrated?: Prisma.SortOrder
   strength?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
@@ -782,6 +826,8 @@ export type DocumentFindingCreateWithoutOrganizationInput = {
   summary: string
   capabilityId?: string | null
   capabilityName?: string | null
+  domainId?: string | null
+  domainName?: string | null
   evidenceDemonstrated?: string | null
   strength?: $Enums.FindingStrength
   confidence?: number
@@ -804,6 +850,8 @@ export type DocumentFindingUncheckedCreateWithoutOrganizationInput = {
   summary: string
   capabilityId?: string | null
   capabilityName?: string | null
+  domainId?: string | null
+  domainName?: string | null
   evidenceDemonstrated?: string | null
   strength?: $Enums.FindingStrength
   confidence?: number
@@ -855,6 +903,8 @@ export type DocumentFindingScalarWhereInput = {
   summary?: Prisma.StringFilter<"DocumentFinding"> | string
   capabilityId?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   capabilityName?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  domainId?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  domainName?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   evidenceDemonstrated?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   strength?: Prisma.EnumFindingStrengthFilter<"DocumentFinding"> | $Enums.FindingStrength
   confidence?: Prisma.FloatFilter<"DocumentFinding"> | number
@@ -875,6 +925,8 @@ export type DocumentFindingCreateWithoutCapturedInputInput = {
   summary: string
   capabilityId?: string | null
   capabilityName?: string | null
+  domainId?: string | null
+  domainName?: string | null
   evidenceDemonstrated?: string | null
   strength?: $Enums.FindingStrength
   confidence?: number
@@ -897,6 +949,8 @@ export type DocumentFindingUncheckedCreateWithoutCapturedInputInput = {
   summary: string
   capabilityId?: string | null
   capabilityName?: string | null
+  domainId?: string | null
+  domainName?: string | null
   evidenceDemonstrated?: string | null
   strength?: $Enums.FindingStrength
   confidence?: number
@@ -944,6 +998,8 @@ export type DocumentFindingCreateManyOrganizationInput = {
   summary: string
   capabilityId?: string | null
   capabilityName?: string | null
+  domainId?: string | null
+  domainName?: string | null
   evidenceDemonstrated?: string | null
   strength?: $Enums.FindingStrength
   confidence?: number
@@ -964,6 +1020,8 @@ export type DocumentFindingUpdateWithoutOrganizationInput = {
   summary?: Prisma.StringFieldUpdateOperationsInput | string
   capabilityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidenceDemonstrated?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   strength?: Prisma.EnumFindingStrengthFieldUpdateOperationsInput | $Enums.FindingStrength
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -986,6 +1044,8 @@ export type DocumentFindingUncheckedUpdateWithoutOrganizationInput = {
   summary?: Prisma.StringFieldUpdateOperationsInput | string
   capabilityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidenceDemonstrated?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   strength?: Prisma.EnumFindingStrengthFieldUpdateOperationsInput | $Enums.FindingStrength
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -1007,6 +1067,8 @@ export type DocumentFindingUncheckedUpdateManyWithoutOrganizationInput = {
   summary?: Prisma.StringFieldUpdateOperationsInput | string
   capabilityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidenceDemonstrated?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   strength?: Prisma.EnumFindingStrengthFieldUpdateOperationsInput | $Enums.FindingStrength
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -1028,6 +1090,8 @@ export type DocumentFindingCreateManyCapturedInputInput = {
   summary: string
   capabilityId?: string | null
   capabilityName?: string | null
+  domainId?: string | null
+  domainName?: string | null
   evidenceDemonstrated?: string | null
   strength?: $Enums.FindingStrength
   confidence?: number
@@ -1048,6 +1112,8 @@ export type DocumentFindingUpdateWithoutCapturedInputInput = {
   summary?: Prisma.StringFieldUpdateOperationsInput | string
   capabilityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidenceDemonstrated?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   strength?: Prisma.EnumFindingStrengthFieldUpdateOperationsInput | $Enums.FindingStrength
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -1070,6 +1136,8 @@ export type DocumentFindingUncheckedUpdateWithoutCapturedInputInput = {
   summary?: Prisma.StringFieldUpdateOperationsInput | string
   capabilityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidenceDemonstrated?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   strength?: Prisma.EnumFindingStrengthFieldUpdateOperationsInput | $Enums.FindingStrength
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -1091,6 +1159,8 @@ export type DocumentFindingUncheckedUpdateManyWithoutCapturedInputInput = {
   summary?: Prisma.StringFieldUpdateOperationsInput | string
   capabilityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   capabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evidenceDemonstrated?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   strength?: Prisma.EnumFindingStrengthFieldUpdateOperationsInput | $Enums.FindingStrength
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -1115,6 +1185,8 @@ export type DocumentFindingSelect<ExtArgs extends runtime.Types.Extensions.Inter
   summary?: boolean
   capabilityId?: boolean
   capabilityName?: boolean
+  domainId?: boolean
+  domainName?: boolean
   evidenceDemonstrated?: boolean
   strength?: boolean
   confidence?: boolean
@@ -1139,6 +1211,8 @@ export type DocumentFindingSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   summary?: boolean
   capabilityId?: boolean
   capabilityName?: boolean
+  domainId?: boolean
+  domainName?: boolean
   evidenceDemonstrated?: boolean
   strength?: boolean
   confidence?: boolean
@@ -1163,6 +1237,8 @@ export type DocumentFindingSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   summary?: boolean
   capabilityId?: boolean
   capabilityName?: boolean
+  domainId?: boolean
+  domainName?: boolean
   evidenceDemonstrated?: boolean
   strength?: boolean
   confidence?: boolean
@@ -1187,6 +1263,8 @@ export type DocumentFindingSelectScalar = {
   summary?: boolean
   capabilityId?: boolean
   capabilityName?: boolean
+  domainId?: boolean
+  domainName?: boolean
   evidenceDemonstrated?: boolean
   strength?: boolean
   confidence?: boolean
@@ -1200,7 +1278,7 @@ export type DocumentFindingSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DocumentFindingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "capturedInputId" | "documentType" | "title" | "summary" | "capabilityId" | "capabilityName" | "evidenceDemonstrated" | "strength" | "confidence" | "citedSegmentIds" | "citedExcerpts" | "status" | "sourceHash" | "reviewedBy" | "reviewedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["documentFinding"]>
+export type DocumentFindingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "capturedInputId" | "documentType" | "title" | "summary" | "capabilityId" | "capabilityName" | "domainId" | "domainName" | "evidenceDemonstrated" | "strength" | "confidence" | "citedSegmentIds" | "citedExcerpts" | "status" | "sourceHash" | "reviewedBy" | "reviewedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["documentFinding"]>
 export type DocumentFindingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   capturedInput?: boolean | Prisma.CapturedInputDefaultArgs<ExtArgs>
@@ -1241,6 +1319,8 @@ export type $DocumentFindingPayload<ExtArgs extends runtime.Types.Extensions.Int
      */
     capabilityId: string | null
     capabilityName: string | null
+    domainId: string | null
+    domainName: string | null
     /**
      * What the document specifically proves about that capability.
      */
@@ -1698,6 +1778,8 @@ export interface DocumentFindingFieldRefs {
   readonly summary: Prisma.FieldRef<"DocumentFinding", 'String'>
   readonly capabilityId: Prisma.FieldRef<"DocumentFinding", 'String'>
   readonly capabilityName: Prisma.FieldRef<"DocumentFinding", 'String'>
+  readonly domainId: Prisma.FieldRef<"DocumentFinding", 'String'>
+  readonly domainName: Prisma.FieldRef<"DocumentFinding", 'String'>
   readonly evidenceDemonstrated: Prisma.FieldRef<"DocumentFinding", 'String'>
   readonly strength: Prisma.FieldRef<"DocumentFinding", 'FindingStrength'>
   readonly confidence: Prisma.FieldRef<"DocumentFinding", 'Float'>

@@ -65,6 +65,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         summary: finding.summary,
         capabilityId: finding.capabilityId,
         capabilityName: finding.capabilityName,
+        domainId: finding.domainId,
+        domainName: finding.domainName,
         evidenceDemonstrated: finding.evidenceDemonstrated,
         strength: finding.strength,
         confidence: finding.confidence,

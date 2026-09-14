@@ -9,6 +9,7 @@ type Finding = {
   title: string;
   summary: string;
   capabilityName: string | null;
+  domainName: string | null;
   evidenceDemonstrated: string | null;
   strength: "NONE" | "WEAK" | "MODERATE" | "STRONG";
   confidence: number;
@@ -110,9 +111,12 @@ export default function DocumentFindingsPage({ params }: { params: Promise<{ id:
 
         <p className="mt-3 text-sm text-[var(--foreground)]">{finding.summary}</p>
 
-        {finding.capabilityName ? <p className="mt-3 text-sm">
+        {finding.domainName ? <p className="mt-3 text-sm">
+          <span className="text-[var(--muted)]">Domain: </span><strong>{finding.domainName}</strong>
+        </p> : null}
+        {finding.capabilityName ? <p className="mt-1 text-sm">
           <span className="text-[var(--muted)]">Capability: </span><strong>{finding.capabilityName}</strong>
-        </p> : <p className="mt-3 text-sm text-[var(--muted)]">No capability evidenced.</p>}
+        </p> : <p className="mt-1 text-sm text-[var(--muted)]">No capability evidenced.</p>}
 
         {finding.evidenceDemonstrated ? <p className="mt-1 text-sm"><span className="text-[var(--muted)]">Evidence demonstrated: </span>{finding.evidenceDemonstrated}</p> : null}
 

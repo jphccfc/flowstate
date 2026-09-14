@@ -2,6 +2,7 @@ import { prisma } from "@/lib/db";
 import { segmentText } from "@/lib/ai/segmenting";
 import { generateTagSuggestions, type TaggableEntity } from "@/lib/ai/tagging";
 import { generateDocumentFinding, normaliseForMatch } from "@/lib/ai/document-findings";
+import { classifyDocumentDomain, type DomainClassification } from "@/lib/ai/document-domains";
 import { transcribeAudio } from "@/lib/ai/transcription";
 import { generateFollowUpSuggestions } from "@/lib/ai/followups";
 
@@ -56,6 +57,22 @@ export async function processCapturedInput(capturedInputId: string): Promise<voi
       );
     });
 
+    let documentDomain: DomainClassification | null = null;
+    let documentCapabilityIds = new Set<string>();
+    if (input.type === "DOCUMENT") {
+      const attachment = await prisma.capturedInputAttachment.findFirst({ where: { capturedInputId }, select: { filename: true } });
+      const domains = await prisma.businessDomain.findMany({ where: { organizationId: input.organizationId }, include: { capabilities: true } });
+      documentDomain = await classifyDocumentDomain({
+        documentName: attachment?.filename ?? "document",
+        sourcePath: input.sourceRef,
+        text: rawText ?? "",
+        domains: domains.map((domain) => ({ domainId: domain.id, name: domain.name, description: domain.description })),
+      });
+      if (documentDomain) {
+        documentCapabilityIds = new Set(domains.find((domain) => domain.id === documentDomain?.domainId)?.capabilities.map((capability) => capability.id) ?? []);
+      }
+    }
+
     await runJob("tag", capturedInputId, async () => {
       await prisma.capturedInput.update({
         where: { id: capturedInputId },
@@ -63,9 +80,12 @@ export async function processCapturedInput(capturedInputId: string): Promise<voi
       });
 
       const candidates = await getTaggableEntities(input.organizationId);
+      const tagCandidates = input.type === "DOCUMENT"
+        ? candidates.filter((candidate) => candidate.targetType !== "CAPABILITY" || documentCapabilityIds.has(candidate.targetId))
+        : candidates;
 
       for (const segment of segments) {
-        const suggestions = await generateTagSuggestions(segment.text, candidates);
+        const suggestions = await generateTagSuggestions(segment.text, tagCandidates);
         for (const suggestion of suggestions) {
           await prisma.tag.create({
             data: {
@@ -90,11 +110,13 @@ export async function processCapturedInput(capturedInputId: string): Promise<voi
           select: { filename: true },
         });
         const capabilities = (await getTaggableEntities(input.organizationId)).filter(
-          (entity) => entity.targetType === "CAPABILITY",
+          (entity) => entity.targetType === "CAPABILITY" && (!documentDomain || documentCapabilityIds.has(entity.targetId)),
         );
         const draft = await generateDocumentFinding({
           documentName: attachment?.filename ?? "document",
           sourcePath: input.sourceRef,
+          domainId: documentDomain?.domainId ?? null,
+          domainName: documentDomain?.domainName ?? null,
           text: rawText ?? "",
           capabilities: capabilities.map((entity) => ({
             capabilityId: entity.targetId,
@@ -129,6 +151,8 @@ export async function processCapturedInput(capturedInputId: string): Promise<voi
             summary: draft.summary,
             capabilityId: draft.capabilityId,
             capabilityName: draft.capabilityName,
+            domainId: draft.domainId,
+            domainName: draft.domainName,
             evidenceDemonstrated: draft.evidenceDemonstrated,
             strength: draft.strength,
             confidence: draft.confidence,

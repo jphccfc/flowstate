@@ -1091,6 +1091,8 @@ model DocumentFinding {
   /// The capability this evidences. Nullable: a document may evidence none.
   capabilityId         String?
   capabilityName       String?
+  domainId             String?
+  domainName           String?
   /// What the document specifically proves about that capability.
   evidenceDemonstrated String?
   strength             FindingStrength @default(NONE)

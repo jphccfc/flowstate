@@ -896,6 +896,8 @@ export const DocumentFindingScalarFieldEnum = {
   summary: 'summary',
   capabilityId: 'capabilityId',
   capabilityName: 'capabilityName',
+  domainId: 'domainId',
+  domainName: 'domainName',
   evidenceDemonstrated: 'evidenceDemonstrated',
   strength: 'strength',
   confidence: 'confidence',
