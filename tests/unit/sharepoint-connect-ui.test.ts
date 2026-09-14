@@ -9,7 +9,8 @@ const route = read("app/api/clients/[id]/integrations/sharepoint/route.ts");
 
 describe("SharePoint connect action", () => {
   it("navigates to the authorize route so the browser reaches Microsoft's consent screen", () => {
-    expect(page).toContain("window.location.assign(`/api/clients/${organizationId}/integrations/sharepoint/authorize`)");
+    expect(page).toContain("window.location.assign(`${api}/authorize`)");
+    expect(page).toContain("const api = `/api/clients/${organizationId}/integrations/sharepoint`");
   });
 
   it("no longer reports readiness instead of starting the flow", () => {

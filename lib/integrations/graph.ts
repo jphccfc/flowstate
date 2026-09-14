@@ -57,13 +57,24 @@ export async function listSharePointSites(
   options: { search?: string; fetchImpl?: FetchImpl } = {},
 ): Promise<GraphSite[]> {
   const params = new URLSearchParams({ $select: "id,displayName,name,webUrl" });
-  if (options.search?.trim()) params.set("search", options.search.trim());
+  // Microsoft Graph returns an EMPTY collection when /sites is called without a
+  // search term — verified against the live tenant: no search returned 0 sites,
+  // search=* returned 11. A site picker built on no search therefore shows
+  // nothing to select, which looks like a permissions failure but is not.
+  params.set("search", options.search?.trim() || "*");
   const sites = await graphGet<Array<{ id: string; displayName?: string; name?: string; webUrl?: string }>>(
     accessToken,
     `/sites?${params.toString()}`,
     options.fetchImpl,
   );
   return sites.map((site) => ({ id: site.id, name: site.displayName || site.name || "(unnamed site)", webUrl: site.webUrl ?? "" }));
+}
+
+/** SharePoint system libraries that are never useful evidence sources. */
+const SYSTEM_LIBRARY_NAMES = new Set(["form templates", "site assets", "site pages", "style library", "preservation hold library", "app catalog", "_catalogs"]);
+
+export function isSelectableLibrary(name: string): boolean {
+  return !SYSTEM_LIBRARY_NAMES.has(name.trim().toLowerCase());
 }
 
 export async function listDocumentLibraries(

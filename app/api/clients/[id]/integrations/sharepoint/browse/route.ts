@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { hasOrganizationPermission } from "@/lib/auth/organization";
 import { getAccessToken } from "@/lib/integrations/connection-store";
-import { listDocumentLibraries, listDriveChildren, listSharePointSites } from "@/lib/integrations/graph";
+import { isSelectableLibrary, listDocumentLibraries, listDriveChildren, listSharePointSites } from "@/lib/integrations/graph";
 import { prisma } from "@/lib/db";
 
 /**
@@ -43,7 +43,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       const siteId = request.nextUrl.searchParams.get("siteId");
       if (!siteId) return NextResponse.json({ error: "siteId is required" }, { status: 400 });
       const libraries = await listDocumentLibraries(connection.accessToken, siteId);
-      return NextResponse.json({ resource, libraries });
+      // Hide SharePoint system libraries: they hold platform assets, not client
+      // evidence, and only add noise to a picker.
+      return NextResponse.json({ resource, libraries: libraries.filter((library) => isSelectableLibrary(library.name)) });
     }
     if (resource === "items") {
       const driveId = request.nextUrl.searchParams.get("driveId");
