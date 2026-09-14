@@ -12,7 +12,7 @@ vi.mock("mammoth", () => ({
   extractRawText: vi.fn().mockResolvedValue({ value: "Extracted DOCX content" }),
 }));
 
-import { extractDocumentText } from "../../lib/documents/extraction";
+import { extractDocumentText, extractDocumentTextFromBuffer } from "../../lib/documents/extraction";
 
 describe("extractDocumentText", () => {
   afterEach(() => {

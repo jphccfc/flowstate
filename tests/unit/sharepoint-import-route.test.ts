@@ -39,10 +39,11 @@ describe("SharePoint import route", () => {
 
 describe("import persisting text instead of files", () => {
   it("never persists the document bytes", () => {
-    expect(importer).not.toContain("Buffer.from(await");
+    // Transient Buffer use is required for extraction; persistence is forbidden.
     expect(importer).not.toContain("writeFile");
     expect(importer).not.toContain("storage.from");
-    expect(importer).toContain("// Text only — the response body is never persisted.");
+    expect(importer).not.toContain("base64");
+    expect(importer).toContain("Text only — the response body is never persisted.");
   });
 
   it("does not forward the bearer token to the pre-authenticated download host", () => {

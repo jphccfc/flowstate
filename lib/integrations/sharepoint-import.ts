@@ -125,9 +125,15 @@ export async function importDriveItem({
     throw new Error(`SharePoint download failed (HTTP ${downloadResponse.status})`);
   }
 
-  const extractor = extractText ?? (await import("@/lib/documents/extraction")).extractDocumentText;
-  // Text only — the response body is never persisted.
-  const text = await extractor(downloadUrl);
+  const extractor = extractText ?? null;
+  // Text only — the response body is never persisted. The filename from Graph,
+  // not the opaque pre-authenticated download URL, determines the parser.
+  const text = extractor
+    ? await extractor(downloadUrl)
+    : await (await import("@/lib/documents/extraction")).extractDocumentTextFromBuffer(
+        Buffer.from(await downloadResponse.arrayBuffer()),
+        name,
+      );
 
   const created = await client.capturedInput.create({
     data: {
