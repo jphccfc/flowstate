@@ -5,6 +5,7 @@ import { buildMicrosoftAuthorizeUrl, createOAuthState } from "@/lib/integrations
 import { OAUTH_STATE_COOKIE, OAUTH_STATE_TTL_MS, signOAuthState } from "@/lib/integrations/oauth-state";
 import { integrationSecretKey } from "@/lib/integrations/connection-store";
 import { getMicrosoft365ConnectionReadiness } from "@/lib/integrations/sharepoint";
+import { describeMicrosoftConfigProblem } from "@/lib/integrations/microsoft-config";
 
 /**
  * Starts the Microsoft Entra authorization-code flow for one organisation.
@@ -26,6 +27,21 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   if (!readiness.configured) {
     return NextResponse.json(
       { error: "Microsoft 365 is not configured", missingConfiguration: readiness.missingConfiguration },
+      { status: 409 },
+    );
+  }
+
+  // Shape check before we build anything: a pasted URL or a secret in the wrong
+  // variable produces an opaque AADSTS error from Microsoft. Catch it here and
+  // name the variable instead. The value is never echoed back.
+  const problem = describeMicrosoftConfigProblem({
+    clientId: process.env.MICROSOFT_ENTRA_CLIENT_ID,
+    tenantId: process.env.MICROSOFT_ENTRA_TENANT_ID,
+    redirectUri: process.env.MICROSOFT_ENTRA_REDIRECT_URI,
+  });
+  if (problem) {
+    return NextResponse.json(
+      { error: problem.message, code: `invalid_configuration:${problem.envVar}` },
       { status: 409 },
     );
   }
