@@ -19,6 +19,12 @@ export async function extractDocumentTextFromBuffer(
 ): Promise<string> {
   const extension = extensionFromName(filename);
   if (extension === "pdf") {
+    // pdfjs-dist expects browser geometry globals. A pure-JavaScript DOMMatrix
+    // implementation keeps this route compatible with the serverless bundle;
+    // native canvas bindings are rejected by Turbopack.
+    const { default: DOMMatrixPolyfill } = await import("@thednp/dommatrix");
+    const globals = globalThis as unknown as { DOMMatrix?: unknown };
+    globals.DOMMatrix ??= DOMMatrixPolyfill;
     const { PDFParse } = await import("pdf-parse");
     const parser = new PDFParse({ data: buffer });
     try {
