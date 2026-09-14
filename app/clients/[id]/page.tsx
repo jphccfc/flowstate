@@ -57,7 +57,8 @@ export default async function ClientOverviewPage({
     { href: `/clients/${id}/analysis`, label: "Insights", desc: "View gaps, domain scores, and capability evidence", cta: "View insights" },
     { href: `/clients/${id}/report`, label: "Reports", desc: "Read executive outcomes, evidence, and approved priorities", cta: "View reports" },
     { href: `/clients/${id}/recommendations`, label: "Growth plan", desc: "Manage strategic initiatives and their reviewed recommendations", cta: "Open growth plan" },
-    { href: `/clients/${id}/review`, label: "Review queue", desc: "Approve, reject, or reassign extracted tags", cta: "Open review queue" },
+    { href: `/clients/${id}/findings`, label: "Evidence review", desc: "Review one analysed document at a time with domain, capability, and citations", cta: "Open evidence review" },
+    { href: `/clients/${id}/review`, label: "Tag review", desc: "Inspect detailed segment-level AI tag suggestions and Scratch Pad notes", cta: "Open tag review" },
   ];
 
   return (

@@ -201,6 +201,7 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
       </div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold">Tag Review</h1>
+        <p className="mt-1 text-sm text-[var(--muted)]">Detailed segment-level AI suggestions and Scratch Pad notes. For document-level analysis, use <Link href={`/clients/${organizationId}/findings`} className="underline decoration-dotted">Evidence review</Link>.</p>
         <Link href={`/clients/${organizationId}/scratchpad`} className="rounded px-3 py-2 text-sm font-medium text-white flowstate-accent-button">New Scratch Pad note</Link>
       </div>
       {error && <div role="alert" className="mb-4 rounded-lg border border-[var(--destructive)] p-3 text-sm text-[var(--destructive)]">{error}</div>}

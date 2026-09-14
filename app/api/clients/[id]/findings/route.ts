@@ -28,12 +28,16 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   if (guard.error) return guard.error;
 
   const status = request.nextUrl.searchParams.get("status");
-  const allowed = ["PENDING_REVIEW", "APPROVED", "REJECTED", "STALE"] as const;
+  const query = request.nextUrl.searchParams.get("q")?.trim();
+  const domainId = request.nextUrl.searchParams.get("domainId")?.trim();
+  const allowed = ["PENDING_REVIEW", "APPROVED", "REJECTED", "STALE", "SOURCE_REMOVED"] as const;
   const where = {
     organizationId: id,
     ...(status && (allowed as readonly string[]).includes(status)
       ? { status: status as (typeof allowed)[number] }
       : { status: "PENDING_REVIEW" as const }),
+    ...(domainId ? { domainId } : {}),
+    ...(query ? { OR: [{ title: { contains: query, mode: "insensitive" as const } }, { summary: { contains: query, mode: "insensitive" as const } }, { capabilityName: { contains: query, mode: "insensitive" as const } }] } : {}),
   };
 
   try {

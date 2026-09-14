@@ -14,7 +14,7 @@ type Finding = {
   strength: "NONE" | "WEAK" | "MODERATE" | "STRONG";
   confidence: number;
   citedExcerpts: string[];
-  status: "PENDING_REVIEW" | "APPROVED" | "REJECTED" | "STALE";
+  status: "PENDING_REVIEW" | "APPROVED" | "REJECTED" | "STALE" | "SOURCE_REMOVED";
   reviewedBy: string | null;
   filename: string | null;
   sourceRef: string | null;
@@ -27,17 +27,20 @@ const strengthTone: Record<Finding["strength"], string> = {
   NONE: "text-[var(--muted)]",
 };
 
-const tabs = ["PENDING_REVIEW", "APPROVED", "REJECTED", "STALE"] as const;
+const tabs = ["PENDING_REVIEW", "APPROVED", "REJECTED", "STALE", "SOURCE_REMOVED"] as const;
 const tabLabels: Record<(typeof tabs)[number], string> = {
   PENDING_REVIEW: "Awaiting review",
   APPROVED: "Approved",
   REJECTED: "Rejected",
   STALE: "Stale",
+  SOURCE_REMOVED: "Source removed",
 };
 
 export default function DocumentFindingsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: organizationId } = use(params);
   const [tab, setTab] = useState<(typeof tabs)[number]>("PENDING_REVIEW");
+  const [query, setQuery] = useState("");
+  const [appliedQuery, setAppliedQuery] = useState("");
   const [findings, setFindings] = useState<Finding[]>([]);
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [busy, setBusy] = useState<string | null>(null);
@@ -48,12 +51,12 @@ export default function DocumentFindingsPage({ params }: { params: Promise<{ id:
 
   const load = useCallback(async () => {
     setError(null);
-    const response = await fetch(`${api}?status=${tab}`);
+    const response = await fetch(`${api}?status=${tab}${appliedQuery ? `&q=${encodeURIComponent(appliedQuery)}` : ""}`);
     if (!response.ok) { setError("Findings could not be loaded."); return; }
     const data = await response.json();
     setFindings(data.findings ?? []);
     setCounts(data.counts ?? {});
-  }, [api, tab]);
+  }, [api, tab, appliedQuery]);
 
   useEffect(() => { load().catch(() => setError("Findings could not be loaded.")); }, [load]);
 
@@ -110,6 +113,12 @@ export default function DocumentFindingsPage({ params }: { params: Promise<{ id:
     <div className="mb-4 flex flex-wrap gap-2">
       {tabs.map((value) => <button key={value} type="button" onClick={() => setTab(value)} className={`rounded border px-3 py-1.5 text-sm font-medium ${tab === value ? "border-[var(--card-border)] bg-[var(--muted-bg)] text-[var(--foreground)]" : "border-transparent text-[var(--muted)]"}`}>{tabLabels[value]}{counts[value] ? ` (${counts[value]})` : ""}</button>)}
     </div>
+    <form className="mb-5 flex flex-wrap gap-2" onSubmit={(event) => { event.preventDefault(); setAppliedQuery(query.trim()); }}>
+      <label className="sr-only" htmlFor="finding-search">Search document findings</label>
+      <input id="finding-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search documents, summaries or capabilities" className="min-w-0 flex-1 rounded border border-[var(--card-border)] bg-[var(--card)] px-3 py-2 text-sm text-[var(--foreground)]" />
+      <button type="submit" className="rounded border border-[var(--card-border)] px-3 py-2 text-sm font-medium text-[var(--foreground)]">Search</button>
+      {appliedQuery ? <button type="button" onClick={() => { setQuery(""); setAppliedQuery(""); }} className="rounded px-3 py-2 text-sm text-[var(--muted)]">Clear</button> : null}
+    </form>
 
     {notice && <p role="status" className="mb-3 text-sm text-[var(--muted)]">{notice}</p>}
     {error && <p role="alert" className="mb-3 text-sm text-red-700">{error}</p>}
@@ -153,7 +162,7 @@ export default function DocumentFindingsPage({ params }: { params: Promise<{ id:
           <button type="button" disabled={busy === finding.id} onClick={() => decide(finding.id, "approve")} className="flowstate-accent-button rounded px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50">Approve</button>
           <button type="button" disabled={busy === finding.id} onClick={() => decide(finding.id, "reject")} className="rounded border border-[var(--card-border)] px-3 py-1.5 text-sm font-medium text-[var(--foreground)] disabled:opacity-50">Reject</button>
         </div> : <p className="mt-3 text-xs text-[var(--muted)]">
-          {finding.status === "STALE" ? "The source document changed after this was analysed — re-import to refresh." : `${finding.status === "APPROVED" ? "Approved" : "Rejected"}${finding.reviewedBy ? ` by ${finding.reviewedBy}` : ""}.`}
+          {finding.status === "STALE" ? "The source document changed after this was analysed — re-import to refresh." : finding.status === "SOURCE_REMOVED" ? "The source document was removed from SharePoint. Historical evidence is retained, but it is not current." : `${finding.status === "APPROVED" ? "Approved" : "Rejected"}${finding.reviewedBy ? ` by ${finding.reviewedBy}` : ""}.`}
         </p>}
       </li>)}
     </ul>}
