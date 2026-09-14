@@ -82,6 +82,8 @@ export function verifyExcerpts(excerpts: unknown, source: string): string[] {
 
 export async function generateDocumentFinding(input: {
   documentName: string;
+  /** SharePoint path is a classification signal, not just display metadata. */
+  sourcePath?: string | null;
   text: string;
   capabilities: FindingCandidate[];
   /** Injectable for tests; defaults to the project's chat completion client. */
@@ -102,6 +104,7 @@ export async function generateDocumentFinding(input: {
       "You analyse a document as evidence for a capability assessment. Return JSON only. " +
       "Every excerpt you quote must be copied verbatim from the document. Never paraphrase a quote.",
     user: `Document name: ${input.documentName}
+SharePoint path/context: ${input.sourcePath?.trim() || "(not provided)"}
 
 Capabilities (id: name):
 ${capabilityList}
@@ -112,7 +115,7 @@ ${window}
 """
 
 Return a JSON object with:
-  documentType     what this document is, briefly (e.g. "CIM", "email thread", "financial model")
+  documentType     what this document is, briefly (e.g. "CIM", "email thread", "financial model", "acquisition Q&A")
   title            a short human title for a review queue
   summary          2-4 sentences: what this document says and why it matters
   capabilityId     the single capability this best evidences, from the list above, or null
@@ -121,6 +124,18 @@ Return a JSON object with:
   confidence       0 to 1
   citedExcerpts    array of 1-5 passages copied EXACTLY, character for character,
                    from the document text, each at least a full sentence
+
+Classification rules:
+- Acquisition, due diligence, M&A, CIM, deal, buyer, seller, transaction,
+  management Q&A, diligence questions, investment committee, LOI, IOI and
+  acquisition-related attachments are acquisition evidence when the content or
+  SharePoint path supports that context.
+- A Q&A document is not HR merely because it contains questions and answers.
+  Classify it as acquisition Q&A when it relates to a transaction or diligence.
+- Do not classify a document as HR, internal process or knowledge management
+  unless the document itself clearly supports that interpretation.
+- Document type describes the artefact; capability describes the business area
+  or capability evidenced. Do not use the document type as the capability.
 
 If the document evidences no listed capability, set capabilityId to null and
 strength to NONE, and still summarise what the document is. Return {} if the

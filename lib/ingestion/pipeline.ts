@@ -94,6 +94,7 @@ export async function processCapturedInput(capturedInputId: string): Promise<voi
         );
         const draft = await generateDocumentFinding({
           documentName: attachment?.filename ?? "document",
+          sourcePath: input.sourceRef,
           text: rawText ?? "",
           capabilities: capabilities.map((entity) => ({
             capabilityId: entity.targetId,
