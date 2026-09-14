@@ -127,7 +127,7 @@ describe("import route", () => {
   it("keeps the explicit itemIds path and its bound", () => {
     expect(route).toContain("MAX_ITEMS_PER_REQUEST = 50");
     expect(route).toContain("At most ${MAX_ITEMS_PER_REQUEST} items per request");
-    expect(route).toContain("{ summary, results, walk: walkSummary }");
+    expect(route).toContain("{ summary, results, walk: walkSummary, queuedForAnalysis: analysisTargets.length }");
   });
 });
 
@@ -160,5 +160,32 @@ describe("import UI", () => {
 
   it("points the reviewer at the queue the evidence lands in", () => {
     expect(page).toContain("Review queue");
+  });
+});
+
+describe("imported documents are analysed, not just stored", () => {
+  it("runs the tagging pipeline on what it imported", () => {
+    expect(route).toContain("processCapturedInput(capturedInputId)");
+    expect(route).toContain('import { processCapturedInput } from "@/lib/ingestion/pipeline"');
+  });
+
+  it("analyses only newly imported documents", () => {
+    expect(route).toContain('r.outcome.status === "imported" ? r.outcome.capturedInputId : null');
+  });
+
+  it("reports how many documents were queued for analysis", () => {
+    expect(route).toContain("queuedForAnalysis: analysisTargets.length");
+    expect(page).toContain("queued for analysis");
+  });
+
+  it("isolates analysis failures so one document cannot stop the batch", () => {
+    const block = route.slice(route.indexOf("after(async () =>"));
+    expect(block).toContain("try {");
+    expect(block).toContain("} catch {");
+  });
+
+  it("does not hold the response open while analysing", () => {
+    // after() defers past the response, matching scratchpad and captured-inputs.
+    expect(route).toContain("after(async () => {");
   });
 });

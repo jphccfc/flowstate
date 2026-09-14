@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { hasOrganizationPermission } from "@/lib/auth/organization";
 import { getAccessToken } from "@/lib/integrations/connection-store";
 import { DRIVE_WALK_MAX_ITEMS, walkDriveFolder } from "@/lib/integrations/graph";
 import { importDriveItem, isSupportedDocument, type ImportOutcome } from "@/lib/integrations/sharepoint-import";
+import { processCapturedInput } from "@/lib/ingestion/pipeline";
 import { prisma } from "@/lib/db";
 
 /** Bounds so one request cannot fan out into an unbounded Graph workload. */
@@ -183,5 +184,33 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     failed: results.filter((r) => r.outcome.status === "failed").length,
   };
 
-  return NextResponse.json({ summary, results, walk: walkSummary });
+  /*
+   * Analyse what was imported.
+   *
+   * Without this the import stops at stored text: no segments, no capability
+   * tags, no suggestions, and therefore nothing for a human to approve or reject.
+   * Scratch Pad, captured inputs and inbound email all run the pipeline already;
+   * SharePoint evidence was the one intake that did not, so documents arrived
+   * inert.
+   *
+   * Runs after the response so a slow model call cannot hold the request open,
+   * and isolates failures: one document that cannot be analysed must not stop
+   * the rest of the batch from being catalogued.
+   */
+  const analysisTargets = results
+    .map((r) => (r.outcome.status === "imported" ? r.outcome.capturedInputId : null))
+    .filter((value): value is string => Boolean(value));
+  if (analysisTargets.length > 0) {
+    after(async () => {
+      for (const capturedInputId of analysisTargets) {
+        try {
+          await processCapturedInput(capturedInputId);
+        } catch {
+          // Leave the input for a later pass rather than failing the import.
+        }
+      }
+    });
+  }
+
+  return NextResponse.json({ summary, results, walk: walkSummary, queuedForAnalysis: analysisTargets.length });
 }

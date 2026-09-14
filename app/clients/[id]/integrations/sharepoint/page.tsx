@@ -74,6 +74,7 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
   const [connection, setConnection] = useState<Connection | null>(null);
   const [preview, setPreview] = useState<ImportPreview | null>(null);
   const [importResult, setImportResult] = useState<ImportSummary | null>(null);
+  const [analysisQueued, setAnalysisQueued] = useState(0);
   const [importing, setImporting] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -218,8 +219,9 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
    */
   async function runImport() {
     if (!selectedLibrary) { setError("Choose a site and a document library first."); return; }
-    setError(null); setImportResult(null); setImporting(true);
+    setError(null); setImportResult(null); setAnalysisQueued(0); setImporting(true);
     const total: ImportSummary = { imported: 0, duplicate: 0, skipped: 0, failed: 0 };
+    let queued = 0;
     try {
       let offset = 0;
       for (let round = 0; round < 60; round += 1) {
@@ -234,13 +236,15 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
         total.duplicate += data.summary.duplicate;
         total.skipped += data.summary.skipped;
         total.failed += data.summary.failed;
+        queued += data.queuedForAnalysis ?? 0;
         setImportResult({ ...total });
+        setAnalysisQueued(queued);
         const next = data.walk?.nextOffset ?? offset;
         const remaining = data.walk?.remaining ?? 0;
         if (remaining <= 0 || next <= offset) break;
         offset = next;
       }
-      setNotice("Import complete. New evidence is waiting in the Review queue.");
+      setNotice("Import complete. Analysis is running; new capability tags will appear in the Review queue.");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "The import failed.");
     } finally {
@@ -304,6 +308,7 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
     {importResult && <div role="status" className="mt-4 rounded border border-[var(--card-border)] bg-[var(--muted-bg)] p-3 text-sm">
       <strong>{importing ? "Importing…" : "Import finished"}</strong>
       <p className="mt-1 text-[var(--muted)]">{importResult.imported} imported · {importResult.duplicate} already present · {importResult.skipped} skipped · {importResult.failed} failed</p>
-      {importResult.imported > 0 ? <p className="mt-1">Imported evidence is waiting in the <Link href={`/clients/${organizationId}/review`} className="underline decoration-dotted">Review queue</Link>.</p> : null}
+      {analysisQueued > 0 ? <p className="mt-1 text-[var(--muted)]">{analysisQueued} document{analysisQueued === 1 ? "" : "s"} queued for analysis — Flowstate is reading them and proposing capability tags for review.</p> : null}
+      {importResult.imported > 0 ? <p className="mt-1">Imported evidence and proposed tags are waiting in the <Link href={`/clients/${organizationId}/review`} className="underline decoration-dotted">Review queue</Link>.</p> : null}
     </div>}</form></main>;
 }
