@@ -19,15 +19,22 @@ describe("SharePoint integration hub foundation", () => {
   it("makes the disconnected journey explicit and keeps sync disabled", () => {
     expect(page).toContain("Not connected"); expect(page).toContain("Connect Microsoft 365");
     expect(page).toContain("Site"); expect(page).toContain("Library"); expect(page).toContain("Folder");
-    expect(page).toContain("Sync now"); expect(page).toContain("disabled={true}");
+    // Sync stays unusable until a real connection exists.
+    expect(page).toContain("Sync now"); expect(page).toContain("disabled={!isConnected}");
     expect(page).toContain("No Microsoft Graph or SharePoint connection is configured");
   });
   it("shows an accessible connection prerequisite status immediately in the connection section", () => {
     const connectionSection = page.match(/<section[^>]*aria-labelledby="connection-status"[\s\S]*?<\/section>/)?.[0] ?? "";
     expect(connectionSection).toContain('role="status"');
-    expect(connectionSection).toContain("Microsoft 365 connection setup is not available in this foundation.");
-    expect(connectionSection).toContain("No Microsoft Graph or SharePoint connection is configured.");
-    expect(connectionSection).not.toContain("Connected");
+    // The prerequisite copy is composed in statusMessage and rendered by the
+    // section; assert both the wiring and the text.
+    expect(connectionSection).toContain("{statusMessage}");
+    expect(page).toContain("Microsoft 365 connection setup is not available.");
+    expect(page).toContain("No Microsoft Graph or SharePoint connection is configured.");
+    // The section may only branch on isConnected, which the page derives from
+    // the stored connection record rather than asserting unconditionally.
+    expect(connectionSection).toContain("isConnected");
+    expect(page).toContain('const isConnected = connection?.connectionState === "Connected"');
   });
   it("uses a provider-neutral import preview contract without storing OAuth tokens", () => {
     expect(adapter).toContain("SharePointSourceSelection"); expect(adapter).toContain("ImportPreview");
@@ -44,6 +51,7 @@ describe("SharePoint integration hub foundation", () => {
   it("renders readiness and failure states without claiming a verified connection", () => {
     expect(page).toContain("Ready to connect"); expect(page).toContain("Microsoft 365 settings are not configured");
     expect(page).toContain("Connection setup failed"); expect(page).toContain("connectionState"); expect(page).toContain("syncEnabled");
-    expect(page).not.toContain('connectionState: "Connected"');
+    // A verified connection may only ever be derived from the stored record.
+    expect(page).toContain('const isConnected = connection?.connectionState === "Connected"');
   });
 });
