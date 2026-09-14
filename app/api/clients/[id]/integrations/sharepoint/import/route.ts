@@ -2,31 +2,112 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { hasOrganizationPermission } from "@/lib/auth/organization";
 import { getAccessToken } from "@/lib/integrations/connection-store";
-import { importDriveItem, type ImportOutcome } from "@/lib/integrations/sharepoint-import";
+import { DRIVE_WALK_MAX_ITEMS, walkDriveFolder } from "@/lib/integrations/graph";
+import { importDriveItem, isSupportedDocument, type ImportOutcome } from "@/lib/integrations/sharepoint-import";
 import { prisma } from "@/lib/db";
 
-/** Bounded so one request cannot fan out into an unbounded Graph workload. */
+/** Bounds so one request cannot fan out into an unbounded Graph workload. */
 const MAX_ITEMS_PER_REQUEST = 50;
+/** Documents imported per request when walking a folder. Kept below the ceiling
+ *  above because each imported document is an extraction, not just a read. */
+const MAX_IMPORT_PER_REQUEST = 25;
 
-type ImportBody = { driveId?: string; itemIds?: string[] };
+type ImportBody = {
+  driveId?: string;
+  itemIds?: string[];
+  /** Recursive folder import: the folder to walk, everything beneath it. */
+  itemId?: string;
+  recursive?: boolean;
+  /** How far into the folder's supported files to resume. Lets a large folder be
+   *  imported in batches that each finish inside a request timeout. */
+  offset?: number;
+};
+
+async function requireUser(id: string) {
+  const { data: { user } } = await (await createClient()).auth.getUser();
+  if (!user?.email) return { error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
+  if (!(await hasOrganizationPermission(user.email, id, "client.configure"))) {
+    return { error: NextResponse.json({ error: "Forbidden" }, { status: 403 }) };
+  }
+  return { user };
+}
+
+async function requireConnection(id: string) {
+  try {
+    const connection = await getAccessToken(prisma, id);
+    if (!connection) return { error: NextResponse.json({ error: "SharePoint is not connected for this client" }, { status: 409 }) };
+    return { connection };
+  } catch {
+    return { error: NextResponse.json({ error: "Stored SharePoint credentials could not be read" }, { status: 500 }) };
+  }
+}
 
 /**
- * Imports one or more SharePoint items into the evidence model as text.
+ * Previews a recursive import without importing anything.
  *
- * Organisation-scoped: the connection is resolved from the route's organisation
- * id, so a caller cannot import from another tenant's SharePoint. Items are
- * processed independently — one failure is reported against that item and does
- * not abort the batch, and nothing is imported for an unconnected client.
+ * Reports how many files the walk found, how many of those this importer can
+ * actually read, the total size, and whether the walk hit its bound. A reviewer
+ * should never commit to an import without seeing the size of it first — and the
+ * supported count must be honest, not the raw file count.
+ */
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const guard = await requireUser(id);
+  if (guard.error) return guard.error;
+  const linked = await requireConnection(id);
+  if (linked.error) return linked.error;
+  const connection = linked.connection as NonNullable<Awaited<ReturnType<typeof getAccessToken>>>;
+
+  const driveId = request.nextUrl.searchParams.get("driveId")?.trim();
+  if (!driveId) return NextResponse.json({ error: "driveId is required" }, { status: 400 });
+  const itemId = request.nextUrl.searchParams.get("itemId")?.trim() || "root";
+
+  try {
+    const walk = await walkDriveFolder(connection.accessToken, driveId, itemId);
+    const supported = walk.files.filter((file) => isSupportedDocument(file.name));
+    const unsupported = walk.files.filter((file) => !isSupportedDocument(file.name));
+    return NextResponse.json({
+      driveId,
+      itemId,
+      files: walk.files.length,
+      supported: supported.length,
+      unsupported: unsupported.length,
+      totalBytes: walk.totalBytes,
+      foldersScanned: walk.foldersScanned,
+      truncated: walk.truncated,
+      maxItems: DRIVE_WALK_MAX_ITEMS,
+      sample: supported.slice(0, 10).map((file) => ({ name: file.name, path: file.path })),
+      unsupportedSample: [...new Set(unsupported.map((file) => (file.name.split(".").pop() ?? "").toLowerCase()))].slice(0, 10),
+      skipped: walk.skipped.slice(0, 20),
+    });
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : "Microsoft Graph request failed";
+    return NextResponse.json({ error: detail }, { status: 502 });
+  }
+}
+
+/**
+ * Imports SharePoint files into the evidence model as text.
  *
- * Imported evidence always lands in `PENDING_REVIEW`; it cannot bypass Review.
+ * Two modes, both organisation-scoped so a caller cannot import from another
+ * tenant's SharePoint:
+ *   - `itemIds`: an explicit list, at most MAX_ITEMS_PER_REQUEST.
+ *   - `itemId` + `recursive`: walk that folder and everything beneath it, then
+ *     import up to MAX_IMPORT_PER_REQUEST files, reporting how many remain so
+ *     the caller can continue. A folder of several hundred documents cannot be
+ *     imported in one HTTP request, and pretending otherwise would time out and
+ *     read as a failure.
+ *
+ * Items are processed independently — one failure is reported against that item
+ * and does not abort the batch, and nothing is imported for an unconnected
+ * client. Imported evidence always lands in `PENDING_REVIEW`; it cannot bypass
+ * Review. Re-running is safe: the importer is idempotent per drive item and
+ * content hash.
  */
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const { data: { user } } = await (await createClient()).auth.getUser();
-  if (!user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  if (!(await hasOrganizationPermission(user.email, id, "client.configure"))) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
+  const guard = await requireUser(id);
+  if (guard.error) return guard.error;
 
   let body: ImportBody;
   try {
@@ -37,24 +118,49 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
   const driveId = body.driveId?.trim();
   const itemIds = Array.isArray(body.itemIds) ? body.itemIds.filter((v) => typeof v === "string" && v.trim()) : [];
+  const recursive = body.recursive === true;
+  const folderItemId = body.itemId?.trim();
+
   if (!driveId) return NextResponse.json({ error: "driveId is required" }, { status: 400 });
-  if (itemIds.length === 0) return NextResponse.json({ error: "itemIds is required" }, { status: 400 });
-  if (itemIds.length > MAX_ITEMS_PER_REQUEST) {
+  if (!recursive && itemIds.length === 0) return NextResponse.json({ error: "itemIds is required" }, { status: 400 });
+  if (!recursive && itemIds.length > MAX_ITEMS_PER_REQUEST) {
     return NextResponse.json({ error: `At most ${MAX_ITEMS_PER_REQUEST} items per request` }, { status: 400 });
   }
+  if (recursive && !folderItemId) return NextResponse.json({ error: "itemId is required for a recursive import" }, { status: 400 });
 
-  let connection;
-  try {
-    connection = await getAccessToken(prisma, id);
-  } catch {
-    return NextResponse.json({ error: "Stored SharePoint credentials could not be read" }, { status: 500 });
-  }
-  if (!connection) {
-    return NextResponse.json({ error: "SharePoint is not connected for this client" }, { status: 409 });
+  const linked = await requireConnection(id);
+  if (linked.error) return linked.error;
+  const connection = linked.connection as NonNullable<Awaited<ReturnType<typeof getAccessToken>>>;
+
+  let targets: string[] = itemIds;
+  let walkSummary: Record<string, unknown> | null = null;
+  const offset = Number.isFinite(body.offset) && (body.offset as number) > 0 ? Math.floor(body.offset as number) : 0;
+  if (recursive) {
+    try {
+      const walk = await walkDriveFolder(connection.accessToken, driveId, folderItemId as string);
+      const supported = walk.files.filter((file) => isSupportedDocument(file.name));
+      targets = supported.slice(offset, offset + MAX_IMPORT_PER_REQUEST).map((file) => file.id);
+      const nextOffset = offset + targets.length;
+      walkSummary = {
+        files: walk.files.length,
+        supported: supported.length,
+        unsupported: walk.files.length - supported.length,
+        totalBytes: walk.totalBytes,
+        truncated: walk.truncated,
+        batchSize: MAX_IMPORT_PER_REQUEST,
+        offset,
+        nextOffset,
+        remaining: Math.max(0, supported.length - nextOffset),
+        skipped: walk.skipped.slice(0, 20),
+      };
+    } catch (error) {
+      const detail = error instanceof Error ? error.message : "Microsoft Graph request failed";
+      return NextResponse.json({ error: detail }, { status: 502 });
+    }
   }
 
   const results: Array<{ itemId: string; outcome: ImportOutcome | { status: "failed"; error: string } }> = [];
-  for (const itemId of itemIds) {
+  for (const itemId of targets) {
     try {
       const outcome = await importDriveItem({
         organizationId: id,
@@ -77,5 +183,5 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     failed: results.filter((r) => r.outcome.status === "failed").length,
   };
 
-  return NextResponse.json({ summary, results });
+  return NextResponse.json({ summary, results, walk: walkSummary });
 }

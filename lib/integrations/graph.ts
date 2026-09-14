@@ -73,6 +73,12 @@ export async function listSharePointSites(
 /** SharePoint system libraries that are never useful evidence sources. */
 const SYSTEM_LIBRARY_NAMES = new Set(["form templates", "site assets", "site pages", "style library", "preservation hold library", "app catalog", "_catalogs"]);
 
+/**
+ * SharePoint system folders. Exported so the picker and the recursive walk share
+ * one list — two copies would drift and one would start admitting Forms.
+ */
+export const SYSTEM_FOLDER_NAMES = new Set(["forms", "siteassets", "sitepages", "style library", "_catalogs", "_private", "preservationholdlibrary", "appcatalog", "app catalog", "contenttypes", "workflowtasks", "images"]);
+
 export function isSelectableLibrary(name: string): boolean {
   return !SYSTEM_LIBRARY_NAMES.has(name.trim().toLowerCase());
 }
@@ -118,6 +124,86 @@ export async function listDriveChildren(
     lastModifiedDateTime: item.lastModifiedDateTime ?? null,
     webUrl: item.webUrl ?? null,
   }));
+}
+
+export type DriveWalk = {
+  files: Array<GraphDriveItem & { path: string }>;
+  foldersScanned: number;
+  totalBytes: number;
+  truncated: boolean;
+  skipped: Array<{ name: string; reason: string }>;
+};
+
+/** Bounds so one click cannot fan out into an unbounded Graph workload. */
+export const DRIVE_WALK_MAX_ITEMS = 500;
+export const DRIVE_WALK_MAX_DEPTH = 8;
+
+/**
+ * Walks a folder and everything beneath it, breadth-first.
+ *
+ * The walk is bounded twice — by item count and by depth — and always reports
+ * whether it truncated. An unbounded recursive read is the cheapest way to take
+ * down an integration against a client's tenant: a synced library can hold tens
+ * of thousands of files, and Graph will happily paginate all of them while the
+ * request times out and the connection looks broken.
+ *
+ * System containers are skipped with a stated reason rather than silently
+ * dropped, so a surprising import can always be explained.
+ */
+export async function walkDriveFolder(
+  accessToken: string,
+  driveId: string,
+  itemId: string = "root",
+  options: { maxItems?: number; maxDepth?: number; fetchImpl?: FetchImpl; path?: string } = {},
+): Promise<DriveWalk> {
+  if (!driveId?.trim()) throw new Error("A document library id is required");
+  const maxItems = options.maxItems ?? DRIVE_WALK_MAX_ITEMS;
+  const maxDepth = options.maxDepth ?? DRIVE_WALK_MAX_DEPTH;
+
+  const files: Array<GraphDriveItem & { path: string }> = [];
+  const skipped: Array<{ name: string; reason: string }> = [];
+  const queue: Array<{ id: string; path: string; depth: number }> = [
+    { id: itemId, path: options.path ?? "", depth: 0 },
+  ];
+  let foldersScanned = 0;
+  let totalBytes = 0;
+  let truncated = false;
+
+  while (queue.length > 0) {
+    if (files.length >= maxItems) {
+      truncated = true;
+      break;
+    }
+    const current = queue.shift() as { id: string; path: string; depth: number };
+    foldersScanned += 1;
+    const children = await listDriveChildren(accessToken, driveId, current.id, { fetchImpl: options.fetchImpl });
+
+    for (const child of children) {
+      if (child.isFolder) {
+        const reason = SYSTEM_FOLDER_NAMES.has(child.name.trim().toLowerCase())
+          ? "SharePoint system folder"
+          : current.depth + 1 > maxDepth
+            ? "depth limit reached"
+            : null;
+        if (reason) {
+          skipped.push({ name: `${current.path}${child.name}`, reason });
+          continue;
+        }
+        queue.push({ id: child.id, path: `${current.path}${child.name}/`, depth: current.depth + 1 });
+        continue;
+      }
+      if (files.length >= maxItems) {
+        truncated = true;
+        break;
+      }
+      files.push({ ...child, path: `${current.path}${child.name}` });
+      totalBytes += child.size ?? 0;
+    }
+  }
+
+  if (queue.length > 0) truncated = true;
+
+  return { files, foldersScanned, totalBytes, truncated, skipped };
 }
 
 export type GraphSignedInUser = {

@@ -17,6 +17,18 @@ import { GRAPH_BASE } from "@/lib/integrations/graph";
 
 export const SUPPORTED_EXTENSIONS = ["pdf", "docx"] as const;
 
+/**
+ * Whether a file name is one this importer can extract text from.
+ *
+ * Exported so a preview can state honestly how many of a folder's files will
+ * actually be imported. Counting every file in a folder and calling the result
+ * "documents to import" would overstate the work and mislead the reviewer.
+ */
+export function isSupportedDocument(name: string): boolean {
+  const extension = name.trim().toLowerCase().split(".").pop() ?? "";
+  return (SUPPORTED_EXTENSIONS as readonly string[]).includes(extension);
+}
+
 export type ImportOutcome =
   | { status: "imported"; capturedInputId: string; sourceHash: string | null }
   | { status: "duplicate"; capturedInputId: string }

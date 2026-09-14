@@ -16,11 +16,12 @@ describe("SharePoint integration hub foundation", () => {
     expect(route).toContain('hasOrganizationPermission(user.email, id, permission)');
     expect(route).toContain("organizationId: id");
   });
-  it("makes the disconnected journey explicit and keeps sync disabled", () => {
-    expect(page).toContain("Not connected"); expect(page).toContain("Connect Microsoft 365");
+  it("makes the disconnected journey explicit and keeps import disabled", () => {
+    expect(page).toContain("Connect Microsoft 365");
     expect(page).toContain("Site"); expect(page).toContain("Library"); expect(page).toContain("Folder");
-    // Sync stays unusable until a real connection exists.
-    expect(page).toContain("Sync now"); expect(page).toContain("disabled={!isConnected}");
+    // Import stays unusable until a real connection exists and a library is chosen.
+    expect(page).toContain("Import folder");
+    expect(page).toContain("disabled={!isConnected || !selectedLibrary || importing}");
     expect(page).toContain("No Microsoft Graph or SharePoint connection is configured");
   });
   it("shows an accessible connection prerequisite status immediately in the connection section", () => {

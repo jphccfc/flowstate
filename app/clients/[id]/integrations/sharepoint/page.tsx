@@ -5,7 +5,17 @@ import Link from "next/link";
 
 type Selection = { site: string; library: string; folder: string };
 type ConnectionState = "NotConfigured" | "Ready" | "ConnectionFailed";
-type Preview = { connectionState: string; message: string; itemCount: number };
+type ImportPreview = {
+  files: number;
+  supported: number;
+  unsupported: number;
+  totalBytes: number;
+  truncated: boolean;
+  maxItems: number;
+  sample: Array<{ name: string; path: string }>;
+  unsupportedSample: string[];
+};
+type ImportSummary = { imported: number; duplicate: number; skipped: number; failed: number };
 type Readiness = { connectionState: ConnectionState; syncEnabled: false; missingConfiguration?: string[] };
 type Connection = {
   provider: string;
@@ -49,12 +59,22 @@ function describeCallback(value: string): string {
   return `The connection attempt did not complete (${value}).`;
 }
 
+function formatBytes(bytes: number): string {
+  if (!bytes) return "0 KB";
+  const units = ["B", "KB", "MB", "GB"];
+  const exponent = Math.min(units.length - 1, Math.floor(Math.log(bytes) / Math.log(1024)));
+  const value = bytes / 1024 ** exponent;
+  return `${value >= 10 || exponent === 0 ? Math.round(value) : value.toFixed(1)} ${units[exponent]}`;
+}
+
 export default function SharePointIntegrationPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: organizationId } = use(params);
   const [selection, setSelection] = useState<Selection>({ site: "", library: "", folder: "" });
   const [readiness, setReadiness] = useState<Readiness | null>(null);
   const [connection, setConnection] = useState<Connection | null>(null);
-  const [preview, setPreview] = useState<Preview | null>(null);
+  const [preview, setPreview] = useState<ImportPreview | null>(null);
+  const [importResult, setImportResult] = useState<ImportSummary | null>(null);
+  const [importing, setImporting] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [connectionState, setConnectionState] = useState<ConnectionState>("NotConfigured");
@@ -173,11 +193,59 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
 
   async function previewImport(event: React.FormEvent) {
     event.preventDefault();
-    setError(null);
-    const response = await fetch(api, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sourceSelection: selection }) });
-    const data = await response.json();
-    if (!response.ok) { setError(data.error ?? "Preview could not be created."); return; }
-    setPreview(data);
+    if (!selectedLibrary) { setError("Choose a site and a document library first."); return; }
+    setError(null); setPreview(null); setImportResult(null); setBusy("preview");
+    try {
+      const response = await fetch(`${api}/import?driveId=${encodeURIComponent(selectedLibrary.id)}&itemId=${encodeURIComponent(currentPath.id)}`);
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error ?? "Preview could not be created.");
+      setPreview(data as ImportPreview);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Preview could not be created.");
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  /**
+   * Imports the selected folder and everything beneath it.
+   *
+   * Batched: the server imports a bounded number per request and reports how far
+   * it got, so a folder of several hundred documents completes without any single
+   * request running long enough to time out. Re-running is safe — the importer is
+   * idempotent per drive item and content hash, so an interrupted import resumes
+   * without duplicating evidence.
+   */
+  async function runImport() {
+    if (!selectedLibrary) { setError("Choose a site and a document library first."); return; }
+    setError(null); setImportResult(null); setImporting(true);
+    const total: ImportSummary = { imported: 0, duplicate: 0, skipped: 0, failed: 0 };
+    try {
+      let offset = 0;
+      for (let round = 0; round < 60; round += 1) {
+        const response = await fetch(`${api}/import`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ driveId: selectedLibrary.id, itemId: currentPath.id, recursive: true, offset }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error ?? "The import failed.");
+        total.imported += data.summary.imported;
+        total.duplicate += data.summary.duplicate;
+        total.skipped += data.summary.skipped;
+        total.failed += data.summary.failed;
+        setImportResult({ ...total });
+        const next = data.walk?.nextOffset ?? offset;
+        const remaining = data.walk?.remaining ?? 0;
+        if (remaining <= 0 || next <= offset) break;
+        offset = next;
+      }
+      setNotice("Import complete. New evidence is waiting in the Review queue.");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The import failed.");
+    } finally {
+      setImporting(false);
+    }
   }
 
   const selectedSite = sites.find((s) => s.name === selection.site);
@@ -224,5 +292,18 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
     </div> : null}
 
     {browseError && <p role="alert" className="mt-3 text-sm text-red-700">{browseError}</p>}
-    <div className="mt-4 flex flex-wrap gap-3"><button type="submit" className="rounded border border-[var(--card-border)] px-3 py-2 text-sm font-medium text-[var(--foreground)]">Preview import</button><button type="button" disabled={!isConnected} className="flowstate-accent-button rounded px-3 py-2 text-sm font-medium text-white disabled:opacity-50">Sync now</button></div>{preview && <div role="status" className="mt-4 rounded border border-[var(--card-border)] bg-[var(--muted-bg)] p-3 text-sm"><strong>{preview.connectionState === "NotConnected" ? "Not connected" : "Preview"}</strong><p className="mt-1 text-[var(--muted)]">{preview.message} Items available: {preview.itemCount}.</p></div>}</form></main>;
+    <div className="mt-4 flex flex-wrap gap-3"><button type="submit" className="rounded border border-[var(--card-border)] px-3 py-2 text-sm font-medium text-[var(--foreground)]">{busy === "preview" ? "Counting…" : "Preview import"}</button><button type="button" onClick={runImport} disabled={!isConnected || !selectedLibrary || importing} className="flowstate-accent-button rounded px-3 py-2 text-sm font-medium text-white disabled:opacity-50">{importing ? "Importing…" : "Import folder"}</button></div>
+
+    {preview && <div role="status" className="mt-4 rounded border border-[var(--card-border)] bg-[var(--muted-bg)] p-3 text-sm">
+      <strong>{preview.supported.toLocaleString()} document{preview.supported === 1 ? "" : "s"} to import</strong>
+      <p className="mt-1 text-[var(--muted)]">{formatBytes(preview.totalBytes)} across {preview.files.toLocaleString()} file{preview.files === 1 ? "" : "s"} in this folder and everything beneath it.{preview.unsupported > 0 ? ` ${preview.unsupported.toLocaleString()} file${preview.unsupported === 1 ? "" : "s"} will be skipped (${preview.unsupportedSample.join(", ") || "unsupported type"}).` : ""}</p>
+      {preview.truncated ? <p className="mt-1 text-[var(--muted)]">This folder is larger than the {preview.maxItems.toLocaleString()}-file scan limit, so the count above is a minimum.</p> : null}
+      {preview.sample.length ? <ul className="mt-2 space-y-0.5 text-[var(--muted)]">{preview.sample.map((file) => <li key={file.path}>· {file.path}</li>)}</ul> : null}
+    </div>}
+
+    {importResult && <div role="status" className="mt-4 rounded border border-[var(--card-border)] bg-[var(--muted-bg)] p-3 text-sm">
+      <strong>{importing ? "Importing…" : "Import finished"}</strong>
+      <p className="mt-1 text-[var(--muted)]">{importResult.imported} imported · {importResult.duplicate} already present · {importResult.skipped} skipped · {importResult.failed} failed</p>
+      {importResult.imported > 0 ? <p className="mt-1">Imported evidence is waiting in the <Link href={`/clients/${organizationId}/review`} className="underline decoration-dotted">Review queue</Link>.</p> : null}
+    </div>}</form></main>;
 }
