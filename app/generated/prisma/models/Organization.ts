@@ -226,6 +226,7 @@ export type OrganizationWhereInput = {
   agentRuns?: Prisma.AgentRunListRelationFilter
   integrationConnections?: Prisma.IntegrationConnectionListRelationFilter
   documentFindings?: Prisma.DocumentFindingListRelationFilter
+  integrationSources?: Prisma.IntegrationSourceListRelationFilter
 }
 
 export type OrganizationOrderByWithRelationInput = {
@@ -257,6 +258,7 @@ export type OrganizationOrderByWithRelationInput = {
   agentRuns?: Prisma.AgentRunOrderByRelationAggregateInput
   integrationConnections?: Prisma.IntegrationConnectionOrderByRelationAggregateInput
   documentFindings?: Prisma.DocumentFindingOrderByRelationAggregateInput
+  integrationSources?: Prisma.IntegrationSourceOrderByRelationAggregateInput
 }
 
 export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
@@ -291,6 +293,7 @@ export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
   agentRuns?: Prisma.AgentRunListRelationFilter
   integrationConnections?: Prisma.IntegrationConnectionListRelationFilter
   documentFindings?: Prisma.DocumentFindingListRelationFilter
+  integrationSources?: Prisma.IntegrationSourceListRelationFilter
 }, "id">
 
 export type OrganizationOrderByWithAggregationInput = {
@@ -350,6 +353,7 @@ export type OrganizationCreateInput = {
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateInput = {
@@ -381,6 +385,7 @@ export type OrganizationUncheckedCreateInput = {
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUpdateInput = {
@@ -412,6 +417,7 @@ export type OrganizationUpdateInput = {
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateInput = {
@@ -443,6 +449,7 @@ export type OrganizationUncheckedUpdateInput = {
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateManyInput = {
@@ -803,6 +810,20 @@ export type OrganizationUpdateOneRequiredWithoutDocumentFindingsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutDocumentFindingsInput, Prisma.OrganizationUpdateWithoutDocumentFindingsInput>, Prisma.OrganizationUncheckedUpdateWithoutDocumentFindingsInput>
 }
 
+export type OrganizationCreateNestedOneWithoutIntegrationSourcesInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutIntegrationSourcesInput, Prisma.OrganizationUncheckedCreateWithoutIntegrationSourcesInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutIntegrationSourcesInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+}
+
+export type OrganizationUpdateOneRequiredWithoutIntegrationSourcesNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutIntegrationSourcesInput, Prisma.OrganizationUncheckedCreateWithoutIntegrationSourcesInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutIntegrationSourcesInput
+  upsert?: Prisma.OrganizationUpsertWithoutIntegrationSourcesInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutIntegrationSourcesInput, Prisma.OrganizationUpdateWithoutIntegrationSourcesInput>, Prisma.OrganizationUncheckedUpdateWithoutIntegrationSourcesInput>
+}
+
 export type OrganizationCreateWithoutUsersInput = {
   id?: string
   name: string
@@ -831,6 +852,7 @@ export type OrganizationCreateWithoutUsersInput = {
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutUsersInput = {
@@ -861,6 +883,7 @@ export type OrganizationUncheckedCreateWithoutUsersInput = {
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutUsersInput = {
@@ -907,6 +930,7 @@ export type OrganizationUpdateWithoutUsersInput = {
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutUsersInput = {
@@ -937,6 +961,7 @@ export type OrganizationUncheckedUpdateWithoutUsersInput = {
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutDomainsInput = {
@@ -967,6 +992,7 @@ export type OrganizationCreateWithoutDomainsInput = {
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutDomainsInput = {
@@ -997,6 +1023,7 @@ export type OrganizationUncheckedCreateWithoutDomainsInput = {
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutDomainsInput = {
@@ -1043,6 +1070,7 @@ export type OrganizationUpdateWithoutDomainsInput = {
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutDomainsInput = {
@@ -1073,6 +1101,7 @@ export type OrganizationUncheckedUpdateWithoutDomainsInput = {
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutStakeholdersInput = {
@@ -1103,6 +1132,7 @@ export type OrganizationCreateWithoutStakeholdersInput = {
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutStakeholdersInput = {
@@ -1133,6 +1163,7 @@ export type OrganizationUncheckedCreateWithoutStakeholdersInput = {
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutStakeholdersInput = {
@@ -1179,6 +1210,7 @@ export type OrganizationUpdateWithoutStakeholdersInput = {
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutStakeholdersInput = {
@@ -1209,6 +1241,7 @@ export type OrganizationUncheckedUpdateWithoutStakeholdersInput = {
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutKpisInput = {
@@ -1239,6 +1272,7 @@ export type OrganizationCreateWithoutKpisInput = {
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutKpisInput = {
@@ -1269,6 +1303,7 @@ export type OrganizationUncheckedCreateWithoutKpisInput = {
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutKpisInput = {
@@ -1315,6 +1350,7 @@ export type OrganizationUpdateWithoutKpisInput = {
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutKpisInput = {
@@ -1345,6 +1381,7 @@ export type OrganizationUncheckedUpdateWithoutKpisInput = {
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutProcessesInput = {
@@ -1375,6 +1412,7 @@ export type OrganizationCreateWithoutProcessesInput = {
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutProcessesInput = {
@@ -1405,6 +1443,7 @@ export type OrganizationUncheckedCreateWithoutProcessesInput = {
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutProcessesInput = {
@@ -1451,6 +1490,7 @@ export type OrganizationUpdateWithoutProcessesInput = {
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutProcessesInput = {
@@ -1481,6 +1521,7 @@ export type OrganizationUncheckedUpdateWithoutProcessesInput = {
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutTechnologiesInput = {
@@ -1511,6 +1552,7 @@ export type OrganizationCreateWithoutTechnologiesInput = {
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutTechnologiesInput = {
@@ -1541,6 +1583,7 @@ export type OrganizationUncheckedCreateWithoutTechnologiesInput = {
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutTechnologiesInput = {
@@ -1587,6 +1630,7 @@ export type OrganizationUpdateWithoutTechnologiesInput = {
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutTechnologiesInput = {
@@ -1617,6 +1661,7 @@ export type OrganizationUncheckedUpdateWithoutTechnologiesInput = {
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutProjectsInput = {
@@ -1647,6 +1692,7 @@ export type OrganizationCreateWithoutProjectsInput = {
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutProjectsInput = {
@@ -1677,6 +1723,7 @@ export type OrganizationUncheckedCreateWithoutProjectsInput = {
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutProjectsInput = {
@@ -1723,6 +1770,7 @@ export type OrganizationUpdateWithoutProjectsInput = {
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutProjectsInput = {
@@ -1753,6 +1801,7 @@ export type OrganizationUncheckedUpdateWithoutProjectsInput = {
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutAchievementsInput = {
@@ -1783,6 +1832,7 @@ export type OrganizationCreateWithoutAchievementsInput = {
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutAchievementsInput = {
@@ -1813,6 +1863,7 @@ export type OrganizationUncheckedCreateWithoutAchievementsInput = {
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutAchievementsInput = {
@@ -1859,6 +1910,7 @@ export type OrganizationUpdateWithoutAchievementsInput = {
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutAchievementsInput = {
@@ -1889,6 +1941,7 @@ export type OrganizationUncheckedUpdateWithoutAchievementsInput = {
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutSessionsInput = {
@@ -1919,6 +1972,7 @@ export type OrganizationCreateWithoutSessionsInput = {
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutSessionsInput = {
@@ -1949,6 +2003,7 @@ export type OrganizationUncheckedCreateWithoutSessionsInput = {
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutSessionsInput = {
@@ -1995,6 +2050,7 @@ export type OrganizationUpdateWithoutSessionsInput = {
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutSessionsInput = {
@@ -2025,6 +2081,7 @@ export type OrganizationUncheckedUpdateWithoutSessionsInput = {
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutMeetingContextsInput = {
@@ -2055,6 +2112,7 @@ export type OrganizationCreateWithoutMeetingContextsInput = {
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutMeetingContextsInput = {
@@ -2085,6 +2143,7 @@ export type OrganizationUncheckedCreateWithoutMeetingContextsInput = {
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutMeetingContextsInput = {
@@ -2131,6 +2190,7 @@ export type OrganizationUpdateWithoutMeetingContextsInput = {
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutMeetingContextsInput = {
@@ -2161,6 +2221,7 @@ export type OrganizationUncheckedUpdateWithoutMeetingContextsInput = {
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutCapturedInputsInput = {
@@ -2191,6 +2252,7 @@ export type OrganizationCreateWithoutCapturedInputsInput = {
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutCapturedInputsInput = {
@@ -2221,6 +2283,7 @@ export type OrganizationUncheckedCreateWithoutCapturedInputsInput = {
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutCapturedInputsInput = {
@@ -2267,6 +2330,7 @@ export type OrganizationUpdateWithoutCapturedInputsInput = {
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutCapturedInputsInput = {
@@ -2297,6 +2361,7 @@ export type OrganizationUncheckedUpdateWithoutCapturedInputsInput = {
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutInboundEmailEndpointInput = {
@@ -2327,6 +2392,7 @@ export type OrganizationCreateWithoutInboundEmailEndpointInput = {
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutInboundEmailEndpointInput = {
@@ -2357,6 +2423,7 @@ export type OrganizationUncheckedCreateWithoutInboundEmailEndpointInput = {
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutInboundEmailEndpointInput = {
@@ -2403,6 +2470,7 @@ export type OrganizationUpdateWithoutInboundEmailEndpointInput = {
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutInboundEmailEndpointInput = {
@@ -2433,6 +2501,7 @@ export type OrganizationUncheckedUpdateWithoutInboundEmailEndpointInput = {
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutMaturityRubricsInput = {
@@ -2463,6 +2532,7 @@ export type OrganizationCreateWithoutMaturityRubricsInput = {
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutMaturityRubricsInput = {
@@ -2493,6 +2563,7 @@ export type OrganizationUncheckedCreateWithoutMaturityRubricsInput = {
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutMaturityRubricsInput = {
@@ -2539,6 +2610,7 @@ export type OrganizationUpdateWithoutMaturityRubricsInput = {
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutMaturityRubricsInput = {
@@ -2569,6 +2641,7 @@ export type OrganizationUncheckedUpdateWithoutMaturityRubricsInput = {
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutPlanningItemsInput = {
@@ -2599,6 +2672,7 @@ export type OrganizationCreateWithoutPlanningItemsInput = {
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutPlanningItemsInput = {
@@ -2629,6 +2703,7 @@ export type OrganizationUncheckedCreateWithoutPlanningItemsInput = {
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutPlanningItemsInput = {
@@ -2675,6 +2750,7 @@ export type OrganizationUpdateWithoutPlanningItemsInput = {
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutPlanningItemsInput = {
@@ -2705,6 +2781,7 @@ export type OrganizationUncheckedUpdateWithoutPlanningItemsInput = {
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutCommunicationPacksInput = {
@@ -2735,6 +2812,7 @@ export type OrganizationCreateWithoutCommunicationPacksInput = {
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutCommunicationPacksInput = {
@@ -2765,6 +2843,7 @@ export type OrganizationUncheckedCreateWithoutCommunicationPacksInput = {
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutCommunicationPacksInput = {
@@ -2811,6 +2890,7 @@ export type OrganizationUpdateWithoutCommunicationPacksInput = {
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutCommunicationPacksInput = {
@@ -2841,6 +2921,7 @@ export type OrganizationUncheckedUpdateWithoutCommunicationPacksInput = {
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutRecommendationsInput = {
@@ -2871,6 +2952,7 @@ export type OrganizationCreateWithoutRecommendationsInput = {
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutRecommendationsInput = {
@@ -2901,6 +2983,7 @@ export type OrganizationUncheckedCreateWithoutRecommendationsInput = {
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutRecommendationsInput = {
@@ -2947,6 +3030,7 @@ export type OrganizationUpdateWithoutRecommendationsInput = {
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutRecommendationsInput = {
@@ -2977,6 +3061,7 @@ export type OrganizationUncheckedUpdateWithoutRecommendationsInput = {
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutAssessmentTasksInput = {
@@ -3007,6 +3092,7 @@ export type OrganizationCreateWithoutAssessmentTasksInput = {
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutAssessmentTasksInput = {
@@ -3037,6 +3123,7 @@ export type OrganizationUncheckedCreateWithoutAssessmentTasksInput = {
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutAssessmentTasksInput = {
@@ -3083,6 +3170,7 @@ export type OrganizationUpdateWithoutAssessmentTasksInput = {
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutAssessmentTasksInput = {
@@ -3113,6 +3201,7 @@ export type OrganizationUncheckedUpdateWithoutAssessmentTasksInput = {
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutAgentRunsInput = {
@@ -3143,6 +3232,7 @@ export type OrganizationCreateWithoutAgentRunsInput = {
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutAgentRunsInput = {
@@ -3173,6 +3263,7 @@ export type OrganizationUncheckedCreateWithoutAgentRunsInput = {
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutAgentRunsInput = {
@@ -3219,6 +3310,7 @@ export type OrganizationUpdateWithoutAgentRunsInput = {
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutAgentRunsInput = {
@@ -3249,6 +3341,7 @@ export type OrganizationUncheckedUpdateWithoutAgentRunsInput = {
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutIntegrationConnectionsInput = {
@@ -3279,6 +3372,7 @@ export type OrganizationCreateWithoutIntegrationConnectionsInput = {
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutIntegrationConnectionsInput = {
@@ -3309,6 +3403,7 @@ export type OrganizationUncheckedCreateWithoutIntegrationConnectionsInput = {
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutIntegrationConnectionsInput = {
@@ -3355,6 +3450,7 @@ export type OrganizationUpdateWithoutIntegrationConnectionsInput = {
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutIntegrationConnectionsInput = {
@@ -3385,6 +3481,7 @@ export type OrganizationUncheckedUpdateWithoutIntegrationConnectionsInput = {
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutDocumentFindingsInput = {
@@ -3415,6 +3512,7 @@ export type OrganizationCreateWithoutDocumentFindingsInput = {
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutDocumentFindingsInput = {
@@ -3445,6 +3543,7 @@ export type OrganizationUncheckedCreateWithoutDocumentFindingsInput = {
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutDocumentFindingsInput = {
@@ -3491,6 +3590,7 @@ export type OrganizationUpdateWithoutDocumentFindingsInput = {
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
   agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutDocumentFindingsInput = {
@@ -3521,6 +3621,147 @@ export type OrganizationUncheckedUpdateWithoutDocumentFindingsInput = {
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutIntegrationSourcesInput = {
+  id?: string
+  name: string
+  industry?: string | null
+  size?: string | null
+  notes?: string | null
+  engagementMotive?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserOrganizationCreateNestedManyWithoutOrganizationInput
+  domains?: Prisma.BusinessDomainCreateNestedManyWithoutOrganizationInput
+  stakeholders?: Prisma.StakeholderCreateNestedManyWithoutOrganizationInput
+  kpis?: Prisma.KPICreateNestedManyWithoutOrganizationInput
+  achievements?: Prisma.AchievementCreateNestedManyWithoutOrganizationInput
+  technologies?: Prisma.TechnologyCreateNestedManyWithoutOrganizationInput
+  processes?: Prisma.ProcessCreateNestedManyWithoutOrganizationInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutOrganizationInput
+  sessions?: Prisma.AssessmentSessionCreateNestedManyWithoutOrganizationInput
+  capturedInputs?: Prisma.CapturedInputCreateNestedManyWithoutOrganizationInput
+  meetingContexts?: Prisma.MeetingContextCreateNestedManyWithoutOrganizationInput
+  recommendations?: Prisma.RecommendationCreateNestedManyWithoutOrganizationInput
+  maturityRubrics?: Prisma.MaturityRubricCreateNestedManyWithoutOrganizationInput
+  assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
+  communicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutOrganizationInput
+  inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
+  integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
+  documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutIntegrationSourcesInput = {
+  id?: string
+  name: string
+  industry?: string | null
+  size?: string | null
+  notes?: string | null
+  engagementMotive?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
+  domains?: Prisma.BusinessDomainUncheckedCreateNestedManyWithoutOrganizationInput
+  stakeholders?: Prisma.StakeholderUncheckedCreateNestedManyWithoutOrganizationInput
+  kpis?: Prisma.KPIUncheckedCreateNestedManyWithoutOrganizationInput
+  achievements?: Prisma.AchievementUncheckedCreateNestedManyWithoutOrganizationInput
+  technologies?: Prisma.TechnologyUncheckedCreateNestedManyWithoutOrganizationInput
+  processes?: Prisma.ProcessUncheckedCreateNestedManyWithoutOrganizationInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutOrganizationInput
+  sessions?: Prisma.AssessmentSessionUncheckedCreateNestedManyWithoutOrganizationInput
+  capturedInputs?: Prisma.CapturedInputUncheckedCreateNestedManyWithoutOrganizationInput
+  meetingContexts?: Prisma.MeetingContextUncheckedCreateNestedManyWithoutOrganizationInput
+  recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutOrganizationInput
+  maturityRubrics?: Prisma.MaturityRubricUncheckedCreateNestedManyWithoutOrganizationInput
+  assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
+  communicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutOrganizationInput
+  inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
+  documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutIntegrationSourcesInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutIntegrationSourcesInput, Prisma.OrganizationUncheckedCreateWithoutIntegrationSourcesInput>
+}
+
+export type OrganizationUpsertWithoutIntegrationSourcesInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutIntegrationSourcesInput, Prisma.OrganizationUncheckedUpdateWithoutIntegrationSourcesInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutIntegrationSourcesInput, Prisma.OrganizationUncheckedCreateWithoutIntegrationSourcesInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutIntegrationSourcesInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutIntegrationSourcesInput, Prisma.OrganizationUncheckedUpdateWithoutIntegrationSourcesInput>
+}
+
+export type OrganizationUpdateWithoutIntegrationSourcesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserOrganizationUpdateManyWithoutOrganizationNestedInput
+  domains?: Prisma.BusinessDomainUpdateManyWithoutOrganizationNestedInput
+  stakeholders?: Prisma.StakeholderUpdateManyWithoutOrganizationNestedInput
+  kpis?: Prisma.KPIUpdateManyWithoutOrganizationNestedInput
+  achievements?: Prisma.AchievementUpdateManyWithoutOrganizationNestedInput
+  technologies?: Prisma.TechnologyUpdateManyWithoutOrganizationNestedInput
+  processes?: Prisma.ProcessUpdateManyWithoutOrganizationNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutOrganizationNestedInput
+  sessions?: Prisma.AssessmentSessionUpdateManyWithoutOrganizationNestedInput
+  capturedInputs?: Prisma.CapturedInputUpdateManyWithoutOrganizationNestedInput
+  meetingContexts?: Prisma.MeetingContextUpdateManyWithoutOrganizationNestedInput
+  recommendations?: Prisma.RecommendationUpdateManyWithoutOrganizationNestedInput
+  maturityRubrics?: Prisma.MaturityRubricUpdateManyWithoutOrganizationNestedInput
+  assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
+  communicationPacks?: Prisma.CommunicationPackUpdateManyWithoutOrganizationNestedInput
+  inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
+  integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
+  documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutIntegrationSourcesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
+  domains?: Prisma.BusinessDomainUncheckedUpdateManyWithoutOrganizationNestedInput
+  stakeholders?: Prisma.StakeholderUncheckedUpdateManyWithoutOrganizationNestedInput
+  kpis?: Prisma.KPIUncheckedUpdateManyWithoutOrganizationNestedInput
+  achievements?: Prisma.AchievementUncheckedUpdateManyWithoutOrganizationNestedInput
+  technologies?: Prisma.TechnologyUncheckedUpdateManyWithoutOrganizationNestedInput
+  processes?: Prisma.ProcessUncheckedUpdateManyWithoutOrganizationNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutOrganizationNestedInput
+  sessions?: Prisma.AssessmentSessionUncheckedUpdateManyWithoutOrganizationNestedInput
+  capturedInputs?: Prisma.CapturedInputUncheckedUpdateManyWithoutOrganizationNestedInput
+  meetingContexts?: Prisma.MeetingContextUncheckedUpdateManyWithoutOrganizationNestedInput
+  recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutOrganizationNestedInput
+  maturityRubrics?: Prisma.MaturityRubricUncheckedUpdateManyWithoutOrganizationNestedInput
+  assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
+  communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
+  inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
+  documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 
@@ -3548,6 +3789,7 @@ export type OrganizationCountOutputType = {
   agentRuns: number
   integrationConnections: number
   documentFindings: number
+  integrationSources: number
 }
 
 export type OrganizationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3570,6 +3812,7 @@ export type OrganizationCountOutputTypeSelect<ExtArgs extends runtime.Types.Exte
   agentRuns?: boolean | OrganizationCountOutputTypeCountAgentRunsArgs
   integrationConnections?: boolean | OrganizationCountOutputTypeCountIntegrationConnectionsArgs
   documentFindings?: boolean | OrganizationCountOutputTypeCountDocumentFindingsArgs
+  integrationSources?: boolean | OrganizationCountOutputTypeCountIntegrationSourcesArgs
 }
 
 /**
@@ -3715,6 +3958,13 @@ export type OrganizationCountOutputTypeCountDocumentFindingsArgs<ExtArgs extends
   where?: Prisma.DocumentFindingWhereInput
 }
 
+/**
+ * OrganizationCountOutputType without action
+ */
+export type OrganizationCountOutputTypeCountIntegrationSourcesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.IntegrationSourceWhereInput
+}
+
 
 export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3745,6 +3995,7 @@ export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   agentRuns?: boolean | Prisma.Organization$agentRunsArgs<ExtArgs>
   integrationConnections?: boolean | Prisma.Organization$integrationConnectionsArgs<ExtArgs>
   documentFindings?: boolean | Prisma.Organization$documentFindingsArgs<ExtArgs>
+  integrationSources?: boolean | Prisma.Organization$integrationSourcesArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["organization"]>
 
@@ -3803,6 +4054,7 @@ export type OrganizationInclude<ExtArgs extends runtime.Types.Extensions.Interna
   agentRuns?: boolean | Prisma.Organization$agentRunsArgs<ExtArgs>
   integrationConnections?: boolean | Prisma.Organization$integrationConnectionsArgs<ExtArgs>
   documentFindings?: boolean | Prisma.Organization$documentFindingsArgs<ExtArgs>
+  integrationSources?: boolean | Prisma.Organization$integrationSourcesArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type OrganizationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -3831,6 +4083,7 @@ export type $OrganizationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     agentRuns: Prisma.$AgentRunPayload<ExtArgs>[]
     integrationConnections: Prisma.$IntegrationConnectionPayload<ExtArgs>[]
     documentFindings: Prisma.$DocumentFindingPayload<ExtArgs>[]
+    integrationSources: Prisma.$IntegrationSourcePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -4255,6 +4508,7 @@ export interface Prisma__OrganizationClient<T, Null = never, ExtArgs extends run
   agentRuns<T extends Prisma.Organization$agentRunsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$agentRunsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   integrationConnections<T extends Prisma.Organization$integrationConnectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$integrationConnectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IntegrationConnectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documentFindings<T extends Prisma.Organization$documentFindingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$documentFindingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentFindingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  integrationSources<T extends Prisma.Organization$integrationSourcesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$integrationSourcesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IntegrationSourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5157,6 +5411,30 @@ export type Organization$documentFindingsArgs<ExtArgs extends runtime.Types.Exte
   take?: number
   skip?: number
   distinct?: Prisma.DocumentFindingScalarFieldEnum | Prisma.DocumentFindingScalarFieldEnum[]
+}
+
+/**
+ * Organization.integrationSources
+ */
+export type Organization$integrationSourcesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the IntegrationSource
+   */
+  select?: Prisma.IntegrationSourceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the IntegrationSource
+   */
+  omit?: Prisma.IntegrationSourceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.IntegrationSourceInclude<ExtArgs> | null
+  where?: Prisma.IntegrationSourceWhereInput
+  orderBy?: Prisma.IntegrationSourceOrderByWithRelationInput | Prisma.IntegrationSourceOrderByWithRelationInput[]
+  cursor?: Prisma.IntegrationSourceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.IntegrationSourceScalarFieldEnum | Prisma.IntegrationSourceScalarFieldEnum[]
 }
 
 /**

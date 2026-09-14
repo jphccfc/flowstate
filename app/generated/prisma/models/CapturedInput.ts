@@ -48,6 +48,10 @@ export type CapturedInputMinAggregateOutputType = {
   idempotencyKey: string | null
   quarantineReason: string | null
   rawText: string | null
+  sourceDriveId: string | null
+  sourceItemId: string | null
+  sourceVersion: string | null
+  sourceHash: string | null
   locationTag: string | null
   status: $Enums.ProcessingStatus | null
   reviewStatus: $Enums.ScratchpadReviewStatus | null
@@ -73,6 +77,10 @@ export type CapturedInputMaxAggregateOutputType = {
   idempotencyKey: string | null
   quarantineReason: string | null
   rawText: string | null
+  sourceDriveId: string | null
+  sourceItemId: string | null
+  sourceVersion: string | null
+  sourceHash: string | null
   locationTag: string | null
   status: $Enums.ProcessingStatus | null
   reviewStatus: $Enums.ScratchpadReviewStatus | null
@@ -98,6 +106,10 @@ export type CapturedInputCountAggregateOutputType = {
   idempotencyKey: number
   quarantineReason: number
   rawText: number
+  sourceDriveId: number
+  sourceItemId: number
+  sourceVersion: number
+  sourceHash: number
   locationTag: number
   status: number
   reviewStatus: number
@@ -133,6 +145,10 @@ export type CapturedInputMinAggregateInputType = {
   idempotencyKey?: true
   quarantineReason?: true
   rawText?: true
+  sourceDriveId?: true
+  sourceItemId?: true
+  sourceVersion?: true
+  sourceHash?: true
   locationTag?: true
   status?: true
   reviewStatus?: true
@@ -158,6 +174,10 @@ export type CapturedInputMaxAggregateInputType = {
   idempotencyKey?: true
   quarantineReason?: true
   rawText?: true
+  sourceDriveId?: true
+  sourceItemId?: true
+  sourceVersion?: true
+  sourceHash?: true
   locationTag?: true
   status?: true
   reviewStatus?: true
@@ -183,6 +203,10 @@ export type CapturedInputCountAggregateInputType = {
   idempotencyKey?: true
   quarantineReason?: true
   rawText?: true
+  sourceDriveId?: true
+  sourceItemId?: true
+  sourceVersion?: true
+  sourceHash?: true
   locationTag?: true
   status?: true
   reviewStatus?: true
@@ -295,6 +319,10 @@ export type CapturedInputGroupByOutputType = {
   idempotencyKey: string | null
   quarantineReason: string | null
   rawText: string | null
+  sourceDriveId: string | null
+  sourceItemId: string | null
+  sourceVersion: string | null
+  sourceHash: string | null
   locationTag: string | null
   status: $Enums.ProcessingStatus
   reviewStatus: $Enums.ScratchpadReviewStatus
@@ -343,6 +371,10 @@ export type CapturedInputWhereInput = {
   idempotencyKey?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   quarantineReason?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   rawText?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  sourceDriveId?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  sourceItemId?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  sourceVersion?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  sourceHash?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   locationTag?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   status?: Prisma.EnumProcessingStatusFilter<"CapturedInput"> | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFilter<"CapturedInput"> | $Enums.ScratchpadReviewStatus
@@ -375,6 +407,10 @@ export type CapturedInputOrderByWithRelationInput = {
   idempotencyKey?: Prisma.SortOrderInput | Prisma.SortOrder
   quarantineReason?: Prisma.SortOrderInput | Prisma.SortOrder
   rawText?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceDriveId?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceItemId?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceVersion?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceHash?: Prisma.SortOrderInput | Prisma.SortOrder
   locationTag?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   reviewStatus?: Prisma.SortOrder
@@ -411,6 +447,10 @@ export type CapturedInputWhereUniqueInput = Prisma.AtLeast<{
   idempotencyKey?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   quarantineReason?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   rawText?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  sourceDriveId?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  sourceItemId?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  sourceVersion?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  sourceHash?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   locationTag?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   status?: Prisma.EnumProcessingStatusFilter<"CapturedInput"> | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFilter<"CapturedInput"> | $Enums.ScratchpadReviewStatus
@@ -443,6 +483,10 @@ export type CapturedInputOrderByWithAggregationInput = {
   idempotencyKey?: Prisma.SortOrderInput | Prisma.SortOrder
   quarantineReason?: Prisma.SortOrderInput | Prisma.SortOrder
   rawText?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceDriveId?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceItemId?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceVersion?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceHash?: Prisma.SortOrderInput | Prisma.SortOrder
   locationTag?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   reviewStatus?: Prisma.SortOrder
@@ -476,6 +520,10 @@ export type CapturedInputScalarWhereWithAggregatesInput = {
   idempotencyKey?: Prisma.StringNullableWithAggregatesFilter<"CapturedInput"> | string | null
   quarantineReason?: Prisma.StringNullableWithAggregatesFilter<"CapturedInput"> | string | null
   rawText?: Prisma.StringNullableWithAggregatesFilter<"CapturedInput"> | string | null
+  sourceDriveId?: Prisma.StringNullableWithAggregatesFilter<"CapturedInput"> | string | null
+  sourceItemId?: Prisma.StringNullableWithAggregatesFilter<"CapturedInput"> | string | null
+  sourceVersion?: Prisma.StringNullableWithAggregatesFilter<"CapturedInput"> | string | null
+  sourceHash?: Prisma.StringNullableWithAggregatesFilter<"CapturedInput"> | string | null
   locationTag?: Prisma.StringNullableWithAggregatesFilter<"CapturedInput"> | string | null
   status?: Prisma.EnumProcessingStatusWithAggregatesFilter<"CapturedInput"> | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusWithAggregatesFilter<"CapturedInput"> | $Enums.ScratchpadReviewStatus
@@ -498,6 +546,10 @@ export type CapturedInputCreateInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -530,6 +582,10 @@ export type CapturedInputUncheckedCreateInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -556,6 +612,10 @@ export type CapturedInputUpdateInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -588,6 +648,10 @@ export type CapturedInputUncheckedUpdateInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -617,6 +681,10 @@ export type CapturedInputCreateManyInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -639,6 +707,10 @@ export type CapturedInputUpdateManyMutationInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -664,6 +736,10 @@ export type CapturedInputUncheckedUpdateManyInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -704,6 +780,10 @@ export type CapturedInputCountOrderByAggregateInput = {
   idempotencyKey?: Prisma.SortOrder
   quarantineReason?: Prisma.SortOrder
   rawText?: Prisma.SortOrder
+  sourceDriveId?: Prisma.SortOrder
+  sourceItemId?: Prisma.SortOrder
+  sourceVersion?: Prisma.SortOrder
+  sourceHash?: Prisma.SortOrder
   locationTag?: Prisma.SortOrder
   status?: Prisma.SortOrder
   reviewStatus?: Prisma.SortOrder
@@ -733,6 +813,10 @@ export type CapturedInputMaxOrderByAggregateInput = {
   idempotencyKey?: Prisma.SortOrder
   quarantineReason?: Prisma.SortOrder
   rawText?: Prisma.SortOrder
+  sourceDriveId?: Prisma.SortOrder
+  sourceItemId?: Prisma.SortOrder
+  sourceVersion?: Prisma.SortOrder
+  sourceHash?: Prisma.SortOrder
   locationTag?: Prisma.SortOrder
   status?: Prisma.SortOrder
   reviewStatus?: Prisma.SortOrder
@@ -758,6 +842,10 @@ export type CapturedInputMinOrderByAggregateInput = {
   idempotencyKey?: Prisma.SortOrder
   quarantineReason?: Prisma.SortOrder
   rawText?: Prisma.SortOrder
+  sourceDriveId?: Prisma.SortOrder
+  sourceItemId?: Prisma.SortOrder
+  sourceVersion?: Prisma.SortOrder
+  sourceHash?: Prisma.SortOrder
   locationTag?: Prisma.SortOrder
   status?: Prisma.SortOrder
   reviewStatus?: Prisma.SortOrder
@@ -983,6 +1071,10 @@ export type CapturedInputCreateWithoutOrganizationInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -1013,6 +1105,10 @@ export type CapturedInputUncheckedCreateWithoutOrganizationInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -1071,6 +1167,10 @@ export type CapturedInputScalarWhereInput = {
   idempotencyKey?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   quarantineReason?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   rawText?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  sourceDriveId?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  sourceItemId?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  sourceVersion?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
+  sourceHash?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   locationTag?: Prisma.StringNullableFilter<"CapturedInput"> | string | null
   status?: Prisma.EnumProcessingStatusFilter<"CapturedInput"> | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFilter<"CapturedInput"> | $Enums.ScratchpadReviewStatus
@@ -1093,6 +1193,10 @@ export type CapturedInputCreateWithoutSessionInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -1123,6 +1227,10 @@ export type CapturedInputUncheckedCreateWithoutSessionInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -1175,6 +1283,10 @@ export type CapturedInputCreateWithoutMeetingContextInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -1205,6 +1317,10 @@ export type CapturedInputUncheckedCreateWithoutMeetingContextInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -1257,6 +1373,10 @@ export type CapturedInputCreateWithoutAttachmentsInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -1288,6 +1408,10 @@ export type CapturedInputUncheckedCreateWithoutAttachmentsInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -1329,6 +1453,10 @@ export type CapturedInputUpdateWithoutAttachmentsInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -1360,6 +1488,10 @@ export type CapturedInputUncheckedUpdateWithoutAttachmentsInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -1385,6 +1517,10 @@ export type CapturedInputCreateWithoutSegmentsInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -1416,6 +1552,10 @@ export type CapturedInputUncheckedCreateWithoutSegmentsInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -1457,6 +1597,10 @@ export type CapturedInputUpdateWithoutSegmentsInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -1488,6 +1632,10 @@ export type CapturedInputUncheckedUpdateWithoutSegmentsInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -1513,6 +1661,10 @@ export type CapturedInputCreateWithoutAgentRunsInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -1544,6 +1696,10 @@ export type CapturedInputUncheckedCreateWithoutAgentRunsInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -1585,6 +1741,10 @@ export type CapturedInputUpdateWithoutAgentRunsInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -1616,6 +1776,10 @@ export type CapturedInputUncheckedUpdateWithoutAgentRunsInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -1641,6 +1805,10 @@ export type CapturedInputCreateWithoutFindingsInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -1672,6 +1840,10 @@ export type CapturedInputUncheckedCreateWithoutFindingsInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -1713,6 +1885,10 @@ export type CapturedInputUpdateWithoutFindingsInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -1744,6 +1920,10 @@ export type CapturedInputUncheckedUpdateWithoutFindingsInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -1771,6 +1951,10 @@ export type CapturedInputCreateManyOrganizationInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -1793,6 +1977,10 @@ export type CapturedInputUpdateWithoutOrganizationInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -1823,6 +2011,10 @@ export type CapturedInputUncheckedUpdateWithoutOrganizationInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -1851,6 +2043,10 @@ export type CapturedInputUncheckedUpdateManyWithoutOrganizationInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -1875,6 +2071,10 @@ export type CapturedInputCreateManySessionInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -1897,6 +2097,10 @@ export type CapturedInputUpdateWithoutSessionInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -1927,6 +2131,10 @@ export type CapturedInputUncheckedUpdateWithoutSessionInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -1955,6 +2163,10 @@ export type CapturedInputUncheckedUpdateManyWithoutSessionInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -1979,6 +2191,10 @@ export type CapturedInputCreateManyMeetingContextInput = {
   idempotencyKey?: string | null
   quarantineReason?: string | null
   rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
   locationTag?: string | null
   status?: $Enums.ProcessingStatus
   reviewStatus?: $Enums.ScratchpadReviewStatus
@@ -2001,6 +2217,10 @@ export type CapturedInputUpdateWithoutMeetingContextInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -2031,6 +2251,10 @@ export type CapturedInputUncheckedUpdateWithoutMeetingContextInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -2059,6 +2283,10 @@ export type CapturedInputUncheckedUpdateManyWithoutMeetingContextInput = {
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
   reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
@@ -2142,6 +2370,10 @@ export type CapturedInputSelect<ExtArgs extends runtime.Types.Extensions.Interna
   idempotencyKey?: boolean
   quarantineReason?: boolean
   rawText?: boolean
+  sourceDriveId?: boolean
+  sourceItemId?: boolean
+  sourceVersion?: boolean
+  sourceHash?: boolean
   locationTag?: boolean
   status?: boolean
   reviewStatus?: boolean
@@ -2175,6 +2407,10 @@ export type CapturedInputSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   idempotencyKey?: boolean
   quarantineReason?: boolean
   rawText?: boolean
+  sourceDriveId?: boolean
+  sourceItemId?: boolean
+  sourceVersion?: boolean
+  sourceHash?: boolean
   locationTag?: boolean
   status?: boolean
   reviewStatus?: boolean
@@ -2203,6 +2439,10 @@ export type CapturedInputSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   idempotencyKey?: boolean
   quarantineReason?: boolean
   rawText?: boolean
+  sourceDriveId?: boolean
+  sourceItemId?: boolean
+  sourceVersion?: boolean
+  sourceHash?: boolean
   locationTag?: boolean
   status?: boolean
   reviewStatus?: boolean
@@ -2231,6 +2471,10 @@ export type CapturedInputSelectScalar = {
   idempotencyKey?: boolean
   quarantineReason?: boolean
   rawText?: boolean
+  sourceDriveId?: boolean
+  sourceItemId?: boolean
+  sourceVersion?: boolean
+  sourceHash?: boolean
   locationTag?: boolean
   status?: boolean
   reviewStatus?: boolean
@@ -2242,7 +2486,7 @@ export type CapturedInputSelectScalar = {
   updatedAt?: boolean
 }
 
-export type CapturedInputOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "sessionId" | "meetingContextId" | "revision" | "type" | "sourceRef" | "senderEmail" | "senderName" | "subject" | "idempotencyKey" | "quarantineReason" | "rawText" | "locationTag" | "status" | "reviewStatus" | "reviewedBy" | "reviewedAt" | "error" | "capturedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["capturedInput"]>
+export type CapturedInputOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "sessionId" | "meetingContextId" | "revision" | "type" | "sourceRef" | "senderEmail" | "senderName" | "subject" | "idempotencyKey" | "quarantineReason" | "rawText" | "sourceDriveId" | "sourceItemId" | "sourceVersion" | "sourceHash" | "locationTag" | "status" | "reviewStatus" | "reviewedBy" | "reviewedAt" | "error" | "capturedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["capturedInput"]>
 export type CapturedInputInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   session?: boolean | Prisma.CapturedInput$sessionArgs<ExtArgs>
@@ -2289,6 +2533,10 @@ export type $CapturedInputPayload<ExtArgs extends runtime.Types.Extensions.Inter
     idempotencyKey: string | null
     quarantineReason: string | null
     rawText: string | null
+    sourceDriveId: string | null
+    sourceItemId: string | null
+    sourceVersion: string | null
+    sourceHash: string | null
     locationTag: string | null
     status: $Enums.ProcessingStatus
     reviewStatus: $Enums.ScratchpadReviewStatus
@@ -2741,6 +2989,10 @@ export interface CapturedInputFieldRefs {
   readonly idempotencyKey: Prisma.FieldRef<"CapturedInput", 'String'>
   readonly quarantineReason: Prisma.FieldRef<"CapturedInput", 'String'>
   readonly rawText: Prisma.FieldRef<"CapturedInput", 'String'>
+  readonly sourceDriveId: Prisma.FieldRef<"CapturedInput", 'String'>
+  readonly sourceItemId: Prisma.FieldRef<"CapturedInput", 'String'>
+  readonly sourceVersion: Prisma.FieldRef<"CapturedInput", 'String'>
+  readonly sourceHash: Prisma.FieldRef<"CapturedInput", 'String'>
   readonly locationTag: Prisma.FieldRef<"CapturedInput", 'String'>
   readonly status: Prisma.FieldRef<"CapturedInput", 'ProcessingStatus'>
   readonly reviewStatus: Prisma.FieldRef<"CapturedInput", 'ScratchpadReviewStatus'>

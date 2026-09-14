@@ -433,7 +433,8 @@ export const ModelName = {
   AgentRun: 'AgentRun',
   AgentOutput: 'AgentOutput',
   IntegrationConnection: 'IntegrationConnection',
-  DocumentFinding: 'DocumentFinding'
+  DocumentFinding: 'DocumentFinding',
+  IntegrationSource: 'IntegrationSource'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -449,7 +450,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "meetingContext" | "capturedInput" | "capturedInputAttachment" | "inboundEmailEndpoint" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "growthAction" | "planningItem" | "communicationPack" | "communicationPackAcknowledgement" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob" | "assessmentTask" | "agentDefinition" | "agentPromptVersion" | "agentInputRule" | "agentRun" | "agentOutput" | "integrationConnection" | "documentFinding"
+    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "meetingContext" | "capturedInput" | "capturedInputAttachment" | "inboundEmailEndpoint" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "growthAction" | "planningItem" | "communicationPack" | "communicationPackAcknowledgement" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob" | "assessmentTask" | "agentDefinition" | "agentPromptVersion" | "agentInputRule" | "agentRun" | "agentOutput" | "integrationConnection" | "documentFinding" | "integrationSource"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -4153,6 +4154,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    IntegrationSource: {
+      payload: Prisma.$IntegrationSourcePayload<ExtArgs>
+      fields: Prisma.IntegrationSourceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.IntegrationSourceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IntegrationSourcePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.IntegrationSourceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IntegrationSourcePayload>
+        }
+        findFirst: {
+          args: Prisma.IntegrationSourceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IntegrationSourcePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.IntegrationSourceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IntegrationSourcePayload>
+        }
+        findMany: {
+          args: Prisma.IntegrationSourceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IntegrationSourcePayload>[]
+        }
+        create: {
+          args: Prisma.IntegrationSourceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IntegrationSourcePayload>
+        }
+        createMany: {
+          args: Prisma.IntegrationSourceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.IntegrationSourceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IntegrationSourcePayload>[]
+        }
+        delete: {
+          args: Prisma.IntegrationSourceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IntegrationSourcePayload>
+        }
+        update: {
+          args: Prisma.IntegrationSourceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IntegrationSourcePayload>
+        }
+        deleteMany: {
+          args: Prisma.IntegrationSourceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.IntegrationSourceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.IntegrationSourceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IntegrationSourcePayload>[]
+        }
+        upsert: {
+          args: Prisma.IntegrationSourceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IntegrationSourcePayload>
+        }
+        aggregate: {
+          args: Prisma.IntegrationSourceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateIntegrationSource>
+        }
+        groupBy: {
+          args: Prisma.IntegrationSourceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IntegrationSourceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.IntegrationSourceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IntegrationSourceCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -4450,6 +4525,10 @@ export const CapturedInputScalarFieldEnum = {
   idempotencyKey: 'idempotencyKey',
   quarantineReason: 'quarantineReason',
   rawText: 'rawText',
+  sourceDriveId: 'sourceDriveId',
+  sourceItemId: 'sourceItemId',
+  sourceVersion: 'sourceVersion',
+  sourceHash: 'sourceHash',
   locationTag: 'locationTag',
   status: 'status',
   reviewStatus: 'reviewStatus',
@@ -4978,6 +5057,29 @@ export const DocumentFindingScalarFieldEnum = {
 } as const
 
 export type DocumentFindingScalarFieldEnum = (typeof DocumentFindingScalarFieldEnum)[keyof typeof DocumentFindingScalarFieldEnum]
+
+
+export const IntegrationSourceScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  provider: 'provider',
+  siteId: 'siteId',
+  siteName: 'siteName',
+  driveId: 'driveId',
+  driveName: 'driveName',
+  folderItemId: 'folderItemId',
+  folderPath: 'folderPath',
+  enabled: 'enabled',
+  deltaLink: 'deltaLink',
+  syncStatus: 'syncStatus',
+  lastSyncedAt: 'lastSyncedAt',
+  lastError: 'lastError',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type IntegrationSourceScalarFieldEnum = (typeof IntegrationSourceScalarFieldEnum)[keyof typeof IntegrationSourceScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -5606,6 +5708,7 @@ export type GlobalOmitConfig = {
   agentOutput?: Prisma.AgentOutputOmit
   integrationConnection?: Prisma.IntegrationConnectionOmit
   documentFinding?: Prisma.DocumentFindingOmit
+  integrationSource?: Prisma.IntegrationSourceOmit
 }
 
 /* Types for Logging */

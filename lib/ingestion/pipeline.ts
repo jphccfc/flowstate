@@ -137,7 +137,7 @@ export async function processCapturedInput(capturedInputId: string): Promise<voi
             // The idempotency key embeds the drive item and content hash, so it
             // changes exactly when the source content changes — which is the
             // property staleness detection needs.
-            sourceHash: input.idempotencyKey ?? null,
+            sourceHash: input.sourceHash ?? null,
           },
         });
 

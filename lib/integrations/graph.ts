@@ -246,3 +246,66 @@ export async function getSignedInUser(
     mail: payload.mail ?? null,
   };
 }
+
+
+export type GraphDeltaItem = {
+  id: string;
+  name: string;
+  isFolder: boolean;
+  size: number;
+  lastModifiedDateTime: string | null;
+  webUrl: string | null;
+  deleted: boolean;
+  hash: string | null;
+  version: string | null;
+};
+
+export type GraphDeltaPage = {
+  items: GraphDeltaItem[];
+  nextLink: string | null;
+  deltaLink: string | null;
+};
+
+/**
+ * Reads one page of a drive delta query. The caller persists deltaLink only
+ * after the final page, so a failed sync can safely retry from the prior cursor.
+ * A delta URL is provider-issued state and must remain server-side.
+ */
+export async function getDriveDelta(
+  accessToken: string,
+  driveId: string,
+  folderItemId: string = "root",
+  options: { deltaLink?: string | null; fetchImpl?: FetchImpl } = {},
+): Promise<GraphDeltaPage> {
+  if (!driveId?.trim()) throw new Error("A document library id is required");
+  const path = options.deltaLink ?? `${GRAPH_BASE}/drives/${encodeURIComponent(driveId)}/items/${encodeURIComponent(folderItemId)}/delta`;
+  const fetchImpl = options.fetchImpl ?? fetch;
+  const response = await fetchImpl(path, {
+    headers: { Authorization: `Bearer ${accessToken}`, Accept: "application/json" },
+  });
+  const payload = (await response.json().catch(() => ({}))) as {
+    value?: Array<{ id: string; name?: string; size?: number; webUrl?: string; lastModifiedDateTime?: string; file?: { hashes?: { quickXorHash?: string; sha256Hash?: string } }; folder?: unknown; deleted?: unknown; }>; 
+    "@odata.nextLink"?: string;
+    "@odata.deltaLink"?: string;
+    error?: { code?: string; message?: string };
+  };
+  if (!response.ok) {
+    const code = payload.error?.code ?? `HTTP ${response.status}`;
+    throw new Error(`Microsoft Graph delta request failed (${code})`);
+  }
+  return {
+    items: (payload.value ?? []).map((item) => ({
+      id: item.id,
+      name: item.name ?? "(unnamed item)",
+      isFolder: Boolean(item.folder),
+      size: item.size ?? 0,
+      lastModifiedDateTime: item.lastModifiedDateTime ?? null,
+      webUrl: item.webUrl ?? null,
+      deleted: Boolean(item.deleted),
+      hash: item.file?.hashes?.quickXorHash ?? item.file?.hashes?.sha256Hash ?? null,
+      version: item.lastModifiedDateTime ?? null,
+    })),
+    nextLink: payload["@odata.nextLink"] ?? null,
+    deltaLink: payload["@odata.deltaLink"] ?? null,
+  };
+}

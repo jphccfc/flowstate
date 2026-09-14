@@ -75,6 +75,8 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
   const [preview, setPreview] = useState<ImportPreview | null>(null);
   const [importResult, setImportResult] = useState<ImportSummary | null>(null);
   const [analysisQueued, setAnalysisQueued] = useState(0);
+  const [sourceSaved, setSourceSaved] = useState(false);
+  const [syncing, setSyncing] = useState(false);
   const [importing, setImporting] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -97,6 +99,11 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
       setReadiness(data);
       setConnection(data.connection ?? null);
       setConnectionState(data.connectionState);
+      const sourcesResponse = await fetch(`${api}/sources`);
+      if (sourcesResponse.ok) {
+        const sourceData = await sourcesResponse.json();
+        setSourceSaved((sourceData.sources ?? []).some((source: { enabled: boolean }) => source.enabled));
+      }
     }
   }, [api]);
 
@@ -208,6 +215,47 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
     }
   }
 
+  /** Saves the exact site/library/folder scope for later delta sync. */
+  async function saveFolderScope() {
+    if (!selectedSite || !selectedLibrary) { setError("Choose a site and a document library first."); return; }
+    setError(null); setNotice(null); setBusy("save");
+    try {
+      const response = await fetch(`${api}/sources`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          siteId: selectedSite.id, siteName: selectedSite.name,
+          driveId: selectedLibrary.id, driveName: selectedLibrary.name,
+          folderItemId: currentPath.id, folderPath: path.map((segment) => segment.name).join(" / "),
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error ?? "The folder scope could not be saved.");
+      setSourceSaved(true);
+      setNotice("Folder saved for monitoring. Use Check for changes to run a SharePoint delta scan.");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The folder scope could not be saved.");
+    } finally { setBusy(null); }
+  }
+
+  /** Starts a bounded delta scan; it returns immediately and exposes status via the sources endpoint. */
+  async function checkForChanges() {
+    if (!sourceSaved) { setError("Save the selected folder for monitoring first."); return; }
+    setError(null); setNotice(null); setSyncing(true);
+    try {
+      const sourcesResponse = await fetch(`${api}/sources`);
+      const sourceData = await sourcesResponse.json();
+      const source = sourceData.sources?.[0];
+      if (!source) throw new Error("No saved SharePoint source was found.");
+      const response = await fetch(`${api}/sync?sourceId=${encodeURIComponent(source.id)}`, { method: "POST" });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error ?? "The change scan could not be started.");
+      setNotice("Change scan started. New and updated documents will be analysed; removed sources will be marked removed.");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The change scan could not be started.");
+    } finally { setSyncing(false); }
+  }
+
   /**
    * Imports the selected folder and everything beneath it.
    *
@@ -296,7 +344,7 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
     </div> : null}
 
     {browseError && <p role="alert" className="mt-3 text-sm text-red-700">{browseError}</p>}
-    <div className="mt-4 flex flex-wrap gap-3"><button type="submit" className="rounded border border-[var(--card-border)] px-3 py-2 text-sm font-medium text-[var(--foreground)]">{busy === "preview" ? "Counting…" : "Preview import"}</button><button type="button" onClick={runImport} disabled={!isConnected || !selectedLibrary || importing} className="flowstate-accent-button rounded px-3 py-2 text-sm font-medium text-white disabled:opacity-50">{importing ? "Importing…" : "Import folder"}</button></div>
+    <div className="mt-4 flex flex-wrap gap-3"><button type="submit" className="rounded border border-[var(--card-border)] px-3 py-2 text-sm font-medium text-[var(--foreground)]">{busy === "preview" ? "Counting…" : "Preview import"}</button><button type="button" onClick={saveFolderScope} disabled={!isConnected || !selectedSite || !selectedLibrary || busy === "save"} className="rounded border border-[var(--card-border)] px-3 py-2 text-sm font-medium text-[var(--foreground)] disabled:opacity-50">{busy === "save" ? "Saving…" : sourceSaved ? "Folder saved" : "Save folder for monitoring"}</button><button type="button" onClick={checkForChanges} disabled={!sourceSaved || syncing} className="rounded border border-[var(--card-border)] px-3 py-2 text-sm font-medium text-[var(--foreground)] disabled:opacity-50">{syncing ? "Starting scan…" : "Check for changes"}</button><button type="button" onClick={runImport} disabled={!isConnected || !selectedLibrary || importing} className="flowstate-accent-button rounded px-3 py-2 text-sm font-medium text-white disabled:opacity-50">{importing ? "Importing…" : "Import folder"}</button></div>
 
     {preview && <div role="status" className="mt-4 rounded border border-[var(--card-border)] bg-[var(--muted-bg)] p-3 text-sm">
       <strong>{preview.supported.toLocaleString()} document{preview.supported === 1 ? "" : "s"} to import</strong>

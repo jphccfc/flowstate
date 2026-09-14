@@ -100,7 +100,8 @@ export const ModelName = {
   AgentRun: 'AgentRun',
   AgentOutput: 'AgentOutput',
   IntegrationConnection: 'IntegrationConnection',
-  DocumentFinding: 'DocumentFinding'
+  DocumentFinding: 'DocumentFinding',
+  IntegrationSource: 'IntegrationSource'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -377,6 +378,10 @@ export const CapturedInputScalarFieldEnum = {
   idempotencyKey: 'idempotencyKey',
   quarantineReason: 'quarantineReason',
   rawText: 'rawText',
+  sourceDriveId: 'sourceDriveId',
+  sourceItemId: 'sourceItemId',
+  sourceVersion: 'sourceVersion',
+  sourceHash: 'sourceHash',
   locationTag: 'locationTag',
   status: 'status',
   reviewStatus: 'reviewStatus',
@@ -905,6 +910,29 @@ export const DocumentFindingScalarFieldEnum = {
 } as const
 
 export type DocumentFindingScalarFieldEnum = (typeof DocumentFindingScalarFieldEnum)[keyof typeof DocumentFindingScalarFieldEnum]
+
+
+export const IntegrationSourceScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  provider: 'provider',
+  siteId: 'siteId',
+  siteName: 'siteName',
+  driveId: 'driveId',
+  driveName: 'driveName',
+  folderItemId: 'folderItemId',
+  folderPath: 'folderPath',
+  enabled: 'enabled',
+  deltaLink: 'deltaLink',
+  syncStatus: 'syncStatus',
+  lastSyncedAt: 'lastSyncedAt',
+  lastError: 'lastError',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type IntegrationSourceScalarFieldEnum = (typeof IntegrationSourceScalarFieldEnum)[keyof typeof IntegrationSourceScalarFieldEnum]
 
 
 export const SortOrder = {

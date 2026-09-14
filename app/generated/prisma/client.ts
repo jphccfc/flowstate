@@ -299,3 +299,10 @@ export type IntegrationConnection = Prisma.IntegrationConnectionModel
  * Flowstate Score.
  */
 export type DocumentFinding = Prisma.DocumentFindingModel
+/**
+ * Model IntegrationSource
+ * A client-scoped SharePoint folder that Flowstate is allowed to monitor.
+ * The source tenant remains the system of record; this stores only scope and
+ * synchronization metadata, never a SharePoint file.
+ */
+export type IntegrationSource = Prisma.IntegrationSourceModel

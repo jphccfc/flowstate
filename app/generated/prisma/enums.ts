@@ -238,7 +238,8 @@ export const FindingStatus = {
   PENDING_REVIEW: 'PENDING_REVIEW',
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED',
-  STALE: 'STALE'
+  STALE: 'STALE',
+  SOURCE_REMOVED: 'SOURCE_REMOVED'
 } as const
 
 export type FindingStatus = (typeof FindingStatus)[keyof typeof FindingStatus]

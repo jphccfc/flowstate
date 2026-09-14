@@ -70,6 +70,7 @@ model Organization {
   agentRuns              AgentRun[]
   integrationConnections IntegrationConnection[]
   documentFindings       DocumentFinding[]
+  integrationSources     IntegrationSource[]
 }
 
 model UserOrganization {
@@ -368,6 +369,10 @@ model CapturedInput {
   idempotencyKey   String?
   quarantineReason String?
   rawText          String?
+  sourceDriveId    String?
+  sourceItemId     String?
+  sourceVersion    String?
+  sourceHash       String?
   locationTag      String?
   status           ProcessingStatus       @default(PENDING)
   reviewStatus     ScratchpadReviewStatus @default(PENDING_REVIEW)
@@ -1116,6 +1121,7 @@ enum FindingStatus {
   APPROVED
   REJECTED
   STALE
+  SOURCE_REMOVED
 }
 
 enum FindingStrength {
@@ -1123,4 +1129,32 @@ enum FindingStrength {
   WEAK
   MODERATE
   STRONG
+}
+
+/// A client-scoped SharePoint folder that Flowstate is allowed to monitor.
+/// The source tenant remains the system of record; this stores only scope and
+/// synchronization metadata, never a SharePoint file.
+model IntegrationSource {
+  id             String    @id @default(cuid())
+  organizationId String
+  provider       String    @default("microsoft-365")
+  siteId         String
+  siteName       String?
+  driveId        String
+  driveName      String?
+  folderItemId   String    @default("root")
+  folderPath     String?
+  enabled        Boolean   @default(true)
+  deltaLink      String?
+  syncStatus     String    @default("PENDING")
+  lastSyncedAt   DateTime?
+  lastError      String?
+  createdBy      String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, provider, driveId, folderItemId])
+  @@index([organizationId, enabled])
 }
