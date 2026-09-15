@@ -42,6 +42,11 @@ describe("scratch pad agenda linkage contract", () => {
     expect(scratchpad).toContain("No context / start capturing now");
   });
 
+  it("passes the requested context to both initial and conflict-reload reads", () => {
+    expect(scratchpad).toContain("requestedContextId ? `&contextId=${encodeURIComponent(requestedContextId)}`");
+    expect(scratchpad).toContain("const selected = rows[0] ?? null;");
+  });
+
   it("does not infer a context from the first saved note when no agenda is requested", () => {
     expect(scratchpad).toContain("const linkedContextId = requestedContextId;");
     expect(scratchpad).not.toContain("requestedContextId || rows[0].meetingContextId");

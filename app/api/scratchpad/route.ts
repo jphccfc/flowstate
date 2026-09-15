@@ -15,10 +15,11 @@ export async function GET(req: NextRequest) {
   const params = new URL(req.url).searchParams;
   const org = params.get("organizationId"); if (!org) return NextResponse.json({ error: "organizationId is required" }, { status: 400 });
   const sessionId = params.get("sessionId");
+  const contextId = params.get("contextId");
   const { data: { user } } = await (await createClient()).auth.getUser(); if (!user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   if (!(await access(user.email, org))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   if (sessionId && !(await prisma.assessmentSession.findFirst({ where: { id: sessionId, organizationId: org }, select: { id: true } }))) return NextResponse.json({ error: "Live session not found" }, { status: 404 });
-  return NextResponse.json(await prisma.capturedInput.findMany({ where: { organizationId: org, type: "TEXT_NOTE", ...(sessionId ? { sessionId } : {}) }, orderBy: { updatedAt: "desc" }, include: { meetingContext: true } }));
+  return NextResponse.json(await prisma.capturedInput.findMany({ where: { organizationId: org, type: "TEXT_NOTE", ...(sessionId ? { sessionId } : {}), ...(contextId ? { meetingContextId: contextId } : {}) }, orderBy: { updatedAt: "desc" }, include: { meetingContext: true } }));
   } catch (error) {
     return apiError(error, "Unable to load Scratch Pad");
   }

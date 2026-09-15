@@ -89,7 +89,7 @@ export default function ScratchpadPage({ params }: { params: Promise<{ id: strin
       return { kind: "saved" as const, revision: saved.revision };
     };
     const reload = async () => {
-      const scratchpadQuery = `/api/scratchpad?organizationId=${encodeURIComponent(organizationId)}${requestedSessionId ? `&sessionId=${encodeURIComponent(requestedSessionId)}` : ""}`;
+      const scratchpadQuery = `/api/scratchpad?organizationId=${encodeURIComponent(organizationId)}${requestedContextId ? `&contextId=${encodeURIComponent(requestedContextId)}` : ""}${requestedSessionId ? `&sessionId=${encodeURIComponent(requestedSessionId)}` : ""}`;
       const res = await fetch(scratchpadQuery);
       if (!res.ok) throw new Error(`Could not reload scratch pad (${res.status})`);
       const rows = await res.json() as Note[];
@@ -100,7 +100,7 @@ export default function ScratchpadPage({ params }: { params: Promise<{ id: strin
       return { revision: current.revision };
     };
     queueRef.current = createScratchpadSaveQueue(save, reload, next => setStatus(next), message => { if (active) setError(message); });
-    const scratchpadQuery = `/api/scratchpad?organizationId=${encodeURIComponent(organizationId)}${requestedSessionId ? `&sessionId=${encodeURIComponent(requestedSessionId)}` : ""}`;
+    const scratchpadQuery = `/api/scratchpad?organizationId=${encodeURIComponent(organizationId)}${requestedContextId ? `&contextId=${encodeURIComponent(requestedContextId)}` : ""}${requestedSessionId ? `&sessionId=${encodeURIComponent(requestedSessionId)}` : ""}`;
     fetch(scratchpadQuery).then(async response => {
       if (!response.ok) throw new Error(`Could not load Scratch Pad (${response.status})`);
       return await response.json() as Note[];
