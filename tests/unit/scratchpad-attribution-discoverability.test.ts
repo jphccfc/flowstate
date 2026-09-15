@@ -28,7 +28,7 @@ describe("Scratch Pad update attribution", () => {
   it("renders truthful update attribution from persisted note metadata", () => {
     expect(scratchpad).toContain("updatedAt");
     expect(scratchpad).toContain("senderName");
-    expect(scratchpad).toContain("Updated at");
+    expect(scratchpad).toContain("Updated at:");
     expect(scratchpad).toContain("toLocaleString");
   });
 });

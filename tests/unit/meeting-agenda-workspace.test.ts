@@ -47,9 +47,9 @@ describe("scratch pad agenda linkage contract", () => {
     expect(scratchpad).toContain("const selected = rows[0] ?? null;");
   });
 
-  it("does not infer a context from the first saved note when no agenda is requested", () => {
-    expect(scratchpad).toContain("const linkedContextId = requestedContextId;");
-    expect(scratchpad).not.toContain("requestedContextId || rows[0].meetingContextId");
+  it("does not infer a context from an unrelated first note when no agenda is requested", () => {
+    expect(scratchpad).toContain("const selected = rows[0] ?? null;");
+    expect(scratchpad).toContain("setContextId(saved?.meetingContextId ?? requestedContextId)");
     expect(scratchpad).toContain("contextId: contextRef.current || null");
   });
 });

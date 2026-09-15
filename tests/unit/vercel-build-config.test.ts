@@ -6,7 +6,7 @@ const vercelConfig = readFileSync(resolve(process.cwd(), "vercel.json"), "utf8")
 
 describe("production database deployment contract", () => {
   it("uses reviewed Prisma migrations instead of db push", () => {
-    expect(vercelConfig).toContain("npx prisma migrate deploy && npm run build");
+    expect(vercelConfig).toContain('if [ \\"$VERCEL_ENV\\" = \\"production\\" ]; then npx prisma migrate deploy; fi && npm run build');
     expect(vercelConfig).not.toContain("prisma db push");
   });
 });
