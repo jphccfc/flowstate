@@ -6,7 +6,6 @@
     "dev": "next dev",
     "build": "next build",
     "prebuild": "prisma generate",
-    "postinstall": "prisma generate",
     "start": "next start",
     "lint": "eslint",
     "db:migrate": "prisma migrate dev",
