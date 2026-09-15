@@ -12,7 +12,8 @@ export default function AIHubPage({ params }: { params: Promise<{ id: string }> 
   const [organizationId, setOrganizationId] = useState<string>();
   const [question, setQuestion] = useState("");
   const [agentKey, setAgentKey] = useState("client_ai_hub");
-  const [agentProfiles, setAgentProfiles] = useState<{ key: string; displayName: string; alias: string | null; agentType: string }[]>([]);
+  const [agentProfiles, setAgentProfiles] = useState<{ key: string; globalName: string; displayName: string; alias: string | null; agentType: string }[]>([]);
+  const [selectedIdentityKey, setSelectedIdentityKey] = useState("client_ai_hub");
   const [identityDraft, setIdentityDraft] = useState({ displayName: "FlowCoach", alias: "FlowCoach" });
   const [identitySaving, setIdentitySaving] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
@@ -30,12 +31,18 @@ export default function AIHubPage({ params }: { params: Promise<{ id: string }> 
     });
   }, [params]);
 
+  function selectIdentity(key: string) {
+    const profile = agentProfiles.find((item) => item.key === key);
+    setSelectedIdentityKey(key);
+    setIdentityDraft({ displayName: profile?.displayName ?? profile?.globalName ?? key, alias: profile?.alias ?? profile?.displayName ?? key });
+  }
+
   async function saveIdentity(event: FormEvent) {
     event.preventDefault();
     if (!organizationId) return;
     setIdentitySaving(true); setError("");
     try {
-      const response = await fetch(`/api/clients/${organizationId}/agent-profiles`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ agentKey: "client_ai_hub", ...identityDraft }) });
+      const response = await fetch(`/api/clients/${organizationId}/agent-profiles`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ agentKey: selectedIdentityKey, ...identityDraft }) });
       const data = await response.json() as { error?: string; key?: string; displayName?: string; alias?: string };
       if (!response.ok) throw new Error(data.error || "Agent identity could not be saved.");
       setAgentProfiles((current) => current.map((profile) => profile.key === data.key ? { ...profile, displayName: data.displayName!, alias: data.alias! } : profile));
@@ -61,7 +68,7 @@ export default function AIHubPage({ params }: { params: Promise<{ id: string }> 
     <main className="mx-auto w-full max-w-4xl p-4 sm:p-6">
       <div className="mb-6"><div className="workspace-eyebrow mb-2">Client workspace</div><h1 className="workspace-heading text-3xl font-bold">FlowCoach</h1><p className="mt-2 max-w-2xl text-sm text-[var(--muted)]">Ask FlowCoach about this workspace’s authorized documents, captured inputs, meeting agendas, and client records. Answers are provisional and include source excerpts for review.</p></div>
       <form onSubmit={saveIdentity} className="workspace-card mb-4 p-4" aria-label="Configure FlowCoach identity">
-        <div className="flex flex-wrap items-start justify-between gap-3"><div><h2 className="font-semibold text-[var(--foreground)]">FlowCoach identity</h2><p className="mt-1 text-xs text-[var(--muted)]">Give this client workspace a memorable display name and unique alias. The governed global agent and published prompt remain unchanged.</p></div><span className="text-xs text-[var(--muted)]">{agentProfiles.find((profile) => profile.key === "client_ai_hub")?.agentType ?? "Orchestrator"}</span></div>
+        <div className="flex flex-wrap items-start justify-between gap-3"><div><h2 className="font-semibold text-[var(--foreground)]">Agent identity</h2><p className="mt-1 text-xs text-[var(--muted)]">Give each published agent a memorable display name and unique alias for this client workspace. Governance and prompt history remain global.</p></div><select aria-label="Agent identity" value={selectedIdentityKey} onChange={(event) => selectIdentity(event.target.value)} className="rounded border border-[var(--card-border)] bg-[var(--card)] p-2 text-xs text-[var(--foreground)]">{agentProfiles.map((profile) => <option key={profile.key} value={profile.key}>{profile.displayName} · {profile.agentType}</option>)}</select></div>
         <div className="mt-3 grid gap-3 sm:grid-cols-2"><label className="text-sm font-semibold text-[var(--foreground)]">Display name<input value={identityDraft.displayName} onChange={(event) => setIdentityDraft({ ...identityDraft, displayName: event.target.value })} className="mt-1 w-full rounded-lg border border-[var(--card-border)] bg-[var(--card)] p-2 text-sm font-normal" maxLength={80} required /></label><label className="text-sm font-semibold text-[var(--foreground)]">Client alias<input value={identityDraft.alias} onChange={(event) => setIdentityDraft({ ...identityDraft, alias: event.target.value })} className="mt-1 w-full rounded-lg border border-[var(--card-border)] bg-[var(--card)] p-2 text-sm font-normal" maxLength={80} required /></label></div>
         <div className="mt-3 flex items-center gap-3"><button type="submit" disabled={identitySaving} className="flowstate-accent-button rounded-lg px-3 py-2 text-sm font-medium text-white disabled:opacity-50">{identitySaving ? "Saving…" : "Save identity"}</button><span className="text-xs text-[var(--muted)]">Alias is unique within this client workspace.</span></div>
       </form>
