@@ -1,6 +1,7 @@
 -- Additive version-aware evidence model. Existing documents remain independent
 -- until the importer can establish a conservative family match.
 CREATE TYPE "DocumentVersionStatus" AS ENUM ('CURRENT', 'SUPERSEDED');
+ALTER TYPE "FindingStatus" ADD VALUE 'SUPERSEDED';
 
 CREATE TABLE "DocumentFamily" (
     "id" TEXT NOT NULL,
