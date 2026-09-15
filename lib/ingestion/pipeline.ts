@@ -146,6 +146,7 @@ export async function processCapturedInput(capturedInputId: string): Promise<voi
           data: {
             organizationId: input.organizationId,
             capturedInputId,
+            documentFamilyId: input.documentFamilyId,
             documentType: draft.documentType,
             title: draft.title,
             summary: draft.summary,

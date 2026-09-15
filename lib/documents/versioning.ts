@@ -26,3 +26,21 @@ export function parseDocumentVersion(filename: string): ParsedDocumentVersion {
     explicit: true,
   };
 }
+
+export function normalizeDocumentTitle(title: string): string {
+  return title.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().replace(/\s+/g, " ");
+}
+
+export function compareDocumentVersions(a: ParsedDocumentVersion, b: ParsedDocumentVersion): number {
+  if (a.versionMajor === null && b.versionMajor === null) return 0;
+  if (a.versionMajor === null) return -1;
+  if (b.versionMajor === null) return 1;
+  return (a.versionMajor - b.versionMajor) || ((a.versionMinor ?? 0) - (b.versionMinor ?? 0));
+}
+
+/** Conservative family key: no source path means no automatic grouping. */
+export function documentFamilyKey(filename: string, sourcePath: string | null | undefined): string | null {
+  if (!sourcePath?.trim()) return null;
+  return `${normalizeDocumentTitle(parseDocumentVersion(filename).baseTitle)}::${sourcePath.trim().toLowerCase()}`;
+}
+

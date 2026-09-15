@@ -1153,6 +1153,7 @@ enum FindingStatus {
   REJECTED
   STALE
   SOURCE_REMOVED
+  SUPERSEDED
 }
 
 enum DocumentVersionStatus {

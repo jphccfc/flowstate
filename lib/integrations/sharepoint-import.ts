@@ -1,5 +1,6 @@
 import type { PrismaClient } from "@/app/generated/prisma/client";
 import { GRAPH_BASE } from "@/lib/integrations/graph";
+import { compareDocumentVersions, documentFamilyKey, normalizeDocumentTitle, parseDocumentVersion } from "@/lib/documents/versioning";
 
 /**
  * Imports one SharePoint file into the evidence model as TEXT.
@@ -43,6 +44,8 @@ export type ImportParams = {
   /** Injectable for tests; defaults to the project's document extractor. */
   extractText?: (fileUrl: string) => Promise<string>;
   fetchImpl?: typeof fetch;
+  /** SharePoint parent path used for conservative family matching. */
+  sourcePath?: string | null;
 };
 
 type GraphItem = {
@@ -52,6 +55,7 @@ type GraphItem = {
   webUrl?: string;
   lastModifiedDateTime?: string;
   file?: { mimeType?: string; hashes?: { quickXorHash?: string; sha256Hash?: string } };
+  parentReference?: { path?: string };
   folder?: unknown;
 };
 
@@ -72,6 +76,7 @@ export async function importDriveItem({
   client,
   extractText,
   fetchImpl = fetch,
+  sourcePath: requestedSourcePath,
 }: ImportParams): Promise<ImportOutcome> {
   if (!accessToken?.trim()) throw new Error("Microsoft Graph requires an access token");
   if (!organizationId || !driveId || !itemId) throw new Error("organizationId, driveId and itemId are required");
@@ -79,7 +84,7 @@ export async function importDriveItem({
   const authHeaders = { Authorization: `Bearer ${accessToken}`, Accept: "application/json" };
 
   const metaResponse = await fetchImpl(
-    `${GRAPH_BASE}/drives/${encodeURIComponent(driveId)}/items/${encodeURIComponent(itemId)}?$select=id,name,size,webUrl,lastModifiedDateTime,file,folder`,
+    `${GRAPH_BASE}/drives/${encodeURIComponent(driveId)}/items/${encodeURIComponent(itemId)}?$select=id,name,size,webUrl,lastModifiedDateTime,file,folder,parentReference`,
     { headers: authHeaders },
   );
   const meta = (await metaResponse.json().catch(() => ({}))) as GraphItem & { error?: { code?: string } };
@@ -135,6 +140,52 @@ export async function importDriveItem({
         name,
       );
 
+  const sourcePath = requestedSourcePath ?? meta.parentReference?.path ?? null;
+  const parsedVersion = parseDocumentVersion(name);
+  const familyKey = documentFamilyKey(name, sourcePath);
+  let documentFamilyId: string | null = null;
+  let versionStatus: "CURRENT" | "SUPERSEDED" = "CURRENT";
+  let supersededCapturedInputId: string | null = null;
+
+  if (familyKey) {
+    const existingFamily = await client.documentFamily.findFirst({
+      where: {
+        organizationId,
+        normalizedTitle: normalizeDocumentTitle(parsedVersion.baseTitle),
+        sourcePath: sourcePath!.trim().toLowerCase(),
+      },
+      select: { id: true, currentCapturedInputId: true },
+    });
+    const family = existingFamily ?? await client.documentFamily.create({
+      data: {
+        organizationId,
+        normalizedTitle: normalizeDocumentTitle(parsedVersion.baseTitle),
+        sourcePath: sourcePath!.trim(),
+      },
+      select: { id: true, currentCapturedInputId: true },
+    });
+    documentFamilyId = family.id;
+
+    if (family.currentCapturedInputId) {
+      const current = await client.capturedInput.findUnique({
+        where: { id: family.currentCapturedInputId },
+        select: { versionLabel: true, versionMajor: true, versionMinor: true },
+      });
+      const currentVersion = {
+        baseTitle: parsedVersion.baseTitle,
+        versionLabel: current?.versionLabel ?? null,
+        versionMajor: current?.versionMajor ?? null,
+        versionMinor: current?.versionMinor ?? null,
+        explicit: Boolean(current?.versionLabel),
+      };
+      if (compareDocumentVersions(parsedVersion, currentVersion) <= 0) {
+        versionStatus = "SUPERSEDED";
+      } else {
+        supersededCapturedInputId = family.currentCapturedInputId;
+      }
+    }
+  }
+
   const created = await client.capturedInput.create({
     data: {
       organizationId,
@@ -144,6 +195,13 @@ export async function importDriveItem({
       sourceItemId: itemId,
       sourceVersion: version,
       sourceHash,
+      documentFamilyId,
+      versionLabel: parsedVersion.versionLabel,
+      versionMajor: parsedVersion.versionMajor,
+      versionMinor: parsedVersion.versionMinor,
+      versionExplicit: parsedVersion.explicit,
+      versionStatus,
+      sourcePath,
       rawText: text,
       status: "TRANSCRIBED",
       reviewStatus: "PENDING_REVIEW",
@@ -159,6 +217,14 @@ export async function importDriveItem({
     },
     select: { id: true },
   });
+
+  if (documentFamilyId && versionStatus === "CURRENT") {
+    if (supersededCapturedInputId) {
+      await client.capturedInput.update({ where: { id: supersededCapturedInputId }, data: { versionStatus: "SUPERSEDED" } });
+      await client.documentFinding.updateMany({ where: { capturedInputId: supersededCapturedInputId }, data: { status: "SUPERSEDED" } });
+    }
+    await client.documentFamily.update({ where: { id: documentFamilyId }, data: { currentCapturedInputId: created.id } });
+  }
 
   return { status: "imported", capturedInputId: created.id, sourceHash };
 }
