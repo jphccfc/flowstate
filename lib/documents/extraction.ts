@@ -28,7 +28,7 @@ export async function extractDocumentTextFromBuffer(
     const { PDFParse } = await import("pdf-parse");
     // Vercel's server runtime cannot resolve pdf-parse's default relative
     // worker chunk. Point pdfjs at the dependency's deployed worker instead.
-    PDFParse.setWorker(`${process.cwd()}/node_modules/pdfjs-dist/legacy/build/pdf.worker.mjs`);
+    PDFParse.setWorker(`${process.cwd()}/public/pdf.worker.mjs`);
     const parser = new PDFParse({ data: buffer });
     try {
       const result = await parser.getText();
