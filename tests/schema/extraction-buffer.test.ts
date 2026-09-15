@@ -1,10 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("pdf-parse", () => ({
-  PDFParse: vi.fn().mockImplementation(function () {
-    return { getText: vi.fn().mockResolvedValue({ text: "Extracted PDF content" }), destroy: vi.fn().mockResolvedValue(undefined) };
-  }),
-}));
+const MockPDFParse = Object.assign(vi.fn().mockImplementation(function () {
+  return { getText: vi.fn().mockResolvedValue({ text: "Extracted PDF content" }), destroy: vi.fn().mockResolvedValue(undefined) };
+}), { setWorker: vi.fn() });
+vi.mock("pdf-parse", () => ({ PDFParse: MockPDFParse }));
 vi.mock("mammoth", () => ({
   extractRawText: vi.fn().mockResolvedValue({ value: "Extracted DOCX content" }),
 }));
