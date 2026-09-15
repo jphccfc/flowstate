@@ -58,6 +58,8 @@ export default function DocumentFindingsPage({ params }: { params: Promise<{ id:
     setCounts(data.counts ?? {});
   }, [api, tab, appliedQuery]);
 
+  // This effect synchronizes the remote findings query into local UI state.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { load().catch(() => setError("Findings could not be loaded.")); }, [load]);
 
   async function reanalyze(findingId: string) {

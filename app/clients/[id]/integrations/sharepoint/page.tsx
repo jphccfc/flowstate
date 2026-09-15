@@ -107,13 +107,17 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
     }
   }, [api]);
 
+  // This effect synchronizes the remote integration status into local UI state.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { loadCurrent().catch(() => setError("Integration status could not be loaded.")); }, [loadCurrent]);
 
   // The callback returns with ?sharepoint=<result>. Show it once, then clear the
   // query string so a refresh does not repeat a stale message.
+  // This effect consumes a one-time OAuth callback result and updates the UI.
   useEffect(() => {
     const result = new URLSearchParams(window.location.search).get("sharepoint");
     if (!result) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setNotice(describeCallback(result));
     if (!callbackMessages[result]) setError(describeCallback(result));
     window.history.replaceState({}, "", window.location.pathname);
