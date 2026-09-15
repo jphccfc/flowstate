@@ -71,6 +71,7 @@ model Organization {
   integrationConnections IntegrationConnection[]
   documentFindings       DocumentFinding[]
   documentFamilies       DocumentFamily[]
+  agentProfiles           OrganizationAgentProfile[]
   integrationSources     IntegrationSource[]
 }
 
@@ -966,6 +967,7 @@ model AgentDefinition {
   promptVersions         AgentPromptVersion[]
   inputRules             AgentInputRule[]
   runs                   AgentRun[]
+  organizationProfiles   OrganizationAgentProfile[]
   publishedPromptVersion AgentPromptVersion?  @relation("PublishedAgentPromptVersion", fields: [publishedPromptVersionId], references: [id], onDelete: SetNull)
 
   @@index([name])
@@ -1003,6 +1005,25 @@ model AgentInputRule {
 
   @@unique([agentDefinitionId, inputType, domainIdentifier])
   @@index([inputType, domainIdentifier])
+}
+
+model OrganizationAgentProfile {
+  id               String   @id @default(cuid())
+  organizationId   String
+  agentDefinitionId String
+  displayName       String
+  alias             String
+  normalizedAlias   String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  agentDefinition AgentDefinition @relation(fields: [agentDefinitionId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, agentDefinitionId])
+  @@unique([organizationId, alias])
+  @@unique([organizationId, normalizedAlias])
+  @@index([organizationId])
 }
 
 enum AgentRunStatus {

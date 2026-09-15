@@ -272,6 +272,11 @@ export type AgentPromptVersion = Prisma.AgentPromptVersionModel
  */
 export type AgentInputRule = Prisma.AgentInputRuleModel
 /**
+ * Model OrganizationAgentProfile
+ * 
+ */
+export type OrganizationAgentProfile = Prisma.OrganizationAgentProfileModel
+/**
  * Model AgentRun
  * 
  */

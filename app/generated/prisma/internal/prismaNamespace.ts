@@ -430,6 +430,7 @@ export const ModelName = {
   AgentDefinition: 'AgentDefinition',
   AgentPromptVersion: 'AgentPromptVersion',
   AgentInputRule: 'AgentInputRule',
+  OrganizationAgentProfile: 'OrganizationAgentProfile',
   AgentRun: 'AgentRun',
   AgentOutput: 'AgentOutput',
   IntegrationConnection: 'IntegrationConnection',
@@ -451,7 +452,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "meetingContext" | "capturedInput" | "capturedInputAttachment" | "inboundEmailEndpoint" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "growthAction" | "planningItem" | "communicationPack" | "communicationPackAcknowledgement" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob" | "assessmentTask" | "agentDefinition" | "agentPromptVersion" | "agentInputRule" | "agentRun" | "agentOutput" | "integrationConnection" | "documentFinding" | "documentFamily" | "integrationSource"
+    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "meetingContext" | "capturedInput" | "capturedInputAttachment" | "inboundEmailEndpoint" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "growthAction" | "planningItem" | "communicationPack" | "communicationPackAcknowledgement" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob" | "assessmentTask" | "agentDefinition" | "agentPromptVersion" | "agentInputRule" | "organizationAgentProfile" | "agentRun" | "agentOutput" | "integrationConnection" | "documentFinding" | "documentFamily" | "integrationSource"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3859,6 +3860,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    OrganizationAgentProfile: {
+      payload: Prisma.$OrganizationAgentProfilePayload<ExtArgs>
+      fields: Prisma.OrganizationAgentProfileFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OrganizationAgentProfileFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationAgentProfilePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OrganizationAgentProfileFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationAgentProfilePayload>
+        }
+        findFirst: {
+          args: Prisma.OrganizationAgentProfileFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationAgentProfilePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OrganizationAgentProfileFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationAgentProfilePayload>
+        }
+        findMany: {
+          args: Prisma.OrganizationAgentProfileFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationAgentProfilePayload>[]
+        }
+        create: {
+          args: Prisma.OrganizationAgentProfileCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationAgentProfilePayload>
+        }
+        createMany: {
+          args: Prisma.OrganizationAgentProfileCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OrganizationAgentProfileCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationAgentProfilePayload>[]
+        }
+        delete: {
+          args: Prisma.OrganizationAgentProfileDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationAgentProfilePayload>
+        }
+        update: {
+          args: Prisma.OrganizationAgentProfileUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationAgentProfilePayload>
+        }
+        deleteMany: {
+          args: Prisma.OrganizationAgentProfileDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OrganizationAgentProfileUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OrganizationAgentProfileUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationAgentProfilePayload>[]
+        }
+        upsert: {
+          args: Prisma.OrganizationAgentProfileUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationAgentProfilePayload>
+        }
+        aggregate: {
+          args: Prisma.OrganizationAgentProfileAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOrganizationAgentProfile>
+        }
+        groupBy: {
+          args: Prisma.OrganizationAgentProfileGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrganizationAgentProfileGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OrganizationAgentProfileCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrganizationAgentProfileCountAggregateOutputType> | number
+        }
+      }
+    }
     AgentRun: {
       payload: Prisma.$AgentRunPayload<ExtArgs>
       fields: Prisma.AgentRunFieldRefs
@@ -5064,6 +5139,20 @@ export const AgentInputRuleScalarFieldEnum = {
 export type AgentInputRuleScalarFieldEnum = (typeof AgentInputRuleScalarFieldEnum)[keyof typeof AgentInputRuleScalarFieldEnum]
 
 
+export const OrganizationAgentProfileScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  agentDefinitionId: 'agentDefinitionId',
+  displayName: 'displayName',
+  alias: 'alias',
+  normalizedAlias: 'normalizedAlias',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationAgentProfileScalarFieldEnum = (typeof OrganizationAgentProfileScalarFieldEnum)[keyof typeof OrganizationAgentProfileScalarFieldEnum]
+
+
 export const AgentRunScalarFieldEnum = {
   id: 'id',
   organizationId: 'organizationId',
@@ -5817,6 +5906,7 @@ export type GlobalOmitConfig = {
   agentDefinition?: Prisma.AgentDefinitionOmit
   agentPromptVersion?: Prisma.AgentPromptVersionOmit
   agentInputRule?: Prisma.AgentInputRuleOmit
+  organizationAgentProfile?: Prisma.OrganizationAgentProfileOmit
   agentRun?: Prisma.AgentRunOmit
   agentOutput?: Prisma.AgentOutputOmit
   integrationConnection?: Prisma.IntegrationConnectionOmit

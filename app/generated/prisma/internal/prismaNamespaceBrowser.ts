@@ -97,6 +97,7 @@ export const ModelName = {
   AgentDefinition: 'AgentDefinition',
   AgentPromptVersion: 'AgentPromptVersion',
   AgentInputRule: 'AgentInputRule',
+  OrganizationAgentProfile: 'OrganizationAgentProfile',
   AgentRun: 'AgentRun',
   AgentOutput: 'AgentOutput',
   IntegrationConnection: 'IntegrationConnection',
@@ -841,6 +842,20 @@ export const AgentInputRuleScalarFieldEnum = {
 } as const
 
 export type AgentInputRuleScalarFieldEnum = (typeof AgentInputRuleScalarFieldEnum)[keyof typeof AgentInputRuleScalarFieldEnum]
+
+
+export const OrganizationAgentProfileScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  agentDefinitionId: 'agentDefinitionId',
+  displayName: 'displayName',
+  alias: 'alias',
+  normalizedAlias: 'normalizedAlias',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationAgentProfileScalarFieldEnum = (typeof OrganizationAgentProfileScalarFieldEnum)[keyof typeof OrganizationAgentProfileScalarFieldEnum]
 
 
 export const AgentRunScalarFieldEnum = {
