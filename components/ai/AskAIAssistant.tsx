@@ -17,6 +17,7 @@ export function AskAIAssistant({ clientId }: { clientId: string }) {
   const [messages, setMessages] = useState<ConversationMessage[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [expanded, setExpanded] = useState(false);
   const questionRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -57,10 +58,12 @@ export function AskAIAssistant({ clientId }: { clientId: string }) {
     }
   }
 
+  const answerSummary = (answer: string) => answer.split(/\n\s*\n|(?<=[.!?])\s+/)[0]?.trim() || answer;
+
   return (
     <div className="ask-ai-assistant">
       {open && (
-        <section className="ask-ai-panel" aria-labelledby="ask-ai-title">
+        <section className={`ask-ai-panel${expanded ? " ask-ai-panel-expanded" : ""}`} aria-labelledby="ask-ai-title">
           <div className="ask-ai-panel-header">
             <div className="flowcoach-heading">
               <Image src="/flowstate-mark.svg" alt="" aria-hidden="true" className="flowcoach-mark flowcoach-panel-mark" width={32} height={32} />
@@ -70,7 +73,8 @@ export function AskAIAssistant({ clientId }: { clientId: string }) {
               </div>
             </div>
             <div className="ask-ai-header-actions">
-              <button type="button" className="ask-ai-new-chat" onClick={newChat} disabled={busy}>New chat</button>
+              <button type="button" className="ask-ai-new-chat" onClick={newChat} disabled={busy}>Clear chat / New conversation</button>
+              <button type="button" className="ask-ai-expand" onClick={() => setExpanded((value) => !value)} aria-expanded={expanded} aria-label={expanded ? "Collapse FlowCoach" : "Expand FlowCoach"}>{expanded ? "Collapse" : "Expand"}</button>
               <button type="button" className="ask-ai-close" onClick={() => setOpen(false)} aria-label="Close FlowCoach">×</button>
             </div>
           </div>
@@ -80,8 +84,12 @@ export function AskAIAssistant({ clientId }: { clientId: string }) {
               <div className="ask-ai-message ask-ai-user-message" key={`user-${index}`}><p className="workspace-eyebrow">You</p><p className="ask-ai-answer-text">{message.content}</p></div>
             ) : (
               <div className="ask-ai-message ask-ai-assistant-message" key={`assistant-${index}`}>
-                <p className="workspace-eyebrow">Provisional answer</p><p className="ask-ai-answer-text">{renderAnswerWithCitations(message.content, message.sources, clientId)}</p><CopyAnswerButton answer={message.content} />
-                <div className="ask-ai-sources"><h3>Sources ({message.sources.length})</h3>{message.sources.length === 0 ? <p className="ask-ai-muted">No matching authorized workspace sources were found.</p> : message.sources.map((source) => <article key={source.id} className="ask-ai-source-card"><div className="ask-ai-source-heading"><strong>{source.href ? <Link href={source.href}>{source.title}</Link> : source.title}</strong><span>{source.kind} · {new Date(source.date).toLocaleDateString()}</span></div><p>{source.excerpt}</p></article>)}{message.limitation && <p className="ask-ai-muted ask-ai-limitation">{message.limitation}</p>}</div>
+                <p className="workspace-eyebrow">Provisional answer</p>
+                <p className="ask-ai-answer-label">Answer summary</p>
+                <p className="ask-ai-answer-text">{renderAnswerWithCitations(answerSummary(message.content), message.sources, clientId)}</p>
+                {message.content !== answerSummary(message.content) && <details className="ask-ai-detail"><summary>Show full answer</summary><p className="ask-ai-answer-text">{renderAnswerWithCitations(message.content, message.sources, clientId)}</p></details>}
+                <CopyAnswerButton answer={message.content} />
+                <details className="ask-ai-sources"><summary>Supporting documents ({message.sources.length})</summary>{message.sources.length === 0 ? <p className="ask-ai-muted">No matching authorized workspace sources were found.</p> : message.sources.map((source) => <article key={source.id} className="ask-ai-source-card"><div className="ask-ai-source-heading"><strong>{source.href ? <Link href={source.href}>{source.title}</Link> : source.title}</strong><span>{source.kind} · {new Date(source.date).toLocaleDateString()}</span></div><p>{source.excerpt}</p></article>)}{message.limitation && <p className="ask-ai-muted ask-ai-limitation">{message.limitation}</p>}</details>
               </div>
             ))}
             {busy && <p className="ask-ai-muted" role="status">Searching authorized workspace sources…</p>}
