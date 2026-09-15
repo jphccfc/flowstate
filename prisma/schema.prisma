@@ -70,6 +70,7 @@ model Organization {
   agentRuns              AgentRun[]
   integrationConnections IntegrationConnection[]
   documentFindings       DocumentFinding[]
+  documentFamilies       DocumentFamily[]
   integrationSources     IntegrationSource[]
 }
 
@@ -373,6 +374,13 @@ model CapturedInput {
   sourceItemId     String?
   sourceVersion    String?
   sourceHash       String?
+  documentFamilyId String?
+  versionLabel     String?
+  versionMajor     Int?
+  versionMinor     Int?
+  versionExplicit  Boolean                @default(false)
+  versionStatus    DocumentVersionStatus  @default(CURRENT)
+  sourcePath       String?
   locationTag      String?
   status           ProcessingStatus       @default(PENDING)
   reviewStatus     ScratchpadReviewStatus @default(PENDING_REVIEW)
@@ -389,6 +397,7 @@ model CapturedInput {
   segments       CapturedSegment[]
   attachments    CapturedInputAttachment[]
   findings       DocumentFinding[]
+  documentFamily DocumentFamily?           @relation(fields: [documentFamilyId], references: [id], onDelete: SetNull)
   agentRuns      AgentRun[]
 
   @@unique([organizationId, idempotencyKey])
@@ -1082,6 +1091,7 @@ model DocumentFinding {
   id                   String          @id @default(cuid())
   organizationId       String
   capturedInputId      String
+  documentFamilyId     String?
   /// What the document is: "CIM", "email thread", "financial model", "meeting note".
   documentType         String?
   /// Short human title, so the review queue is scannable without opening the file.
@@ -1111,12 +1121,30 @@ model DocumentFinding {
   createdAt            DateTime        @default(now())
   updatedAt            DateTime        @updatedAt
 
-  organization  Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  capturedInput CapturedInput @relation(fields: [capturedInputId], references: [id], onDelete: Cascade)
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  capturedInput  CapturedInput   @relation(fields: [capturedInputId], references: [id], onDelete: Cascade)
+  documentFamily DocumentFamily? @relation(fields: [documentFamilyId], references: [id], onDelete: SetNull)
 
   @@index([organizationId, status])
   @@index([capturedInputId])
   @@index([capabilityId])
+}
+
+model DocumentFamily {
+  id                     String   @id @default(cuid())
+  organizationId         String
+  normalizedTitle        String
+  sourcePath             String?
+  currentCapturedInputId String?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  organization   Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  capturedInputs CapturedInput[]
+  findings       DocumentFinding[]
+
+  @@index([organizationId, normalizedTitle])
+  @@index([organizationId, sourcePath])
 }
 
 enum FindingStatus {
@@ -1125,6 +1153,11 @@ enum FindingStatus {
   REJECTED
   STALE
   SOURCE_REMOVED
+}
+
+enum DocumentVersionStatus {
+  CURRENT
+  SUPERSEDED
 }
 
 enum FindingStrength {
