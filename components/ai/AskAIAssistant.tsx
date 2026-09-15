@@ -73,7 +73,7 @@ export function AskAIAssistant({ clientId }: { clientId: string }) {
               </div>
             </div>
             <div className="ask-ai-header-actions">
-              <button type="button" className="ask-ai-new-chat" onClick={newChat} disabled={busy}>Clear chat / New conversation</button>
+              <button type="button" className="ask-ai-new-chat" onClick={newChat} disabled={busy}>Clear chat / New conversation (New chat)</button>
               <button type="button" className="ask-ai-expand" onClick={() => setExpanded((value) => !value)} aria-expanded={expanded} aria-label={expanded ? "Collapse FlowCoach" : "Expand FlowCoach"}>{expanded ? "Collapse" : "Expand"}</button>
               <button type="button" className="ask-ai-close" onClick={() => setOpen(false)} aria-label="Close FlowCoach">×</button>
             </div>
@@ -89,7 +89,7 @@ export function AskAIAssistant({ clientId }: { clientId: string }) {
                 <p className="ask-ai-answer-text">{renderAnswerWithCitations(answerSummary(message.content), message.sources, clientId)}</p>
                 {message.content !== answerSummary(message.content) && <details className="ask-ai-detail"><summary>Show full answer</summary><p className="ask-ai-answer-text">{renderAnswerWithCitations(message.content, message.sources, clientId)}</p></details>}
                 <CopyAnswerButton answer={message.content} />
-                <details className="ask-ai-sources"><summary>Supporting documents ({message.sources.length})</summary>{message.sources.length === 0 ? <p className="ask-ai-muted">No matching authorized workspace sources were found.</p> : message.sources.map((source) => <article key={source.id} className="ask-ai-source-card"><div className="ask-ai-source-heading"><strong>{source.href ? <Link href={source.href}>{source.title}</Link> : source.title}</strong><span>{source.kind} · {new Date(source.date).toLocaleDateString()}</span></div><p>{source.excerpt}</p></article>)}{message.limitation && <p className="ask-ai-muted ask-ai-limitation">{message.limitation}</p>}</details>
+                <details className="ask-ai-sources"><summary>Supporting documents / Sources ({message.sources.length})</summary>{message.sources.length === 0 ? <p className="ask-ai-muted">No matching authorized workspace sources were found.</p> : message.sources.map((source) => <article key={source.id} className="ask-ai-source-card"><div className="ask-ai-source-heading"><strong>{source.href ? <Link href={source.href}>{source.title}</Link> : source.title}</strong><span>{source.kind} · {new Date(source.date).toLocaleDateString()}</span></div><p>{source.excerpt}</p></article>)}{message.limitation && <p className="ask-ai-muted ask-ai-limitation">{message.limitation}</p>}</details>
               </div>
             ))}
             {busy && <p className="ask-ai-muted" role="status">Searching authorized workspace sources…</p>}
