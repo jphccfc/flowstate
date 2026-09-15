@@ -79,6 +79,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         status: finding.status,
         reviewedBy: finding.reviewedBy,
         reviewedAt: finding.reviewedAt,
+        reviewReason: finding.reviewReason,
+        correctedDomainName: finding.correctedDomainName,
+        correctedCapabilityName: finding.correctedCapabilityName,
         filename: finding.capturedInput.attachments[0]?.filename ?? null,
         sourceRef: finding.capturedInput.sourceRef,
       })),
@@ -94,7 +97,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   const guard = await authorize(id, "client.configure");
   if (guard.error) return guard.error;
 
-  const body = await request.json().catch(() => null) as { findingId?: string; action?: string } | null;
+  const body = await request.json().catch(() => null) as { findingId?: string; action?: string; reason?: string; correctedDomainName?: string; correctedCapabilityName?: string } | null;
   const findingId = body?.findingId?.trim();
   const action = body?.action;
   if (!findingId) return NextResponse.json({ error: "findingId is required" }, { status: 400 });
@@ -106,9 +109,22 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   // acted on even if it is guessed.
   const existing = await prisma.documentFinding.findFirst({ where: { id: findingId, organizationId: id } });
   if (!existing) return NextResponse.json({ error: "Finding not found" }, { status: 404 });
-  if (existing.status === "STALE") {
-    return NextResponse.json({ error: "This finding is stale: the source document has changed since it was analysed." }, { status: 409 });
+  if (existing.status === "STALE" || existing.status === "SOURCE_REMOVED" || existing.status === "SUPERSEDED") {
+    return NextResponse.json({ error: "This finding is no longer current and cannot be reviewed." }, { status: 409 });
   }
+  // Idempotent retry: a repeated click or network retry returns the existing
+  // decision and never creates another state transition.
+  if (existing.status === "APPROVED" || existing.status === "REJECTED") {
+    return NextResponse.json({ finding: { id: existing.id, status: existing.status, reviewedBy: existing.reviewedBy, reviewedAt: existing.reviewedAt, reviewReason: existing.reviewReason, correctedDomainName: existing.correctedDomainName, correctedCapabilityName: existing.correctedCapabilityName }, idempotent: true });
+  }
+
+  const responsibleAgent = await prisma.agentDefinition.findFirst({
+    where: { key: "client_ai_hub", publishedPromptVersionId: { not: null } },
+    select: { key: true, publishedPromptVersion: { select: { version: true } } },
+  });
+  const reviewReason = typeof body?.reason === "string" ? body.reason.trim() || null : null;
+  const correctedDomainName = typeof body?.correctedDomainName === "string" ? body.correctedDomainName.trim() || null : null;
+  const correctedCapabilityName = typeof body?.correctedCapabilityName === "string" ? body.correctedCapabilityName.trim() || null : null;
 
   const updated = await prisma.documentFinding.update({
     where: { id: findingId },
@@ -116,10 +132,15 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       status: action === "approve" ? "APPROVED" : "REJECTED",
       reviewedBy: guard.user?.email ?? null,
       reviewedAt: new Date(),
+      reviewReason,
+      correctedDomainName,
+      correctedCapabilityName,
+      reviewAgentKey: responsibleAgent?.key ?? "client_ai_hub",
+      reviewPromptVersion: responsibleAgent?.publishedPromptVersion?.version ?? null,
     },
   });
 
   return NextResponse.json({
-    finding: { id: updated.id, status: updated.status, reviewedBy: updated.reviewedBy, reviewedAt: updated.reviewedAt },
+    finding: { id: updated.id, status: updated.status, reviewedBy: updated.reviewedBy, reviewedAt: updated.reviewedAt, reviewReason: updated.reviewReason, correctedDomainName: updated.correctedDomainName, correctedCapabilityName: updated.correctedCapabilityName },
   });
 }

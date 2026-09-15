@@ -5227,6 +5227,11 @@ export const DocumentFindingScalarFieldEnum = {
   reanalysisOfId: 'reanalysisOfId',
   reviewedBy: 'reviewedBy',
   reviewedAt: 'reviewedAt',
+  reviewReason: 'reviewReason',
+  correctedDomainName: 'correctedDomainName',
+  correctedCapabilityName: 'correctedCapabilityName',
+  reviewAgentKey: 'reviewAgentKey',
+  reviewPromptVersion: 'reviewPromptVersion',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

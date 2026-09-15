@@ -34,10 +34,12 @@ export type AggregateDocumentFinding = {
 
 export type DocumentFindingAvgAggregateOutputType = {
   confidence: number | null
+  reviewPromptVersion: number | null
 }
 
 export type DocumentFindingSumAggregateOutputType = {
   confidence: number | null
+  reviewPromptVersion: number | null
 }
 
 export type DocumentFindingMinAggregateOutputType = {
@@ -60,6 +62,11 @@ export type DocumentFindingMinAggregateOutputType = {
   reanalysisOfId: string | null
   reviewedBy: string | null
   reviewedAt: Date | null
+  reviewReason: string | null
+  correctedDomainName: string | null
+  correctedCapabilityName: string | null
+  reviewAgentKey: string | null
+  reviewPromptVersion: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -84,6 +91,11 @@ export type DocumentFindingMaxAggregateOutputType = {
   reanalysisOfId: string | null
   reviewedBy: string | null
   reviewedAt: Date | null
+  reviewReason: string | null
+  correctedDomainName: string | null
+  correctedCapabilityName: string | null
+  reviewAgentKey: string | null
+  reviewPromptVersion: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -110,6 +122,11 @@ export type DocumentFindingCountAggregateOutputType = {
   reanalysisOfId: number
   reviewedBy: number
   reviewedAt: number
+  reviewReason: number
+  correctedDomainName: number
+  correctedCapabilityName: number
+  reviewAgentKey: number
+  reviewPromptVersion: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -118,10 +135,12 @@ export type DocumentFindingCountAggregateOutputType = {
 
 export type DocumentFindingAvgAggregateInputType = {
   confidence?: true
+  reviewPromptVersion?: true
 }
 
 export type DocumentFindingSumAggregateInputType = {
   confidence?: true
+  reviewPromptVersion?: true
 }
 
 export type DocumentFindingMinAggregateInputType = {
@@ -144,6 +163,11 @@ export type DocumentFindingMinAggregateInputType = {
   reanalysisOfId?: true
   reviewedBy?: true
   reviewedAt?: true
+  reviewReason?: true
+  correctedDomainName?: true
+  correctedCapabilityName?: true
+  reviewAgentKey?: true
+  reviewPromptVersion?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -168,6 +192,11 @@ export type DocumentFindingMaxAggregateInputType = {
   reanalysisOfId?: true
   reviewedBy?: true
   reviewedAt?: true
+  reviewReason?: true
+  correctedDomainName?: true
+  correctedCapabilityName?: true
+  reviewAgentKey?: true
+  reviewPromptVersion?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -194,6 +223,11 @@ export type DocumentFindingCountAggregateInputType = {
   reanalysisOfId?: true
   reviewedBy?: true
   reviewedAt?: true
+  reviewReason?: true
+  correctedDomainName?: true
+  correctedCapabilityName?: true
+  reviewAgentKey?: true
+  reviewPromptVersion?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -307,6 +341,11 @@ export type DocumentFindingGroupByOutputType = {
   reanalysisOfId: string | null
   reviewedBy: string | null
   reviewedAt: Date | null
+  reviewReason: string | null
+  correctedDomainName: string | null
+  correctedCapabilityName: string | null
+  reviewAgentKey: string | null
+  reviewPromptVersion: number | null
   createdAt: Date
   updatedAt: Date
   _count: DocumentFindingCountAggregateOutputType | null
@@ -356,6 +395,11 @@ export type DocumentFindingWhereInput = {
   reanalysisOfId?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   reviewedBy?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   reviewedAt?: Prisma.DateTimeNullableFilter<"DocumentFinding"> | Date | string | null
+  reviewReason?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  correctedDomainName?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  correctedCapabilityName?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  reviewAgentKey?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  reviewPromptVersion?: Prisma.IntNullableFilter<"DocumentFinding"> | number | null
   createdAt?: Prisma.DateTimeFilter<"DocumentFinding"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DocumentFinding"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
@@ -385,6 +429,11 @@ export type DocumentFindingOrderByWithRelationInput = {
   reanalysisOfId?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  correctedDomainName?: Prisma.SortOrderInput | Prisma.SortOrder
+  correctedCapabilityName?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewAgentKey?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewPromptVersion?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   organization?: Prisma.OrganizationOrderByWithRelationInput
@@ -417,6 +466,11 @@ export type DocumentFindingWhereUniqueInput = Prisma.AtLeast<{
   reanalysisOfId?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   reviewedBy?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   reviewedAt?: Prisma.DateTimeNullableFilter<"DocumentFinding"> | Date | string | null
+  reviewReason?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  correctedDomainName?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  correctedCapabilityName?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  reviewAgentKey?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  reviewPromptVersion?: Prisma.IntNullableFilter<"DocumentFinding"> | number | null
   createdAt?: Prisma.DateTimeFilter<"DocumentFinding"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DocumentFinding"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
@@ -446,6 +500,11 @@ export type DocumentFindingOrderByWithAggregationInput = {
   reanalysisOfId?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  correctedDomainName?: Prisma.SortOrderInput | Prisma.SortOrder
+  correctedCapabilityName?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewAgentKey?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewPromptVersion?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.DocumentFindingCountOrderByAggregateInput
@@ -480,6 +539,11 @@ export type DocumentFindingScalarWhereWithAggregatesInput = {
   reanalysisOfId?: Prisma.StringNullableWithAggregatesFilter<"DocumentFinding"> | string | null
   reviewedBy?: Prisma.StringNullableWithAggregatesFilter<"DocumentFinding"> | string | null
   reviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DocumentFinding"> | Date | string | null
+  reviewReason?: Prisma.StringNullableWithAggregatesFilter<"DocumentFinding"> | string | null
+  correctedDomainName?: Prisma.StringNullableWithAggregatesFilter<"DocumentFinding"> | string | null
+  correctedCapabilityName?: Prisma.StringNullableWithAggregatesFilter<"DocumentFinding"> | string | null
+  reviewAgentKey?: Prisma.StringNullableWithAggregatesFilter<"DocumentFinding"> | string | null
+  reviewPromptVersion?: Prisma.IntNullableWithAggregatesFilter<"DocumentFinding"> | number | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"DocumentFinding"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"DocumentFinding"> | Date | string
 }
@@ -503,6 +567,11 @@ export type DocumentFindingCreateInput = {
   reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
+  reviewReason?: string | null
+  correctedDomainName?: string | null
+  correctedCapabilityName?: string | null
+  reviewAgentKey?: string | null
+  reviewPromptVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutDocumentFindingsInput
@@ -532,6 +601,11 @@ export type DocumentFindingUncheckedCreateInput = {
   reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
+  reviewReason?: string | null
+  correctedDomainName?: string | null
+  correctedCapabilityName?: string | null
+  reviewAgentKey?: string | null
+  reviewPromptVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -555,6 +629,11 @@ export type DocumentFindingUpdateInput = {
   reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedDomainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedCapabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewAgentKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewPromptVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutDocumentFindingsNestedInput
@@ -584,6 +663,11 @@ export type DocumentFindingUncheckedUpdateInput = {
   reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedDomainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedCapabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewAgentKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewPromptVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -610,6 +694,11 @@ export type DocumentFindingCreateManyInput = {
   reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
+  reviewReason?: string | null
+  correctedDomainName?: string | null
+  correctedCapabilityName?: string | null
+  reviewAgentKey?: string | null
+  reviewPromptVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -633,6 +722,11 @@ export type DocumentFindingUpdateManyMutationInput = {
   reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedDomainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedCapabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewAgentKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewPromptVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -659,6 +753,11 @@ export type DocumentFindingUncheckedUpdateManyInput = {
   reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedDomainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedCapabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewAgentKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewPromptVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -695,12 +794,18 @@ export type DocumentFindingCountOrderByAggregateInput = {
   reanalysisOfId?: Prisma.SortOrder
   reviewedBy?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrder
+  reviewReason?: Prisma.SortOrder
+  correctedDomainName?: Prisma.SortOrder
+  correctedCapabilityName?: Prisma.SortOrder
+  reviewAgentKey?: Prisma.SortOrder
+  reviewPromptVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type DocumentFindingAvgOrderByAggregateInput = {
   confidence?: Prisma.SortOrder
+  reviewPromptVersion?: Prisma.SortOrder
 }
 
 export type DocumentFindingMaxOrderByAggregateInput = {
@@ -723,6 +828,11 @@ export type DocumentFindingMaxOrderByAggregateInput = {
   reanalysisOfId?: Prisma.SortOrder
   reviewedBy?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrder
+  reviewReason?: Prisma.SortOrder
+  correctedDomainName?: Prisma.SortOrder
+  correctedCapabilityName?: Prisma.SortOrder
+  reviewAgentKey?: Prisma.SortOrder
+  reviewPromptVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -747,12 +857,18 @@ export type DocumentFindingMinOrderByAggregateInput = {
   reanalysisOfId?: Prisma.SortOrder
   reviewedBy?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrder
+  reviewReason?: Prisma.SortOrder
+  correctedDomainName?: Prisma.SortOrder
+  correctedCapabilityName?: Prisma.SortOrder
+  reviewAgentKey?: Prisma.SortOrder
+  reviewPromptVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type DocumentFindingSumOrderByAggregateInput = {
   confidence?: Prisma.SortOrder
+  reviewPromptVersion?: Prisma.SortOrder
 }
 
 export type DocumentFindingCreateNestedManyWithoutOrganizationInput = {
@@ -926,6 +1042,11 @@ export type DocumentFindingCreateWithoutOrganizationInput = {
   reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
+  reviewReason?: string | null
+  correctedDomainName?: string | null
+  correctedCapabilityName?: string | null
+  reviewAgentKey?: string | null
+  reviewPromptVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   capturedInput: Prisma.CapturedInputCreateNestedOneWithoutFindingsInput
@@ -953,6 +1074,11 @@ export type DocumentFindingUncheckedCreateWithoutOrganizationInput = {
   reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
+  reviewReason?: string | null
+  correctedDomainName?: string | null
+  correctedCapabilityName?: string | null
+  reviewAgentKey?: string | null
+  reviewPromptVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1008,6 +1134,11 @@ export type DocumentFindingScalarWhereInput = {
   reanalysisOfId?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   reviewedBy?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
   reviewedAt?: Prisma.DateTimeNullableFilter<"DocumentFinding"> | Date | string | null
+  reviewReason?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  correctedDomainName?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  correctedCapabilityName?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  reviewAgentKey?: Prisma.StringNullableFilter<"DocumentFinding"> | string | null
+  reviewPromptVersion?: Prisma.IntNullableFilter<"DocumentFinding"> | number | null
   createdAt?: Prisma.DateTimeFilter<"DocumentFinding"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DocumentFinding"> | Date | string
 }
@@ -1031,6 +1162,11 @@ export type DocumentFindingCreateWithoutCapturedInputInput = {
   reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
+  reviewReason?: string | null
+  correctedDomainName?: string | null
+  correctedCapabilityName?: string | null
+  reviewAgentKey?: string | null
+  reviewPromptVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutDocumentFindingsInput
@@ -1058,6 +1194,11 @@ export type DocumentFindingUncheckedCreateWithoutCapturedInputInput = {
   reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
+  reviewReason?: string | null
+  correctedDomainName?: string | null
+  correctedCapabilityName?: string | null
+  reviewAgentKey?: string | null
+  reviewPromptVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1107,6 +1248,11 @@ export type DocumentFindingCreateWithoutDocumentFamilyInput = {
   reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
+  reviewReason?: string | null
+  correctedDomainName?: string | null
+  correctedCapabilityName?: string | null
+  reviewAgentKey?: string | null
+  reviewPromptVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutDocumentFindingsInput
@@ -1134,6 +1280,11 @@ export type DocumentFindingUncheckedCreateWithoutDocumentFamilyInput = {
   reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
+  reviewReason?: string | null
+  correctedDomainName?: string | null
+  correctedCapabilityName?: string | null
+  reviewAgentKey?: string | null
+  reviewPromptVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1185,6 +1336,11 @@ export type DocumentFindingCreateManyOrganizationInput = {
   reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
+  reviewReason?: string | null
+  correctedDomainName?: string | null
+  correctedCapabilityName?: string | null
+  reviewAgentKey?: string | null
+  reviewPromptVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1208,6 +1364,11 @@ export type DocumentFindingUpdateWithoutOrganizationInput = {
   reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedDomainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedCapabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewAgentKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewPromptVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capturedInput?: Prisma.CapturedInputUpdateOneRequiredWithoutFindingsNestedInput
@@ -1235,6 +1396,11 @@ export type DocumentFindingUncheckedUpdateWithoutOrganizationInput = {
   reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedDomainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedCapabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewAgentKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewPromptVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1260,6 +1426,11 @@ export type DocumentFindingUncheckedUpdateManyWithoutOrganizationInput = {
   reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedDomainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedCapabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewAgentKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewPromptVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1285,6 +1456,11 @@ export type DocumentFindingCreateManyCapturedInputInput = {
   reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
+  reviewReason?: string | null
+  correctedDomainName?: string | null
+  correctedCapabilityName?: string | null
+  reviewAgentKey?: string | null
+  reviewPromptVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1308,6 +1484,11 @@ export type DocumentFindingUpdateWithoutCapturedInputInput = {
   reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedDomainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedCapabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewAgentKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewPromptVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutDocumentFindingsNestedInput
@@ -1335,6 +1516,11 @@ export type DocumentFindingUncheckedUpdateWithoutCapturedInputInput = {
   reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedDomainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedCapabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewAgentKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewPromptVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1360,6 +1546,11 @@ export type DocumentFindingUncheckedUpdateManyWithoutCapturedInputInput = {
   reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedDomainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedCapabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewAgentKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewPromptVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1385,6 +1576,11 @@ export type DocumentFindingCreateManyDocumentFamilyInput = {
   reanalysisOfId?: string | null
   reviewedBy?: string | null
   reviewedAt?: Date | string | null
+  reviewReason?: string | null
+  correctedDomainName?: string | null
+  correctedCapabilityName?: string | null
+  reviewAgentKey?: string | null
+  reviewPromptVersion?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1408,6 +1604,11 @@ export type DocumentFindingUpdateWithoutDocumentFamilyInput = {
   reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedDomainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedCapabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewAgentKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewPromptVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutDocumentFindingsNestedInput
@@ -1435,6 +1636,11 @@ export type DocumentFindingUncheckedUpdateWithoutDocumentFamilyInput = {
   reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedDomainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedCapabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewAgentKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewPromptVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1460,6 +1666,11 @@ export type DocumentFindingUncheckedUpdateManyWithoutDocumentFamilyInput = {
   reanalysisOfId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedDomainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  correctedCapabilityName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewAgentKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewPromptVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1488,6 +1699,11 @@ export type DocumentFindingSelect<ExtArgs extends runtime.Types.Extensions.Inter
   reanalysisOfId?: boolean
   reviewedBy?: boolean
   reviewedAt?: boolean
+  reviewReason?: boolean
+  correctedDomainName?: boolean
+  correctedCapabilityName?: boolean
+  reviewAgentKey?: boolean
+  reviewPromptVersion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -1517,6 +1733,11 @@ export type DocumentFindingSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   reanalysisOfId?: boolean
   reviewedBy?: boolean
   reviewedAt?: boolean
+  reviewReason?: boolean
+  correctedDomainName?: boolean
+  correctedCapabilityName?: boolean
+  reviewAgentKey?: boolean
+  reviewPromptVersion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -1546,6 +1767,11 @@ export type DocumentFindingSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   reanalysisOfId?: boolean
   reviewedBy?: boolean
   reviewedAt?: boolean
+  reviewReason?: boolean
+  correctedDomainName?: boolean
+  correctedCapabilityName?: boolean
+  reviewAgentKey?: boolean
+  reviewPromptVersion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -1575,11 +1801,16 @@ export type DocumentFindingSelectScalar = {
   reanalysisOfId?: boolean
   reviewedBy?: boolean
   reviewedAt?: boolean
+  reviewReason?: boolean
+  correctedDomainName?: boolean
+  correctedCapabilityName?: boolean
+  reviewAgentKey?: boolean
+  reviewPromptVersion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type DocumentFindingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "capturedInputId" | "documentFamilyId" | "documentType" | "title" | "summary" | "capabilityId" | "capabilityName" | "domainId" | "domainName" | "evidenceDemonstrated" | "strength" | "confidence" | "citedSegmentIds" | "citedExcerpts" | "status" | "sourceHash" | "reanalysisOfId" | "reviewedBy" | "reviewedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["documentFinding"]>
+export type DocumentFindingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "capturedInputId" | "documentFamilyId" | "documentType" | "title" | "summary" | "capabilityId" | "capabilityName" | "domainId" | "domainName" | "evidenceDemonstrated" | "strength" | "confidence" | "citedSegmentIds" | "citedExcerpts" | "status" | "sourceHash" | "reanalysisOfId" | "reviewedBy" | "reviewedAt" | "reviewReason" | "correctedDomainName" | "correctedCapabilityName" | "reviewAgentKey" | "reviewPromptVersion" | "createdAt" | "updatedAt", ExtArgs["result"]["documentFinding"]>
 export type DocumentFindingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   capturedInput?: boolean | Prisma.CapturedInputDefaultArgs<ExtArgs>
@@ -1650,6 +1881,11 @@ export type $DocumentFindingPayload<ExtArgs extends runtime.Types.Extensions.Int
     reanalysisOfId: string | null
     reviewedBy: string | null
     reviewedAt: Date | null
+    reviewReason: string | null
+    correctedDomainName: string | null
+    correctedCapabilityName: string | null
+    reviewAgentKey: string | null
+    reviewPromptVersion: number | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["documentFinding"]>
@@ -2099,6 +2335,11 @@ export interface DocumentFindingFieldRefs {
   readonly reanalysisOfId: Prisma.FieldRef<"DocumentFinding", 'String'>
   readonly reviewedBy: Prisma.FieldRef<"DocumentFinding", 'String'>
   readonly reviewedAt: Prisma.FieldRef<"DocumentFinding", 'DateTime'>
+  readonly reviewReason: Prisma.FieldRef<"DocumentFinding", 'String'>
+  readonly correctedDomainName: Prisma.FieldRef<"DocumentFinding", 'String'>
+  readonly correctedCapabilityName: Prisma.FieldRef<"DocumentFinding", 'String'>
+  readonly reviewAgentKey: Prisma.FieldRef<"DocumentFinding", 'String'>
+  readonly reviewPromptVersion: Prisma.FieldRef<"DocumentFinding", 'Int'>
   readonly createdAt: Prisma.FieldRef<"DocumentFinding", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"DocumentFinding", 'DateTime'>
 }

@@ -16,6 +16,9 @@ type Finding = {
   citedExcerpts: string[];
   status: "PENDING_REVIEW" | "APPROVED" | "REJECTED" | "STALE" | "SOURCE_REMOVED";
   reviewedBy: string | null;
+  reviewReason: string | null;
+  correctedDomainName: string | null;
+  correctedCapabilityName: string | null;
   filename: string | null;
   sourceRef: string | null;
 };
@@ -46,6 +49,7 @@ export default function DocumentFindingsPage({ params }: { params: Promise<{ id:
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState<Record<string, { reason: string; domain: string; capability: string }>>({});
 
   const api = `/api/clients/${organizationId}/findings`;
 
@@ -84,6 +88,7 @@ export default function DocumentFindingsPage({ params }: { params: Promise<{ id:
   }
 
   async function decide(findingId: string, action: "approve" | "reject") {
+    const supplied = feedback[findingId] ?? { reason: "", domain: "", capability: "" };
     setBusy(findingId);
     setError(null);
     setNotice(null);
@@ -91,7 +96,7 @@ export default function DocumentFindingsPage({ params }: { params: Promise<{ id:
       const response = await fetch(api, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ findingId, action }),
+        body: JSON.stringify({ findingId, action, reason: supplied.reason, correctedDomainName: supplied.domain, correctedCapabilityName: supplied.capability }),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? "The decision could not be saved.");
@@ -159,12 +164,17 @@ export default function DocumentFindingsPage({ params }: { params: Promise<{ id:
           </ul>
         </div> : null}
 
-        {finding.status === "PENDING_REVIEW" ? <div className="mt-3 flex flex-wrap gap-2">
+        {finding.status === "PENDING_REVIEW" ? <>
+          <div className="mt-3">
+          <label className="block text-xs font-medium text-[var(--muted)]">Optional reviewer comment<textarea value={feedback[finding.id]?.reason ?? ""} onChange={(event) => setFeedback((current) => ({ ...current, [finding.id]: { reason: event.target.value, domain: current[finding.id]?.domain ?? "", capability: current[finding.id]?.capability ?? "" } }))} rows={2} placeholder="Why is this correct/incorrect? Optional — approval does not require a comment." className="mt-1 w-full rounded border border-[var(--card-border)] bg-[var(--card)] p-2 text-sm text-[var(--foreground)]" /></label>
+          <div className="mt-2 grid gap-2 sm:grid-cols-2"><input value={feedback[finding.id]?.domain ?? ""} onChange={(event) => setFeedback((current) => ({ ...current, [finding.id]: { reason: current[finding.id]?.reason ?? "", domain: event.target.value, capability: current[finding.id]?.capability ?? "" } }))} placeholder="Correct domain (optional)" className="rounded border border-[var(--card-border)] bg-[var(--card)] p-2 text-sm" /><input value={feedback[finding.id]?.capability ?? ""} onChange={(event) => setFeedback((current) => ({ ...current, [finding.id]: { reason: current[finding.id]?.reason ?? "", domain: current[finding.id]?.domain ?? "", capability: event.target.value } }))} placeholder="Correct capability (optional)" className="rounded border border-[var(--card-border)] bg-[var(--card)] p-2 text-sm" /></div>
+          <div className="mt-3 flex flex-wrap gap-2">
           <button type="button" disabled={busy === finding.id} onClick={() => reanalyze(finding.id)} className="rounded border border-[var(--card-border)] px-3 py-1.5 text-sm font-medium text-[var(--foreground)] disabled:opacity-50">Re-analyse</button>
           <button type="button" disabled={busy === finding.id} onClick={() => decide(finding.id, "approve")} className="flowstate-accent-button rounded px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50">Approve</button>
           <button type="button" disabled={busy === finding.id} onClick={() => decide(finding.id, "reject")} className="rounded border border-[var(--card-border)] px-3 py-1.5 text-sm font-medium text-[var(--foreground)] disabled:opacity-50">Reject</button>
-        </div> : <p className="mt-3 text-xs text-[var(--muted)]">
-          {finding.status === "STALE" ? "The source document changed after this was analysed — re-import to refresh." : finding.status === "SOURCE_REMOVED" ? "The source document was removed from SharePoint. Historical evidence is retained, but it is not current." : `${finding.status === "APPROVED" ? "Approved" : "Rejected"}${finding.reviewedBy ? ` by ${finding.reviewedBy}` : ""}.`}
+          </div>
+        </div></> : <p className="mt-3 text-xs text-[var(--muted)]">
+          {finding.status === "STALE" ? "The source document changed after this was analysed — re-import to refresh." : finding.status === "SOURCE_REMOVED" ? "The source document was removed from SharePoint. Historical evidence is retained, but it is not current." : <><span>{`${finding.status === "APPROVED" ? "Approved" : "Rejected"}${finding.reviewedBy ? ` by ${finding.reviewedBy}` : ""}.`}</span>{finding.reviewReason ? <span className="mt-1 block">Reviewer comment: {finding.reviewReason}</span> : null}{finding.correctedDomainName || finding.correctedCapabilityName ? <span className="mt-1 block">Correction: {[finding.correctedDomainName, finding.correctedCapabilityName].filter(Boolean).join(" → ")}</span> : null}</>}
         </p>}
       </li>)}
     </ul>}

@@ -1139,6 +1139,11 @@ model DocumentFinding {
   reanalysisOfId       String?
   reviewedBy           String?
   reviewedAt           DateTime?
+  reviewReason         String?
+  correctedDomainName  String?
+  correctedCapabilityName String?
+  reviewAgentKey       String?
+  reviewPromptVersion  Int?
   createdAt            DateTime        @default(now())
   updatedAt            DateTime        @updatedAt
 

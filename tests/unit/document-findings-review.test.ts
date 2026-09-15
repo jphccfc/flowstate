@@ -29,8 +29,8 @@ describe("findings review API", () => {
   });
 
   it("refuses to act on a stale finding", () => {
-    expect(route).toContain('if (existing.status === "STALE")');
-    expect(route).toContain("the source document has changed since it was analysed");
+    expect(route).toContain('existing.status === "STALE" || existing.status === "SOURCE_REMOVED" || existing.status === "SUPERSEDED"');
+    expect(route).toContain("This finding is no longer current and cannot be reviewed.");
   });
 
   it("validates the action rather than accepting any string", () => {
