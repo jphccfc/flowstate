@@ -28,7 +28,7 @@ export function parseDocumentVersion(filename: string): ParsedDocumentVersion {
 }
 
 export function normalizeDocumentTitle(title: string): string {
-  return title.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().replace(/\s+/g, " ");
+  return title.toLowerCase().replace(/\brevised\s+asset\b/g, " ").replace(/[^a-z0-9]+/g, " ").trim().replace(/\s+/g, " ");
 }
 
 export function compareDocumentVersions(a: ParsedDocumentVersion, b: ParsedDocumentVersion): number {

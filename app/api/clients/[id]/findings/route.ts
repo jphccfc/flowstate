@@ -97,7 +97,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   const guard = await authorize(id, "client.configure");
   if (guard.error) return guard.error;
 
-  const body = await request.json().catch(() => null) as { findingId?: string; action?: string; reason?: string; correctedDomainName?: string; correctedCapabilityName?: string } | null;
+  const body = await request.json().catch(() => null) as { findingId?: string; action?: string; reason?: string; correctedDomainId?: string; correctedCapabilityId?: string } | null;
   const findingId = body?.findingId?.trim();
   const action = body?.action;
   if (!findingId) return NextResponse.json({ error: "findingId is required" }, { status: 400 });
@@ -122,9 +122,15 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     where: { key: "client_ai_hub", publishedPromptVersionId: { not: null } },
     select: { key: true, publishedPromptVersion: { select: { version: true } } },
   });
+  const [correctedDomain, correctedCapability] = await Promise.all([
+    body?.correctedDomainId ? prisma.businessDomain.findFirst({ where: { id: body.correctedDomainId, organizationId: id }, select: { name: true } }) : null,
+    body?.correctedCapabilityId ? prisma.capability.findFirst({ where: { id: body.correctedCapabilityId, domain: { organizationId: id } }, select: { name: true, domainId: true } }) : null,
+  ]);
+  if (body?.correctedDomainId && !correctedDomain) return NextResponse.json({ error: "Correct domain is not valid for this client." }, { status: 400 });
+  if (body?.correctedCapabilityId && !correctedCapability) return NextResponse.json({ error: "Correct capability is not valid for this client." }, { status: 400 });
   const reviewReason = typeof body?.reason === "string" ? body.reason.trim() || null : null;
-  const correctedDomainName = typeof body?.correctedDomainName === "string" ? body.correctedDomainName.trim() || null : null;
-  const correctedCapabilityName = typeof body?.correctedCapabilityName === "string" ? body.correctedCapabilityName.trim() || null : null;
+  const correctedDomainName = correctedDomain?.name ?? null;
+  const correctedCapabilityName = correctedCapability?.name ?? null;
 
   const updated = await prisma.documentFinding.update({
     where: { id: findingId },
