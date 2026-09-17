@@ -8,7 +8,7 @@ const page = readFileSync(new URL("../../app/clients/[id]/integrations/sharepoin
 describe("SharePoint watch-folder workflow", () => {
   it("schedules authenticated delta scans for enabled sources", () => {
     expect(config).toContain("/api/cron/sharepoint-sync");
-    expect(config).toContain("*/15 * * * *");
+    expect(config).toContain("0 2 * * *");
     expect(cron).toContain("CRON_SECRET");
     expect(cron).toContain('enabled: true');
     expect(cron).toContain("syncIntegrationSource");

@@ -1,6 +1,6 @@
 {
   "buildCommand": "if [ \"$VERCEL_ENV\" = \"production\" ]; then npx prisma migrate deploy; fi && npm run build",
   "crons": [
-    { "path": "/api/cron/sharepoint-sync", "schedule": "*/15 * * * *" }
+    { "path": "/api/cron/sharepoint-sync", "schedule": "0 2 * * *" }
   ]
 }
