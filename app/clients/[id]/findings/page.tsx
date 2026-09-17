@@ -21,6 +21,7 @@ type Finding = {
   correctedCapabilityName: string | null;
   filename: string | null;
   sourceRef: string | null;
+  capturedInputId: string;
 };
 
 const strengthTone: Record<Finding["strength"], string> = {
@@ -137,7 +138,7 @@ export default function DocumentFindingsPage({ params }: { params: Promise<{ id:
       {findings.map((finding) => <li key={finding.id} className="workspace-card p-4">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h2 className="font-semibold">{finding.title}</h2>
+            <h2 className="font-semibold"><Link href={`/clients/${organizationId}/documents/${finding.capturedInputId}`} className="underline decoration-dotted">{finding.title}</Link></h2>
             <p className="mt-0.5 text-xs text-[var(--muted)]">
               {finding.documentType ? `${finding.documentType} · ` : ""}{finding.filename ?? "document"}
             </p>

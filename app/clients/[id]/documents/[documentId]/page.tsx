@@ -1,0 +1,18 @@
+"use client";
+
+import Link from "next/link";
+import { use, useEffect, useState } from "react";
+
+type Finding = { id: string; title: string; summary: string; status: string; domainName: string | null; capabilityName: string | null; citedExcerpts: string[] };
+type Document = { id: string; type: string; rawText: string | null; sourceRef: string | null; sourceItemId: string | null; sourceVersion: string | null; sourceHash: string | null; sourcePath: string | null; versionLabel: string | null; versionStatus: string; capturedAt: string; createdAt: string; attachments: { filename: string; contentType: string; sizeBytes: number | null }[]; findings: Finding[] };
+
+export default function DocumentReaderPage({ params }: { params: Promise<{ id: string; documentId: string }> }) {
+  const { id, documentId } = use(params);
+  const [document, setDocument] = useState<Document | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  useEffect(() => { fetch(`/api/clients/${id}/documents/${documentId}`).then(async (response) => { const data = await response.json(); if (!response.ok) throw new Error(data.error ?? "Document could not be loaded."); setDocument(data.document); }).catch((cause) => setError(cause instanceof Error ? cause.message : "Document could not be loaded.")); }, [id, documentId]);
+  if (error) return <main className="mx-auto max-w-5xl p-6"><p role="alert" className="text-red-700">{error}</p></main>;
+  if (!document) return <main className="mx-auto max-w-5xl p-6"><p role="status" className="text-sm text-[var(--muted)]">Loading document…</p></main>;
+  const filename = document.attachments[0]?.filename ?? "Imported document";
+  return <main className="mx-auto max-w-5xl p-4 sm:p-6"><Link href={`/clients/${id}/findings`} className="text-sm text-[var(--muted)]">&larr; Back to Evidence Review</Link><header className="mb-6 mt-4"><div className="workspace-eyebrow mb-2">Imported document</div><h1 className="workspace-heading text-3xl font-bold">{filename}</h1><p className="mt-2 text-sm text-[var(--muted)]">Full extracted text retained for review. The source file remains in SharePoint.</p><div className="mt-3 flex flex-wrap gap-2 text-xs text-[var(--muted)]"><span>{document.versionLabel ?? "Unversioned"}</span><span>· {document.versionStatus}</span><span>· imported {new Date(document.createdAt).toLocaleString()}</span>{document.sourcePath ? <span>· {document.sourcePath}</span> : null}</div>{document.sourceRef ? <a href={document.sourceRef} target="_blank" rel="noreferrer" className="mt-3 inline-block text-sm underline">Open original SharePoint source</a> : null}</header><div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]"><article className="workspace-card p-5"><h2 className="mb-3 font-semibold">Full text</h2><pre className="max-h-[70vh] overflow-auto whitespace-pre-wrap break-words font-sans text-sm leading-6 text-[var(--foreground)]">{document.rawText || "No extracted text is available for this document."}</pre></article><aside className="space-y-4"><section className="workspace-card p-4"><h2 className="font-semibold">Assessment findings</h2>{document.findings.length ? <div className="mt-3 space-y-3">{document.findings.map((finding) => <article key={finding.id} className="border-t border-[var(--card-border)] pt-3 text-sm"><p className="font-medium">{finding.title}</p><p className="mt-1 text-xs text-[var(--muted)]">{finding.status}{finding.domainName ? ` · ${finding.domainName}` : ""}{finding.capabilityName ? ` → ${finding.capabilityName}` : ""}</p><p className="mt-1 text-xs">{finding.summary}</p></article>)}</div> : <p className="mt-2 text-sm text-[var(--muted)]">No document finding is recorded yet.</p>}</section></aside></div></main>;
+}

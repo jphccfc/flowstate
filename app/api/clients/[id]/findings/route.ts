@@ -48,6 +48,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       include: {
         capturedInput: {
           select: {
+            id: true,
             sourceRef: true,
             attachments: { select: { filename: true }, take: 1 },
           },
@@ -83,6 +84,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         correctedDomainName: finding.correctedDomainName,
         correctedCapabilityName: finding.correctedCapabilityName,
         filename: finding.capturedInput.attachments[0]?.filename ?? null,
+        capturedInputId: finding.capturedInput.id,
         sourceRef: finding.capturedInput.sourceRef,
       })),
       counts: Object.fromEntries(counts.map((row) => [row.status, row._count._all])),

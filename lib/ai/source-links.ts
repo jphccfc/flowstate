@@ -1,7 +1,7 @@
 const SOURCE_ROUTES: Record<string, string> = {
   "meeting agenda": "meetings",
-  document: "capture",
-  data_room_file: "capture",
+  document: "documents",
+  data_room_file: "documents",
   note: "capture",
   email: "capture",
   transcript: "capture",
@@ -14,5 +14,6 @@ export function sourceHref(clientId: string, kind: string, sourceId: string): st
   void sourceId;
   const route = SOURCE_ROUTES[kind];
   if (!route) return undefined;
+  if (route === "documents") return `/clients/${encodeURIComponent(clientId)}/documents/${encodeURIComponent(sourceId.replace(/^finding:/, ""))}`;
   return `/clients/${encodeURIComponent(clientId)}/${route}`;
 }
