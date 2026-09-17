@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
 import { isOrganizationMember } from "@/lib/auth/organization";
+import { InputType } from "@/app/generated/prisma/enums";
 
 type CandidateType = "DOMAIN" | "CAPABILITY" | "KPI" | "STAKEHOLDER";
 
@@ -10,7 +11,11 @@ export async function GET(req: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const organizationId = new URL(req.url).searchParams.get("organizationId");
+  const searchParams = new URL(req.url).searchParams;
+  const organizationId = searchParams.get("organizationId");
+  const query = searchParams.get("q")?.trim() ?? "";
+  const sourceType = searchParams.get("sourceType")?.trim() ?? "";
+  const sourceTypeFilter = Object.values(InputType).includes(sourceType as InputType) ? sourceType as InputType : undefined;
   if (!organizationId) {
     return NextResponse.json({ error: "organizationId is required" }, { status: 400 });
   }
@@ -20,7 +25,7 @@ export async function GET(req: NextRequest) {
 
   const [tags, domains, kpis, stakeholders] = await Promise.all([
     prisma.tag.findMany({
-      where: { status: "PENDING_REVIEW", segment: { capturedInput: { organizationId } } },
+      where: { status: "PENDING_REVIEW", segment: { capturedInput: { organizationId, ...(sourceTypeFilter ? { type: sourceTypeFilter } : {}) } } },
       include: {
         segment: {
           include: { capturedInput: true },
@@ -57,8 +62,9 @@ export async function GET(req: NextRequest) {
     candidatesByType.STAKEHOLDER.push({ id: stakeholder.id, name: stakeholder.name });
   }
 
-  const result = tags.map((tag) => ({
-    id: tag.id,
+  type TagWithContext = { id: string; targetType: CandidateType; targetId: string; confidence: number; status: string; reviewedBy: string | null; reviewedAt: Date | null; createdAt: Date; segment: { id: string; text: string; capturedInput: { id: string; type: string; subject: string | null; sourceRef: string | null; locationTag: string | null; capturedAt: Date } } };
+  const result = (tags as unknown as TagWithContext[]).map((tag) => ({
+    searchText: [tag.segment.text, tag.segment.capturedInput.subject, tag.segment.capturedInput.sourceRef, tag.segment.capturedInput.locationTag, nameById.get(tag.targetId)].filter(Boolean).join(" ").toLocaleLowerCase(),
     targetType: tag.targetType,
     targetId: tag.targetId,
     targetName: nameById.get(tag.targetId) ?? "(unknown)",
@@ -81,7 +87,7 @@ export async function GET(req: NextRequest) {
       reviewedAt: tag.reviewedAt,
     },
     candidates: candidatesByType[tag.targetType as CandidateType] ?? [],
-  }));
+  })).filter((tag) => !query || tag.searchText.includes(query.toLocaleLowerCase())).map(({ searchText: _searchText, ...tag }) => tag);
 
   return NextResponse.json(result);
 }
