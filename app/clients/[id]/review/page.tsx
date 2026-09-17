@@ -5,6 +5,7 @@ import Link from "next/link";
 import { sanitizeRichText } from "@/lib/scratchpad/rich-text";
 
 type Candidate = { id: string; name: string };
+type DocumentTagGroup = { capturedInputId: string; filename: string; sourceRef: string | null; capturedAt: string; tags: PendingTag[] };
 
 async function readErrorMessage(response: Response) {
   const body = await response.json().catch(() => ({})) as { error?: unknown };
@@ -75,6 +76,13 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
   const [actionId, setActionId] = useState<string | null>(null);
   const [noteDrafts, setNoteDrafts] = useState<Record<string, string>>({});
   const sanitizedRawText = (note: ScratchpadNote) => sanitizeRichText(note.rawText ?? "");
+  const groupedTags = Array.from(tags.reduce((groups, tag) => {
+    const key = tag.provenance.capturedInputId;
+    const existing = groups.get(key);
+    if (existing) existing.tags.push(tag);
+    else groups.set(key, { capturedInputId: key, filename: tag.provenance.sourceRef?.split("/").pop() ?? "Imported document", sourceRef: tag.provenance.sourceRef, capturedAt: tag.provenance.capturedAt, tags: [tag] });
+    return groups;
+  }, new Map<string, DocumentTagGroup>()).values());
 
   const loadReviewItems = useCallback(async () => {
     setError(null);
@@ -124,6 +132,16 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
     } finally {
       setActionId(null);
     }
+  }
+
+  async function actDocument(group: DocumentTagGroup, action: "approve" | "reject") {
+    setActionId(group.capturedInputId); setError(null);
+    try {
+      const res = await fetch("/api/tags/bulk", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ organizationId, capturedInputId: group.capturedInputId, action }) });
+      if (!res.ok) throw new Error("The document review decision could not be saved.");
+      await loadReviewItems();
+    } catch (cause) { setError(cause instanceof Error ? cause.message : "The document review decision could not be saved."); }
+    finally { setActionId(null); }
   }
 
   async function reassign(tagId: string) {
@@ -235,9 +253,14 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
         )}
       </section>
 
-      {tags.length === 0 && <p className="text-sm text-[var(--muted)]">Nothing pending review.</p>}
+      {groupedTags.length === 0 && <p className="text-sm text-[var(--muted)]">Nothing pending review.</p>}
       <div className="space-y-3">
-        {tags.map((tag) => (
+        {groupedTags.map((group) => (
+          <section key={group.capturedInputId} className="rounded-lg border border-[var(--card-border)] bg-[var(--card)] p-4">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-3"><div><h2 className="font-semibold">{group.filename}</h2><p className="text-xs text-[var(--muted)]">{group.tags.length} supporting tag{group.tags.length === 1 ? "" : "s"} · captured {new Date(group.capturedAt).toLocaleString()}</p></div><div className="flex gap-2"><button type="button" onClick={() => void actDocument(group, "approve")} disabled={actionId !== null} className="rounded px-3 py-1.5 text-xs font-medium text-white flowstate-success-button disabled:opacity-50">Approve document</button><button type="button" onClick={() => void actDocument(group, "reject")} disabled={actionId !== null} className="rounded bg-[var(--destructive)] px-3 py-1.5 text-xs font-medium text-white disabled:opacity-50">Reject document</button></div></div>
+            <details><summary className="cursor-pointer text-xs text-[var(--muted)]">Show supporting tags (not separate approval tasks)</summary>
+            <div className="mt-3 space-y-3">
+        {group.tags.map((tag) => (
           <div key={tag.id} className="rounded-lg border border-[var(--card-border)] bg-[var(--card)] p-4">
             <div className="mb-3 flex items-start justify-between gap-3">
               <p className="text-sm">&ldquo;{tag.provenance.segmentText}&rdquo;</p>
@@ -269,6 +292,9 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
               </div>
             )}
           </div>
+        ))}
+            </div></details>
+          </section>
         ))}
       </div>
     </div>
