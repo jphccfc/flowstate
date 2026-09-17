@@ -139,6 +139,7 @@ export default function DocumentFindingsPage({ params }: { params: Promise<{ id:
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <h2 className="font-semibold"><Link href={`/clients/${organizationId}/documents/${finding.capturedInputId}`} className="underline decoration-dotted">{finding.title}</Link></h2>
+            <Link href={`/clients/${organizationId}/documents/${finding.capturedInputId}`} className="mt-2 inline-block rounded border border-[var(--card-border)] px-2.5 py-1 text-xs font-medium text-[var(--foreground)]">Open full document</Link>
             <p className="mt-0.5 text-xs text-[var(--muted)]">
               {finding.documentType ? `${finding.documentType} · ` : ""}{finding.filename ?? "document"}
             </p>
