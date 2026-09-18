@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse, after } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { hasOrganizationPermission } from "@/lib/auth/organization";
 import { prisma } from "@/lib/db";
@@ -16,12 +16,11 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
   // Mark running before dispatch; a later status read makes progress visible.
   await prisma.integrationSource.update({ where: { id: source.id }, data: { syncStatus: "RUNNING", lastError: null } });
-  after(async () => {
-    try {
-      await syncIntegrationSource(prisma, source);
-    } catch (error) {
-      await prisma.integrationSource.update({ where: { id: source.id }, data: { syncStatus: "ERROR", lastError: error instanceof Error ? error.message : "Sync failed" } });
-    }
-  });
-  return NextResponse.json({ accepted: true, sourceId: source.id, syncStatus: "RUNNING" }, { status: 202 });
+  try {
+    const result = await syncIntegrationSource(prisma, source);
+    return NextResponse.json({ accepted: true, ...result, syncStatus: "READY" });
+  } catch (error) {
+    await prisma.integrationSource.update({ where: { id: source.id }, data: { syncStatus: "ERROR", lastError: error instanceof Error ? error.message : "Sync failed" } });
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Sync failed", syncStatus: "ERROR" }, { status: 502 });
+  }
 }

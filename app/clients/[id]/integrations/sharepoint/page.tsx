@@ -30,6 +30,8 @@ type Site = { id: string; name: string; webUrl: string };
 type Library = { id: string; name: string; webUrl: string };
 type DriveItem = { id: string; name: string; isFolder: boolean };
 type PathSegment = { id: string; name: string };
+type Source = { id: string; siteName: string | null; driveId: string; driveName: string | null; folderItemId: string; folderPath: string | null; enabled: boolean; syncStatus: string; lastSyncedAt: string | null; lastError: string | null; createdAt: string };
+type SyncResult = { sourceId: string; status: string; discovered?: number; imported?: number; duplicates?: number; skipped?: number; removed?: number; failed?: number };
 
 const fieldLabels = { site: "Site", library: "Library", folder: "Folder" } as const;
 
@@ -76,6 +78,8 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
   const [importResult, setImportResult] = useState<ImportSummary | null>(null);
   const [analysisQueued, setAnalysisQueued] = useState(0);
   const [sourceSaved, setSourceSaved] = useState(false);
+  const [sources, setSources] = useState<Source[]>([]);
+  const [syncResult, setSyncResult] = useState<SyncResult | null>(null);
   const [syncing, setSyncing] = useState(false);
   const [importing, setImporting] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
@@ -102,7 +106,9 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
       const sourcesResponse = await fetch(`${api}/sources`);
       if (sourcesResponse.ok) {
         const sourceData = await sourcesResponse.json();
-        setSourceSaved((sourceData.sources ?? []).some((source: { enabled: boolean }) => source.enabled));
+        const persistedSources = (sourceData.sources ?? []) as Source[];
+        setSources(persistedSources);
+        setSourceSaved(persistedSources.some((source) => source.enabled));
       }
     }
   }, [api]);
@@ -236,6 +242,7 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? "The folder scope could not be saved.");
       setSourceSaved(true);
+      const sourcesResponse = await fetch(`${api}/sources`); if (sourcesResponse.ok) setSources(((await sourcesResponse.json()).sources ?? []) as Source[]);
       setNotice("Folder saved for monitoring. Use Check for changes to run a SharePoint delta scan.");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "The folder scope could not be saved.");
@@ -247,14 +254,14 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
     if (!sourceSaved) { setError("Save the selected folder for monitoring first."); return; }
     setError(null); setNotice(null); setSyncing(true);
     try {
-      const sourcesResponse = await fetch(`${api}/sources`);
-      const sourceData = await sourcesResponse.json();
-      const source = sourceData.sources?.[0];
+      const source = sources.find((item) => item.driveId === selectedLibrary?.id && item.folderItemId === currentPath.id) ?? sources.find((item) => item.enabled);
       if (!source) throw new Error("No saved SharePoint source was found.");
       const response = await fetch(`${api}/sync?sourceId=${encodeURIComponent(source.id)}`, { method: "POST" });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? "The change scan could not be started.");
-      setNotice("Change scan started. New and updated documents will be analysed; removed sources will be marked removed.");
+      setSyncResult(data as SyncResult);
+      setSources((current) => current.map((item) => item.id === source.id ? { ...item, syncStatus: data.syncStatus ?? "READY", lastSyncedAt: new Date().toISOString(), lastError: data.failed ? `${data.failed} item(s) failed` : null } : item));
+      setNotice(`Change scan complete: ${data.discovered ?? 0} changed item(s), ${data.imported ?? 0} imported, ${data.duplicates ?? 0} already present, ${data.removed ?? 0} removed, ${data.failed ?? 0} failed.`);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "The change scan could not be started.");
     } finally { setSyncing(false); }
@@ -348,7 +355,9 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
     </div> : null}
 
     {browseError && <p role="alert" className="mt-3 text-sm text-red-700">{browseError}</p>}
-    <div className="mt-4 flex flex-wrap gap-3"><button type="submit" className="rounded border border-[var(--card-border)] px-3 py-2 text-sm font-medium text-[var(--foreground)]">{busy === "preview" ? "Counting…" : "Preview import"}</button><button type="button" onClick={saveFolderScope} disabled={!isConnected || !selectedSite || !selectedLibrary || busy === "save"} className="rounded border border-[var(--card-border)] px-3 py-2 text-sm font-medium text-[var(--foreground)] disabled:opacity-50">{busy === "save" ? "Saving…" : sourceSaved ? "Folder saved" : "Save folder for monitoring"}</button><button type="button" onClick={checkForChanges} disabled={!sourceSaved || syncing} className="rounded border border-[var(--card-border)] px-3 py-2 text-sm font-medium text-[var(--foreground)] disabled:opacity-50">{syncing ? "Starting scan…" : "Check for changes"}</button><button type="button" onClick={runImport} disabled={!isConnected || !selectedLibrary || importing} className="flowstate-accent-button rounded px-3 py-2 text-sm font-medium text-white disabled:opacity-50">{importing ? "Importing…" : "Import folder"}</button></div>
+    <div className="mt-4 flex flex-wrap gap-3"><button type="submit" className="rounded border border-[var(--card-border)] px-3 py-2 text-sm font-medium text-[var(--foreground)]">{busy === "preview" ? "Counting…" : "Preview import"}</button><button type="button" onClick={saveFolderScope} disabled={!isConnected || !selectedSite || !selectedLibrary || busy === "save"} className="rounded border border-[var(--card-border)] px-3 py-2 text-sm font-medium text-[var(--foreground)] disabled:opacity-50">{busy === "save" ? "Saving…" : sourceSaved ? "Folder saved" : "Save folder for monitoring"}</button><button type="button" onClick={checkForChanges} disabled={!sourceSaved || syncing} className="rounded border border-[var(--card-border)] px-3 py-2 text-sm font-medium text-[var(--foreground)] disabled:opacity-50">{syncing ? "Checking changes…" : "Check for changes"}</button><button type="button" onClick={runImport} disabled={!isConnected || !selectedLibrary || importing} className="flowstate-accent-button rounded px-3 py-2 text-sm font-medium text-white disabled:opacity-50">{importing ? "Importing…" : "Import folder"}</button></div>
+ <section className="mt-5 rounded border border-[var(--card-border)] bg-[var(--muted-bg)] p-3" aria-labelledby="watched-folders"><div className="flex flex-wrap items-center justify-between gap-2"><h2 id="watched-folders" className="font-semibold">Watched folders</h2><span className="text-xs text-[var(--muted)]">{sources.length} configured</span></div>{sources.length ? <div className="mt-3 space-y-2">{sources.map((source) => <article key={source.id} className="rounded border border-[var(--card-border)] bg-[var(--card)] p-3 text-sm"><div className="flex flex-wrap items-center justify-between gap-2"><strong>{source.siteName ?? "SharePoint site"} / {source.driveName ?? "Document library"}</strong><span className="text-xs font-medium">{source.enabled ? source.syncStatus : "DISABLED"}</span></div><p className="mt-1 text-xs text-[var(--muted)]">{source.folderPath ?? "Root"}{source.lastSyncedAt ? ` · last checked ${new Date(source.lastSyncedAt).toLocaleString()}` : " · not checked yet"}</p>{source.lastError ? <p className="mt-1 text-xs text-red-700">Last error: {source.lastError}</p> : null}</article>)}</div> : <p className="mt-2 text-sm text-[var(--muted)]">No watched folders configured. Save a selected folder above to add one.</p>}</section>
+    {syncResult ? <div role="status" className="mt-3 rounded border border-[var(--card-border)] p-3 text-sm"><strong>Last on-demand change scan</strong><p className="mt-1 text-[var(--muted)]">{syncResult.discovered ?? 0} changed · {syncResult.imported ?? 0} imported · {syncResult.duplicates ?? 0} already present · {syncResult.removed ?? 0} removed · {syncResult.failed ?? 0} failed</p></div> : null}
 
     {preview && <div role="status" className="mt-4 rounded border border-[var(--card-border)] bg-[var(--muted-bg)] p-3 text-sm">
       <strong>{preview.supported.toLocaleString()} document{preview.supported === 1 ? "" : "s"} to import</strong>
