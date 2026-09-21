@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
-import { getOrganizationMembership, hasOrganizationPermission } from "@/lib/auth/organization";
+import { hasOrganizationPermission } from "@/lib/auth/organization";
 
 const types = ["REQUIREMENT", "SPECIFICATION", "GOAL", "OBJECTIVE"] as const;
 const statuses = ["DRAFT", "ACTIVE", "COMPLETED", "CANCELLED"] as const;
 const approvals = ["NOT_REQUIRED", "PENDING", "APPROVED", "REJECTED"] as const;
 const valid = (value: unknown, values: readonly string[]): value is string => typeof value === "string" && values.includes(value);
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const approvedInsightSelect = { id: true, title: true, decisionId: true, sourceEvidenceIds: true, sourcePerspectiveIds: true, capabilityId: true, decision: { select: { id: true, status: true, score: true, rationale: true, decidedBy: true, decidedAt: true } } } as const;
 type InsightWithDecision = { id: string; title: string; decisionId: string; capabilityId: string; sourceEvidenceIds: string[]; sourcePerspectiveIds: string[]; decision: { id: string; status: string; score: number | null; rationale: string | null; decidedBy: string | null; decidedAt: Date } };
 async function addReadableProvenance<T extends { approvedInsight: InsightWithDecision | null }>(item: T, organizationId: string): Promise<T> {
@@ -41,7 +42,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   const description = typeof body.description === "string" ? body.description.trim() : "";
   if (!valid(body.type, types) || !title || !description) return NextResponse.json({ error: "Type, title and description are required" }, { status: 400 });
   const ownerEmail = typeof body.ownerEmail === "string" && body.ownerEmail.trim() ? body.ownerEmail.trim() : current.email;
-  if (!(await getOrganizationMembership(ownerEmail, id))) return NextResponse.json({ error: "ownerEmail must belong to an organisation member" }, { status: 400 });
+  if (!emailPattern.test(ownerEmail)) return NextResponse.json({ error: "ownerEmail must be a valid email address" }, { status: 400 });
   let targetDate: Date | null = null; if (body.targetDate !== undefined) { targetDate = new Date(body.targetDate); if (Number.isNaN(targetDate.getTime())) return NextResponse.json({ error: "targetDate must be a valid date" }, { status: 400 }); }
   if (body.parentId !== undefined && !(await prisma.planningItem.findFirst({ where: { id: body.parentId, organizationId: id }, select: { id: true } }))) return NextResponse.json({ error: "parentId must belong to this organisation" }, { status: 400 });
   if (body.approvedInsightId !== undefined && !(await approvedInsightBelongsToOrganization(body.approvedInsightId, id))) return NextResponse.json({ error: "approvedInsightId must belong to this organisation" }, { status: 400 });
@@ -58,7 +59,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const data: Record<string, unknown> = {};
   if (typeof body.title === "string" && body.title.trim()) data.title = body.title.trim();
   if (typeof body.description === "string" && body.description.trim()) data.description = body.description.trim();
-  if (typeof body.ownerEmail === "string" && body.ownerEmail.trim()) { if (!(await getOrganizationMembership(body.ownerEmail.trim(), id))) return NextResponse.json({ error: "ownerEmail must belong to an organisation member" }, { status: 400 }); data.ownerEmail = body.ownerEmail.trim(); }
+  if (typeof body.ownerEmail === "string" && body.ownerEmail.trim()) { if (!emailPattern.test(body.ownerEmail.trim())) return NextResponse.json({ error: "ownerEmail must be a valid email address" }, { status: 400 }); data.ownerEmail = body.ownerEmail.trim(); }
   if (typeof body.targetDate === "string") { const targetDate = new Date(body.targetDate); if (Number.isNaN(targetDate.getTime())) return NextResponse.json({ error: "targetDate must be a valid date" }, { status: 400 }); data.targetDate = targetDate; }
   if (valid(body.lifecycleStatus, statuses)) data.lifecycleStatus = body.lifecycleStatus;
   if (body.approvedInsightId !== undefined) {

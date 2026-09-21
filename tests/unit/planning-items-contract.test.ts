@@ -22,6 +22,8 @@ describe("PlanningItem contract", () => {
     expect(page).toContain("Add planning item");
     expect(page).toContain("/members");
     expect(page).toContain("member.email");
+    expect(page).toContain("Placeholder owners are not invited automatically.");
+    expect(route).toContain("ownerEmail must be a valid email address");
     expect(page).toContain("editingItem");
     expect(page).toContain("method: \"PATCH\"");
     expect(route).toContain("data.title");
