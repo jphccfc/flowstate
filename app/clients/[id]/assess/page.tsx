@@ -6,6 +6,11 @@ import { calculateEvidenceScore, type ScoringEvidence } from "@/lib/assessment/s
 
 type Capability = { id: string; name: string; domainName: string; domainId: string };
 type Evidence = { id: string; title: string; summary: string; evidenceDemonstrated: string | null; strength: ScoringEvidence["strength"]; confidence: number; citedExcerpts: string[]; capturedInput: { id: string; sourceRef: string | null; sourcePath: string | null; versionLabel: string | null; versionStatus: string; attachments: { filename: string }[] } };
+async function readJsonResponse(response: Response): Promise<Record<string, unknown>> {
+  const text = await response.text();
+  if (!text.trim()) throw new Error(`Evidence request failed (${response.status})`);
+  try { return JSON.parse(text) as Record<string, unknown>; } catch { throw new Error(`Evidence request returned invalid data (${response.status})`); }
+}
 
 export default function AssessmentPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -16,7 +21,7 @@ export default function AssessmentPage({ params }: { params: Promise<{ id: strin
   const [loading, setLoading] = useState(false);
 
   useEffect(() => { fetch(`/api/clients/${id}`).then((response) => response.json()).then((data) => { const items = (data.domains ?? []).flatMap((domain: { id: string; name: string; capabilities: { id: string; name: string }[] }) => domain.capabilities.map((capability) => ({ id: capability.id, name: capability.name, domainName: domain.name, domainId: domain.id }))); setCapabilities(items); }).catch(() => setError("Capabilities could not be loaded.")); }, [id]);
-  useEffect(() => { if (!capabilityId) return; fetch(`/api/clients/${id}/assessment/evidence?capabilityId=${encodeURIComponent(capabilityId)}`).then(async (response) => { const data = await response.json(); if (!response.ok) throw new Error(data.error ?? "Evidence could not be loaded."); setEvidence(data.evidence ?? []); }).catch((cause) => setError(cause instanceof Error ? cause.message : "Evidence could not be loaded.")).finally(() => setLoading(false)); }, [id, capabilityId]);
+  useEffect(() => { if (!capabilityId) return; fetch(`/api/clients/${id}/assessment/evidence?capabilityId=${encodeURIComponent(capabilityId)}`).then(async (response) => { const data = await readJsonResponse(response); if (!response.ok) throw new Error(typeof data.error === "string" ? data.error : "Evidence could not be loaded."); setEvidence(Array.isArray(data.evidence) ? data.evidence as unknown as Evidence[] : []); }).catch((cause) => setError(cause instanceof Error ? cause.message : "Evidence could not be loaded.")).finally(() => setLoading(false)); }, [id, capabilityId]);
 
   const score = useMemo(() => calculateEvidenceScore(evidence), [evidence]);
   const selected = capabilities.find((capability) => capability.id === capabilityId);

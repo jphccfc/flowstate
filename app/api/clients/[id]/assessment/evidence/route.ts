@@ -13,7 +13,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   const capability = await prisma.capability.findFirst({ where: { id: capabilityId, domain: { organizationId: id } }, select: { id: true, name: true, domain: { select: { name: true } } } });
   if (!capability) return NextResponse.json({ error: "Capability not found" }, { status: 404 });
   const findings = await prisma.documentFinding.findMany({
-    where: { organizationId: id, capabilityId, AND: [{ status: "APPROVED" }, { status: { notIn: ["STALE", "SOURCE_REMOVED", "SUPERSEDED", "REJECTED"] } }], capturedInput: { versionStatus: "CURRENT" } },
+    where: { organizationId: id, capabilityId, AND: [{ status: "APPROVED" }, { status: { notIn: ["STALE", "SOURCE_REMOVED", "SUPERSEDED", "REJECTED"] } }], capturedInput: { is: { versionStatus: "CURRENT" } } },
     orderBy: { createdAt: "desc" },
     select: { id: true, title: true, summary: true, evidenceDemonstrated: true, strength: true, confidence: true, citedExcerpts: true, sourceHash: true, reviewedBy: true, reviewedAt: true, capturedInput: { select: { id: true, sourceRef: true, sourcePath: true, versionLabel: true, versionStatus: true, attachments: { select: { filename: true }, take: 1 } } } },
   });
