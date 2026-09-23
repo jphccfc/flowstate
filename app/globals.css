@@ -293,7 +293,8 @@ body {
 .admin-status { display: inline-flex; align-items: center; gap: 0.5rem; flex-shrink: 0; padding: 0.55rem 0.75rem; border: 1px solid var(--card-border); border-radius: 999px; color: var(--muted); background: var(--card); font-size: 0.75rem; font-weight: 700; }
 .admin-status-dot { width: 0.45rem; height: 0.45rem; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--success) 15%, transparent); }
 .admin-top-brand { display: inline-flex; align-items: center; gap: 0.5rem; flex-shrink: 0; color: var(--foreground); font-family: "Poppins", "Inter", sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: -0.02em; text-decoration: none; }
-.admin-top-brand:hover { color: var(--accent); }
+.admin-top-brand-mark { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: 0.7rem; color: #f8fafc; background: linear-gradient(135deg, #28d7fa, #7c5cff); box-shadow: 0 8px 24px rgba(40, 215, 250, 0.3); font-size: 0.68rem; font-weight: 800; letter-spacing: -0.04em; }
+.admin-top-brand-name { color: var(--foreground); font-family: "Poppins", "Inter", sans-serif; font-weight: 700; letter-spacing: -0.02em; }
 .admin-alert { margin-bottom: 1rem; padding: 0.8rem 1rem; border: 1px solid var(--destructive); border-radius: 0.75rem; color: var(--destructive); background: color-mix(in srgb, var(--destructive) 9%, var(--card)); font-size: 0.84rem; }
 .admin-loading { padding: 2rem; color: var(--muted); }
 .admin-summary-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-bottom: 1.25rem; }
