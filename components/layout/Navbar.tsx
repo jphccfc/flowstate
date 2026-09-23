@@ -30,7 +30,7 @@ export function Navbar({ clientName, clientId }: NavbarProps) {
   return (
     <nav className="h-16 bg-[var(--primary)] text-white flex items-center px-4 sm:px-6 gap-4 shrink-0 border-b border-[var(--workspace-border)]">
       <Link href="/dashboard" className="flex items-center gap-2 shrink-0">
-        <div className="workspace-brand-mark">FS</div>
+        <img src="/flowstate-mark.svg" alt="Flowstate" className="workspace-brand-mark" />
         <span className="workspace-brand-name text-sm hidden sm:block">Flowstate</span>
       </Link>
 
