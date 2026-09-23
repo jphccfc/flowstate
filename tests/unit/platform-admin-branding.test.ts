@@ -7,6 +7,8 @@ const css = readFileSync(new URL("../../app/globals.css", import.meta.url), "utf
 
 describe("Platform Admin branding", () => {
   it("renders the Flowstate brand in the main and catalogue admin headers", () => {
+    expect(admin).toContain('src="/flowstate-mark.svg"');
+    expect(agents).toContain('src="/flowstate-mark.svg"');
     expect(admin).toContain('className="admin-top-brand"');
     expect(agents).toContain('className="admin-top-brand"');
     expect(admin).toContain('aria-label="Flowstate home"');
