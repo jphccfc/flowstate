@@ -10,11 +10,12 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
   if (!(await hasOrganizationPermission(user.email, id, "client.read"))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   const capabilities = await prisma.capability.findMany({ where: { domain: { organizationId: id } }, orderBy: [{ domain: { name: "asc" } }, { name: "asc" }], select: { id: true, name: true, domain: { select: { id: true, name: true } } } });
   const items = await Promise.all(capabilities.map(async (capability) => {
-    const [decision, evidenceCount] = await Promise.all([
+    const [decision, history, evidenceCount] = await Promise.all([
       prisma.assessmentDecision.findFirst({ where: { capabilityId: capability.id, status: "CONFIRMED" }, orderBy: { createdAt: "desc" }, select: { id: true, score: true, rationale: true, rubricVersion: true, decidedBy: true, decidedAt: true, sourceEvidenceIds: true } }),
+      prisma.assessmentDecision.findMany({ where: { capabilityId: capability.id, status: "CONFIRMED" }, orderBy: { createdAt: "desc" }, take: 5, select: { id: true, score: true, decidedAt: true, rubricVersion: true, decidedBy: true } }),
       prisma.documentFinding.count({ where: { organizationId: id, capabilityId: capability.id, status: "APPROVED", capturedInput: { is: { versionStatus: "CURRENT" } } } }),
     ]);
-    return { capabilityId: capability.id, capabilityName: capability.name, domainId: capability.domain.id, domainName: capability.domain.name, confirmedScore: decision, evidenceCount, evidenceGap: evidenceCount === 0 };
+    return { capabilityId: capability.id, capabilityName: capability.name, domainId: capability.domain.id, domainName: capability.domain.name, confirmedScore: decision, scoreHistory: history, evidenceCount, evidenceGap: evidenceCount === 0 };
   }));
   const domains = [...new Set(items.map((item) => item.domainId))].map((domainId) => {
     const domainItems = items.filter((item) => item.domainId === domainId);

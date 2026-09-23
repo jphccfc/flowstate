@@ -12,6 +12,7 @@ describe("FlowScore executive summary", () => {
     expect(route).toContain("domainAverage");
     expect(page).toContain("FlowScore summary");
     expect(page).toContain("Scored capabilities");
-    expect(page).toContain("Evidence gaps");
+    expect(route).toContain("scoreHistory");
+    expect(page).toContain("Score history");
   });
 });
