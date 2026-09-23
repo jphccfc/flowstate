@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, use, useRef } from "react";
 import Link from "next/link";
 import { sanitizeRichText } from "@/lib/scratchpad/rich-text";
+import { displayDocumentName } from "@/lib/documents/display-name";
 
 type Candidate = { id: string; name: string };
 type DocumentTagGroup = { capturedInputId: string; filename: string; sourceRef: string | null; capturedAt: string; tags: PendingTag[] };
@@ -84,7 +85,7 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
     const key = tag.provenance.capturedInputId;
     const existing = groups.get(key);
     if (existing) existing.tags.push(tag);
-    else groups.set(key, { capturedInputId: key, filename: tag.provenance.sourceRef?.split("/").pop() ?? "Imported document", sourceRef: tag.provenance.sourceRef, capturedAt: tag.provenance.capturedAt, tags: [tag] });
+    else groups.set(key, { capturedInputId: key, filename: displayDocumentName(tag.provenance.sourceRef), sourceRef: tag.provenance.sourceRef, capturedAt: tag.provenance.capturedAt, tags: [tag] });
     return groups;
   }, new Map<string, DocumentTagGroup>()).values());
 
