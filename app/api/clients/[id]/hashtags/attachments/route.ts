@@ -3,6 +3,23 @@ import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
 import { hasOrganizationPermission } from "@/lib/auth/organization";
 
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { id: organizationId } = await params;
+  if (!(await hasOrganizationPermission(user.email, organizationId, "client.read"))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  const capturedInputId = new URL(req.url).searchParams.get("capturedInputId");
+  if (!capturedInputId) return NextResponse.json({ error: "capturedInputId is required" }, { status: 400 });
+
+  const attachments = await prisma.tagAttachment.findMany({
+    where: { organizationId, capturedInputId, status: "APPROVED" },
+    include: { tagDefinition: { select: { id: true, displayName: true, normalizedName: true } } },
+    orderBy: { createdAt: "asc" },
+  });
+  return NextResponse.json(attachments);
+}
+
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();

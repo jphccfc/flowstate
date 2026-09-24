@@ -6,7 +6,7 @@ let currentEmail = "hashtag-advisor@test.com";
 vi.mock("@/lib/supabase/server", () => ({ createClient: async () => ({ auth: { getUser: async () => ({ data: { user: { id: "hashtag-user", email: currentEmail } } }) } }) }));
 
 import { GET as listTags, POST as createTag } from "@/app/api/clients/[id]/hashtags/route";
-import { POST as attachTag } from "@/app/api/clients/[id]/hashtags/attachments/route";
+import { GET as listAttachments, POST as attachTag } from "@/app/api/clients/[id]/hashtags/attachments/route";
 
 function request(url: string, body: unknown) {
   return new Request(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }) as unknown as NextRequest;
@@ -41,6 +41,10 @@ describe("hashtag catalogue API", () => {
     const attached = await attachTag(request("http://localhost/attachments", { tagDefinitionId: tag.id, capturedInputId: inputId }), { params: Promise.resolve({ id: organizationId }) });
     expect(attached.status).toBe(201);
     expect(await attached.json()).toMatchObject({ organizationId, tagDefinitionId: tag.id, capturedInputId: inputId, targetKey: `input:${inputId}`, source: "MANUAL", status: "APPROVED" });
+
+    const listedAttachments = await listAttachments(new Request(`http://localhost/attachments?capturedInputId=${inputId}`) as NextRequest, { params: Promise.resolve({ id: organizationId }) });
+    expect(listedAttachments.status).toBe(200);
+    expect((await listedAttachments.json())[0]).toMatchObject({ tagDefinition: { normalizedName: "project-falcon" } });
 
     const list = await listTags(new Request("http://localhost/hashtags?q=project+falcon") as NextRequest, { params: Promise.resolve({ id: organizationId }) });
     expect((await list.json()).map((entry: { normalizedName: string }) => entry.normalizedName)).toContain("project-falcon");

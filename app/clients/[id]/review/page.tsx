@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, use, useRef } from "react";
 import Link from "next/link";
 import { sanitizeRichText } from "@/lib/scratchpad/rich-text";
 import { displayDocumentName } from "@/lib/documents/display-name";
+import { DocumentHashtags } from "@/components/tags/DocumentHashtags";
 
 type Candidate = { id: string; name: string };
 type DocumentTagGroup = { capturedInputId: string; filename: string; sourceRef: string | null; capturedAt: string; tags: PendingTag[] };
@@ -224,6 +225,7 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
         {groupedTags.map((group) => (
           <section key={group.capturedInputId} className="rounded-lg border border-[var(--card-border)] bg-[var(--card)] p-4">
             <div className="mb-3 flex flex-wrap items-center justify-between gap-3"><div><h2 className="font-semibold">{group.filename}</h2><p className="text-xs text-[var(--muted)]">{group.tags.length} supporting tag{group.tags.length === 1 ? "" : "s"} · captured {new Date(group.capturedAt).toLocaleString()}</p></div><div className="flex gap-2"><button type="button" onClick={() => void actDocument(group, "approve")} disabled={actionId !== null} className="rounded px-3 py-1.5 text-xs font-medium text-white flowstate-success-button disabled:opacity-50">Approve document</button><button type="button" onClick={() => void actDocument(group, "reject")} disabled={actionId !== null} className="rounded bg-[var(--destructive)] px-3 py-1.5 text-xs font-medium text-white disabled:opacity-50">Reject document</button></div></div>
+            <DocumentHashtags organizationId={organizationId} capturedInputId={group.capturedInputId} />
             <details><summary className="cursor-pointer text-xs text-[var(--muted)]">Supporting tag detail (read-only)</summary>
             <div className="mt-3 space-y-3">
         {group.tags.map((tag) => (
