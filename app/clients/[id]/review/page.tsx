@@ -72,7 +72,6 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
   const [tags, setTags] = useState<PendingTag[]>([]);
   const [scratchpadNotes, setScratchpadNotes] = useState<ScratchpadNote[]>([]);
   const [loading, setLoading] = useState(true);
-  const [reassignChoice, setReassignChoice] = useState<Record<string, string>>({});
   const [error, setError] = useState<string | null>(null);
   const [actionId, setActionId] = useState<string | null>(null);
   const [noteDrafts, setNoteDrafts] = useState<Record<string, string>>({});
@@ -121,24 +120,6 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
     loadReviewItems();
   }, [loadReviewItems]);
 
-  async function act(tagId: string, action: "approve" | "reject") {
-    setActionId(tagId);
-    setError(null);
-    try {
-      const res = await fetch(`/api/tags/${tagId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action }),
-      });
-      if (!res.ok) throw new Error("The tag could not be updated.");
-      setTags((prev) => prev.filter((t) => t.id !== tagId));
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "The tag could not be updated.");
-    } finally {
-      setActionId(null);
-    }
-  }
-
   async function actDocument(group: DocumentTagGroup, action: "approve" | "reject") {
     setActionId(group.capturedInputId); setError(null);
     try {
@@ -147,26 +128,6 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
       await loadReviewItems();
     } catch (cause) { setError(cause instanceof Error ? cause.message : "The document review decision could not be saved."); }
     finally { setActionId(null); }
-  }
-
-  async function reassign(tagId: string) {
-    const targetId = reassignChoice[tagId];
-    if (!targetId) return;
-    setActionId(tagId);
-    setError(null);
-    try {
-      const res = await fetch(`/api/tags/${tagId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "reassign", targetId }),
-      });
-      if (!res.ok) throw new Error("The tag could not be reassigned.");
-      setTags((prev) => prev.filter((t) => t.id !== tagId));
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "The tag could not be reassigned.");
-    } finally {
-      setActionId(null);
-    }
   }
 
   async function saveNote(note: ScratchpadNote) {
@@ -263,7 +224,7 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
         {groupedTags.map((group) => (
           <section key={group.capturedInputId} className="rounded-lg border border-[var(--card-border)] bg-[var(--card)] p-4">
             <div className="mb-3 flex flex-wrap items-center justify-between gap-3"><div><h2 className="font-semibold">{group.filename}</h2><p className="text-xs text-[var(--muted)]">{group.tags.length} supporting tag{group.tags.length === 1 ? "" : "s"} · captured {new Date(group.capturedAt).toLocaleString()}</p></div><div className="flex gap-2"><button type="button" onClick={() => void actDocument(group, "approve")} disabled={actionId !== null} className="rounded px-3 py-1.5 text-xs font-medium text-white flowstate-success-button disabled:opacity-50">Approve document</button><button type="button" onClick={() => void actDocument(group, "reject")} disabled={actionId !== null} className="rounded bg-[var(--destructive)] px-3 py-1.5 text-xs font-medium text-white disabled:opacity-50">Reject document</button></div></div>
-            <details><summary className="cursor-pointer text-xs text-[var(--muted)]">Show supporting tags (not separate approval tasks)</summary>
+            <details><summary className="cursor-pointer text-xs text-[var(--muted)]">Supporting tag detail (read-only)</summary>
             <div className="mt-3 space-y-3">
         {group.tags.map((tag) => (
           <div key={tag.id} className="rounded-lg border border-[var(--card-border)] bg-[var(--card)] p-4">
@@ -282,20 +243,7 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
             </div>
             <div className="mb-3 flex items-center justify-between">
               <span className="text-xs text-[var(--muted)]">{tag.targetType}: {tag.targetName} &middot; {Math.round(tag.confidence * 100)}% confidence</span>
-              <div className="flex gap-2">
-                <button onClick={() => act(tag.id, "approve")} disabled={actionId !== null} className="rounded px-3 py-1 text-xs font-medium text-white flowstate-success-button">Approve</button>
-                <button onClick={() => act(tag.id, "reject")} disabled={actionId !== null} className="rounded bg-[var(--destructive)] px-3 py-1 text-xs font-medium text-white">Reject</button>
-              </div>
             </div>
-            {tag.candidates.length > 1 && (
-              <div className="flex items-center gap-2 border-t border-[var(--card-border)] pt-3">
-                <select value={reassignChoice[tag.id] ?? ""} onChange={(e) => setReassignChoice((prev) => ({ ...prev, [tag.id]: e.target.value }))} className="flex-1 rounded border border-[var(--card-border)] px-2 py-1 text-xs">
-                  <option value="">Reassign to…</option>
-                  {tag.candidates.filter((c) => c.id !== tag.targetId).map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-                </select>
-                <button onClick={() => reassign(tag.id)} disabled={!reassignChoice[tag.id] || actionId !== null} className="rounded px-3 py-1 text-xs font-medium text-white flowstate-accent-button disabled:opacity-50">Reassign</button>
-              </div>
-            )}
           </div>
         ))}
             </div></details>
