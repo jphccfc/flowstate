@@ -38,6 +38,10 @@ describe("hashtag catalogue API", () => {
     const tag = await created.json();
     expect(tag).toMatchObject({ organizationId, displayName: "Project Falcon", normalizedName: "project-falcon", aliases: ["falcon"] });
 
+    const duplicate = await createTag(request("http://localhost/hashtags", { displayName: "project_falcon" }), { params: Promise.resolve({ id: organizationId }) });
+    expect(duplicate.status).toBe(200);
+    expect((await duplicate.json()).id).toBe(tag.id);
+
     const attached = await attachTag(request("http://localhost/attachments", { tagDefinitionId: tag.id, capturedInputId: inputId }), { params: Promise.resolve({ id: organizationId }) });
     expect(attached.status).toBe(201);
     expect(await attached.json()).toMatchObject({ organizationId, tagDefinitionId: tag.id, capturedInputId: inputId, targetKey: `input:${inputId}`, source: "MANUAL", status: "APPROVED" });

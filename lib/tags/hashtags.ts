@@ -11,6 +11,10 @@ export function normalizeHashtag(value: string): string {
   return normalized;
 }
 
+export function parseHashtagInput(value: string): string[] {
+  return [...new Set(value.split(",").map((entry) => normalizeHashtag(entry)).filter(Boolean))];
+}
+
 export function displayHashtag(value: string): string {
   return `#${normalizeHashtag(value)}`;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { parseHashtagInput } from "@/lib/tags/hashtags";
 
 type TagDefinition = { id: string; displayName: string; normalizedName: string };
 type Attachment = { id: string; tagDefinition: TagDefinition };
@@ -26,27 +27,38 @@ export function DocumentHashtags({ organizationId, capturedInputId }: { organiza
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { void load(); }, [load]);
 
+  async function postAttachment(tagDefinitionId: string) {
+    const response = await fetch(`/api/clients/${organizationId}/hashtags/attachments`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ tagDefinitionId, capturedInputId }) });
+    // A tag already attached to this document is a successful no-op.
+    if (response.status === 409) return;
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error ?? "Unable to attach hashtag.");
+  }
+
   async function attach(tagDefinitionId: string) {
     setBusy(true); setError("");
     try {
-      const response = await fetch(`/api/clients/${organizationId}/hashtags/attachments`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ tagDefinitionId, capturedInputId }) });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error ?? "Unable to attach tag.");
-      setSelectedId(""); setNewTag("");
+      await postAttachment(tagDefinitionId);
+      setSelectedId("");
       await load();
-    } catch (cause) { setError(cause instanceof Error ? cause.message : "Unable to attach tag."); }
+    } catch (cause) { setError(cause instanceof Error ? cause.message : "Unable to attach hashtag."); }
     finally { setBusy(false); }
   }
 
   async function createAndAttach() {
-    if (!newTag.trim()) return;
+    const names = parseHashtagInput(newTag);
+    if (names.length === 0) return;
     setBusy(true); setError("");
     try {
-      const response = await fetch(`/api/clients/${organizationId}/hashtags`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ displayName: newTag }) });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error ?? "Unable to create tag.");
-      await attach(data.id);
-    } catch (cause) { setError(cause instanceof Error ? cause.message : "Unable to create tag."); }
+      for (const displayName of names) {
+        const response = await fetch(`/api/clients/${organizationId}/hashtags`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ displayName }) });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error ?? "Unable to create hashtag.");
+        await postAttachment(data.id);
+      }
+      setNewTag("");
+      await load();
+    } catch (cause) { setError(cause instanceof Error ? cause.message : "Unable to create hashtag."); }
     finally { setBusy(false); }
   }
 
@@ -56,6 +68,7 @@ export function DocumentHashtags({ organizationId, capturedInputId }: { organiza
     {attachments.length > 0 && <div className="mb-2 flex flex-wrap gap-1">{attachments.map((attachment) => <span key={attachment.id} className="rounded-full bg-[var(--surface-muted)] px-2 py-1 text-xs text-[var(--accent)]">#{attachment.tagDefinition.normalizedName}</span>)}</div>}
     <div className="grid gap-2 sm:grid-cols-[1fr_auto]"><select aria-label="Attach existing hashtag" value={selectedId} onChange={(event) => setSelectedId(event.target.value)} className="rounded border border-[var(--card-border)] bg-[var(--card)] px-2 py-1.5 text-xs"><option value="">Attach an existing hashtag…</option>{catalogue.filter((tag) => !attachedIds.has(tag.id)).map((tag) => <option key={tag.id} value={tag.id}>#{tag.normalizedName}</option>)}</select><button type="button" onClick={() => void attach(selectedId)} disabled={!selectedId || busy} className="rounded px-3 py-1.5 text-xs font-medium text-white flowstate-accent-button disabled:opacity-50">Attach</button></div>
     <div className="mt-2 grid gap-2 sm:grid-cols-[1fr_auto]"><input aria-label="Create hashtag" value={newTag} onChange={(event) => setNewTag(event.target.value)} placeholder="Create hashtag, e.g. Project Falcon" className="rounded border border-[var(--card-border)] bg-[var(--card)] px-2 py-1.5 text-xs" /><button type="button" onClick={() => void createAndAttach()} disabled={!newTag.trim() || busy} className="rounded border border-[var(--card-border)] px-3 py-1.5 text-xs font-medium disabled:opacity-50">Create & attach</button></div>
+    <p className="mt-1 text-xs text-[var(--muted)]">Separate multiple hashtags with commas. Spaces within one hashtag become hyphens.</p>
     {error && <p role="alert" className="mt-2 text-xs text-[var(--destructive)]">{error}</p>}
   </div>;
 }

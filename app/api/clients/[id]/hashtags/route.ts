@@ -35,11 +35,17 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   const body = await req.json().catch(() => null) as { displayName?: unknown; description?: unknown; category?: unknown; aliases?: unknown } | null;
   if (typeof body?.displayName !== "string") return NextResponse.json({ error: "displayName is required" }, { status: 400 });
 
+  let normalizedName = "";
   try {
-    const normalizedName = normalizeHashtag(body.displayName);
+    normalizedName = normalizeHashtag(body.displayName);
     const aliases = Array.isArray(body.aliases)
       ? [...new Set(body.aliases.filter((alias): alias is string => typeof alias === "string").map(normalizeHashtag).filter((alias) => alias !== normalizedName))]
       : [];
+    const existing = await prisma.tagDefinition.findUnique({
+      where: { organizationId_normalizedName: { organizationId, normalizedName } },
+    });
+    if (existing) return NextResponse.json(existing);
+
     const tag = await prisma.tagDefinition.create({
       data: {
         organizationId,
@@ -52,9 +58,14 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       },
     });
     return NextResponse.json(tag, { status: 201 });
-  } catch (error) {
-    if (error instanceof Error && error.message.includes("TagDefinition_organizationId_normalizedName_key")) return NextResponse.json({ error: "This tag already exists in the client workspace." }, { status: 409 });
-    if (error instanceof Error) return NextResponse.json({ error: error.message }, { status: 400 });
-    return NextResponse.json({ error: "Unable to create tag." }, { status: 500 });
+  } catch {
+    if (!normalizedName) return NextResponse.json({ error: "Enter a hashtag containing letters or numbers." }, { status: 400 });
+    // A simultaneous create can still win between lookup and insert. Re-read once
+    // and make this endpoint idempotent rather than leaking a database error.
+    const existing = await prisma.tagDefinition.findUnique({
+      where: { organizationId_normalizedName: { organizationId, normalizedName } },
+    });
+    if (existing) return NextResponse.json(existing);
+    return NextResponse.json({ error: "Unable to create this hashtag. Please try again." }, { status: 500 });
   }
 }

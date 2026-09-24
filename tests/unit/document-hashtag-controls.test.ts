@@ -9,6 +9,9 @@ describe("document hashtag controls", () => {
     expect(component).toContain("Attach an existing hashtag");
     expect(component).toContain("Create & attach");
     expect(component).toContain("Reusable across this client workspace");
+    expect(component).toContain("parseHashtagInput(newTag)");
+    expect(component).toContain("response.status === 409");
+    expect(component).toContain("Separate multiple hashtags with commas");
     expect(review).toContain("<DocumentHashtags organizationId={organizationId} capturedInputId={group.capturedInputId} />");
   });
 });
