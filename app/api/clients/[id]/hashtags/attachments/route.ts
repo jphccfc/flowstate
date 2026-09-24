@@ -65,3 +65,19 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     return NextResponse.json({ error: "Unable to attach this hashtag. Please try again." }, { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { id: organizationId } = await params;
+  if (!(await hasOrganizationPermission(user.email, organizationId, "evidence.create"))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
+  const attachmentId = new URL(req.url).searchParams.get("attachmentId");
+  if (!attachmentId) return NextResponse.json({ error: "attachmentId is required" }, { status: 400 });
+  const attachment = await prisma.tagAttachment.findFirst({ where: { id: attachmentId, organizationId }, select: { id: true } });
+  if (!attachment) return NextResponse.json({ error: "Hashtag attachment not found." }, { status: 404 });
+
+  await prisma.tagAttachment.delete({ where: { id: attachment.id } });
+  return new NextResponse(null, { status: 204 });
+}

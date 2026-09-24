@@ -67,6 +67,22 @@ describe("tags routes", () => {
     expect(approved.reviewedBy).toBe("advisor@test.com");
   });
 
+  it("finds a pending review document by its attached discovery hashtag", async () => {
+    const org = await createTestOrganization({ name: "Hashtag search test organisation" });
+    additionalOrgIds.push(org.id);
+    const domain = await prisma.businessDomain.create({ data: { organizationId: org.id, name: "Operations" } });
+    const capability = await prisma.capability.create({ data: { domainId: domain.id, name: "Scheduling" } });
+    const input = await prisma.capturedInput.create({ data: { organizationId: org.id, type: "TEXT_NOTE", rawText: "Ordinary workshop notes", status: "TAGGED" } });
+    const segment = await prisma.capturedSegment.create({ data: { capturedInputId: input.id, order: 0, text: "No project name appears in this evidence." } });
+    await prisma.tag.create({ data: { segmentId: segment.id, targetType: "CAPABILITY", targetId: capability.id, confidence: 0.6, status: "PENDING_REVIEW" } });
+    const hashtag = await prisma.tagDefinition.create({ data: { organizationId: org.id, displayName: "Project Falcon", normalizedName: "project-falcon" } });
+    await prisma.tagAttachment.create({ data: { organizationId: org.id, tagDefinitionId: hashtag.id, capturedInputId: input.id, targetKey: `input:${input.id}`, source: "MANUAL", status: "APPROVED" } });
+
+    const response = await listTags(new Request(`http://localhost/api/tags?organizationId=${org.id}&q=project-falcon`) as never);
+    expect(response.status).toBe(200);
+    expect(await response.json()).toHaveLength(1);
+  });
+
   it("reassigns a tag to a different targetId of the same type", async () => {
     const org = await createTestOrganization({ name: "Tags Reassign Test Org" });
     orgId = org.id;

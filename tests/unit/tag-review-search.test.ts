@@ -10,6 +10,8 @@ describe("Tag Review search", () => {
     expect(route).toContain("segment: { text");
     expect(route).toContain("capturedInput: { organizationId");
     expect(route).toContain("targetId");
+    expect(route).toContain("hashtagAttachments");
+    expect(route).toContain("normalizedName");
   });
 
   it("renders search and source-type filters", () => {
