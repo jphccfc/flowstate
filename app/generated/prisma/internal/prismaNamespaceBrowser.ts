@@ -74,6 +74,8 @@ export const ModelName = {
   CapturedInputAttachment: 'CapturedInputAttachment',
   InboundEmailEndpoint: 'InboundEmailEndpoint',
   CapturedSegment: 'CapturedSegment',
+  TagDefinition: 'TagDefinition',
+  TagAttachment: 'TagAttachment',
   Tag: 'Tag',
   MaturityRubric: 'MaturityRubric',
   MaturityPerspective: 'MaturityPerspective',
@@ -444,6 +446,44 @@ export const CapturedSegmentScalarFieldEnum = {
 } as const
 
 export type CapturedSegmentScalarFieldEnum = (typeof CapturedSegmentScalarFieldEnum)[keyof typeof CapturedSegmentScalarFieldEnum]
+
+
+export const TagDefinitionScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  displayName: 'displayName',
+  normalizedName: 'normalizedName',
+  description: 'description',
+  category: 'category',
+  aliases: 'aliases',
+  active: 'active',
+  createdBy: 'createdBy',
+  retiredAt: 'retiredAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TagDefinitionScalarFieldEnum = (typeof TagDefinitionScalarFieldEnum)[keyof typeof TagDefinitionScalarFieldEnum]
+
+
+export const TagAttachmentScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  tagDefinitionId: 'tagDefinitionId',
+  capturedInputId: 'capturedInputId',
+  segmentId: 'segmentId',
+  targetKey: 'targetKey',
+  source: 'source',
+  status: 'status',
+  confidence: 'confidence',
+  rationale: 'rationale',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TagAttachmentScalarFieldEnum = (typeof TagAttachmentScalarFieldEnum)[keyof typeof TagAttachmentScalarFieldEnum]
 
 
 export const TagScalarFieldEnum = {

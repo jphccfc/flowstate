@@ -407,6 +407,8 @@ export const ModelName = {
   CapturedInputAttachment: 'CapturedInputAttachment',
   InboundEmailEndpoint: 'InboundEmailEndpoint',
   CapturedSegment: 'CapturedSegment',
+  TagDefinition: 'TagDefinition',
+  TagAttachment: 'TagAttachment',
   Tag: 'Tag',
   MaturityRubric: 'MaturityRubric',
   MaturityPerspective: 'MaturityPerspective',
@@ -452,7 +454,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "meetingContext" | "capturedInput" | "capturedInputAttachment" | "inboundEmailEndpoint" | "capturedSegment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "growthAction" | "planningItem" | "communicationPack" | "communicationPackAcknowledgement" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob" | "assessmentTask" | "agentDefinition" | "agentPromptVersion" | "agentInputRule" | "organizationAgentProfile" | "agentRun" | "agentOutput" | "integrationConnection" | "documentFinding" | "documentFamily" | "integrationSource"
+    modelProps: "user" | "organization" | "userOrganization" | "businessDomain" | "capability" | "stakeholder" | "capabilityStakeholder" | "kPI" | "capabilityKPI" | "process" | "capabilityProcess" | "technology" | "capabilityTechnology" | "project" | "projectCapability" | "achievement" | "achievementStakeholder" | "assessmentSession" | "meetingContext" | "capturedInput" | "capturedInputAttachment" | "inboundEmailEndpoint" | "capturedSegment" | "tagDefinition" | "tagAttachment" | "tag" | "maturityRubric" | "maturityPerspective" | "maturityProposal" | "maturityAssessment" | "assessmentDecision" | "approvedInsight" | "growthAction" | "planningItem" | "communicationPack" | "communicationPackAcknowledgement" | "targetMaturity" | "capabilityKPIMaturityCeiling" | "dependency" | "conflictFlag" | "recommendation" | "recommendationFeedback" | "followUpSuggestion" | "processingJob" | "assessmentTask" | "agentDefinition" | "agentPromptVersion" | "agentInputRule" | "organizationAgentProfile" | "agentRun" | "agentOutput" | "integrationConnection" | "documentFinding" | "documentFamily" | "integrationSource"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2155,6 +2157,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.CapturedSegmentCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.CapturedSegmentCountAggregateOutputType> | number
+        }
+      }
+    }
+    TagDefinition: {
+      payload: Prisma.$TagDefinitionPayload<ExtArgs>
+      fields: Prisma.TagDefinitionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TagDefinitionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagDefinitionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TagDefinitionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagDefinitionPayload>
+        }
+        findFirst: {
+          args: Prisma.TagDefinitionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagDefinitionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TagDefinitionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagDefinitionPayload>
+        }
+        findMany: {
+          args: Prisma.TagDefinitionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagDefinitionPayload>[]
+        }
+        create: {
+          args: Prisma.TagDefinitionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagDefinitionPayload>
+        }
+        createMany: {
+          args: Prisma.TagDefinitionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TagDefinitionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagDefinitionPayload>[]
+        }
+        delete: {
+          args: Prisma.TagDefinitionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagDefinitionPayload>
+        }
+        update: {
+          args: Prisma.TagDefinitionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagDefinitionPayload>
+        }
+        deleteMany: {
+          args: Prisma.TagDefinitionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TagDefinitionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TagDefinitionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagDefinitionPayload>[]
+        }
+        upsert: {
+          args: Prisma.TagDefinitionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagDefinitionPayload>
+        }
+        aggregate: {
+          args: Prisma.TagDefinitionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTagDefinition>
+        }
+        groupBy: {
+          args: Prisma.TagDefinitionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TagDefinitionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TagDefinitionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TagDefinitionCountAggregateOutputType> | number
+        }
+      }
+    }
+    TagAttachment: {
+      payload: Prisma.$TagAttachmentPayload<ExtArgs>
+      fields: Prisma.TagAttachmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TagAttachmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagAttachmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TagAttachmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagAttachmentPayload>
+        }
+        findFirst: {
+          args: Prisma.TagAttachmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagAttachmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TagAttachmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagAttachmentPayload>
+        }
+        findMany: {
+          args: Prisma.TagAttachmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagAttachmentPayload>[]
+        }
+        create: {
+          args: Prisma.TagAttachmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagAttachmentPayload>
+        }
+        createMany: {
+          args: Prisma.TagAttachmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TagAttachmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagAttachmentPayload>[]
+        }
+        delete: {
+          args: Prisma.TagAttachmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagAttachmentPayload>
+        }
+        update: {
+          args: Prisma.TagAttachmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagAttachmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.TagAttachmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TagAttachmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TagAttachmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagAttachmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.TagAttachmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TagAttachmentPayload>
+        }
+        aggregate: {
+          args: Prisma.TagAttachmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTagAttachment>
+        }
+        groupBy: {
+          args: Prisma.TagAttachmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TagAttachmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TagAttachmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TagAttachmentCountAggregateOutputType> | number
         }
       }
     }
@@ -4741,6 +4891,44 @@ export const CapturedSegmentScalarFieldEnum = {
 export type CapturedSegmentScalarFieldEnum = (typeof CapturedSegmentScalarFieldEnum)[keyof typeof CapturedSegmentScalarFieldEnum]
 
 
+export const TagDefinitionScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  displayName: 'displayName',
+  normalizedName: 'normalizedName',
+  description: 'description',
+  category: 'category',
+  aliases: 'aliases',
+  active: 'active',
+  createdBy: 'createdBy',
+  retiredAt: 'retiredAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TagDefinitionScalarFieldEnum = (typeof TagDefinitionScalarFieldEnum)[keyof typeof TagDefinitionScalarFieldEnum]
+
+
+export const TagAttachmentScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  tagDefinitionId: 'tagDefinitionId',
+  capturedInputId: 'capturedInputId',
+  segmentId: 'segmentId',
+  targetKey: 'targetKey',
+  source: 'source',
+  status: 'status',
+  confidence: 'confidence',
+  rationale: 'rationale',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TagAttachmentScalarFieldEnum = (typeof TagAttachmentScalarFieldEnum)[keyof typeof TagAttachmentScalarFieldEnum]
+
+
 export const TagScalarFieldEnum = {
   id: 'id',
   segmentId: 'segmentId',
@@ -5477,6 +5665,34 @@ export type ListEnumScratchpadReviewStatusFieldRefInput<$PrismaModel> = FieldRef
 
 
 /**
+ * Reference to a field of type 'TagAttachmentSource'
+ */
+export type EnumTagAttachmentSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TagAttachmentSource'>
+    
+
+
+/**
+ * Reference to a field of type 'TagAttachmentSource[]'
+ */
+export type ListEnumTagAttachmentSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TagAttachmentSource[]'>
+    
+
+
+/**
+ * Reference to a field of type 'TagAttachmentStatus'
+ */
+export type EnumTagAttachmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TagAttachmentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'TagAttachmentStatus[]'
+ */
+export type ListEnumTagAttachmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TagAttachmentStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'TagTargetType'
  */
 export type EnumTagTargetTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TagTargetType'>
@@ -5888,6 +6104,8 @@ export type GlobalOmitConfig = {
   capturedInputAttachment?: Prisma.CapturedInputAttachmentOmit
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointOmit
   capturedSegment?: Prisma.CapturedSegmentOmit
+  tagDefinition?: Prisma.TagDefinitionOmit
+  tagAttachment?: Prisma.TagAttachmentOmit
   tag?: Prisma.TagOmit
   maturityRubric?: Prisma.MaturityRubricOmit
   maturityPerspective?: Prisma.MaturityPerspectiveOmit

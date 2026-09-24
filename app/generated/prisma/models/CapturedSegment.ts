@@ -250,6 +250,7 @@ export type CapturedSegmentWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"CapturedSegment"> | Date | string
   capturedInput?: Prisma.XOR<Prisma.CapturedInputScalarRelationFilter, Prisma.CapturedInputWhereInput>
   tags?: Prisma.TagListRelationFilter
+  hashtagAttachments?: Prisma.TagAttachmentListRelationFilter
   followUps?: Prisma.FollowUpSuggestionListRelationFilter
 }
 
@@ -264,6 +265,7 @@ export type CapturedSegmentOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   capturedInput?: Prisma.CapturedInputOrderByWithRelationInput
   tags?: Prisma.TagOrderByRelationAggregateInput
+  hashtagAttachments?: Prisma.TagAttachmentOrderByRelationAggregateInput
   followUps?: Prisma.FollowUpSuggestionOrderByRelationAggregateInput
 }
 
@@ -281,6 +283,7 @@ export type CapturedSegmentWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"CapturedSegment"> | Date | string
   capturedInput?: Prisma.XOR<Prisma.CapturedInputScalarRelationFilter, Prisma.CapturedInputWhereInput>
   tags?: Prisma.TagListRelationFilter
+  hashtagAttachments?: Prisma.TagAttachmentListRelationFilter
   followUps?: Prisma.FollowUpSuggestionListRelationFilter
 }, "id">
 
@@ -324,6 +327,7 @@ export type CapturedSegmentCreateInput = {
   createdAt?: Date | string
   capturedInput: Prisma.CapturedInputCreateNestedOneWithoutSegmentsInput
   tags?: Prisma.TagCreateNestedManyWithoutSegmentInput
+  hashtagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutSegmentInput
   followUps?: Prisma.FollowUpSuggestionCreateNestedManyWithoutTriggerSegmentInput
 }
 
@@ -337,6 +341,7 @@ export type CapturedSegmentUncheckedCreateInput = {
   endMs?: number | null
   createdAt?: Date | string
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutSegmentInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutSegmentInput
   followUps?: Prisma.FollowUpSuggestionUncheckedCreateNestedManyWithoutTriggerSegmentInput
 }
 
@@ -350,6 +355,7 @@ export type CapturedSegmentUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capturedInput?: Prisma.CapturedInputUpdateOneRequiredWithoutSegmentsNestedInput
   tags?: Prisma.TagUpdateManyWithoutSegmentNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUpdateManyWithoutSegmentNestedInput
   followUps?: Prisma.FollowUpSuggestionUpdateManyWithoutTriggerSegmentNestedInput
 }
 
@@ -363,6 +369,7 @@ export type CapturedSegmentUncheckedUpdateInput = {
   endMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tags?: Prisma.TagUncheckedUpdateManyWithoutSegmentNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutSegmentNestedInput
   followUps?: Prisma.FollowUpSuggestionUncheckedUpdateManyWithoutTriggerSegmentNestedInput
 }
 
@@ -453,14 +460,14 @@ export type CapturedSegmentSumOrderByAggregateInput = {
   endMs?: Prisma.SortOrder
 }
 
-export type CapturedSegmentScalarRelationFilter = {
-  is?: Prisma.CapturedSegmentWhereInput
-  isNot?: Prisma.CapturedSegmentWhereInput
-}
-
 export type CapturedSegmentNullableScalarRelationFilter = {
   is?: Prisma.CapturedSegmentWhereInput | null
   isNot?: Prisma.CapturedSegmentWhereInput | null
+}
+
+export type CapturedSegmentScalarRelationFilter = {
+  is?: Prisma.CapturedSegmentWhereInput
+  isNot?: Prisma.CapturedSegmentWhereInput
 }
 
 export type CapturedSegmentCreateNestedManyWithoutCapturedInputInput = {
@@ -505,6 +512,22 @@ export type CapturedSegmentUncheckedUpdateManyWithoutCapturedInputNestedInput = 
   deleteMany?: Prisma.CapturedSegmentScalarWhereInput | Prisma.CapturedSegmentScalarWhereInput[]
 }
 
+export type CapturedSegmentCreateNestedOneWithoutHashtagAttachmentsInput = {
+  create?: Prisma.XOR<Prisma.CapturedSegmentCreateWithoutHashtagAttachmentsInput, Prisma.CapturedSegmentUncheckedCreateWithoutHashtagAttachmentsInput>
+  connectOrCreate?: Prisma.CapturedSegmentCreateOrConnectWithoutHashtagAttachmentsInput
+  connect?: Prisma.CapturedSegmentWhereUniqueInput
+}
+
+export type CapturedSegmentUpdateOneWithoutHashtagAttachmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.CapturedSegmentCreateWithoutHashtagAttachmentsInput, Prisma.CapturedSegmentUncheckedCreateWithoutHashtagAttachmentsInput>
+  connectOrCreate?: Prisma.CapturedSegmentCreateOrConnectWithoutHashtagAttachmentsInput
+  upsert?: Prisma.CapturedSegmentUpsertWithoutHashtagAttachmentsInput
+  disconnect?: Prisma.CapturedSegmentWhereInput | boolean
+  delete?: Prisma.CapturedSegmentWhereInput | boolean
+  connect?: Prisma.CapturedSegmentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CapturedSegmentUpdateToOneWithWhereWithoutHashtagAttachmentsInput, Prisma.CapturedSegmentUpdateWithoutHashtagAttachmentsInput>, Prisma.CapturedSegmentUncheckedUpdateWithoutHashtagAttachmentsInput>
+}
+
 export type CapturedSegmentCreateNestedOneWithoutTagsInput = {
   create?: Prisma.XOR<Prisma.CapturedSegmentCreateWithoutTagsInput, Prisma.CapturedSegmentUncheckedCreateWithoutTagsInput>
   connectOrCreate?: Prisma.CapturedSegmentCreateOrConnectWithoutTagsInput
@@ -544,6 +567,7 @@ export type CapturedSegmentCreateWithoutCapturedInputInput = {
   endMs?: number | null
   createdAt?: Date | string
   tags?: Prisma.TagCreateNestedManyWithoutSegmentInput
+  hashtagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutSegmentInput
   followUps?: Prisma.FollowUpSuggestionCreateNestedManyWithoutTriggerSegmentInput
 }
 
@@ -556,6 +580,7 @@ export type CapturedSegmentUncheckedCreateWithoutCapturedInputInput = {
   endMs?: number | null
   createdAt?: Date | string
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutSegmentInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutSegmentInput
   followUps?: Prisma.FollowUpSuggestionUncheckedCreateNestedManyWithoutTriggerSegmentInput
 }
 
@@ -599,6 +624,74 @@ export type CapturedSegmentScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"CapturedSegment"> | Date | string
 }
 
+export type CapturedSegmentCreateWithoutHashtagAttachmentsInput = {
+  id?: string
+  order: number
+  speaker?: string | null
+  text: string
+  startMs?: number | null
+  endMs?: number | null
+  createdAt?: Date | string
+  capturedInput: Prisma.CapturedInputCreateNestedOneWithoutSegmentsInput
+  tags?: Prisma.TagCreateNestedManyWithoutSegmentInput
+  followUps?: Prisma.FollowUpSuggestionCreateNestedManyWithoutTriggerSegmentInput
+}
+
+export type CapturedSegmentUncheckedCreateWithoutHashtagAttachmentsInput = {
+  id?: string
+  capturedInputId: string
+  order: number
+  speaker?: string | null
+  text: string
+  startMs?: number | null
+  endMs?: number | null
+  createdAt?: Date | string
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutSegmentInput
+  followUps?: Prisma.FollowUpSuggestionUncheckedCreateNestedManyWithoutTriggerSegmentInput
+}
+
+export type CapturedSegmentCreateOrConnectWithoutHashtagAttachmentsInput = {
+  where: Prisma.CapturedSegmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.CapturedSegmentCreateWithoutHashtagAttachmentsInput, Prisma.CapturedSegmentUncheckedCreateWithoutHashtagAttachmentsInput>
+}
+
+export type CapturedSegmentUpsertWithoutHashtagAttachmentsInput = {
+  update: Prisma.XOR<Prisma.CapturedSegmentUpdateWithoutHashtagAttachmentsInput, Prisma.CapturedSegmentUncheckedUpdateWithoutHashtagAttachmentsInput>
+  create: Prisma.XOR<Prisma.CapturedSegmentCreateWithoutHashtagAttachmentsInput, Prisma.CapturedSegmentUncheckedCreateWithoutHashtagAttachmentsInput>
+  where?: Prisma.CapturedSegmentWhereInput
+}
+
+export type CapturedSegmentUpdateToOneWithWhereWithoutHashtagAttachmentsInput = {
+  where?: Prisma.CapturedSegmentWhereInput
+  data: Prisma.XOR<Prisma.CapturedSegmentUpdateWithoutHashtagAttachmentsInput, Prisma.CapturedSegmentUncheckedUpdateWithoutHashtagAttachmentsInput>
+}
+
+export type CapturedSegmentUpdateWithoutHashtagAttachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  speaker?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  startMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  endMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  capturedInput?: Prisma.CapturedInputUpdateOneRequiredWithoutSegmentsNestedInput
+  tags?: Prisma.TagUpdateManyWithoutSegmentNestedInput
+  followUps?: Prisma.FollowUpSuggestionUpdateManyWithoutTriggerSegmentNestedInput
+}
+
+export type CapturedSegmentUncheckedUpdateWithoutHashtagAttachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  capturedInputId?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  speaker?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  startMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  endMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tags?: Prisma.TagUncheckedUpdateManyWithoutSegmentNestedInput
+  followUps?: Prisma.FollowUpSuggestionUncheckedUpdateManyWithoutTriggerSegmentNestedInput
+}
+
 export type CapturedSegmentCreateWithoutTagsInput = {
   id?: string
   order: number
@@ -608,6 +701,7 @@ export type CapturedSegmentCreateWithoutTagsInput = {
   endMs?: number | null
   createdAt?: Date | string
   capturedInput: Prisma.CapturedInputCreateNestedOneWithoutSegmentsInput
+  hashtagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutSegmentInput
   followUps?: Prisma.FollowUpSuggestionCreateNestedManyWithoutTriggerSegmentInput
 }
 
@@ -620,6 +714,7 @@ export type CapturedSegmentUncheckedCreateWithoutTagsInput = {
   startMs?: number | null
   endMs?: number | null
   createdAt?: Date | string
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutSegmentInput
   followUps?: Prisma.FollowUpSuggestionUncheckedCreateNestedManyWithoutTriggerSegmentInput
 }
 
@@ -648,6 +743,7 @@ export type CapturedSegmentUpdateWithoutTagsInput = {
   endMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capturedInput?: Prisma.CapturedInputUpdateOneRequiredWithoutSegmentsNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUpdateManyWithoutSegmentNestedInput
   followUps?: Prisma.FollowUpSuggestionUpdateManyWithoutTriggerSegmentNestedInput
 }
 
@@ -660,6 +756,7 @@ export type CapturedSegmentUncheckedUpdateWithoutTagsInput = {
   startMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   endMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutSegmentNestedInput
   followUps?: Prisma.FollowUpSuggestionUncheckedUpdateManyWithoutTriggerSegmentNestedInput
 }
 
@@ -673,6 +770,7 @@ export type CapturedSegmentCreateWithoutFollowUpsInput = {
   createdAt?: Date | string
   capturedInput: Prisma.CapturedInputCreateNestedOneWithoutSegmentsInput
   tags?: Prisma.TagCreateNestedManyWithoutSegmentInput
+  hashtagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutSegmentInput
 }
 
 export type CapturedSegmentUncheckedCreateWithoutFollowUpsInput = {
@@ -685,6 +783,7 @@ export type CapturedSegmentUncheckedCreateWithoutFollowUpsInput = {
   endMs?: number | null
   createdAt?: Date | string
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutSegmentInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutSegmentInput
 }
 
 export type CapturedSegmentCreateOrConnectWithoutFollowUpsInput = {
@@ -713,6 +812,7 @@ export type CapturedSegmentUpdateWithoutFollowUpsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capturedInput?: Prisma.CapturedInputUpdateOneRequiredWithoutSegmentsNestedInput
   tags?: Prisma.TagUpdateManyWithoutSegmentNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUpdateManyWithoutSegmentNestedInput
 }
 
 export type CapturedSegmentUncheckedUpdateWithoutFollowUpsInput = {
@@ -725,6 +825,7 @@ export type CapturedSegmentUncheckedUpdateWithoutFollowUpsInput = {
   endMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tags?: Prisma.TagUncheckedUpdateManyWithoutSegmentNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutSegmentNestedInput
 }
 
 export type CapturedSegmentCreateManyCapturedInputInput = {
@@ -746,6 +847,7 @@ export type CapturedSegmentUpdateWithoutCapturedInputInput = {
   endMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tags?: Prisma.TagUpdateManyWithoutSegmentNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUpdateManyWithoutSegmentNestedInput
   followUps?: Prisma.FollowUpSuggestionUpdateManyWithoutTriggerSegmentNestedInput
 }
 
@@ -758,6 +860,7 @@ export type CapturedSegmentUncheckedUpdateWithoutCapturedInputInput = {
   endMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tags?: Prisma.TagUncheckedUpdateManyWithoutSegmentNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutSegmentNestedInput
   followUps?: Prisma.FollowUpSuggestionUncheckedUpdateManyWithoutTriggerSegmentNestedInput
 }
 
@@ -778,11 +881,13 @@ export type CapturedSegmentUncheckedUpdateManyWithoutCapturedInputInput = {
 
 export type CapturedSegmentCountOutputType = {
   tags: number
+  hashtagAttachments: number
   followUps: number
 }
 
 export type CapturedSegmentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tags?: boolean | CapturedSegmentCountOutputTypeCountTagsArgs
+  hashtagAttachments?: boolean | CapturedSegmentCountOutputTypeCountHashtagAttachmentsArgs
   followUps?: boolean | CapturedSegmentCountOutputTypeCountFollowUpsArgs
 }
 
@@ -806,6 +911,13 @@ export type CapturedSegmentCountOutputTypeCountTagsArgs<ExtArgs extends runtime.
 /**
  * CapturedSegmentCountOutputType without action
  */
+export type CapturedSegmentCountOutputTypeCountHashtagAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TagAttachmentWhereInput
+}
+
+/**
+ * CapturedSegmentCountOutputType without action
+ */
 export type CapturedSegmentCountOutputTypeCountFollowUpsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.FollowUpSuggestionWhereInput
 }
@@ -822,6 +934,7 @@ export type CapturedSegmentSelect<ExtArgs extends runtime.Types.Extensions.Inter
   createdAt?: boolean
   capturedInput?: boolean | Prisma.CapturedInputDefaultArgs<ExtArgs>
   tags?: boolean | Prisma.CapturedSegment$tagsArgs<ExtArgs>
+  hashtagAttachments?: boolean | Prisma.CapturedSegment$hashtagAttachmentsArgs<ExtArgs>
   followUps?: boolean | Prisma.CapturedSegment$followUpsArgs<ExtArgs>
   _count?: boolean | Prisma.CapturedSegmentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["capturedSegment"]>
@@ -865,6 +978,7 @@ export type CapturedSegmentOmit<ExtArgs extends runtime.Types.Extensions.Interna
 export type CapturedSegmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   capturedInput?: boolean | Prisma.CapturedInputDefaultArgs<ExtArgs>
   tags?: boolean | Prisma.CapturedSegment$tagsArgs<ExtArgs>
+  hashtagAttachments?: boolean | Prisma.CapturedSegment$hashtagAttachmentsArgs<ExtArgs>
   followUps?: boolean | Prisma.CapturedSegment$followUpsArgs<ExtArgs>
   _count?: boolean | Prisma.CapturedSegmentCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -880,6 +994,7 @@ export type $CapturedSegmentPayload<ExtArgs extends runtime.Types.Extensions.Int
   objects: {
     capturedInput: Prisma.$CapturedInputPayload<ExtArgs>
     tags: Prisma.$TagPayload<ExtArgs>[]
+    hashtagAttachments: Prisma.$TagAttachmentPayload<ExtArgs>[]
     followUps: Prisma.$FollowUpSuggestionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1287,6 +1402,7 @@ export interface Prisma__CapturedSegmentClient<T, Null = never, ExtArgs extends 
   readonly [Symbol.toStringTag]: "PrismaPromise"
   capturedInput<T extends Prisma.CapturedInputDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapturedInputDefaultArgs<ExtArgs>>): Prisma.Prisma__CapturedInputClient<runtime.Types.Result.GetResult<Prisma.$CapturedInputPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   tags<T extends Prisma.CapturedSegment$tagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapturedSegment$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  hashtagAttachments<T extends Prisma.CapturedSegment$hashtagAttachmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapturedSegment$hashtagAttachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TagAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   followUps<T extends Prisma.CapturedSegment$followUpsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapturedSegment$followUpsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FollowUpSuggestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1747,6 +1863,30 @@ export type CapturedSegment$tagsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.TagScalarFieldEnum | Prisma.TagScalarFieldEnum[]
+}
+
+/**
+ * CapturedSegment.hashtagAttachments
+ */
+export type CapturedSegment$hashtagAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TagAttachment
+   */
+  select?: Prisma.TagAttachmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TagAttachment
+   */
+  omit?: Prisma.TagAttachmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TagAttachmentInclude<ExtArgs> | null
+  where?: Prisma.TagAttachmentWhereInput
+  orderBy?: Prisma.TagAttachmentOrderByWithRelationInput | Prisma.TagAttachmentOrderByWithRelationInput[]
+  cursor?: Prisma.TagAttachmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TagAttachmentScalarFieldEnum | Prisma.TagAttachmentScalarFieldEnum[]
 }
 
 /**

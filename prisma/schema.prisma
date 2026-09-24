@@ -71,8 +71,10 @@ model Organization {
   integrationConnections IntegrationConnection[]
   documentFindings       DocumentFinding[]
   documentFamilies       DocumentFamily[]
-  agentProfiles           OrganizationAgentProfile[]
+  agentProfiles          OrganizationAgentProfile[]
   integrationSources     IntegrationSource[]
+  tagDefinitions         TagDefinition[]
+  tagAttachments         TagAttachment[]
 }
 
 model UserOrganization {
@@ -392,16 +394,18 @@ model CapturedInput {
   createdAt        DateTime               @default(now())
   updatedAt        DateTime               @updatedAt
 
-  organization   Organization              @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  session        AssessmentSession?        @relation(fields: [sessionId], references: [id])
-  meetingContext MeetingContext?           @relation(fields: [meetingContextId], references: [id], onDelete: SetNull)
-  segments       CapturedSegment[]
-  attachments    CapturedInputAttachment[]
-  findings       DocumentFinding[]
-  documentFamily DocumentFamily?           @relation(fields: [documentFamilyId], references: [id], onDelete: SetNull)
-  agentRuns      AgentRun[]
+  organization       Organization              @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  session            AssessmentSession?        @relation(fields: [sessionId], references: [id])
+  meetingContext     MeetingContext?           @relation(fields: [meetingContextId], references: [id], onDelete: SetNull)
+  segments           CapturedSegment[]
+  attachments        CapturedInputAttachment[]
+  findings           DocumentFinding[]
+  documentFamily     DocumentFamily?           @relation(fields: [documentFamilyId], references: [id], onDelete: SetNull)
+  agentRuns          AgentRun[]
+  hashtagAttachments TagAttachment[]
 
   @@unique([organizationId, idempotencyKey])
+  @@unique([organizationId, id])
   @@index([meetingContextId])
 }
 
@@ -438,9 +442,10 @@ model CapturedSegment {
   endMs           Int?
   createdAt       DateTime @default(now())
 
-  capturedInput CapturedInput        @relation(fields: [capturedInputId], references: [id], onDelete: Cascade)
-  tags          Tag[]
-  followUps     FollowUpSuggestion[]
+  capturedInput      CapturedInput        @relation(fields: [capturedInputId], references: [id], onDelete: Cascade)
+  tags               Tag[]
+  hashtagAttachments TagAttachment[]
+  followUps          FollowUpSuggestion[]
 }
 
 enum TagTargetType {
@@ -456,6 +461,69 @@ enum TagStatus {
   APPROVED
   REJECTED
   REASSIGNED
+}
+
+/// Origin of a reusable hashtag attachment. This is distinct from the legacy
+/// taxonomy Tag model, which links a segment to domain/capability/KPI/stakeholder.
+enum TagAttachmentSource {
+  MANUAL
+  AI_SUGGESTED
+  IMPORTED
+}
+
+enum TagAttachmentStatus {
+  SUGGESTED
+  APPROVED
+  REJECTED
+}
+
+model TagDefinition {
+  id             String    @id @default(cuid())
+  organizationId String
+  displayName    String
+  normalizedName String
+  description    String?
+  category       String?
+  aliases        String[]  @default([])
+  active         Boolean   @default(true)
+  createdBy      String?
+  retiredAt      DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  organization Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  attachments  TagAttachment[]
+
+  @@unique([organizationId, normalizedName])
+  @@index([organizationId, active])
+}
+
+model TagAttachment {
+  id              String              @id @default(cuid())
+  organizationId  String
+  tagDefinitionId String
+  capturedInputId String
+  segmentId       String?
+  /// Stable attachment identity: input:{id} for a source or segment:{id} for an excerpt.
+  targetKey       String
+  source          TagAttachmentSource
+  status          TagAttachmentStatus @default(SUGGESTED)
+  confidence      Float?
+  rationale       String?
+  reviewedBy      String?
+  reviewedAt      DateTime?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  organization  Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  tagDefinition TagDefinition    @relation(fields: [tagDefinitionId], references: [id], onDelete: Cascade)
+  capturedInput CapturedInput    @relation(fields: [capturedInputId], references: [id], onDelete: Cascade)
+  segment       CapturedSegment? @relation(fields: [segmentId], references: [id], onDelete: Cascade)
+
+  @@unique([tagDefinitionId, targetKey])
+  @@index([organizationId, status, createdAt])
+  @@index([capturedInputId])
+  @@index([segmentId])
 }
 
 model Tag {
@@ -963,12 +1031,12 @@ model AgentDefinition {
   createdAt                DateTime  @default(now())
   updatedAt                DateTime  @updatedAt
 
-  creator                User                 @relation("AgentDefinitionCreator", fields: [createdBy], references: [email], onDelete: Restrict)
+  creator                User                       @relation("AgentDefinitionCreator", fields: [createdBy], references: [email], onDelete: Restrict)
   promptVersions         AgentPromptVersion[]
   inputRules             AgentInputRule[]
   runs                   AgentRun[]
   organizationProfiles   OrganizationAgentProfile[]
-  publishedPromptVersion AgentPromptVersion?  @relation("PublishedAgentPromptVersion", fields: [publishedPromptVersionId], references: [id], onDelete: SetNull)
+  publishedPromptVersion AgentPromptVersion?        @relation("PublishedAgentPromptVersion", fields: [publishedPromptVersionId], references: [id], onDelete: SetNull)
 
   @@index([name])
 }
@@ -1008,16 +1076,16 @@ model AgentInputRule {
 }
 
 model OrganizationAgentProfile {
-  id               String   @id @default(cuid())
-  organizationId   String
+  id                String   @id @default(cuid())
+  organizationId    String
   agentDefinitionId String
   displayName       String
   alias             String
   normalizedAlias   String
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
-  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organization    Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   agentDefinition AgentDefinition @relation(fields: [agentDefinitionId], references: [id], onDelete: Cascade)
 
   @@unique([organizationId, agentDefinitionId])
@@ -1109,43 +1177,43 @@ model IntegrationConnection {
 /// then approves or rejects it. Approved findings feed the assessment and the
 /// Flowstate Score.
 model DocumentFinding {
-  id                   String          @id @default(cuid())
-  organizationId       String
-  capturedInputId      String
-  documentFamilyId     String?
+  id                      String          @id @default(cuid())
+  organizationId          String
+  capturedInputId         String
+  documentFamilyId        String?
   /// What the document is: "CIM", "email thread", "financial model", "meeting note".
-  documentType         String?
+  documentType            String?
   /// Short human title, so the review queue is scannable without opening the file.
-  title                String
+  title                   String
   /// The analysis, in prose, readable on its own.
-  summary              String
+  summary                 String
   /// The capability this evidences. Nullable: a document may evidence none.
-  capabilityId         String?
-  capabilityName       String?
-  domainId             String?
-  domainName           String?
+  capabilityId            String?
+  capabilityName          String?
+  domainId                String?
+  domainName              String?
   /// What the document specifically proves about that capability.
-  evidenceDemonstrated String?
-  strength             FindingStrength @default(NONE)
-  confidence           Float           @default(0)
+  evidenceDemonstrated    String?
+  strength                FindingStrength @default(NONE)
+  confidence              Float           @default(0)
   /// The exact passages supporting the finding, so a claim can be checked.
-  citedSegmentIds      String[]        @default([])
+  citedSegmentIds         String[]        @default([])
   /// Verbatim excerpts, so a finding survives even if its segments are removed.
-  citedExcerpts        String[]        @default([])
-  status               FindingStatus   @default(PENDING_REVIEW)
+  citedExcerpts           String[]        @default([])
+  status                  FindingStatus   @default(PENDING_REVIEW)
   /// Content hash of the source at the time of analysis. A changed file makes
   /// the finding STALE rather than leaving a stale finding looking current.
-  sourceHash           String?
-  reanalysisOfId       String?
-  reviewedBy           String?
-  reviewedAt           DateTime?
-  reviewReason         String?
-  correctedDomainName  String?
+  sourceHash              String?
+  reanalysisOfId          String?
+  reviewedBy              String?
+  reviewedAt              DateTime?
+  reviewReason            String?
+  correctedDomainName     String?
   correctedCapabilityName String?
-  reviewAgentKey       String?
-  reviewPromptVersion  Int?
-  createdAt            DateTime        @default(now())
-  updatedAt            DateTime        @updatedAt
+  reviewAgentKey          String?
+  reviewPromptVersion     Int?
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
 
   organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   capturedInput  CapturedInput   @relation(fields: [capturedInputId], references: [id], onDelete: Cascade)

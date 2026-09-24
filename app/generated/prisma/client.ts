@@ -157,6 +157,16 @@ export type InboundEmailEndpoint = Prisma.InboundEmailEndpointModel
  */
 export type CapturedSegment = Prisma.CapturedSegmentModel
 /**
+ * Model TagDefinition
+ * 
+ */
+export type TagDefinition = Prisma.TagDefinitionModel
+/**
+ * Model TagAttachment
+ * 
+ */
+export type TagAttachment = Prisma.TagAttachmentModel
+/**
  * Model Tag
  * 
  */

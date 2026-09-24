@@ -456,6 +456,7 @@ export type CapturedInputWhereInput = {
   findings?: Prisma.DocumentFindingListRelationFilter
   documentFamily?: Prisma.XOR<Prisma.DocumentFamilyNullableScalarRelationFilter, Prisma.DocumentFamilyWhereInput> | null
   agentRuns?: Prisma.AgentRunListRelationFilter
+  hashtagAttachments?: Prisma.TagAttachmentListRelationFilter
 }
 
 export type CapturedInputOrderByWithRelationInput = {
@@ -500,11 +501,13 @@ export type CapturedInputOrderByWithRelationInput = {
   findings?: Prisma.DocumentFindingOrderByRelationAggregateInput
   documentFamily?: Prisma.DocumentFamilyOrderByWithRelationInput
   agentRuns?: Prisma.AgentRunOrderByRelationAggregateInput
+  hashtagAttachments?: Prisma.TagAttachmentOrderByRelationAggregateInput
 }
 
 export type CapturedInputWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   organizationId_idempotencyKey?: Prisma.CapturedInputOrganizationIdIdempotencyKeyCompoundUniqueInput
+  organizationId_id?: Prisma.CapturedInputOrganizationIdIdCompoundUniqueInput
   AND?: Prisma.CapturedInputWhereInput | Prisma.CapturedInputWhereInput[]
   OR?: Prisma.CapturedInputWhereInput[]
   NOT?: Prisma.CapturedInputWhereInput | Prisma.CapturedInputWhereInput[]
@@ -548,7 +551,8 @@ export type CapturedInputWhereUniqueInput = Prisma.AtLeast<{
   findings?: Prisma.DocumentFindingListRelationFilter
   documentFamily?: Prisma.XOR<Prisma.DocumentFamilyNullableScalarRelationFilter, Prisma.DocumentFamilyWhereInput> | null
   agentRuns?: Prisma.AgentRunListRelationFilter
-}, "id" | "organizationId_idempotencyKey">
+  hashtagAttachments?: Prisma.TagAttachmentListRelationFilter
+}, "id" | "organizationId_idempotencyKey" | "organizationId_id">
 
 export type CapturedInputOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -668,6 +672,7 @@ export type CapturedInputCreateInput = {
   findings?: Prisma.DocumentFindingCreateNestedManyWithoutCapturedInputInput
   documentFamily?: Prisma.DocumentFamilyCreateNestedOneWithoutCapturedInputsInput
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutCapturedInputInput
+  hashtagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutCapturedInputInput
 }
 
 export type CapturedInputUncheckedCreateInput = {
@@ -708,6 +713,7 @@ export type CapturedInputUncheckedCreateInput = {
   attachments?: Prisma.CapturedInputAttachmentUncheckedCreateNestedManyWithoutCapturedInputInput
   findings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutCapturedInputInput
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutCapturedInputInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutCapturedInputInput
 }
 
 export type CapturedInputUpdateInput = {
@@ -748,6 +754,7 @@ export type CapturedInputUpdateInput = {
   findings?: Prisma.DocumentFindingUpdateManyWithoutCapturedInputNestedInput
   documentFamily?: Prisma.DocumentFamilyUpdateOneWithoutCapturedInputsNestedInput
   agentRuns?: Prisma.AgentRunUpdateManyWithoutCapturedInputNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUpdateManyWithoutCapturedInputNestedInput
 }
 
 export type CapturedInputUncheckedUpdateInput = {
@@ -788,6 +795,7 @@ export type CapturedInputUncheckedUpdateInput = {
   attachments?: Prisma.CapturedInputAttachmentUncheckedUpdateManyWithoutCapturedInputNestedInput
   findings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutCapturedInputNestedInput
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutCapturedInputNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutCapturedInputNestedInput
 }
 
 export type CapturedInputCreateManyInput = {
@@ -907,6 +915,11 @@ export type CapturedInputOrderByRelationAggregateInput = {
 export type CapturedInputOrganizationIdIdempotencyKeyCompoundUniqueInput = {
   organizationId: string
   idempotencyKey: string
+}
+
+export type CapturedInputOrganizationIdIdCompoundUniqueInput = {
+  organizationId: string
+  id: string
 }
 
 export type CapturedInputCountOrderByAggregateInput = {
@@ -1208,6 +1221,20 @@ export type CapturedInputUpdateOneRequiredWithoutSegmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CapturedInputUpdateToOneWithWhereWithoutSegmentsInput, Prisma.CapturedInputUpdateWithoutSegmentsInput>, Prisma.CapturedInputUncheckedUpdateWithoutSegmentsInput>
 }
 
+export type CapturedInputCreateNestedOneWithoutHashtagAttachmentsInput = {
+  create?: Prisma.XOR<Prisma.CapturedInputCreateWithoutHashtagAttachmentsInput, Prisma.CapturedInputUncheckedCreateWithoutHashtagAttachmentsInput>
+  connectOrCreate?: Prisma.CapturedInputCreateOrConnectWithoutHashtagAttachmentsInput
+  connect?: Prisma.CapturedInputWhereUniqueInput
+}
+
+export type CapturedInputUpdateOneRequiredWithoutHashtagAttachmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.CapturedInputCreateWithoutHashtagAttachmentsInput, Prisma.CapturedInputUncheckedCreateWithoutHashtagAttachmentsInput>
+  connectOrCreate?: Prisma.CapturedInputCreateOrConnectWithoutHashtagAttachmentsInput
+  upsert?: Prisma.CapturedInputUpsertWithoutHashtagAttachmentsInput
+  connect?: Prisma.CapturedInputWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CapturedInputUpdateToOneWithWhereWithoutHashtagAttachmentsInput, Prisma.CapturedInputUpdateWithoutHashtagAttachmentsInput>, Prisma.CapturedInputUncheckedUpdateWithoutHashtagAttachmentsInput>
+}
+
 export type CapturedInputCreateNestedOneWithoutAgentRunsInput = {
   create?: Prisma.XOR<Prisma.CapturedInputCreateWithoutAgentRunsInput, Prisma.CapturedInputUncheckedCreateWithoutAgentRunsInput>
   connectOrCreate?: Prisma.CapturedInputCreateOrConnectWithoutAgentRunsInput
@@ -1315,6 +1342,7 @@ export type CapturedInputCreateWithoutOrganizationInput = {
   findings?: Prisma.DocumentFindingCreateNestedManyWithoutCapturedInputInput
   documentFamily?: Prisma.DocumentFamilyCreateNestedOneWithoutCapturedInputsInput
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutCapturedInputInput
+  hashtagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutCapturedInputInput
 }
 
 export type CapturedInputUncheckedCreateWithoutOrganizationInput = {
@@ -1354,6 +1382,7 @@ export type CapturedInputUncheckedCreateWithoutOrganizationInput = {
   attachments?: Prisma.CapturedInputAttachmentUncheckedCreateNestedManyWithoutCapturedInputInput
   findings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutCapturedInputInput
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutCapturedInputInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutCapturedInputInput
 }
 
 export type CapturedInputCreateOrConnectWithoutOrganizationInput = {
@@ -1458,6 +1487,7 @@ export type CapturedInputCreateWithoutSessionInput = {
   findings?: Prisma.DocumentFindingCreateNestedManyWithoutCapturedInputInput
   documentFamily?: Prisma.DocumentFamilyCreateNestedOneWithoutCapturedInputsInput
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutCapturedInputInput
+  hashtagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutCapturedInputInput
 }
 
 export type CapturedInputUncheckedCreateWithoutSessionInput = {
@@ -1497,6 +1527,7 @@ export type CapturedInputUncheckedCreateWithoutSessionInput = {
   attachments?: Prisma.CapturedInputAttachmentUncheckedCreateNestedManyWithoutCapturedInputInput
   findings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutCapturedInputInput
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutCapturedInputInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutCapturedInputInput
 }
 
 export type CapturedInputCreateOrConnectWithoutSessionInput = {
@@ -1562,6 +1593,7 @@ export type CapturedInputCreateWithoutMeetingContextInput = {
   findings?: Prisma.DocumentFindingCreateNestedManyWithoutCapturedInputInput
   documentFamily?: Prisma.DocumentFamilyCreateNestedOneWithoutCapturedInputsInput
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutCapturedInputInput
+  hashtagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutCapturedInputInput
 }
 
 export type CapturedInputUncheckedCreateWithoutMeetingContextInput = {
@@ -1601,6 +1633,7 @@ export type CapturedInputUncheckedCreateWithoutMeetingContextInput = {
   attachments?: Prisma.CapturedInputAttachmentUncheckedCreateNestedManyWithoutCapturedInputInput
   findings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutCapturedInputInput
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutCapturedInputInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutCapturedInputInput
 }
 
 export type CapturedInputCreateOrConnectWithoutMeetingContextInput = {
@@ -1666,6 +1699,7 @@ export type CapturedInputCreateWithoutAttachmentsInput = {
   findings?: Prisma.DocumentFindingCreateNestedManyWithoutCapturedInputInput
   documentFamily?: Prisma.DocumentFamilyCreateNestedOneWithoutCapturedInputsInput
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutCapturedInputInput
+  hashtagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutCapturedInputInput
 }
 
 export type CapturedInputUncheckedCreateWithoutAttachmentsInput = {
@@ -1705,6 +1739,7 @@ export type CapturedInputUncheckedCreateWithoutAttachmentsInput = {
   segments?: Prisma.CapturedSegmentUncheckedCreateNestedManyWithoutCapturedInputInput
   findings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutCapturedInputInput
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutCapturedInputInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutCapturedInputInput
 }
 
 export type CapturedInputCreateOrConnectWithoutAttachmentsInput = {
@@ -1760,6 +1795,7 @@ export type CapturedInputUpdateWithoutAttachmentsInput = {
   findings?: Prisma.DocumentFindingUpdateManyWithoutCapturedInputNestedInput
   documentFamily?: Prisma.DocumentFamilyUpdateOneWithoutCapturedInputsNestedInput
   agentRuns?: Prisma.AgentRunUpdateManyWithoutCapturedInputNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUpdateManyWithoutCapturedInputNestedInput
 }
 
 export type CapturedInputUncheckedUpdateWithoutAttachmentsInput = {
@@ -1799,6 +1835,7 @@ export type CapturedInputUncheckedUpdateWithoutAttachmentsInput = {
   segments?: Prisma.CapturedSegmentUncheckedUpdateManyWithoutCapturedInputNestedInput
   findings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutCapturedInputNestedInput
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutCapturedInputNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutCapturedInputNestedInput
 }
 
 export type CapturedInputCreateWithoutSegmentsInput = {
@@ -1838,6 +1875,7 @@ export type CapturedInputCreateWithoutSegmentsInput = {
   findings?: Prisma.DocumentFindingCreateNestedManyWithoutCapturedInputInput
   documentFamily?: Prisma.DocumentFamilyCreateNestedOneWithoutCapturedInputsInput
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutCapturedInputInput
+  hashtagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutCapturedInputInput
 }
 
 export type CapturedInputUncheckedCreateWithoutSegmentsInput = {
@@ -1877,6 +1915,7 @@ export type CapturedInputUncheckedCreateWithoutSegmentsInput = {
   attachments?: Prisma.CapturedInputAttachmentUncheckedCreateNestedManyWithoutCapturedInputInput
   findings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutCapturedInputInput
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutCapturedInputInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutCapturedInputInput
 }
 
 export type CapturedInputCreateOrConnectWithoutSegmentsInput = {
@@ -1932,6 +1971,7 @@ export type CapturedInputUpdateWithoutSegmentsInput = {
   findings?: Prisma.DocumentFindingUpdateManyWithoutCapturedInputNestedInput
   documentFamily?: Prisma.DocumentFamilyUpdateOneWithoutCapturedInputsNestedInput
   agentRuns?: Prisma.AgentRunUpdateManyWithoutCapturedInputNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUpdateManyWithoutCapturedInputNestedInput
 }
 
 export type CapturedInputUncheckedUpdateWithoutSegmentsInput = {
@@ -1968,6 +2008,183 @@ export type CapturedInputUncheckedUpdateWithoutSegmentsInput = {
   capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attachments?: Prisma.CapturedInputAttachmentUncheckedUpdateManyWithoutCapturedInputNestedInput
+  findings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutCapturedInputNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutCapturedInputNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutCapturedInputNestedInput
+}
+
+export type CapturedInputCreateWithoutHashtagAttachmentsInput = {
+  id?: string
+  revision?: number
+  type: $Enums.InputType
+  sourceRef?: string | null
+  senderEmail?: string | null
+  senderName?: string | null
+  subject?: string | null
+  idempotencyKey?: string | null
+  quarantineReason?: string | null
+  rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
+  versionLabel?: string | null
+  versionMajor?: number | null
+  versionMinor?: number | null
+  versionExplicit?: boolean
+  versionStatus?: $Enums.DocumentVersionStatus
+  sourcePath?: string | null
+  locationTag?: string | null
+  status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
+  error?: string | null
+  capturedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutCapturedInputsInput
+  session?: Prisma.AssessmentSessionCreateNestedOneWithoutCapturedInputsInput
+  meetingContext?: Prisma.MeetingContextCreateNestedOneWithoutCapturedInputsInput
+  segments?: Prisma.CapturedSegmentCreateNestedManyWithoutCapturedInputInput
+  attachments?: Prisma.CapturedInputAttachmentCreateNestedManyWithoutCapturedInputInput
+  findings?: Prisma.DocumentFindingCreateNestedManyWithoutCapturedInputInput
+  documentFamily?: Prisma.DocumentFamilyCreateNestedOneWithoutCapturedInputsInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutCapturedInputInput
+}
+
+export type CapturedInputUncheckedCreateWithoutHashtagAttachmentsInput = {
+  id?: string
+  organizationId: string
+  sessionId?: string | null
+  meetingContextId?: string | null
+  revision?: number
+  type: $Enums.InputType
+  sourceRef?: string | null
+  senderEmail?: string | null
+  senderName?: string | null
+  subject?: string | null
+  idempotencyKey?: string | null
+  quarantineReason?: string | null
+  rawText?: string | null
+  sourceDriveId?: string | null
+  sourceItemId?: string | null
+  sourceVersion?: string | null
+  sourceHash?: string | null
+  documentFamilyId?: string | null
+  versionLabel?: string | null
+  versionMajor?: number | null
+  versionMinor?: number | null
+  versionExplicit?: boolean
+  versionStatus?: $Enums.DocumentVersionStatus
+  sourcePath?: string | null
+  locationTag?: string | null
+  status?: $Enums.ProcessingStatus
+  reviewStatus?: $Enums.ScratchpadReviewStatus
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
+  error?: string | null
+  capturedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  segments?: Prisma.CapturedSegmentUncheckedCreateNestedManyWithoutCapturedInputInput
+  attachments?: Prisma.CapturedInputAttachmentUncheckedCreateNestedManyWithoutCapturedInputInput
+  findings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutCapturedInputInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutCapturedInputInput
+}
+
+export type CapturedInputCreateOrConnectWithoutHashtagAttachmentsInput = {
+  where: Prisma.CapturedInputWhereUniqueInput
+  create: Prisma.XOR<Prisma.CapturedInputCreateWithoutHashtagAttachmentsInput, Prisma.CapturedInputUncheckedCreateWithoutHashtagAttachmentsInput>
+}
+
+export type CapturedInputUpsertWithoutHashtagAttachmentsInput = {
+  update: Prisma.XOR<Prisma.CapturedInputUpdateWithoutHashtagAttachmentsInput, Prisma.CapturedInputUncheckedUpdateWithoutHashtagAttachmentsInput>
+  create: Prisma.XOR<Prisma.CapturedInputCreateWithoutHashtagAttachmentsInput, Prisma.CapturedInputUncheckedCreateWithoutHashtagAttachmentsInput>
+  where?: Prisma.CapturedInputWhereInput
+}
+
+export type CapturedInputUpdateToOneWithWhereWithoutHashtagAttachmentsInput = {
+  where?: Prisma.CapturedInputWhereInput
+  data: Prisma.XOR<Prisma.CapturedInputUpdateWithoutHashtagAttachmentsInput, Prisma.CapturedInputUncheckedUpdateWithoutHashtagAttachmentsInput>
+}
+
+export type CapturedInputUpdateWithoutHashtagAttachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
+  sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  senderName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  versionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  versionMajor?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  versionMinor?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  versionExplicit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  versionStatus?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus
+  sourcePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutCapturedInputsNestedInput
+  session?: Prisma.AssessmentSessionUpdateOneWithoutCapturedInputsNestedInput
+  meetingContext?: Prisma.MeetingContextUpdateOneWithoutCapturedInputsNestedInput
+  segments?: Prisma.CapturedSegmentUpdateManyWithoutCapturedInputNestedInput
+  attachments?: Prisma.CapturedInputAttachmentUpdateManyWithoutCapturedInputNestedInput
+  findings?: Prisma.DocumentFindingUpdateManyWithoutCapturedInputNestedInput
+  documentFamily?: Prisma.DocumentFamilyUpdateOneWithoutCapturedInputsNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutCapturedInputNestedInput
+}
+
+export type CapturedInputUncheckedUpdateWithoutHashtagAttachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  meetingContextId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  type?: Prisma.EnumInputTypeFieldUpdateOperationsInput | $Enums.InputType
+  sourceRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  senderEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  senderName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quarantineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rawText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceDriveId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentFamilyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  versionLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  versionMajor?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  versionMinor?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  versionExplicit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  versionStatus?: Prisma.EnumDocumentVersionStatusFieldUpdateOperationsInput | $Enums.DocumentVersionStatus
+  sourcePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProcessingStatusFieldUpdateOperationsInput | $Enums.ProcessingStatus
+  reviewStatus?: Prisma.EnumScratchpadReviewStatusFieldUpdateOperationsInput | $Enums.ScratchpadReviewStatus
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  capturedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  segments?: Prisma.CapturedSegmentUncheckedUpdateManyWithoutCapturedInputNestedInput
   attachments?: Prisma.CapturedInputAttachmentUncheckedUpdateManyWithoutCapturedInputNestedInput
   findings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutCapturedInputNestedInput
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutCapturedInputNestedInput
@@ -2010,6 +2227,7 @@ export type CapturedInputCreateWithoutAgentRunsInput = {
   attachments?: Prisma.CapturedInputAttachmentCreateNestedManyWithoutCapturedInputInput
   findings?: Prisma.DocumentFindingCreateNestedManyWithoutCapturedInputInput
   documentFamily?: Prisma.DocumentFamilyCreateNestedOneWithoutCapturedInputsInput
+  hashtagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutCapturedInputInput
 }
 
 export type CapturedInputUncheckedCreateWithoutAgentRunsInput = {
@@ -2049,6 +2267,7 @@ export type CapturedInputUncheckedCreateWithoutAgentRunsInput = {
   segments?: Prisma.CapturedSegmentUncheckedCreateNestedManyWithoutCapturedInputInput
   attachments?: Prisma.CapturedInputAttachmentUncheckedCreateNestedManyWithoutCapturedInputInput
   findings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutCapturedInputInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutCapturedInputInput
 }
 
 export type CapturedInputCreateOrConnectWithoutAgentRunsInput = {
@@ -2104,6 +2323,7 @@ export type CapturedInputUpdateWithoutAgentRunsInput = {
   attachments?: Prisma.CapturedInputAttachmentUpdateManyWithoutCapturedInputNestedInput
   findings?: Prisma.DocumentFindingUpdateManyWithoutCapturedInputNestedInput
   documentFamily?: Prisma.DocumentFamilyUpdateOneWithoutCapturedInputsNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUpdateManyWithoutCapturedInputNestedInput
 }
 
 export type CapturedInputUncheckedUpdateWithoutAgentRunsInput = {
@@ -2143,6 +2363,7 @@ export type CapturedInputUncheckedUpdateWithoutAgentRunsInput = {
   segments?: Prisma.CapturedSegmentUncheckedUpdateManyWithoutCapturedInputNestedInput
   attachments?: Prisma.CapturedInputAttachmentUncheckedUpdateManyWithoutCapturedInputNestedInput
   findings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutCapturedInputNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutCapturedInputNestedInput
 }
 
 export type CapturedInputCreateWithoutFindingsInput = {
@@ -2182,6 +2403,7 @@ export type CapturedInputCreateWithoutFindingsInput = {
   attachments?: Prisma.CapturedInputAttachmentCreateNestedManyWithoutCapturedInputInput
   documentFamily?: Prisma.DocumentFamilyCreateNestedOneWithoutCapturedInputsInput
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutCapturedInputInput
+  hashtagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutCapturedInputInput
 }
 
 export type CapturedInputUncheckedCreateWithoutFindingsInput = {
@@ -2221,6 +2443,7 @@ export type CapturedInputUncheckedCreateWithoutFindingsInput = {
   segments?: Prisma.CapturedSegmentUncheckedCreateNestedManyWithoutCapturedInputInput
   attachments?: Prisma.CapturedInputAttachmentUncheckedCreateNestedManyWithoutCapturedInputInput
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutCapturedInputInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutCapturedInputInput
 }
 
 export type CapturedInputCreateOrConnectWithoutFindingsInput = {
@@ -2276,6 +2499,7 @@ export type CapturedInputUpdateWithoutFindingsInput = {
   attachments?: Prisma.CapturedInputAttachmentUpdateManyWithoutCapturedInputNestedInput
   documentFamily?: Prisma.DocumentFamilyUpdateOneWithoutCapturedInputsNestedInput
   agentRuns?: Prisma.AgentRunUpdateManyWithoutCapturedInputNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUpdateManyWithoutCapturedInputNestedInput
 }
 
 export type CapturedInputUncheckedUpdateWithoutFindingsInput = {
@@ -2315,6 +2539,7 @@ export type CapturedInputUncheckedUpdateWithoutFindingsInput = {
   segments?: Prisma.CapturedSegmentUncheckedUpdateManyWithoutCapturedInputNestedInput
   attachments?: Prisma.CapturedInputAttachmentUncheckedUpdateManyWithoutCapturedInputNestedInput
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutCapturedInputNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutCapturedInputNestedInput
 }
 
 export type CapturedInputCreateWithoutDocumentFamilyInput = {
@@ -2354,6 +2579,7 @@ export type CapturedInputCreateWithoutDocumentFamilyInput = {
   attachments?: Prisma.CapturedInputAttachmentCreateNestedManyWithoutCapturedInputInput
   findings?: Prisma.DocumentFindingCreateNestedManyWithoutCapturedInputInput
   agentRuns?: Prisma.AgentRunCreateNestedManyWithoutCapturedInputInput
+  hashtagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutCapturedInputInput
 }
 
 export type CapturedInputUncheckedCreateWithoutDocumentFamilyInput = {
@@ -2393,6 +2619,7 @@ export type CapturedInputUncheckedCreateWithoutDocumentFamilyInput = {
   attachments?: Prisma.CapturedInputAttachmentUncheckedCreateNestedManyWithoutCapturedInputInput
   findings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutCapturedInputInput
   agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutCapturedInputInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutCapturedInputInput
 }
 
 export type CapturedInputCreateOrConnectWithoutDocumentFamilyInput = {
@@ -2493,6 +2720,7 @@ export type CapturedInputUpdateWithoutOrganizationInput = {
   findings?: Prisma.DocumentFindingUpdateManyWithoutCapturedInputNestedInput
   documentFamily?: Prisma.DocumentFamilyUpdateOneWithoutCapturedInputsNestedInput
   agentRuns?: Prisma.AgentRunUpdateManyWithoutCapturedInputNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUpdateManyWithoutCapturedInputNestedInput
 }
 
 export type CapturedInputUncheckedUpdateWithoutOrganizationInput = {
@@ -2532,6 +2760,7 @@ export type CapturedInputUncheckedUpdateWithoutOrganizationInput = {
   attachments?: Prisma.CapturedInputAttachmentUncheckedUpdateManyWithoutCapturedInputNestedInput
   findings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutCapturedInputNestedInput
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutCapturedInputNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutCapturedInputNestedInput
 }
 
 export type CapturedInputUncheckedUpdateManyWithoutOrganizationInput = {
@@ -2641,6 +2870,7 @@ export type CapturedInputUpdateWithoutSessionInput = {
   findings?: Prisma.DocumentFindingUpdateManyWithoutCapturedInputNestedInput
   documentFamily?: Prisma.DocumentFamilyUpdateOneWithoutCapturedInputsNestedInput
   agentRuns?: Prisma.AgentRunUpdateManyWithoutCapturedInputNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUpdateManyWithoutCapturedInputNestedInput
 }
 
 export type CapturedInputUncheckedUpdateWithoutSessionInput = {
@@ -2680,6 +2910,7 @@ export type CapturedInputUncheckedUpdateWithoutSessionInput = {
   attachments?: Prisma.CapturedInputAttachmentUncheckedUpdateManyWithoutCapturedInputNestedInput
   findings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutCapturedInputNestedInput
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutCapturedInputNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutCapturedInputNestedInput
 }
 
 export type CapturedInputUncheckedUpdateManyWithoutSessionInput = {
@@ -2789,6 +3020,7 @@ export type CapturedInputUpdateWithoutMeetingContextInput = {
   findings?: Prisma.DocumentFindingUpdateManyWithoutCapturedInputNestedInput
   documentFamily?: Prisma.DocumentFamilyUpdateOneWithoutCapturedInputsNestedInput
   agentRuns?: Prisma.AgentRunUpdateManyWithoutCapturedInputNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUpdateManyWithoutCapturedInputNestedInput
 }
 
 export type CapturedInputUncheckedUpdateWithoutMeetingContextInput = {
@@ -2828,6 +3060,7 @@ export type CapturedInputUncheckedUpdateWithoutMeetingContextInput = {
   attachments?: Prisma.CapturedInputAttachmentUncheckedUpdateManyWithoutCapturedInputNestedInput
   findings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutCapturedInputNestedInput
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutCapturedInputNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutCapturedInputNestedInput
 }
 
 export type CapturedInputUncheckedUpdateManyWithoutMeetingContextInput = {
@@ -2937,6 +3170,7 @@ export type CapturedInputUpdateWithoutDocumentFamilyInput = {
   attachments?: Prisma.CapturedInputAttachmentUpdateManyWithoutCapturedInputNestedInput
   findings?: Prisma.DocumentFindingUpdateManyWithoutCapturedInputNestedInput
   agentRuns?: Prisma.AgentRunUpdateManyWithoutCapturedInputNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUpdateManyWithoutCapturedInputNestedInput
 }
 
 export type CapturedInputUncheckedUpdateWithoutDocumentFamilyInput = {
@@ -2976,6 +3210,7 @@ export type CapturedInputUncheckedUpdateWithoutDocumentFamilyInput = {
   attachments?: Prisma.CapturedInputAttachmentUncheckedUpdateManyWithoutCapturedInputNestedInput
   findings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutCapturedInputNestedInput
   agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutCapturedInputNestedInput
+  hashtagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutCapturedInputNestedInput
 }
 
 export type CapturedInputUncheckedUpdateManyWithoutDocumentFamilyInput = {
@@ -3023,6 +3258,7 @@ export type CapturedInputCountOutputType = {
   attachments: number
   findings: number
   agentRuns: number
+  hashtagAttachments: number
 }
 
 export type CapturedInputCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3030,6 +3266,7 @@ export type CapturedInputCountOutputTypeSelect<ExtArgs extends runtime.Types.Ext
   attachments?: boolean | CapturedInputCountOutputTypeCountAttachmentsArgs
   findings?: boolean | CapturedInputCountOutputTypeCountFindingsArgs
   agentRuns?: boolean | CapturedInputCountOutputTypeCountAgentRunsArgs
+  hashtagAttachments?: boolean | CapturedInputCountOutputTypeCountHashtagAttachmentsArgs
 }
 
 /**
@@ -3068,6 +3305,13 @@ export type CapturedInputCountOutputTypeCountFindingsArgs<ExtArgs extends runtim
  */
 export type CapturedInputCountOutputTypeCountAgentRunsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.AgentRunWhereInput
+}
+
+/**
+ * CapturedInputCountOutputType without action
+ */
+export type CapturedInputCountOutputTypeCountHashtagAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TagAttachmentWhereInput
 }
 
 
@@ -3113,6 +3357,7 @@ export type CapturedInputSelect<ExtArgs extends runtime.Types.Extensions.Interna
   findings?: boolean | Prisma.CapturedInput$findingsArgs<ExtArgs>
   documentFamily?: boolean | Prisma.CapturedInput$documentFamilyArgs<ExtArgs>
   agentRuns?: boolean | Prisma.CapturedInput$agentRunsArgs<ExtArgs>
+  hashtagAttachments?: boolean | Prisma.CapturedInput$hashtagAttachmentsArgs<ExtArgs>
   _count?: boolean | Prisma.CapturedInputCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["capturedInput"]>
 
@@ -3242,6 +3487,7 @@ export type CapturedInputInclude<ExtArgs extends runtime.Types.Extensions.Intern
   findings?: boolean | Prisma.CapturedInput$findingsArgs<ExtArgs>
   documentFamily?: boolean | Prisma.CapturedInput$documentFamilyArgs<ExtArgs>
   agentRuns?: boolean | Prisma.CapturedInput$agentRunsArgs<ExtArgs>
+  hashtagAttachments?: boolean | Prisma.CapturedInput$hashtagAttachmentsArgs<ExtArgs>
   _count?: boolean | Prisma.CapturedInputCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CapturedInputIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3268,6 +3514,7 @@ export type $CapturedInputPayload<ExtArgs extends runtime.Types.Extensions.Inter
     findings: Prisma.$DocumentFindingPayload<ExtArgs>[]
     documentFamily: Prisma.$DocumentFamilyPayload<ExtArgs> | null
     agentRuns: Prisma.$AgentRunPayload<ExtArgs>[]
+    hashtagAttachments: Prisma.$TagAttachmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3705,6 +3952,7 @@ export interface Prisma__CapturedInputClient<T, Null = never, ExtArgs extends ru
   findings<T extends Prisma.CapturedInput$findingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapturedInput$findingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentFindingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documentFamily<T extends Prisma.CapturedInput$documentFamilyArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapturedInput$documentFamilyArgs<ExtArgs>>): Prisma.Prisma__DocumentFamilyClient<runtime.Types.Result.GetResult<Prisma.$DocumentFamilyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   agentRuns<T extends Prisma.CapturedInput$agentRunsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapturedInput$agentRunsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  hashtagAttachments<T extends Prisma.CapturedInput$hashtagAttachmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapturedInput$hashtagAttachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TagAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4318,6 +4566,30 @@ export type CapturedInput$agentRunsArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.AgentRunScalarFieldEnum | Prisma.AgentRunScalarFieldEnum[]
+}
+
+/**
+ * CapturedInput.hashtagAttachments
+ */
+export type CapturedInput$hashtagAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TagAttachment
+   */
+  select?: Prisma.TagAttachmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TagAttachment
+   */
+  omit?: Prisma.TagAttachmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TagAttachmentInclude<ExtArgs> | null
+  where?: Prisma.TagAttachmentWhereInput
+  orderBy?: Prisma.TagAttachmentOrderByWithRelationInput | Prisma.TagAttachmentOrderByWithRelationInput[]
+  cursor?: Prisma.TagAttachmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TagAttachmentScalarFieldEnum | Prisma.TagAttachmentScalarFieldEnum[]
 }
 
 /**

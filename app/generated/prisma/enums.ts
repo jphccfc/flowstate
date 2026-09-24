@@ -83,6 +83,24 @@ export const TagStatus = {
 export type TagStatus = (typeof TagStatus)[keyof typeof TagStatus]
 
 
+export const TagAttachmentSource = {
+  MANUAL: 'MANUAL',
+  AI_SUGGESTED: 'AI_SUGGESTED',
+  IMPORTED: 'IMPORTED'
+} as const
+
+export type TagAttachmentSource = (typeof TagAttachmentSource)[keyof typeof TagAttachmentSource]
+
+
+export const TagAttachmentStatus = {
+  SUGGESTED: 'SUGGESTED',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type TagAttachmentStatus = (typeof TagAttachmentStatus)[keyof typeof TagAttachmentStatus]
+
+
 export const PlanningItemType = {
   REQUIREMENT: 'REQUIREMENT',
   SPECIFICATION: 'SPECIFICATION',

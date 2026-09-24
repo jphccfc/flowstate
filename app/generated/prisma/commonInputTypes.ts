@@ -365,6 +365,40 @@ export type EnumScratchpadReviewStatusWithAggregatesFilter<$PrismaModel = never>
   _max?: Prisma.NestedEnumScratchpadReviewStatusFilter<$PrismaModel>
 }
 
+export type EnumTagAttachmentSourceFilter<$PrismaModel = never> = {
+  equals?: $Enums.TagAttachmentSource | Prisma.EnumTagAttachmentSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.TagAttachmentSource[] | Prisma.ListEnumTagAttachmentSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TagAttachmentSource[] | Prisma.ListEnumTagAttachmentSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTagAttachmentSourceFilter<$PrismaModel> | $Enums.TagAttachmentSource
+}
+
+export type EnumTagAttachmentStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TagAttachmentStatus | Prisma.EnumTagAttachmentStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TagAttachmentStatus[] | Prisma.ListEnumTagAttachmentStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TagAttachmentStatus[] | Prisma.ListEnumTagAttachmentStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTagAttachmentStatusFilter<$PrismaModel> | $Enums.TagAttachmentStatus
+}
+
+export type EnumTagAttachmentSourceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TagAttachmentSource | Prisma.EnumTagAttachmentSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.TagAttachmentSource[] | Prisma.ListEnumTagAttachmentSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TagAttachmentSource[] | Prisma.ListEnumTagAttachmentSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTagAttachmentSourceWithAggregatesFilter<$PrismaModel> | $Enums.TagAttachmentSource
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTagAttachmentSourceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTagAttachmentSourceFilter<$PrismaModel>
+}
+
+export type EnumTagAttachmentStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TagAttachmentStatus | Prisma.EnumTagAttachmentStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TagAttachmentStatus[] | Prisma.ListEnumTagAttachmentStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TagAttachmentStatus[] | Prisma.ListEnumTagAttachmentStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTagAttachmentStatusWithAggregatesFilter<$PrismaModel> | $Enums.TagAttachmentStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTagAttachmentStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTagAttachmentStatusFilter<$PrismaModel>
+}
+
 export type EnumTagTargetTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.TagTargetType | Prisma.EnumTagTargetTypeFieldRefInput<$PrismaModel>
   in?: $Enums.TagTargetType[] | Prisma.ListEnumTagTargetTypeFieldRefInput<$PrismaModel>
@@ -1107,6 +1141,40 @@ export type NestedEnumScratchpadReviewStatusWithAggregatesFilter<$PrismaModel = 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumScratchpadReviewStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumScratchpadReviewStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumTagAttachmentSourceFilter<$PrismaModel = never> = {
+  equals?: $Enums.TagAttachmentSource | Prisma.EnumTagAttachmentSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.TagAttachmentSource[] | Prisma.ListEnumTagAttachmentSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TagAttachmentSource[] | Prisma.ListEnumTagAttachmentSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTagAttachmentSourceFilter<$PrismaModel> | $Enums.TagAttachmentSource
+}
+
+export type NestedEnumTagAttachmentStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TagAttachmentStatus | Prisma.EnumTagAttachmentStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TagAttachmentStatus[] | Prisma.ListEnumTagAttachmentStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TagAttachmentStatus[] | Prisma.ListEnumTagAttachmentStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTagAttachmentStatusFilter<$PrismaModel> | $Enums.TagAttachmentStatus
+}
+
+export type NestedEnumTagAttachmentSourceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TagAttachmentSource | Prisma.EnumTagAttachmentSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.TagAttachmentSource[] | Prisma.ListEnumTagAttachmentSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TagAttachmentSource[] | Prisma.ListEnumTagAttachmentSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTagAttachmentSourceWithAggregatesFilter<$PrismaModel> | $Enums.TagAttachmentSource
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTagAttachmentSourceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTagAttachmentSourceFilter<$PrismaModel>
+}
+
+export type NestedEnumTagAttachmentStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TagAttachmentStatus | Prisma.EnumTagAttachmentStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TagAttachmentStatus[] | Prisma.ListEnumTagAttachmentStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TagAttachmentStatus[] | Prisma.ListEnumTagAttachmentStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTagAttachmentStatusWithAggregatesFilter<$PrismaModel> | $Enums.TagAttachmentStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTagAttachmentStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTagAttachmentStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumTagTargetTypeFilter<$PrismaModel = never> = {
