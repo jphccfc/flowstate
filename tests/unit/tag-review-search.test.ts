@@ -16,6 +16,7 @@ describe("Tag Review search", () => {
 
   it("renders search and source-type filters", () => {
     expect(page).toContain("Search tags, meeting notes or documents");
+    expect(page).toContain("Search evidence, titles, or #hashtag");
     expect(page).toContain("Source type");
     expect(page).toContain("Apply filters");
   });

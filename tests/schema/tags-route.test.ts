@@ -78,7 +78,7 @@ describe("tags routes", () => {
     const hashtag = await prisma.tagDefinition.create({ data: { organizationId: org.id, displayName: "Project Falcon", normalizedName: "project-falcon" } });
     await prisma.tagAttachment.create({ data: { organizationId: org.id, tagDefinitionId: hashtag.id, capturedInputId: input.id, targetKey: `input:${input.id}`, source: "MANUAL", status: "APPROVED" } });
 
-    const response = await listTags(new Request(`http://localhost/api/tags?organizationId=${org.id}&q=project-falcon`) as never);
+    const response = await listTags(new Request(`http://localhost/api/tags?organizationId=${org.id}&q=%23project-falcon`) as never);
     expect(response.status).toBe(200);
     expect(await response.json()).toHaveLength(1);
   });

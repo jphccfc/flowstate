@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { createClient } from "@/lib/supabase/server";
 import { isOrganizationMember } from "@/lib/auth/organization";
 import { InputType } from "@/app/generated/prisma/enums";
+import { normalizeHashtag } from "@/lib/tags/hashtags";
 
 type CandidateType = "DOMAIN" | "CAPABILITY" | "KPI" | "STAKEHOLDER";
 
@@ -15,6 +16,11 @@ export async function GET(req: NextRequest) {
   const organizationId = searchParams.get("organizationId");
   const query = searchParams.get("q")?.trim() ?? "";
   const sourceType = searchParams.get("sourceType")?.trim() ?? "";
+  let hashtagQuery: string | null = null;
+  if (query.startsWith("#")) {
+    try { hashtagQuery = normalizeHashtag(query); }
+    catch { return NextResponse.json({ error: "Enter a hashtag containing letters or numbers." }, { status: 400 }); }
+  }
   const sourceTypeFilter = Object.values(InputType).includes(sourceType as InputType) ? sourceType as InputType : undefined;
   if (!organizationId) {
     return NextResponse.json({ error: "organizationId is required" }, { status: 400 });
@@ -72,31 +78,35 @@ export async function GET(req: NextRequest) {
   }
 
   type TagWithContext = { id: string; targetType: CandidateType; targetId: string; confidence: number; status: string; reviewedBy: string | null; reviewedAt: Date | null; createdAt: Date; segment: { id: string; text: string; capturedInput: { id: string; type: string; subject: string | null; sourceRef: string | null; locationTag: string | null; capturedAt: Date; hashtagAttachments: { tagDefinition: { normalizedName: string; displayName: string; aliases: string[] } }[] } } };
-  const result = (tags as unknown as TagWithContext[]).map((tag) => ({
-    searchText: [tag.segment.text, tag.segment.capturedInput.subject, tag.segment.capturedInput.sourceRef, tag.segment.capturedInput.locationTag, nameById.get(tag.targetId), ...tag.segment.capturedInput.hashtagAttachments.flatMap((attachment) => [attachment.tagDefinition.normalizedName, attachment.tagDefinition.displayName, ...attachment.tagDefinition.aliases])].filter(Boolean).join(" ").toLocaleLowerCase(),
-    targetType: tag.targetType,
-    targetId: tag.targetId,
-    targetName: nameById.get(tag.targetId) ?? "(unknown)",
-    confidence: tag.confidence,
-    segment: { text: tag.segment.text },
-    provenance: {
-      sourceType: tag.segment.capturedInput.type,
-      sourceRef: tag.segment.capturedInput.sourceRef,
-      locationTag: tag.segment.capturedInput.locationTag,
-      capturedAt: tag.segment.capturedInput.capturedAt,
-      capturedInputId: tag.segment.capturedInput.id,
-      segmentId: tag.segment.id,
-      segmentText: tag.segment.text,
-      aiConfidence: tag.confidence,
-      generatedAt: tag.createdAt,
-    },
-    decision: {
-      status: tag.status,
-      reviewedBy: tag.reviewedBy,
-      reviewedAt: tag.reviewedAt,
-    },
-    candidates: candidatesByType[tag.targetType as CandidateType] ?? [],
-  })).filter((tag) => !query || tag.searchText.includes(query.toLocaleLowerCase())).map(({ searchText: _searchText, ...tag }) => tag);
+  const result = (tags as unknown as TagWithContext[]).map((tag) => {
+    const hashtagNames = tag.segment.capturedInput.hashtagAttachments.flatMap((attachment) => [attachment.tagDefinition.normalizedName, attachment.tagDefinition.displayName, ...attachment.tagDefinition.aliases]).map((name) => name.toLocaleLowerCase());
+    return {
+      hashtagNames,
+      searchText: [tag.segment.text, tag.segment.capturedInput.subject, tag.segment.capturedInput.sourceRef, tag.segment.capturedInput.locationTag, nameById.get(tag.targetId), ...hashtagNames].filter(Boolean).join(" ").toLocaleLowerCase(),
+      targetType: tag.targetType,
+      targetId: tag.targetId,
+      targetName: nameById.get(tag.targetId) ?? "(unknown)",
+      confidence: tag.confidence,
+      segment: { text: tag.segment.text },
+      provenance: {
+        sourceType: tag.segment.capturedInput.type,
+        sourceRef: tag.segment.capturedInput.sourceRef,
+        locationTag: tag.segment.capturedInput.locationTag,
+        capturedAt: tag.segment.capturedInput.capturedAt,
+        capturedInputId: tag.segment.capturedInput.id,
+        segmentId: tag.segment.id,
+        segmentText: tag.segment.text,
+        aiConfidence: tag.confidence,
+        generatedAt: tag.createdAt,
+      },
+      decision: {
+        status: tag.status,
+        reviewedBy: tag.reviewedBy,
+        reviewedAt: tag.reviewedAt,
+      },
+      candidates: candidatesByType[tag.targetType as CandidateType] ?? [],
+    };
+  }).filter((tag) => hashtagQuery ? tag.hashtagNames.some((name) => name.includes(hashtagQuery)) : !query || tag.searchText.includes(query.toLocaleLowerCase())).map(({ searchText: _searchText, hashtagNames: _hashtagNames, ...tag }) => tag);
 
   return NextResponse.json(result);
 }
