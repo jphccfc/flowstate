@@ -46,6 +46,10 @@ describe("hashtag catalogue API", () => {
     expect(attached.status).toBe(201);
     expect(await attached.json()).toMatchObject({ organizationId, tagDefinitionId: tag.id, capturedInputId: inputId, targetKey: `input:${inputId}`, source: "MANUAL", status: "APPROVED" });
 
+    const duplicateAttachment = await attachTag(request("http://localhost/attachments", { tagDefinitionId: tag.id, capturedInputId: inputId }), { params: Promise.resolve({ id: organizationId }) });
+    expect(duplicateAttachment.status).toBe(200);
+    expect((await duplicateAttachment.json()).id).toBe((await prisma.tagAttachment.findFirstOrThrow({ where: { organizationId, tagDefinitionId: tag.id, capturedInputId: inputId } })).id);
+
     const listedAttachments = await listAttachments(new Request(`http://localhost/attachments?capturedInputId=${inputId}`) as NextRequest, { params: Promise.resolve({ id: organizationId }) });
     expect(listedAttachments.status).toBe(200);
     expect((await listedAttachments.json())[0]).toMatchObject({ tagDefinition: { normalizedName: "project-falcon" } });

@@ -39,6 +39,9 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   if (!tag || !input || (typeof body.segmentId === "string" && !segment)) return NextResponse.json({ error: "Tag or evidence source is not available in this client workspace." }, { status: 400 });
 
   const targetKey = segment ? `segment:${segment.id}` : `input:${input.id}`;
+  const existing = await prisma.tagAttachment.findUnique({ where: { tagDefinitionId_targetKey: { tagDefinitionId: tag.id, targetKey } } });
+  if (existing) return NextResponse.json(existing);
+
   try {
     const attachment = await prisma.tagAttachment.create({
       data: {
@@ -55,8 +58,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       },
     });
     return NextResponse.json(attachment, { status: 201 });
-  } catch (error) {
-    if (error instanceof Error && error.message.includes("TagAttachment_tagDefinitionId_targetKey_key")) return NextResponse.json({ error: "This tag is already attached to this source." }, { status: 409 });
-    return NextResponse.json({ error: "Unable to attach tag." }, { status: 500 });
+  } catch {
+    // A simultaneous attach can win between lookup and insert; preserve idempotency.
+    const racedAttachment = await prisma.tagAttachment.findUnique({ where: { tagDefinitionId_targetKey: { tagDefinitionId: tag.id, targetKey } } });
+    if (racedAttachment) return NextResponse.json(racedAttachment);
+    return NextResponse.json({ error: "Unable to attach this hashtag. Please try again." }, { status: 500 });
   }
 }
