@@ -86,9 +86,37 @@ describe("processCapturedInput", () => {
     expect(tags[0].status).toBe("AUTO_APPROVED");
 
     const jobs = await prisma.processingJob.findMany({ where: { targetId: input.id }, orderBy: { createdAt: "asc" } });
-    expect(jobs.map((j) => j.type)).toEqual(["segment", "tag"]);
+    expect(jobs.map((j) => j.type)).toEqual(["segment", "tag", "suggest_hashtags"]);
     expect(jobs.every((j) => j.status === "DONE")).toBe(true);
     expect(generateFollowUpSuggestions).not.toHaveBeenCalled();
+  });
+
+  it("creates bounded unreviewed AI hashtag suggestions without changing evidence approval", async () => {
+    const org = await createTestOrganization({ name: "Pipeline hashtag suggestion org" });
+    orgId = org.id;
+    const input = await prisma.capturedInput.create({
+      data: { organizationId: org.id, type: "TEXT_NOTE", rawText: "Project Falcon needs an Alexandria strategy recommendation.", status: "TRANSCRIBED" },
+    });
+    vi.stubGlobal("fetch", vi.fn().mockImplementation(async (_url, options) => {
+      const body = JSON.parse(options.body);
+      const system: string = body.messages[0].content;
+      const content = system.includes("reusable discovery hashtags")
+        ? JSON.stringify([{ name: "Project Falcon", confidence: 0.9, rationale: "Named initiative" }, { name: "Alexandria", confidence: 0.72, rationale: "Named location" }])
+        : "[]";
+      return { ok: true, json: async () => ({ choices: [{ message: { content } }] }) };
+    }));
+
+    await processCapturedInput(input.id);
+
+    const attachments = await prisma.tagAttachment.findMany({ where: { capturedInputId: input.id }, include: { tagDefinition: true }, orderBy: { tagDefinition: { normalizedName: "asc" } } });
+    expect(attachments.map((attachment) => ({ name: attachment.tagDefinition.normalizedName, source: attachment.source, status: attachment.status }))).toEqual([
+      { name: "alexandria", source: "AI_SUGGESTED", status: "SUGGESTED" },
+      { name: "project-falcon", source: "AI_SUGGESTED", status: "SUGGESTED" },
+    ]);
+    const acceptedSuggestion = await prisma.tagAttachment.findFirstOrThrow({ where: { capturedInputId: input.id, tagDefinition: { normalizedName: "project-falcon" } } });
+    await prisma.tagAttachment.update({ where: { id: acceptedSuggestion.id }, data: { status: "APPROVED", reviewedBy: "reviewer@test.com", reviewedAt: new Date() } });
+    await processCapturedInput(input.id);
+    expect(await prisma.tagAttachment.findUniqueOrThrow({ where: { id: acceptedSuggestion.id } })).toMatchObject({ status: "APPROVED", reviewedBy: "reviewer@test.com" });
   });
 
   it("marks the input FAILED and records the error when tagging throws", async () => {
@@ -155,7 +183,7 @@ describe("processCapturedInput", () => {
     expect(updatedInput.status).toBe("TAGGED");
 
     const jobs = await prisma.processingJob.findMany({ where: { targetId: input.id }, orderBy: { createdAt: "asc" } });
-    expect(jobs.map((j) => j.type)).toEqual(["transcribe", "segment", "tag"]);
+    expect(jobs.map((j) => j.type)).toEqual(["transcribe", "segment", "tag", "suggest_hashtags"]);
   });
 
   it("generates follow-up suggestions after tagging when the input belongs to a live session", async () => {
@@ -220,7 +248,7 @@ describe("processCapturedInput", () => {
     expect(updatedInput.status).toBe("TAGGED");
 
     const jobs = await prisma.processingJob.findMany({ where: { targetId: input.id }, orderBy: { createdAt: "asc" } });
-    expect(jobs.map((j) => j.type)).toEqual(["segment", "tag", "suggest_followups"]);
+    expect(jobs.map((j) => j.type)).toEqual(["segment", "tag", "suggest_hashtags", "suggest_followups"]);
   });
 
   it("still reaches TAGGED when the suggest_followups step throws (non-fatal)", async () => {

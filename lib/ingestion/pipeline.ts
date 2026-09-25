@@ -5,6 +5,7 @@ import { generateDocumentFinding, normaliseForMatch } from "@/lib/ai/document-fi
 import { classifyDocumentDomain, type DomainClassification } from "@/lib/ai/document-domains";
 import { transcribeAudio } from "@/lib/ai/transcription";
 import { generateFollowUpSuggestions } from "@/lib/ai/followups";
+import { generateHashtagSuggestions } from "@/lib/ai/hashtag-suggestions";
 
 const AUTO_APPROVE_THRESHOLD = 0.85;
 
@@ -101,6 +102,14 @@ export async function processCapturedInput(capturedInputId: string): Promise<voi
           });
         }
       }
+    });
+
+    await runJob("suggest_hashtags", capturedInputId, async () => {
+      await refreshAiHashtagSuggestions(input, rawText ?? "");
+    }).catch((err) => {
+      // Hashtag suggestions improve discovery but must not block evidence capture,
+      // classification, document review or FlowScore eligibility.
+      console.error("suggest_hashtags step failed (non-fatal):", err);
     });
 
     if (input.type === "DOCUMENT") {
@@ -219,6 +228,50 @@ export async function processCapturedInput(capturedInputId: string): Promise<voi
       data: { status: "FAILED", error: message },
     });
     throw err;
+  }
+}
+
+async function refreshAiHashtagSuggestions(input: { id: string; organizationId: string; type: string; sourceRef: string | null }, rawText: string): Promise<void> {
+  // Re-analysis refreshes only unreviewed AI suggestions. Manual and human-decided
+  // links are deliberately preserved as curator knowledge.
+  await prisma.tagAttachment.deleteMany({ where: { capturedInputId: input.id, source: "AI_SUGGESTED", status: "SUGGESTED" } });
+  const [definitions, attachment] = await Promise.all([
+    prisma.tagDefinition.findMany({ where: { organizationId: input.organizationId, active: true }, select: { normalizedName: true } }),
+    prisma.capturedInputAttachment.findFirst({ where: { capturedInputId: input.id }, select: { filename: true } }),
+  ]);
+  const suggestions = await generateHashtagSuggestions({
+    sourceType: input.type,
+    sourceName: attachment?.filename ?? input.sourceRef ?? input.type,
+    text: rawText,
+    vocabulary: definitions.map((definition) => definition.normalizedName),
+  });
+
+  for (const suggestion of suggestions) {
+    const definition = await prisma.tagDefinition.upsert({
+      where: { organizationId_normalizedName: { organizationId: input.organizationId, normalizedName: suggestion.normalizedName } },
+      update: {},
+      create: {
+        organizationId: input.organizationId,
+        displayName: suggestion.displayName,
+        normalizedName: suggestion.normalizedName,
+        createdBy: "Flowstate AI",
+      },
+    });
+    const targetKey = `input:${input.id}`;
+    const existing = await prisma.tagAttachment.findUnique({ where: { tagDefinitionId_targetKey: { tagDefinitionId: definition.id, targetKey } }, select: { id: true } });
+    if (existing) continue;
+    await prisma.tagAttachment.create({
+      data: {
+        organizationId: input.organizationId,
+        tagDefinitionId: definition.id,
+        capturedInputId: input.id,
+        targetKey,
+        source: "AI_SUGGESTED",
+        status: "SUGGESTED",
+        confidence: suggestion.confidence,
+        rationale: suggestion.rationale,
+      },
+    });
   }
 }
 

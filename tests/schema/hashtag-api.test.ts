@@ -6,7 +6,7 @@ let currentEmail = "hashtag-advisor@test.com";
 vi.mock("@/lib/supabase/server", () => ({ createClient: async () => ({ auth: { getUser: async () => ({ data: { user: { id: "hashtag-user", email: currentEmail } } }) } }) }));
 
 import { GET as listTags, POST as createTag } from "@/app/api/clients/[id]/hashtags/route";
-import { GET as listAttachments, POST as attachTag, DELETE as detachTag } from "@/app/api/clients/[id]/hashtags/attachments/route";
+import { GET as listAttachments, POST as attachTag, PATCH as reviewSuggestion, DELETE as detachTag } from "@/app/api/clients/[id]/hashtags/attachments/route";
 
 function request(url: string, body: unknown) {
   return new Request(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }) as unknown as NextRequest;
@@ -49,6 +49,12 @@ describe("hashtag catalogue API", () => {
     const duplicateAttachment = await attachTag(request("http://localhost/attachments", { tagDefinitionId: tag.id, capturedInputId: inputId }), { params: Promise.resolve({ id: organizationId }) });
     expect(duplicateAttachment.status).toBe(200);
     expect((await duplicateAttachment.json()).id).toBe((await prisma.tagAttachment.findFirstOrThrow({ where: { organizationId, tagDefinitionId: tag.id, capturedInputId: inputId } })).id);
+
+    const suggestedDefinition = await prisma.tagDefinition.create({ data: { organizationId, displayName: "Action Required", normalizedName: "action-required", createdBy: "Flowstate AI" } });
+    const suggestedAttachment = await prisma.tagAttachment.create({ data: { organizationId, tagDefinitionId: suggestedDefinition.id, capturedInputId: inputId, targetKey: `input:${inputId}`, source: "AI_SUGGESTED", status: "SUGGESTED", confidence: 0.82, rationale: "Explicit action in the note" } });
+    const accepted = await reviewSuggestion(new Request(`http://localhost/attachments?attachmentId=${suggestedAttachment.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "approve" }) }) as NextRequest, { params: Promise.resolve({ id: organizationId }) });
+    expect(accepted.status).toBe(200);
+    expect(await accepted.json()).toMatchObject({ id: suggestedAttachment.id, status: "APPROVED", reviewedBy: currentEmail });
 
     const listedAttachments = await listAttachments(new Request(`http://localhost/attachments?capturedInputId=${inputId}`) as NextRequest, { params: Promise.resolve({ id: organizationId }) });
     expect(listedAttachments.status).toBe(200);
