@@ -136,10 +136,10 @@ describe("captured-inputs routes", () => {
     expect(created.rawText).toBeNull();
   });
 
-  it("rejects a document that is not PDF or DOCX before uploading it", async () => {
+  it("rejects a legacy XLS document before uploading it", async () => {
     const org = await createTestOrganization({ name: "Route Document Type Test Org" });
     orgId = org.id;
-    const file = new File(["spreadsheet"], "assessment.xlsx", { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    const file = new File(["spreadsheet"], "assessment.xls", { type: "application/vnd.ms-excel" });
     const res = await createInput(makeFormDataRequest({ organizationId: org.id, type: "DOCUMENT", file }));
     expect(res.status).toBe(400);
     expect(await res.json()).toEqual({ error: "Documents must be PDF or DOCX files" });
@@ -153,6 +153,27 @@ describe("captured-inputs routes", () => {
     expect(res.status).toBe(403);
     expect(await prisma.capturedInput.count({ where: { organizationId: org.id } })).toBe(0);
   });
+  it("uploads a CSV spreadsheet with source provenance for controlled financial processing", async () => {
+    const org = await createTestOrganization({ name: "Route Spreadsheet Test Org" });
+    orgId = org.id;
+    const file = new File(["Metric,FY2025,FY2026\nRevenue,8200000,9100000\n"], "management-accounts.csv", { type: "text/csv" });
+    const res = await createInput(makeFormDataRequest({ organizationId: org.id, type: "SPREADSHEET", file, locationTag: "Financial FY2026" }));
+    expect(res.status).toBe(201);
+    const created = await res.json();
+    expect(created).toMatchObject({ type: "SPREADSHEET", sourceRef: null, sourcePath: "Manual upload: management-accounts.csv", locationTag: "Financial FY2026", status: "TRANSCRIBED" });
+    expect(created.rawText).toContain("A2=Revenue");
+    expect(created.sourceHash).toMatch(/^[a-f0-9]{64}$/);
+  });
+
+  it("rejects an XLSX file submitted as a generic document so it uses the controlled spreadsheet path", async () => {
+    const org = await createTestOrganization({ name: "Route XLSX Document Test Org" });
+    orgId = org.id;
+    const file = new File(["xlsx bytes"], "management-accounts.xlsx", { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    const res = await createInput(makeFormDataRequest({ organizationId: org.id, type: "DOCUMENT", file, locationTag: "Financial FY2026" }));
+    expect(res.status).toBe(400);
+    expect(await res.json()).toEqual({ error: "Documents must be PDF or DOCX files" });
+  });
+
   it("rejects an invalid type with 400", async () => {
     const org = await createTestOrganization({ name: "Route Reject Test Org" });
     orgId = org.id;

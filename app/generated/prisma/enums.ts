@@ -25,7 +25,8 @@ export const InputType = {
   TEXT_NOTE: 'TEXT_NOTE',
   EMAIL: 'EMAIL',
   DOCUMENT: 'DOCUMENT',
-  DATA_ROOM_FILE: 'DATA_ROOM_FILE'
+  DATA_ROOM_FILE: 'DATA_ROOM_FILE',
+  SPREADSHEET: 'SPREADSHEET'
 } as const
 
 export type InputType = (typeof InputType)[keyof typeof InputType]

@@ -20,6 +20,7 @@ export const FINANCIAL_ANALYST_PRESET: AgentPreset = {
   inputRules: [
     { inputType: "DOCUMENT", domainIdentifier: "finance" },
     { inputType: "DATA_ROOM_FILE", domainIdentifier: "finance" },
+    { inputType: "SPREADSHEET", domainIdentifier: "finance" },
     { inputType: "TEXT_NOTE", domainIdentifier: "finance" },
   ],
   prompt: `You are the reviewed Financial Analyst specialist for FlowCoach.

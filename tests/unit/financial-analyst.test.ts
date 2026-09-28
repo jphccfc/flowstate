@@ -17,6 +17,8 @@ describe("Financial Analyst specialist", () => {
     expect(FINANCIAL_ANALYST_PRESET.inputRules).toEqual(expect.arrayContaining([
       { inputType: "DOCUMENT", domainIdentifier: "finance" },
       { inputType: "DATA_ROOM_FILE", domainIdentifier: "finance" },
+      { inputType: "SPREADSHEET", domainIdentifier: "finance" },
+      { inputType: "TEXT_NOTE", domainIdentifier: "finance" },
     ]));
   });
 

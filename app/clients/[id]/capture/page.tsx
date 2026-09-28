@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, useEffect, useCallback, use, useRef } from "react";
-import { validateDocumentFile } from "./document-validation";
+import { validateDocumentFile, validateSpreadsheetFile } from "./document-validation";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { mergeDomainNames } from "@/lib/organization-domains";
 
-type CapturedInputType = "TEXT_NOTE" | "EMAIL" | "AUDIO" | "DOCUMENT" | "DATA_ROOM_FILE";
+type CapturedInputType = "TEXT_NOTE" | "EMAIL" | "AUDIO" | "DOCUMENT" | "DATA_ROOM_FILE" | "SPREADSHEET";
 
-const FILE_TYPES = new Set<CapturedInputType>(["AUDIO", "DOCUMENT", "DATA_ROOM_FILE"]);
+const FILE_TYPES = new Set<CapturedInputType>(["AUDIO", "DOCUMENT", "DATA_ROOM_FILE", "SPREADSHEET"]);
 
 type CapturedInput = {
   id: string;
@@ -73,15 +73,17 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
     processing: inputs.filter((input) => ["PENDING", "TRANSCRIBED"].includes(input.status)).length,
     failed: inputs.filter((input) => input.status === "FAILED").length,
   };
-  const chooserLabels: Record<"AUDIO" | "DOCUMENT" | "DATA_ROOM_FILE", string> = {
+  const chooserLabels: Record<"AUDIO" | "DOCUMENT" | "DATA_ROOM_FILE" | "SPREADSHEET", string> = {
     DOCUMENT: "Choose document",
     AUDIO: "Choose audio",
     DATA_ROOM_FILE: "Choose file",
+    SPREADSHEET: "Choose spreadsheet",
   };
-  const actionLabels: Record<"AUDIO" | "DOCUMENT" | "DATA_ROOM_FILE", string> = {
+  const actionLabels: Record<"AUDIO" | "DOCUMENT" | "DATA_ROOM_FILE" | "SPREADSHEET", string> = {
     DOCUMENT: "Upload document",
     AUDIO: "Upload audio",
     DATA_ROOM_FILE: "Upload file",
+    SPREADSHEET: "Upload spreadsheet",
   };
 
   const loadInputs = useCallback(async () => {
@@ -340,6 +342,7 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
             <option value="EMAIL">Email</option>
             <option value="AUDIO">Audio</option>
             <option value="DOCUMENT">Document</option>
+            <option value="SPREADSHEET">Financial spreadsheet</option>
             <option value="DATA_ROOM_FILE">Data Room File</option>
           </select>
         </div>
@@ -360,19 +363,19 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
               htmlFor="capture-file"
               className="inline-flex cursor-pointer items-center rounded border border-[var(--card-border)] bg-[var(--muted-bg)] px-3 py-2 text-sm font-medium text-[var(--foreground)] transition hover:border-[var(--accent)] focus-within:ring-2 focus-within:ring-[var(--accent)]"
             >
-              {chooserLabels[type as "AUDIO" | "DOCUMENT" | "DATA_ROOM_FILE"]}
+              {chooserLabels[type as "AUDIO" | "DOCUMENT" | "DATA_ROOM_FILE" | "SPREADSHEET"]}
             </label>
             <input
               ref={fileInputRef}
               id="capture-file"
               type="file"
-              accept={type === "AUDIO" ? "audio/*" : ".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"}
-              aria-describedby={type === "DOCUMENT" ? "document-file-help document-file-error" : undefined}
-              aria-invalid={type === "DOCUMENT" && !!fileError}
+              accept={type === "AUDIO" ? "audio/*" : type === "SPREADSHEET" ? ".csv,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : ".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"}
+              aria-describedby={type === "DOCUMENT" || type === "SPREADSHEET" ? "document-file-help document-file-error" : undefined}
+              aria-invalid={(type === "DOCUMENT" || type === "SPREADSHEET") && !!fileError}
               onChange={(e) => {
                 const nextFile = e.target.files?.[0] ?? null;
                 setFile(nextFile);
-                setFileError(type === "DOCUMENT" ? validateDocumentFile(nextFile) : null);
+                setFileError(type === "DOCUMENT" ? validateDocumentFile(nextFile) : type === "SPREADSHEET" ? validateSpreadsheetFile(nextFile) : null);
                 setSubmitError(null);
               }}
               className="sr-only"
@@ -381,7 +384,10 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
             {type === "DOCUMENT" && (
               <p id="document-file-help" className="text-xs text-[var(--muted)] mt-1">Select a PDF or DOCX document. Other file types are not accepted.</p>
             )}
-            {type === "DOCUMENT" && fileError && <p id="document-file-error" role="alert" className="text-xs text-red-700 mt-1">{fileError}</p>}
+            {type === "SPREADSHEET" && (
+              <p id="document-file-help" className="text-xs text-[var(--muted)] mt-1">Select a CSV or XLSX financial workbook, up to 20 MB. Flowstate retains extracted values and source-cell references, not the workbook binary.</p>
+            )}
+            {(type === "DOCUMENT" || type === "SPREADSHEET") && fileError && <p id="document-file-error" role="alert" className="text-xs text-red-700 mt-1">{fileError}</p>}
           </div>
         ) : (
           <div className="mb-4">
@@ -396,14 +402,14 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
             />
           </div>
         )}
-        {submitting && <p role="status" aria-live="polite" className="text-sm text-[var(--muted)] mb-2">{type === "DOCUMENT" ? "Document upload in progress…" : "Capture in progress…"}</p>}
+        {submitting && <p role="status" aria-live="polite" className="text-sm text-[var(--muted)] mb-2">{type === "DOCUMENT" ? "Document upload in progress…" : type === "SPREADSHEET" ? "Financial spreadsheet upload in progress…" : "Capture in progress…"}</p>}
         {submitError && <p role="alert" className="text-sm text-red-700 mb-2">{submitError}</p>}
         <button
           type="submit"
           disabled={submitting || (isFileType ? !file || !!fileError : !rawText.trim())}
           className="flowstate-accent-button text-white text-sm font-medium px-4 py-2 rounded disabled:opacity-50"
         >
-          {submitting ? "Submitting…" : isFileType ? actionLabels[type as "AUDIO" | "DOCUMENT" | "DATA_ROOM_FILE"] : "Capture"}
+          {submitting ? "Submitting…" : isFileType ? actionLabels[type as "AUDIO" | "DOCUMENT" | "DATA_ROOM_FILE" | "SPREADSHEET"] : "Capture"}
         </button>
       </form>
 

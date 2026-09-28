@@ -1,3 +1,5 @@
+import { createHash } from "node:crypto";
+import { extractFinancialSpreadsheet } from "@/lib/financial/spreadsheet-extraction";
 import { NextRequest, NextResponse, after } from "next/server";
 import { put } from "@vercel/blob";
 import { prisma } from "@/lib/db";
@@ -7,9 +9,10 @@ import { processCapturedInput } from "@/lib/ingestion/pipeline";
 import { InputType } from "@/app/generated/prisma/enums";
 import { apiError } from "@/lib/api/errors";
 
-const VALID_TYPES = new Set<InputType>(["TEXT_NOTE", "EMAIL", "AUDIO", "DOCUMENT", "DATA_ROOM_FILE"]);
+const VALID_TYPES = new Set<InputType>(["TEXT_NOTE", "EMAIL", "AUDIO", "DOCUMENT", "DATA_ROOM_FILE", "SPREADSHEET"]);
 const TEXT_TYPES = new Set<InputType>(["TEXT_NOTE", "EMAIL"]);
 const DOCUMENT_EXTENSIONS = new Set(["pdf", "docx"]);
+const SPREADSHEET_EXTENSIONS = new Set(["csv", "xlsx"]);
 
 function isInputType(value: string): value is InputType {
   return (VALID_TYPES as Set<string>).has(value);
@@ -80,24 +83,56 @@ export async function POST(req: NextRequest) {
           return NextResponse.json({ error: "Documents must be PDF or DOCX files" }, { status: 400 });
         }
       }
-      if (!process.env.BLOB_READ_WRITE_TOKEN) {
-        return NextResponse.json(
-          { error: "File storage configuration is unavailable. Please contact your administrator." },
-          { status: 503 },
-        );
+      if (type === "SPREADSHEET") {
+        const extension = file.name.split(".").pop()?.toLowerCase();
+        if (!extension || !SPREADSHEET_EXTENSIONS.has(extension)) {
+          return NextResponse.json({ error: "Spreadsheets must be CSV or XLSX files while legacy XLS parsing is under controlled rollout" }, { status: 400 });
+        }
       }
-      const blob = await put(file.name, file, { access: "public", addRandomSuffix: true });
-      capturedInput = await prisma.capturedInput.create({
-        data: {
-          organizationId,
-          type,
-          sourceRef: blob.url,
-          locationTag: resolvedLocationTag,
-          sessionId,
-          meetingContextId,
-          status: "PENDING",
-        },
-      });
+      if (type === "SPREADSHEET") {
+        // Financial workbooks are deliberately parsed while their bytes are in
+        // memory. We retain values, cell provenance and a hash—not a second
+        // copy of the client workbook in Blob storage.
+        const bytes = Buffer.from(await file.arrayBuffer());
+        const workbook = await extractFinancialSpreadsheet(bytes, file.name);
+        const rawText = workbook.sheets.flatMap((sheet) => [
+          `Sheet: ${sheet.name}`,
+          ...sheet.rows.map((row) => row.cells.map((cell) => `${cell.ref}=${cell.value}`).join(" | ")),
+        ]).join("\n");
+        capturedInput = await prisma.capturedInput.create({
+          data: {
+            organizationId,
+            type,
+            rawText,
+            sourcePath: `Manual upload: ${file.name}`,
+            sourceHash: createHash("sha256").update(bytes).digest("hex"),
+            locationTag: resolvedLocationTag,
+            sessionId,
+            meetingContextId,
+            status: "TRANSCRIBED",
+            attachments: { create: { filename: file.name, contentType: file.type || "application/octet-stream", sizeBytes: file.size } },
+          },
+        });
+      } else {
+        if (!process.env.BLOB_READ_WRITE_TOKEN) {
+          return NextResponse.json(
+            { error: "File storage configuration is unavailable. Please contact your administrator." },
+            { status: 503 },
+          );
+        }
+        const blob = await put(file.name, file, { access: "public", addRandomSuffix: true });
+        capturedInput = await prisma.capturedInput.create({
+          data: {
+            organizationId,
+            type,
+            sourceRef: blob.url,
+            locationTag: resolvedLocationTag,
+            sessionId,
+            meetingContextId,
+            status: "PENDING",
+          },
+        });
+      }
     }
 
     after(() => processCapturedInput(capturedInput.id));
