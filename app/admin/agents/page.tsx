@@ -8,13 +8,13 @@ import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { FINANCIAL_ANALYST_PRESET } from "@/lib/agents/presets";
 
 type AgentType = "SPECIALIST" | "ORCHESTRATOR";
-type InputType = "AUDIO" | "TEXT_NOTE" | "EMAIL" | "DOCUMENT" | "DATA_ROOM_FILE";
+type InputType = "AUDIO" | "TEXT_NOTE" | "EMAIL" | "DOCUMENT" | "DATA_ROOM_FILE" | "SPREADSHEET";
 type Version = { id: string; version: number; prompt: string; changeReason: string; authoredBy: string; createdAt: string; publishedAt: string | null; publishedBy: string | null };
 type Rule = { id?: string; inputType: InputType; domainIdentifier: string };
 type Agent = { id: string; key: string; name: string; description: string | null; agentType: AgentType; createdBy: string; createdAt: string; promptVersions: Version[]; inputRules: Rule[]; publishedPromptVersion: Version | null };
 
-const inputTypes: InputType[] = ["TEXT_NOTE", "AUDIO", "EMAIL", "DOCUMENT", "DATA_ROOM_FILE"];
-const labels: Record<InputType, string> = { TEXT_NOTE: "Text note", AUDIO: "Audio", EMAIL: "Email", DOCUMENT: "Document", DATA_ROOM_FILE: "Data room file" };
+const inputTypes: InputType[] = ["TEXT_NOTE", "AUDIO", "EMAIL", "DOCUMENT", "DATA_ROOM_FILE", "SPREADSHEET"];
+const labels: Record<InputType, string> = { TEXT_NOTE: "Text note", AUDIO: "Audio", EMAIL: "Email", DOCUMENT: "Document", DATA_ROOM_FILE: "Data room file", SPREADSHEET: "Spreadsheet" };
 const date = (value: string | null) => value ? new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" }).format(new Date(value)) : "Not published";
 
 export default function AgentCataloguePage() {

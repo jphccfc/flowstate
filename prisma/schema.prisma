@@ -313,6 +313,7 @@ enum InputType {
   EMAIL
   DOCUMENT
   DATA_ROOM_FILE
+  SPREADSHEET
 }
 
 enum AgentType {
