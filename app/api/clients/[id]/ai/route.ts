@@ -8,6 +8,7 @@ import { parseConversation } from "@/lib/ai/conversation";
 import { sourceHref } from "@/lib/ai/source-links";
 import { safeAgentIdentifier } from "@/lib/agents/validation";
 import { selectRelevantReviewerFeedback, formatReviewerFeedbackContext, type ReviewerFeedback } from "@/lib/ai/feedback";
+import { normalizeHashtag } from "@/lib/tags/hashtags";
 
 const MAX_QUESTION_LENGTH = 1000;
 
@@ -27,13 +28,19 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   const question = typeof body?.question === "string" ? body.question.trim() : "";
   if (!question) return NextResponse.json({ error: "question is required" }, { status: 400 });
   if (question.length > MAX_QUESTION_LENGTH) return NextResponse.json({ error: "question is too long" }, { status: 400 });
+  const hashtagToken = question.match(/(?:^|\s)(#[^\s]+)/)?.[1];
+  let hashtagQuery: string | null = null;
+  if (hashtagToken) {
+    try { hashtagQuery = normalizeHashtag(hashtagToken); }
+    catch { return NextResponse.json({ error: "Enter a hashtag containing letters or numbers." }, { status: 400 }); }
+  }
 
   const conversationInput = body && Object.prototype.hasOwnProperty.call(body, "conversation") ? body.conversation : [];
   const parsedConversation = parseConversation(conversationInput);
   if (!parsedConversation.ok) return NextResponse.json({ error: parsedConversation.error }, { status: 400 });
   const conversation = parsedConversation.messages;
 
-  const [capturedInputs, meetingContexts, projects, kpis, achievements, documentFindings, agent] = await Promise.all([
+  const [capturedInputs, meetingContexts, projects, kpis, achievements, documentFindings, agent, hashtagAttachments] = await Promise.all([
     prisma.capturedInput.findMany({ where: { organizationId, status: { not: "QUARANTINED" } }, orderBy: { capturedAt: "desc" }, take: 500, select: { id: true, type: true, subject: true, sourceRef: true, rawText: true, capturedAt: true, attachments: { select: { filename: true }, take: 1 } } }),
     prisma.meetingContext.findMany({ where: { organizationId }, orderBy: { createdAt: "desc" }, take: 100, select: { id: true, title: true, startsAt: true, dateTime: true, objectives: true, agendaItems: true, desiredOutcome: true } }),
     prisma.project.findMany({ where: { organizationId }, select: { id: true, name: true, objective: true, status: true, timeline: true, outcomes: true, updatedAt: true } }),
@@ -41,6 +48,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     prisma.achievement.findMany({ where: { organizationId }, select: { id: true, description: true, targetDate: true, successMetrics: true, status: true, updatedAt: true } }),
     prisma.documentFinding.findMany({ where: { organizationId, status: { in: ["PENDING_REVIEW", "APPROVED", "REJECTED"] } }, orderBy: { createdAt: "desc" }, take: 500, select: { id: true, title: true, summary: true, domainName: true, capabilityName: true, evidenceDemonstrated: true, citedExcerpts: true, confidence: true, status: true, createdAt: true, reviewReason: true, correctedDomainName: true, correctedCapabilityName: true, reviewedBy: true, reviewedAt: true, reviewAgentKey: true, reviewPromptVersion: true, capturedInput: { select: { sourceRef: true, attachments: { select: { filename: true }, take: 1 } } } } }),
     prisma.agentDefinition.findFirst({ where: requestedAgentKey === "client_ai_hub" ? { publishedPromptVersionId: { not: null }, OR: [{ key: "client_ai_hub" }, { name: { contains: "AI Hub", mode: "insensitive" } }] } : { key: requestedAgentKey, agentType: "SPECIALIST", publishedPromptVersionId: { not: null } }, select: { key: true, name: true, agentType: true, publishedPromptVersion: { select: { prompt: true, version: true } }, organizationProfiles: { where: { organizationId }, select: { displayName: true, alias: true } } } }),
+    hashtagQuery ? prisma.tagAttachment.findMany({ where: { organizationId, status: "APPROVED", tagDefinition: { active: true } }, orderBy: { createdAt: "desc" }, take: 200, include: { tagDefinition: { select: { normalizedName: true, displayName: true, aliases: true } }, capturedInput: { select: { id: true, type: true, subject: true, sourceRef: true, rawText: true, capturedAt: true, attachments: { select: { filename: true }, take: 1 } } }, segment: { select: { text: true } } } }) : Promise.resolve([]),
   ]);
 
   const sources: WorkspaceSource[] = [
@@ -51,8 +59,23 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     ...kpis.map((kpi) => ({ id: kpi.id, kind: "KPI record", title: kpi.name, date: kpi.updatedAt, text: [kpi.description, `Target: ${kpi.targetValue ?? "not set"}`, `Current: ${kpi.currentValue ?? "not set"}`, kpi.dataSource].filter(Boolean).join("\n") })),
     ...achievements.map((achievement) => ({ id: achievement.id, kind: "achievement record", title: achievement.description, date: achievement.updatedAt, text: [achievement.description, achievement.successMetrics, achievement.status, achievement.targetDate?.toISOString()].filter(Boolean).join("\n") })),
   ];
-  const rankedSources = rankWorkspaceSources(question, sources);
-  if (rankedSources.length === 0) return NextResponse.json({ answer: "I could not find a matching source in this workspace.", sources: [], limitation: "FlowCoach searches authorized workspace text and records using keyword relevance; it does not search external systems or unindexed content." });
+  const taggedSources = new Map<string, WorkspaceSource>();
+  for (const attachment of hashtagAttachments) {
+    const tagNames = [attachment.tagDefinition.normalizedName, attachment.tagDefinition.displayName, ...attachment.tagDefinition.aliases].map((name) => name.toLocaleLowerCase());
+    if (!hashtagQuery || !tagNames.some((name) => name.includes(hashtagQuery))) continue;
+    const input = attachment.capturedInput;
+    const kind = input.type === "DOCUMENT" || input.type === "DATA_ROOM_FILE" ? "document" : input.type === "TEXT_NOTE" ? "note" : input.type === "AUDIO" ? "transcript" : input.type.toLowerCase();
+    const source = taggedSources.get(input.id);
+    const text = [`Approved hashtag: #${attachment.tagDefinition.normalizedName}`, attachment.segment?.text, input.rawText].filter(Boolean).join("\n");
+    if (source) source.text = `${source.text}\n${text}`;
+    else taggedSources.set(input.id, { id: input.id, kind, title: input.type === "DOCUMENT" || input.type === "DATA_ROOM_FILE" ? (input.attachments[0]?.filename || input.subject || "document") : (input.subject || input.sourceRef || `${input.type} capture`), date: input.capturedAt, text });
+  }
+  const sourcesForQuestion = hashtagQuery ? [...taggedSources.values()] : sources;
+  const rankedSources = rankWorkspaceSources(question, sourcesForQuestion);
+  const limitation = hashtagQuery
+    ? "FlowCoach retrieved only approved, authorised evidence linked to the requested hashtag. Verify important answers against the cited source."
+    : "FlowCoach uses deterministic keyword relevance over currently indexed workspace records and the published agent prompt. Verify important answers against the cited source.";
+  if (rankedSources.length === 0) return NextResponse.json({ answer: "I could not find a matching source in this workspace.", sources: [], limitation });
   if (!agent?.publishedPromptVersion) return NextResponse.json({ error: "FlowCoach is not configured with a published agent prompt." }, { status: 503 });
 
   const agentDisplayName = agent?.organizationProfiles[0]?.displayName ?? agent?.name ?? "FlowCoach";
@@ -67,7 +90,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       user: `Current question: ${question}\n\nAuthorized workspace context (retrieved for the current question only):\n${formatWorkspaceContext(rankedSources)}${feedbackContext}`,
       maxTokens: 700,
     });
-    return NextResponse.json({ answer, sources: rankedSources.map((source) => ({ id: source.id, kind: source.kind, title: source.title, date: source.date.toISOString(), excerpt: source.excerpt, href: sourceHref(organizationId, source.kind, source.id) })), agent: { key: agent.key, name: agentDisplayName, type: agent.agentType, promptVersion: agent.publishedPromptVersion.version }, limitation: "FlowCoach uses deterministic keyword relevance over currently indexed workspace records and the published agent prompt. Verify important answers against the cited source." });
+    return NextResponse.json({ answer, sources: rankedSources.map((source) => ({ id: source.id, kind: source.kind, title: source.title, date: source.date.toISOString(), excerpt: source.excerpt, href: sourceHref(organizationId, source.kind, source.id) })), agent: { key: agent.key, name: agentDisplayName, type: agent.agentType, promptVersion: agent.publishedPromptVersion.version }, limitation });
   } catch (error) {
     const message = error instanceof Error ? error.message : "AI provider request failed";
     const configurationError = [

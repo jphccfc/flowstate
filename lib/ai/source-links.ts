@@ -3,8 +3,10 @@ const SOURCE_ROUTES: Record<string, string> = {
   document: "documents",
   data_room_file: "documents",
   note: "capture",
+  text_note: "capture",
   email: "capture",
   transcript: "capture",
+  audio: "capture",
   "document finding": "findings",
   "project record": "planning",
 };
