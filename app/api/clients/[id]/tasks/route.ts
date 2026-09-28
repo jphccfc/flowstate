@@ -72,3 +72,18 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const updated = await prisma.assessmentTask.update({ where: { id: task.id }, data, include: { assignee: { select: { id: true, name: true, email: true } }, requester: { select: { name: true, email: true } } } });
   return NextResponse.json(updated);
 }
+
+
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const current = await user(); const { id } = await params;
+  if (!current) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!(await hasOrganizationPermission(current.email, id, "assessment.submit"))) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  const taskId = new URL(req.url).searchParams.get("taskId");
+  if (!taskId) return NextResponse.json({ error: "taskId is required" }, { status: 400 });
+  const task = await prisma.assessmentTask.findFirst({ where: { id: taskId, organizationId: id }, include: { dataRoomPack: { include: { categories: { include: { _count: { select: { requests: true } } } } } } } });
+  if (!task) return NextResponse.json({ error: "Task not found" }, { status: 404 });
+  const requestCount = task.dataRoomPack?.categories.reduce((total, category) => total + category._count.requests, 0) ?? 0;
+  if (requestCount > 0) return NextResponse.json({ error: "This task contains data-room requests. Cancel it instead of deleting the diligence record." }, { status: 409 });
+  await prisma.assessmentTask.delete({ where: { id: task.id } });
+  return NextResponse.json({ deleted: true });
+}

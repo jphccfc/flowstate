@@ -75,6 +75,7 @@ model Organization {
   integrationSources     IntegrationSource[]
   tagDefinitions         TagDefinition[]
   tagAttachments         TagAttachment[]
+  dataRoomRequestPacks   DataRoomRequestPack[]
 }
 
 model UserOrganization {
@@ -394,15 +395,16 @@ model CapturedInput {
   createdAt        DateTime               @default(now())
   updatedAt        DateTime               @updatedAt
 
-  organization       Organization              @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  session            AssessmentSession?        @relation(fields: [sessionId], references: [id])
-  meetingContext     MeetingContext?           @relation(fields: [meetingContextId], references: [id], onDelete: SetNull)
-  segments           CapturedSegment[]
-  attachments        CapturedInputAttachment[]
-  findings           DocumentFinding[]
-  documentFamily     DocumentFamily?           @relation(fields: [documentFamilyId], references: [id], onDelete: SetNull)
-  agentRuns          AgentRun[]
-  hashtagAttachments TagAttachment[]
+  organization         Organization              @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  session              AssessmentSession?        @relation(fields: [sessionId], references: [id])
+  meetingContext       MeetingContext?           @relation(fields: [meetingContextId], references: [id], onDelete: SetNull)
+  segments             CapturedSegment[]
+  attachments          CapturedInputAttachment[]
+  findings             DocumentFinding[]
+  documentFamily       DocumentFamily?           @relation(fields: [documentFamilyId], references: [id], onDelete: SetNull)
+  agentRuns            AgentRun[]
+  hashtagAttachments   TagAttachment[]
+  dataRoomRequestItems DataRoomRequestItem[]
 
   @@unique([organizationId, idempotencyKey])
   @@unique([organizationId, id])
@@ -988,6 +990,14 @@ enum AssessmentTaskReviewState {
   REJECTED
 }
 
+enum DataRoomRequestStatus {
+  REQUESTED
+  RECEIVED
+  ACCEPTED
+  FOLLOW_UP_REQUIRED
+  NOT_APPLICABLE
+}
+
 model AssessmentTask {
   id                  String                    @id @default(cuid())
   organizationId      String
@@ -1011,13 +1021,68 @@ model AssessmentTask {
   createdAt           DateTime                  @default(now())
   updatedAt           DateTime                  @updatedAt
 
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  requester    User         @relation("TaskRequester", fields: [requesterId], references: [id])
-  assignee     User         @relation("TaskAssignee", fields: [assigneeId], references: [id])
-  completedBy  User?        @relation("TaskCompleter", fields: [completedById], references: [id])
+  organization Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  requester    User                 @relation("TaskRequester", fields: [requesterId], references: [id])
+  assignee     User                 @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  completedBy  User?                @relation("TaskCompleter", fields: [completedById], references: [id])
+  dataRoomPack DataRoomRequestPack?
 
   @@index([organizationId, status, dueDate])
   @@index([assigneeId, status])
+}
+
+/// Structured, grouped diligence evidence requests. This is intentionally
+/// separate from Growth Plan items and from a noisy flat list of tasks.
+model DataRoomRequestPack {
+  id               String   @id @default(cuid())
+  organizationId   String
+  assessmentTaskId String   @unique
+  title            String
+  sourceReference  String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  organization   Organization              @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  assessmentTask AssessmentTask            @relation(fields: [assessmentTaskId], references: [id], onDelete: Cascade)
+  categories     DataRoomRequestCategory[]
+
+  @@index([organizationId, createdAt])
+}
+
+model DataRoomRequestCategory {
+  id        String   @id @default(cuid())
+  packId    String
+  title     String
+  sortOrder Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pack     DataRoomRequestPack   @relation(fields: [packId], references: [id], onDelete: Cascade)
+  requests DataRoomRequestItem[]
+
+  @@unique([packId, sortOrder])
+  @@index([packId, sortOrder])
+}
+
+model DataRoomRequestItem {
+  id             String                @id @default(cuid())
+  categoryId     String
+  title          String
+  detail         String?
+  sortOrder      Int
+  status         DataRoomRequestStatus @default(REQUESTED)
+  completionNote String?
+  linkedInputId  String?
+  completedAt    DateTime?
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+
+  category    DataRoomRequestCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  linkedInput CapturedInput?          @relation(fields: [linkedInputId], references: [id], onDelete: SetNull)
+
+  @@unique([categoryId, sortOrder])
+  @@index([categoryId, status, sortOrder])
+  @@index([linkedInputId])
 }
 
 model AgentDefinition {
