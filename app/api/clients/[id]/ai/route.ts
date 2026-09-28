@@ -9,6 +9,7 @@ import { sourceHref } from "@/lib/ai/source-links";
 import { safeAgentIdentifier } from "@/lib/agents/validation";
 import { selectRelevantReviewerFeedback, formatReviewerFeedbackContext, type ReviewerFeedback } from "@/lib/ai/feedback";
 import { normalizeHashtag } from "@/lib/tags/hashtags";
+import { summarizeDataRoomRequests } from "@/lib/data-room/progress";
 
 const MAX_QUESTION_LENGTH = 1000;
 
@@ -28,6 +29,14 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   const question = typeof body?.question === "string" ? body.question.trim() : "";
   if (!question) return NextResponse.json({ error: "question is required" }, { status: 400 });
   if (question.length > MAX_QUESTION_LENGTH) return NextResponse.json({ error: "question is too long" }, { status: 400 });
+  const asksForDataRoomProgress = /\bdata\s*room\b/i.test(question) && /\b(progress|percent|percentage|%|requests?|received|reviewed)\b/i.test(question);
+  if (asksForDataRoomProgress) {
+    const packs = await prisma.dataRoomRequestPack.findMany({ where: { organizationId }, orderBy: { createdAt: "desc" }, include: { categories: { include: { requests: { select: { status: true } } } } } });
+    if (!packs.length) return NextResponse.json({ answer: "There is no Data Room Request Pack in this workspace.", sources: [], limitation: "FlowCoach checked the authorised Data Room Request Pack directly." });
+    const pack = packs[0]; const progress = summarizeDataRoomRequests(pack.categories.flatMap((category) => category.requests));
+    const answer = `Data room request progress for ${pack.title}: ${progress.fulfilmentPercent}% fully received (${progress.received} of ${progress.applicable} applicable requests), ${progress.partiallyReceived} partially received, and ${progress.reviewPercent}% reviewed (${progress.accepted} of ${progress.received} fully received requests).`;
+    return NextResponse.json({ answer, sources: [{ id: pack.id, kind: "data room request pack", title: "Data room request progress", date: pack.updatedAt.toISOString(), excerpt: `${progress.received}/${progress.applicable} fully received; ${progress.partiallyReceived} partially received; ${progress.accepted} accepted.`, href: `/clients/${organizationId}/data-room` }], limitation: "FlowCoach calculated this result deterministically from the authorised Data Room Request Pack." });
+  }
   const hashtagToken = question.match(/(?:^|\s)(#[^\s]+)/)?.[1];
   let hashtagQuery: string | null = null;
   if (hashtagToken) {
