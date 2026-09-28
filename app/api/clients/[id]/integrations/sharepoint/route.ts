@@ -12,7 +12,24 @@ async function authorize(id: string, permission: "client.read" | "client.configu
  * could not previously tell a connected client from one that had never started
  * the flow. Only non-secret fields are returned.
  */
-export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) { const { id } = await params; if (!await authorize(id, "client.read")) return NextResponse.json({ error: "Forbidden" }, { status: 403 }); let connection = null; try { connection = await getConnectionStatus(prisma, id, SHAREPOINT_PROVIDER); } catch { connection = null; } return NextResponse.json({ organizationId: id, ...getMicrosoft365ConnectionReadiness(), connection, sourceSelection: { site: "", library: "", folder: "" } }); }
+export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  if (!await authorize(id, "client.read")) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  let connection = null;
+  try { connection = await getConnectionStatus(prisma, id, SHAREPOINT_PROVIDER); } catch { connection = null; }
+  const savedSource = await prisma.integrationSource.findFirst({
+    where: { organizationId: id, provider: SHAREPOINT_PROVIDER, enabled: true },
+    orderBy: { createdAt: "desc" },
+    select: { siteName: true, driveName: true, folderPath: true },
+  });
+  return NextResponse.json({
+    organizationId: id,
+    ...getMicrosoft365ConnectionReadiness(),
+    connection,
+    // The chooser holds display names; stable IDs remain in IntegrationSource.
+    sourceSelection: { site: savedSource?.siteName ?? "", library: savedSource?.driveName ?? "", folder: savedSource?.folderPath ?? "" },
+  });
+}
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) { const { id } = await params; if (!await authorize(id, "client.configure")) return NextResponse.json({ error: "Forbidden" }, { status: 403 }); const body = await request.json().catch(() => null) as { sourceSelection?: Partial<SharePointSourceSelection> } | null; const sourceSelection = body?.sourceSelection; const selection = { site: typeof sourceSelection?.site === "string" ? sourceSelection.site.trim() : "", library: typeof sourceSelection?.library === "string" ? sourceSelection.library.trim() : "", folder: typeof sourceSelection?.folder === "string" ? sourceSelection.folder.trim() : "" }; if (![selection.site, selection.library, selection.folder].every(Boolean)) return NextResponse.json({ error: "site, library, and folder are required" }, { status: 400 }); return NextResponse.json(previewSharePointImport(id, selection)); }
 
 /**

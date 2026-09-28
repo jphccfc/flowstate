@@ -133,14 +133,19 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   if (linked.error) return linked.error;
   const connection = linked.connection as NonNullable<Awaited<ReturnType<typeof getAccessToken>>>;
 
-  let targets: string[] = itemIds;
+  let targets: Array<{ itemId: string; itemName?: string }> = itemIds.map((itemId) => ({ itemId }));
+  let unsupportedItems: Array<{ itemId: string; itemName?: string; outcome: { status: "skipped"; reason: string } }> = [];
   let walkSummary: Record<string, unknown> | null = null;
   const offset = Number.isFinite(body.offset) && (body.offset as number) > 0 ? Math.floor(body.offset as number) : 0;
   if (recursive) {
     try {
       const walk = await walkDriveFolder(connection.accessToken, driveId, folderItemId as string);
       const supported = walk.files.filter((file) => isSupportedDocument(file.name));
-      targets = supported.slice(offset, offset + MAX_IMPORT_PER_REQUEST).map((file) => file.id);
+      const unsupported = walk.files.filter((file) => !isSupportedDocument(file.name));
+      targets = supported.slice(offset, offset + MAX_IMPORT_PER_REQUEST).map((file) => ({ itemId: file.id, itemName: file.name }));
+      // Report exclusions explicitly; unsupported evidence must not vanish from
+      // the operator result or be mistaken for an unexplained failure.
+      unsupportedItems = offset === 0 ? unsupported.map((file) => ({ itemId: file.id, itemName: file.name, outcome: { status: "skipped" as const, reason: `unsupported_type:${file.name.split(".").pop()?.toLowerCase() ?? "none"}` } })) : [];
       const nextOffset = offset + targets.length;
       walkSummary = {
         files: walk.files.length,
@@ -160,20 +165,20 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     }
   }
 
-  const results: Array<{ itemId: string; outcome: ImportOutcome | { status: "failed"; error: string } }> = [];
-  for (const itemId of targets) {
+  const results: Array<{ itemId: string; itemName?: string; outcome: ImportOutcome | { status: "failed"; error: string } }> = [...unsupportedItems];
+  for (const target of targets) {
     try {
       const outcome = await importDriveItem({
         organizationId: id,
         driveId,
-        itemId,
+        itemId: target.itemId,
         accessToken: connection.accessToken,
         client: prisma,
       });
-      results.push({ itemId, outcome });
+      results.push({ itemId: target.itemId, itemName: target.itemName, outcome });
     } catch (error) {
       // Isolate per-item failures; report them without provider detail leaking tokens.
-      results.push({ itemId, outcome: { status: "failed", error: error instanceof Error ? error.message : "import failed" } });
+      results.push({ itemId: target.itemId, itemName: target.itemName, outcome: { status: "failed", error: error instanceof Error ? error.message : "import failed" } });
     }
   }
 

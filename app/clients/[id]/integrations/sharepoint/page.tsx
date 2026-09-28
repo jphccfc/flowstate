@@ -16,6 +16,8 @@ type ImportPreview = {
   unsupportedSample: string[];
 };
 type ImportSummary = { imported: number; duplicate: number; skipped: number; failed: number };
+type ImportOutcome = { status: "imported" | "duplicate" | "skipped" | "failed"; reason?: string; error?: string };
+type ImportDetail = { itemId: string; itemName?: string; outcome: ImportOutcome };
 type Readiness = { connectionState: ConnectionState; syncEnabled: false; missingConfiguration?: string[] };
 type Connection = {
   provider: string;
@@ -76,6 +78,7 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
   const [connection, setConnection] = useState<Connection | null>(null);
   const [preview, setPreview] = useState<ImportPreview | null>(null);
   const [importResult, setImportResult] = useState<ImportSummary | null>(null);
+  const [importDetails, setImportDetails] = useState<ImportDetail[]>([]);
   const [analysisQueued, setAnalysisQueued] = useState(0);
   const [sourceSaved, setSourceSaved] = useState(false);
   const [sources, setSources] = useState<Source[]>([]);
@@ -278,8 +281,9 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
    */
   async function runImport() {
     if (!selectedLibrary) { setError("Choose a site and a document library first."); return; }
-    setError(null); setImportResult(null); setAnalysisQueued(0); setImporting(true);
+    setError(null); setImportResult(null); setImportDetails([]); setAnalysisQueued(0); setImporting(true);
     const total: ImportSummary = { imported: 0, duplicate: 0, skipped: 0, failed: 0 };
+    const details: ImportDetail[] = [];
     let queued = 0;
     try {
       let offset = 0;
@@ -295,8 +299,10 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
         total.duplicate += data.summary.duplicate;
         total.skipped += data.summary.skipped;
         total.failed += data.summary.failed;
+        details.push(...((data.results ?? []) as ImportDetail[]));
         queued += data.queuedForAnalysis ?? 0;
         setImportResult({ ...total });
+        setImportDetails([...details]);
         setAnalysisQueued(queued);
         const next = data.walk?.nextOffset ?? offset;
         const remaining = data.walk?.remaining ?? 0;
@@ -370,6 +376,7 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
       <strong>{importing ? "Importing…" : "Import finished"}</strong>
       <p className="mt-1 text-[var(--muted)]">{importResult.imported} imported · {importResult.duplicate} already present · {importResult.skipped} skipped · {importResult.failed} failed</p>
       {analysisQueued > 0 ? <p className="mt-1 text-[var(--muted)]">{analysisQueued} document{analysisQueued === 1 ? "" : "s"} queued for analysis — Flowstate is reading them and proposing capability tags for review.</p> : null}
+      {importDetails.length > 0 ? <section className="mt-3 rounded border border-[var(--card-border)] bg-[var(--card)] p-2" aria-label="Import details"><strong className="text-sm">Import details</strong><ul className="mt-2 space-y-1 text-xs">{importDetails.map((detail) => <li key={detail.itemId}><span className="font-medium">{detail.itemName ?? detail.itemId}</span>{" — "}{detail.outcome.status}{detail.outcome.reason ? `: ${detail.outcome.reason}` : ""}{detail.outcome.error ? `: ${detail.outcome.error}` : ""}</li>)}</ul></section> : null}
       {importResult.imported > 0 ? <p className="mt-1">Document findings are being prepared — review them in <Link href={`/clients/${organizationId}/findings`} className="underline decoration-dotted">Document findings</Link>.</p> : null}
     </div>}</form></main>;
 }

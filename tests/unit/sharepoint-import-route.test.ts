@@ -31,7 +31,8 @@ describe("SharePoint import route", () => {
   it("isolates per-item failures so one bad item cannot abort the batch", () => {
     // targets is either the explicit itemIds or the walked batch; the loop is
     // identical either way, which is what keeps isolation in both modes.
-    expect(route).toContain("for (const itemId of targets)");
+    expect(route).toContain("for (const target of targets)");
+    expect(route).toContain("itemName: target.itemName");
     expect(route).toContain('{ status: "failed"');
     expect(route).toContain("{ summary, results");
   });
