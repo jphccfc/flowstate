@@ -47,6 +47,7 @@ export function WorkspaceNav({ clientId, clientName }: { clientId: string; clien
     { href: `/clients/${clientId}/report`, label: "Reports" },
     { href: `/clients/${clientId}/recommendations`, label: "Growth plan" },
     { href: `/clients/${clientId}/findings`, label: "Evidence review" },
+    { href: `/clients/${clientId}/discover`, label: "Hashtag discovery" },
     { href: `/clients/${clientId}/review`, label: "Tag review" },
   ];
 
