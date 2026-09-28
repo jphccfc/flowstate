@@ -14,11 +14,17 @@ describe("Data Room Request Pack progress", () => {
     expect(summary).toEqual({
       total: 5,
       applicable: 4,
+      partiallyReceived: 0,
       received: 2,
       accepted: 1,
       followUpRequired: 1,
       fulfilmentPercent: 50,
       reviewPercent: 50,
     });
+  });
+
+  it("shows partially received items separately without counting them as fully received", () => {
+    const summary = summarizeDataRoomRequests([{ status: "PARTIALLY_RECEIVED" }, { status: "REQUESTED" }]);
+    expect(summary).toMatchObject({ applicable: 2, partiallyReceived: 1, received: 0, fulfilmentPercent: 0 });
   });
 });

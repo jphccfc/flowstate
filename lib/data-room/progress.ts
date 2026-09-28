@@ -1,4 +1,4 @@
-export const dataRoomRequestStatuses = ["REQUESTED", "RECEIVED", "ACCEPTED", "FOLLOW_UP_REQUIRED", "NOT_APPLICABLE"] as const;
+export const dataRoomRequestStatuses = ["REQUESTED", "PARTIALLY_RECEIVED", "RECEIVED", "ACCEPTED", "FOLLOW_UP_REQUIRED", "NOT_APPLICABLE"] as const;
 export type DataRoomRequestStatus = (typeof dataRoomRequestStatuses)[number];
 
 type DataRoomRequestLike = { status: DataRoomRequestStatus };
@@ -9,12 +9,14 @@ type DataRoomRequestLike = { status: DataRoomRequestStatus };
  */
 export function summarizeDataRoomRequests(requests: DataRoomRequestLike[]) {
   const applicable = requests.filter((request) => request.status !== "NOT_APPLICABLE");
+  const partiallyReceived = applicable.filter((request) => request.status === "PARTIALLY_RECEIVED").length;
   const received = applicable.filter((request) => request.status === "RECEIVED" || request.status === "ACCEPTED").length;
   const accepted = applicable.filter((request) => request.status === "ACCEPTED").length;
   const followUpRequired = applicable.filter((request) => request.status === "FOLLOW_UP_REQUIRED").length;
   return {
     total: requests.length,
     applicable: applicable.length,
+    partiallyReceived,
     received,
     accepted,
     followUpRequired,

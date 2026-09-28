@@ -992,6 +992,7 @@ enum AssessmentTaskReviewState {
 
 enum DataRoomRequestStatus {
   REQUESTED
+  PARTIALLY_RECEIVED
   RECEIVED
   ACCEPTED
   FOLLOW_UP_REQUIRED
