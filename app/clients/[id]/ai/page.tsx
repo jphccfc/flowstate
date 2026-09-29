@@ -23,10 +23,19 @@ export default function AIHubPage({ params }: { params: Promise<{ id: string }> 
     if (!organizationId || !question.trim()) return;
     setBusy(true); setError(""); setResult(null);
     try {
-      const response = await fetch(`/api/clients/${organizationId}/ai`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question, agentKey }) });
-      const data = await response.json() as Result;
-      if (!response.ok) throw new Error(data.error || "FlowCoach could not answer that question.");
-      setResult(data);
+      const asksForDataRoomProgress = /\bdata\s*room\b/i.test(question) && /\b(progress|percent|percentage|%|requests?|received|reviewed)\b/i.test(question);
+      if (asksForDataRoomProgress) {
+        const response = await fetch(`/api/clients/${organizationId}/data-room`); const packs = await response.json();
+        if (!response.ok) throw new Error(packs.error || "FlowCoach could not read the Data Room Request Pack.");
+        const pack = packs[0]; if (!pack) throw new Error("There is no Data Room Request Pack in this workspace.");
+        const progress = pack.progress;
+        setResult({ answer: `Data room request progress for ${pack.title}: ${progress.fulfilmentPercent}% fully received (${progress.received} of ${progress.applicable} applicable requests), ${progress.partiallyReceived} partially received, and ${progress.reviewPercent}% reviewed (${progress.accepted} of ${progress.received} fully received requests).`, sources: [{ id: pack.id, kind: "data room request pack", title: "Data room request progress", date: new Date().toISOString(), excerpt: `${progress.received}/${progress.applicable} fully received; ${progress.partiallyReceived} partially received; ${progress.accepted} accepted.`, href: `/clients/${organizationId}/data-room` }], limitation: "FlowCoach calculated this result deterministically from the authorised Data Room Request Pack." });
+      } else {
+        const response = await fetch(`/api/clients/${organizationId}/ai`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question, agentKey }) });
+        const data = await response.json() as Result;
+        if (!response.ok) throw new Error(data.error || "FlowCoach could not answer that question.");
+        setResult(data);
+      }
     } catch (requestError) {
       setError(requestError instanceof Error ? requestError.message : "FlowCoach could not answer that question.");
     } finally { setBusy(false); }
