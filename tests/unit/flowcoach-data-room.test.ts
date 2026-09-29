@@ -9,6 +9,6 @@ describe("FlowCoach Data Room progress retrieval", () => {
     expect(route).toContain("dataRoomRequestPack.findMany");
     expect(route).toContain("Data room request progress");
     expect(route).toContain("fulfilmentPercent");
-    expect(route).toContain("complete|completion");
+    expect(route).toContain("isDataRoomProgressQuestion(question)");
   });
 });
