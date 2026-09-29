@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 type LinkedInput = { id: string; sourcePath: string | null; sourceRef: string | null };
 type Item = { id: string; title: string; status: string; completionNote: string | null; linkedInput: LinkedInput | null };
-type InputOption = { id: string; sourcePath: string | null; sourceRef: string | null; subject: string | null; status: string };
+type InputOption = { id: string; sourcePath: string | null; sourceRef: string | null; subject: string | null; status: string; attachments: Array<{ filename: string }>; meetingContext: { title: string } | null };
 type Pack = {
   id: string;
   title: string;
@@ -15,7 +15,7 @@ type Pack = {
 
 const statuses = ["REQUESTED", "PARTIALLY_RECEIVED", "RECEIVED", "ACCEPTED", "FOLLOW_UP_REQUIRED", "NOT_APPLICABLE"];
 const label = (value: string) => value.toLowerCase().replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
-const inputLabel = (input: InputOption | LinkedInput) => input.sourcePath ?? input.sourceRef ?? "Untitled evidence";
+const inputLabel = (input: InputOption | LinkedInput) => "attachments" in input ? input.subject ?? input.attachments[0]?.filename ?? input.meetingContext?.title ?? input.sourcePath ?? input.sourceRef ?? "Untitled evidence" : input.sourcePath ?? input.sourceRef ?? "Untitled evidence";
 
 export default function DataRoomPage({ params }: { params: Promise<{ id: string }> }) {
   const [id, setId] = useState("");

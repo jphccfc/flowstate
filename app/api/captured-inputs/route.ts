@@ -125,6 +125,7 @@ export async function GET(req: NextRequest) {
     const inputs = await prisma.capturedInput.findMany({
       where: { organizationId },
       orderBy: { createdAt: "desc" },
+      include: { attachments: { select: { filename: true }, take: 1 }, meetingContext: { select: { title: true } } },
     });
     return NextResponse.json(inputs);
   } catch (error) {

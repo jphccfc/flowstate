@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const route = readFileSync(resolve(process.cwd(), "app/api/clients/[id]/data-room/route.ts"), "utf8");
+const capturedInputsRoute = readFileSync(resolve(process.cwd(), "app/api/captured-inputs/route.ts"), "utf8");
 const page = readFileSync(resolve(process.cwd(), "app/clients/[id]/data-room/page.tsx"), "utf8");
 
 describe("Data Room evidence linking and cancellation", () => {
@@ -17,5 +18,8 @@ describe("Data Room evidence linking and cancellation", () => {
     expect(page).toContain("Cancel request pack");
     expect(page).toContain('status: "CANCELLED"');
     expect(page).toContain("/api/captured-inputs?organizationId=");
+    expect(capturedInputsRoute).toContain("attachments: { select: { filename: true }");
+    expect(capturedInputsRoute).toContain("meetingContext: { select: { title: true } }");
+    expect(page).toContain("input.attachments[0]?.filename");
   });
 });
