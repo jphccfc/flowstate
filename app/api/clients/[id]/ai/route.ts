@@ -29,7 +29,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   const question = typeof body?.question === "string" ? body.question.trim() : "";
   if (!question) return NextResponse.json({ error: "question is required" }, { status: 400 });
   if (question.length > MAX_QUESTION_LENGTH) return NextResponse.json({ error: "question is too long" }, { status: 400 });
-  const asksForDataRoomProgress = /\bdata\s*room\b/i.test(question) && /\b(progress|percent|percentage|%|requests?|received|reviewed)\b/i.test(question);
+  const asksForDataRoomProgress = /\bdata\s*room\b/i.test(question) && /\b(progress|percent|percentage|%|requests?|received|reviewed|complete|completion)\b/i.test(question);
   if (asksForDataRoomProgress) {
     const packs = await prisma.dataRoomRequestPack.findMany({ where: { organizationId }, orderBy: { createdAt: "desc" }, include: { categories: { include: { requests: { select: { status: true } } } } } });
     if (!packs.length) return NextResponse.json({ answer: "There is no Data Room Request Pack in this workspace.", sources: [], limitation: "FlowCoach checked the authorised Data Room Request Pack directly." });
