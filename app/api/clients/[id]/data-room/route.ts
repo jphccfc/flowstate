@@ -8,6 +8,15 @@ async function currentUser() { return (await (await createClient()).auth.getUser
 async function allowed(email: string | undefined, organizationId: string, permission: "client.read" | "assessment.submit") { return Boolean(email && await hasOrganizationPermission(email, organizationId, permission)); }
 function validStatus(value: unknown): value is DataRoomRequestStatus { return typeof value === "string" && (dataRoomRequestStatuses as readonly string[]).includes(value); }
 
+async function validateLinkedInput(value: unknown, organizationId: string) {
+  if (value === undefined) return { provided: false as const, linkedInputId: undefined };
+  const linkedInputId = typeof value === "string" ? value.trim() : "";
+  if (!linkedInputId) return { provided: true as const, linkedInputId: null };
+  const input = await prisma.capturedInput.findFirst({ where: { id: linkedInputId, organizationId, status: { not: "QUARANTINED" } }, select: { id: true } });
+  if (!input) return { error: "Linked evidence must belong to this client and cannot be quarantined" };
+  return { provided: true as const, linkedInputId: input.id };
+}
+
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const user = await currentUser(); const { id } = await params;
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -55,6 +64,8 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   if (!item) return NextResponse.json({ error: "Request item not found" }, { status: 404 });
   const completionNote = typeof body.completionNote === "string" ? body.completionNote.trim() || null : null;
   if (body.status === "NOT_APPLICABLE" && !completionNote) return NextResponse.json({ error: "Not applicable requests require a rationale" }, { status: 400 });
-  const updated = await prisma.dataRoomRequestItem.update({ where: { id: item.id }, data: { status: body.status, completionNote, completedAt: body.status === "REQUESTED" ? null : new Date() } });
+  const linked = await validateLinkedInput(body.linkedInputId, id);
+  if ("error" in linked) return NextResponse.json({ error: linked.error }, { status: 400 });
+  const updated = await prisma.dataRoomRequestItem.update({ where: { id: item.id }, data: { status: body.status, completionNote, completedAt: body.status === "REQUESTED" ? null : new Date(), ...(linked.provided ? { linkedInputId: linked.linkedInputId } : {}) } });
   return NextResponse.json(updated);
 }
