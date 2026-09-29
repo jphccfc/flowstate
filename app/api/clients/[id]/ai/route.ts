@@ -51,7 +51,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   const conversation = parsedConversation.messages;
 
   const [capturedInputs, meetingContexts, projects, kpis, achievements, documentFindings, agent, hashtagAttachments] = await Promise.all([
-    prisma.capturedInput.findMany({ where: { organizationId, status: { not: "QUARANTINED" } }, orderBy: { capturedAt: "desc" }, take: 500, select: { id: true, type: true, subject: true, sourceRef: true, rawText: true, capturedAt: true, attachments: { select: { filename: true }, take: 1 } } }),
+    prisma.capturedInput.findMany({ where: { organizationId, status: { not: "QUARANTINED" } }, orderBy: { capturedAt: "desc" }, take: 500, select: { id: true, type: true, subject: true, sourceRef: true, rawText: true, capturedAt: true, meetingContext: { select: { title: true } }, attachments: { select: { filename: true }, take: 1 } } }),
     prisma.meetingContext.findMany({ where: { organizationId }, orderBy: { createdAt: "desc" }, take: 100, select: { id: true, title: true, startsAt: true, dateTime: true, objectives: true, agendaItems: true, desiredOutcome: true } }),
     prisma.project.findMany({ where: { organizationId }, select: { id: true, name: true, objective: true, status: true, timeline: true, outcomes: true, updatedAt: true } }),
     prisma.kPI.findMany({ where: { organizationId }, select: { id: true, name: true, description: true, targetValue: true, currentValue: true, dataSource: true, updatedAt: true } }),
@@ -62,7 +62,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   ]);
 
   const sources: WorkspaceSource[] = [
-    ...capturedInputs.filter((input) => input.rawText?.trim()).map((input) => ({ id: input.id, kind: input.type === "DOCUMENT" || input.type === "DATA_ROOM_FILE" ? "document" : input.type.toLowerCase(), title: input.type === "DOCUMENT" ? (input.attachments[0]?.filename || input.subject || "document") : (input.subject || input.sourceRef || `${input.type} capture`), date: input.capturedAt, text: input.rawText! })),
+    ...capturedInputs.filter((input) => input.rawText?.trim()).map((input) => { const meetingTitle = input.meetingContext?.title; const title = input.type === "DOCUMENT" ? (input.attachments[0]?.filename || input.subject || "document") : (meetingTitle || input.subject || input.sourceRef || `${input.type} capture`); const text = [meetingTitle ? `Meeting: ${meetingTitle}` : null, input.rawText].filter(Boolean).join("\n"); return { id: input.id, kind: input.type === "DOCUMENT" || input.type === "DATA_ROOM_FILE" ? "document" : input.type.toLowerCase(), title, date: input.capturedAt, text }; }),
     ...documentFindings.map((finding) => ({ id: `finding:${finding.id}`, kind: "document finding", title: finding.title, date: finding.createdAt, text: [finding.title, finding.domainName, finding.capabilityName, finding.summary, finding.evidenceDemonstrated, ...finding.citedExcerpts, `Analysis status: ${finding.status}`].filter(Boolean).join("\n"), domainName: finding.domainName, capabilityName: finding.capabilityName })),
     ...meetingContexts.map((meeting) => ({ id: meeting.id, kind: "meeting agenda", title: meeting.title, date: meeting.startsAt ?? meeting.dateTime ?? new Date(), text: formatMeetingAgendaSource(meeting) })),
     ...projects.map((project) => ({ id: project.id, kind: "project record", title: project.name, date: project.updatedAt, text: [project.objective, project.status, project.timeline, project.outcomes].filter(Boolean).join("\n") })),
