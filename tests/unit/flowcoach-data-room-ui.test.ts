@@ -5,7 +5,8 @@ import { resolve } from "node:path";
 const page = readFileSync(resolve(process.cwd(), "app/clients/[id]/ai/page.tsx"), "utf8");
 
 describe("FlowCoach Data Room progress fallback", () => {
-  it("answers data-room percentage questions from the protected request-pack API", () => {
+  it("answers typo-tolerant completion wording from the protected request-pack API", () => {
+    expect(page).toContain("complete|completion");
     expect(page).toContain("/data-room");
     expect(page).toContain("Data room request progress");
   });

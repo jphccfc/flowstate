@@ -23,7 +23,7 @@ export default function AIHubPage({ params }: { params: Promise<{ id: string }> 
     if (!organizationId || !question.trim()) return;
     setBusy(true); setError(""); setResult(null);
     try {
-      const asksForDataRoomProgress = /\bdata\s*room\b/i.test(question) && /\b(progress|percent|percentage|%|requests?|received|reviewed)\b/i.test(question);
+      const asksForDataRoomProgress = /\bdata\s*room\b/i.test(question) && /\b(progress|percent|percentage|%|requests?|received|reviewed|complete|completion)\b/i.test(question);
       if (asksForDataRoomProgress) {
         const response = await fetch(`/api/clients/${organizationId}/data-room`); const packs = await response.json();
         if (!response.ok) throw new Error(packs.error || "FlowCoach could not read the Data Room Request Pack.");
