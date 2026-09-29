@@ -51,6 +51,13 @@ describe("AI Hub workspace retrieval", () => {
     }
   });
 
+  it("ranks a Week 40 scratchpad note above generic meeting documents for action questions", () => {
+    const week40Note: WorkspaceSource = { id: "week-40", kind: "text_note", title: "Weekly RBC Vista Catchup Week 40", date: new Date("2026-09-28T00:00:00Z"), text: "Meeting: Weekly RBC Vista Catchup Week 40\nACTION: Prepare the required resource list and timeline tonight." };
+    const genericMeeting: WorkspaceSource = { id: "generic", kind: "document", title: "Project Vista meeting recap", date: new Date("2026-09-14T00:00:00Z"), text: "A weekly meeting included several planned actions." };
+
+    expect(rankWorkspaceSources("what were the week 40 meeting actions", [genericMeeting, week40Note])[0]).toMatchObject({ id: "week-40" });
+  });
+
   it("returns no sources when no authorized workspace text matches", () => {
     expect(rankWorkspaceSources("What is the moon made of?", sources)).toEqual([]);
   });

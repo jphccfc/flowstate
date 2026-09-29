@@ -30,7 +30,7 @@ export function formatMeetingAgendaSource(meeting: MeetingAgendaFields): string 
 const STOP_WORDS = new Set(["a", "an", "and", "are", "for", "from", "how", "is", "of", "the", "to", "what", "where", "when", "with"]);
 
 function terms(question: string): string[] {
-  return [...new Set((question.toLowerCase().match(/[a-z0-9]{3,}/g) ?? []).filter((term) => !STOP_WORDS.has(term)))];
+  return [...new Set((question.toLowerCase().match(/[a-z]{3,}|\d+/g) ?? []).filter((term) => !STOP_WORDS.has(term)).map((term) => term.length > 4 && term.endsWith("s") ? term.slice(0, -1) : term))];
 }
 
 export function rankWorkspaceSources(question: string, sources: WorkspaceSource[], limit = 8): RankedWorkspaceSource[] {
