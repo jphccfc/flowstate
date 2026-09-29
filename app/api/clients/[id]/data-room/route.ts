@@ -45,6 +45,15 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   if (!await allowed(user.email, id, "assessment.submit")) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   const body = await request.json();
+  const categoryId = typeof body.categoryId === "string" ? body.categoryId : "";
+  if (categoryId) {
+    const requestTitle = typeof body.requestTitle === "string" ? body.requestTitle.trim() : "";
+    const category = await prisma.dataRoomRequestCategory.findFirst({ where: { id: categoryId, pack: { organizationId: id } }, select: { id: true } });
+    if (!category || !requestTitle) return NextResponse.json({ error: "A valid Data Room category and request title are required" }, { status: 400 });
+    const previous = await prisma.dataRoomRequestItem.findFirst({ where: { categoryId }, orderBy: { sortOrder: "desc" }, select: { sortOrder: true } });
+    const item = await prisma.dataRoomRequestItem.create({ data: { categoryId, title: requestTitle, detail: typeof body.detail === "string" ? body.detail.trim() || null : null, sortOrder: (previous?.sortOrder ?? -1) + 1 } });
+    return NextResponse.json(item, { status: 201 });
+  }
   const taskId = typeof body.assessmentTaskId === "string" ? body.assessmentTaskId : "";
   const title = typeof body.title === "string" ? body.title.trim() : "";
   const categories = Array.isArray(body.categories) ? body.categories : [];
@@ -59,13 +68,30 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   if (!await allowed(user.email, id, "assessment.submit")) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   const body = await request.json();
-  if (typeof body.requestId !== "string" || !validStatus(body.status)) return NextResponse.json({ error: "requestId and a valid status are required" }, { status: 400 });
-  const item = await prisma.dataRoomRequestItem.findFirst({ where: { id: body.requestId, category: { pack: { organizationId: id } } }, select: { id: true } });
+  if (typeof body.requestId !== "string") return NextResponse.json({ error: "requestId is required" }, { status: 400 });
+  if (body.status !== undefined && !validStatus(body.status)) return NextResponse.json({ error: "A valid request status is required" }, { status: 400 });
+  const item = await prisma.dataRoomRequestItem.findFirst({ where: { id: body.requestId, category: { pack: { organizationId: id } } }, select: { id: true, status: true, completionNote: true, linkedInputId: true } });
   if (!item) return NextResponse.json({ error: "Request item not found" }, { status: 404 });
-  const completionNote = typeof body.completionNote === "string" ? body.completionNote.trim() || null : null;
-  if (body.status === "NOT_APPLICABLE" && !completionNote) return NextResponse.json({ error: "Not applicable requests require a rationale" }, { status: 400 });
+  const status = validStatus(body.status) ? body.status : item.status;
+  const completionNote = typeof body.completionNote === "string" ? body.completionNote.trim() || null : item.completionNote;
+  if (status === "NOT_APPLICABLE" && !completionNote) return NextResponse.json({ error: "No longer needed requests require a rationale" }, { status: 400 });
   const linked = await validateLinkedInput(body.linkedInputId, id);
   if ("error" in linked) return NextResponse.json({ error: linked.error }, { status: 400 });
-  const updated = await prisma.dataRoomRequestItem.update({ where: { id: item.id }, data: { status: body.status, completionNote, completedAt: body.status === "REQUESTED" ? null : new Date(), ...(linked.provided ? { linkedInputId: linked.linkedInputId } : {}) } });
+  const title = typeof body.title === "string" ? body.title.trim() : undefined;
+  if (title !== undefined && !title) return NextResponse.json({ error: "Request title cannot be empty" }, { status: 400 });
+  const updated = await prisma.dataRoomRequestItem.update({ where: { id: item.id }, data: { ...(title ? { title } : {}), ...(typeof body.detail === "string" ? { detail: body.detail.trim() || null } : {}), ...(body.status !== undefined ? { status, completionNote, completedAt: status === "REQUESTED" ? null : new Date() } : {}), ...(linked.provided ? { linkedInputId: linked.linkedInputId } : {}) } });
   return NextResponse.json(updated);
+}
+
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const user = await currentUser(); const { id } = await params;
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!await allowed(user.email, id, "assessment.submit")) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  const requestId = new URL(request.url).searchParams.get("requestId");
+  if (!requestId) return NextResponse.json({ error: "requestId is required" }, { status: 400 });
+  const item = await prisma.dataRoomRequestItem.findFirst({ where: { id: requestId, category: { pack: { organizationId: id } } }, select: { id: true, status: true, linkedInputId: true, completionNote: true } });
+  if (!item) return NextResponse.json({ error: "Request item not found" }, { status: 404 });
+  if (item.status !== "REQUESTED" || item.linkedInputId || item.completionNote) return NextResponse.json({ error: "Only untouched, unlinked requested items can be deleted. Mark retained history as no longer needed instead." }, { status: 409 });
+  await prisma.dataRoomRequestItem.delete({ where: { id: item.id } });
+  return NextResponse.json({ deleted: true });
 }
