@@ -17,9 +17,24 @@ type CapturedInput = {
   error: string | null;
   createdAt: string;
   meetingContextId?: string | null;
+  subject?: string | null;
+  rawText?: string | null;
+  sourceRef?: string | null;
+  attachments?: Array<{ filename: string }>;
+  meetingContext?: { title: string | null } | null;
 };
+type ScratchpadNote = { id: string; rawText: string | null; updatedAt: string; meetingContextId: string | null; meetingContext?: { title: string | null } | null };
 
 type MeetingContext = { id: string; title: string; startsAt: string | null; dateTime?: string | null; stakeholderName: string | null; stakeholders?: string[]; domainName: string | null; domain?: string | null; objectives: string | null; agendaItems: string[]; desiredOutcome: string | null };
+
+function plainPreview(value: string | null | undefined, fallback: string) {
+  const text = (value ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  return text ? `${text.slice(0, 100)}${text.length > 100 ? "…" : ""}` : fallback;
+}
+
+function captureTitle(input: CapturedInput) {
+  return input.subject?.trim() || input.attachments?.[0]?.filename || input.meetingContext?.title || input.sourceRef?.split("/").pop() || plainPreview(input.rawText, input.type === "TEXT_NOTE" ? "Untitled text note" : "Untitled capture");
+}
 
 export default function CapturePage({ params }: { params: Promise<{ id: string }> }) {
   const { id: organizationId } = use(params);
@@ -46,6 +61,7 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
   const [submitting, setSubmitting] = useState(false);
   const [startingSession, setStartingSession] = useState(false);
   const [inputs, setInputs] = useState<CapturedInput[]>([]);
+  const [scratchpadNotes, setScratchpadNotes] = useState<ScratchpadNote[]>([]);
   const [captureSubmitted, setCaptureSubmitted] = useState(false);
   const [inboundEmail, setInboundEmail] = useState<{ inboundAddress: string; active: boolean } | null>(null);
   const [inboundEmailLoading, setInboundEmailLoading] = useState(false);
@@ -69,9 +85,13 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
   };
 
   const loadInputs = useCallback(async () => {
-    const res = await fetch(`/api/captured-inputs?organizationId=${organizationId}`);
-    if (res.ok) setInputs(await res.json());
-    const contextRes = await fetch(`/api/meeting-contexts?organizationId=${organizationId}`);
+    const [inputsRes, notesRes, contextRes] = await Promise.all([
+      fetch(`/api/captured-inputs?organizationId=${organizationId}`),
+      fetch(`/api/scratchpad?organizationId=${organizationId}`),
+      fetch(`/api/meeting-contexts?organizationId=${organizationId}`),
+    ]);
+    if (inputsRes.ok) setInputs(await inputsRes.json());
+    if (notesRes.ok) setScratchpadNotes((await notesRes.json()).slice(0, 4));
     if (contextRes.ok) {
       const contexts: MeetingContext[] = await contextRes.json();
       setContexts(contexts);
@@ -397,16 +417,17 @@ export default function CapturePage({ params }: { params: Promise<{ id: string }
         </div>
       )}
 
+      <section className="workspace-card mb-6 p-4" aria-labelledby="recent-scratchpad-title">
+        <div className="flex items-center justify-between gap-3"><div><h2 id="recent-scratchpad-title" className="text-lg font-semibold">Recent meeting scratchpad notes</h2><p className="mt-1 text-sm text-[var(--muted)]">Open a note directly from Capture Evidence.</p></div><Link href={`/clients/${organizationId}/scratchpad`} className="rounded border border-[var(--card-border)] px-3 py-2 text-sm">Open scratchpad</Link></div>
+        <div className="mt-3 space-y-2">{scratchpadNotes.map(note => <Link key={note.id} href={`/clients/${organizationId}/scratchpad?noteId=${encodeURIComponent(note.id)}${note.meetingContextId ? `&contextId=${encodeURIComponent(note.meetingContextId)}` : ""}`} className="block rounded border border-[var(--card-border)] p-3 hover:border-[var(--accent)]"><span className="block font-medium">{plainPreview(note.rawText, "Untitled scratchpad note")}</span><span className="mt-1 block text-xs text-[var(--muted)]">{note.meetingContext?.title ?? "No meeting context"} · Updated {new Date(note.updatedAt).toLocaleString()} · Open scratchpad note</span></Link>)}{scratchpadNotes.length === 0 && <p className="text-sm text-[var(--muted)]">No scratchpad notes yet.</p>}</div>
+      </section>
+
       <h2 className="text-lg font-semibold mb-3">Recent captures</h2>
       <div className="space-y-2">
         {inputs.map((input) => (
-          <div
-            key={input.id}
-            className="flex items-center justify-between bg-[var(--card)] border border-[var(--card-border)] rounded px-3 py-2 text-sm"
-          >
-            <span>{input.type}</span>
-            <span className="text-[var(--muted)]">{new Date(input.createdAt).toLocaleString()}</span>
-            <StatusPill status={input.status} error={input.error} />
+          <div key={input.id} className="flex flex-wrap items-center justify-between gap-3 bg-[var(--card)] border border-[var(--card-border)] rounded px-3 py-3 text-sm">
+            <div className="min-w-0"><p className="truncate font-medium">{captureTitle(input)}</p><p className="mt-1 text-xs text-[var(--muted)]">{input.type === "TEXT_NOTE" ? "Text note" : input.type.replaceAll("_", " ")} · {input.meetingContext?.title ?? "No meeting context"} · {new Date(input.createdAt).toLocaleString()}</p></div>
+            <div className="flex items-center gap-3"><StatusPill status={input.status} error={input.error} /><Link href={`/clients/${organizationId}/review`} className="text-sm font-medium text-[var(--accent)] underline">Review capture</Link></div>
           </div>
         ))}
         {inputs.length === 0 && <p className="text-sm text-[var(--muted)]">No captures yet.</p>}
