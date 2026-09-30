@@ -248,6 +248,7 @@ export type MeetingContextWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"MeetingContext"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   capturedInputs?: Prisma.CapturedInputListRelationFilter
+  externalAttendees?: Prisma.MeetingContextStakeholderListRelationFilter
 }
 
 export type MeetingContextOrderByWithRelationInput = {
@@ -267,6 +268,7 @@ export type MeetingContextOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   organization?: Prisma.OrganizationOrderByWithRelationInput
   capturedInputs?: Prisma.CapturedInputOrderByRelationAggregateInput
+  externalAttendees?: Prisma.MeetingContextStakeholderOrderByRelationAggregateInput
 }
 
 export type MeetingContextWhereUniqueInput = Prisma.AtLeast<{
@@ -289,6 +291,7 @@ export type MeetingContextWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"MeetingContext"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   capturedInputs?: Prisma.CapturedInputListRelationFilter
+  externalAttendees?: Prisma.MeetingContextStakeholderListRelationFilter
 }, "id">
 
 export type MeetingContextOrderByWithAggregationInput = {
@@ -347,6 +350,7 @@ export type MeetingContextCreateInput = {
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutMeetingContextsInput
   capturedInputs?: Prisma.CapturedInputCreateNestedManyWithoutMeetingContextInput
+  externalAttendees?: Prisma.MeetingContextStakeholderCreateNestedManyWithoutMeetingContextInput
 }
 
 export type MeetingContextUncheckedCreateInput = {
@@ -365,6 +369,7 @@ export type MeetingContextUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   capturedInputs?: Prisma.CapturedInputUncheckedCreateNestedManyWithoutMeetingContextInput
+  externalAttendees?: Prisma.MeetingContextStakeholderUncheckedCreateNestedManyWithoutMeetingContextInput
 }
 
 export type MeetingContextUpdateInput = {
@@ -383,6 +388,7 @@ export type MeetingContextUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutMeetingContextsNestedInput
   capturedInputs?: Prisma.CapturedInputUpdateManyWithoutMeetingContextNestedInput
+  externalAttendees?: Prisma.MeetingContextStakeholderUpdateManyWithoutMeetingContextNestedInput
 }
 
 export type MeetingContextUncheckedUpdateInput = {
@@ -401,6 +407,7 @@ export type MeetingContextUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capturedInputs?: Prisma.CapturedInputUncheckedUpdateManyWithoutMeetingContextNestedInput
+  externalAttendees?: Prisma.MeetingContextStakeholderUncheckedUpdateManyWithoutMeetingContextNestedInput
 }
 
 export type MeetingContextCreateManyInput = {
@@ -510,6 +517,11 @@ export type MeetingContextMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type MeetingContextScalarRelationFilter = {
+  is?: Prisma.MeetingContextWhereInput
+  isNot?: Prisma.MeetingContextWhereInput
+}
+
 export type MeetingContextNullableScalarRelationFilter = {
   is?: Prisma.MeetingContextWhereInput | null
   isNot?: Prisma.MeetingContextWhereInput | null
@@ -575,6 +587,20 @@ export type MeetingContextUpdateagendaItemsInput = {
   push?: string | string[]
 }
 
+export type MeetingContextCreateNestedOneWithoutExternalAttendeesInput = {
+  create?: Prisma.XOR<Prisma.MeetingContextCreateWithoutExternalAttendeesInput, Prisma.MeetingContextUncheckedCreateWithoutExternalAttendeesInput>
+  connectOrCreate?: Prisma.MeetingContextCreateOrConnectWithoutExternalAttendeesInput
+  connect?: Prisma.MeetingContextWhereUniqueInput
+}
+
+export type MeetingContextUpdateOneRequiredWithoutExternalAttendeesNestedInput = {
+  create?: Prisma.XOR<Prisma.MeetingContextCreateWithoutExternalAttendeesInput, Prisma.MeetingContextUncheckedCreateWithoutExternalAttendeesInput>
+  connectOrCreate?: Prisma.MeetingContextCreateOrConnectWithoutExternalAttendeesInput
+  upsert?: Prisma.MeetingContextUpsertWithoutExternalAttendeesInput
+  connect?: Prisma.MeetingContextWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MeetingContextUpdateToOneWithWhereWithoutExternalAttendeesInput, Prisma.MeetingContextUpdateWithoutExternalAttendeesInput>, Prisma.MeetingContextUncheckedUpdateWithoutExternalAttendeesInput>
+}
+
 export type MeetingContextCreateNestedOneWithoutCapturedInputsInput = {
   create?: Prisma.XOR<Prisma.MeetingContextCreateWithoutCapturedInputsInput, Prisma.MeetingContextUncheckedCreateWithoutCapturedInputsInput>
   connectOrCreate?: Prisma.MeetingContextCreateOrConnectWithoutCapturedInputsInput
@@ -606,6 +632,7 @@ export type MeetingContextCreateWithoutOrganizationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   capturedInputs?: Prisma.CapturedInputCreateNestedManyWithoutMeetingContextInput
+  externalAttendees?: Prisma.MeetingContextStakeholderCreateNestedManyWithoutMeetingContextInput
 }
 
 export type MeetingContextUncheckedCreateWithoutOrganizationInput = {
@@ -623,6 +650,7 @@ export type MeetingContextUncheckedCreateWithoutOrganizationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   capturedInputs?: Prisma.CapturedInputUncheckedCreateNestedManyWithoutMeetingContextInput
+  externalAttendees?: Prisma.MeetingContextStakeholderUncheckedCreateNestedManyWithoutMeetingContextInput
 }
 
 export type MeetingContextCreateOrConnectWithoutOrganizationInput = {
@@ -671,6 +699,94 @@ export type MeetingContextScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"MeetingContext"> | Date | string
 }
 
+export type MeetingContextCreateWithoutExternalAttendeesInput = {
+  id?: string
+  title: string
+  startsAt?: Date | string | null
+  dateTime?: Date | string | null
+  stakeholderName?: string | null
+  stakeholders?: Prisma.MeetingContextCreatestakeholdersInput | string[]
+  domainName?: string | null
+  domain?: string | null
+  objectives?: string | null
+  agendaItems?: Prisma.MeetingContextCreateagendaItemsInput | string[]
+  desiredOutcome?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutMeetingContextsInput
+  capturedInputs?: Prisma.CapturedInputCreateNestedManyWithoutMeetingContextInput
+}
+
+export type MeetingContextUncheckedCreateWithoutExternalAttendeesInput = {
+  id?: string
+  organizationId: string
+  title: string
+  startsAt?: Date | string | null
+  dateTime?: Date | string | null
+  stakeholderName?: string | null
+  stakeholders?: Prisma.MeetingContextCreatestakeholdersInput | string[]
+  domainName?: string | null
+  domain?: string | null
+  objectives?: string | null
+  agendaItems?: Prisma.MeetingContextCreateagendaItemsInput | string[]
+  desiredOutcome?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  capturedInputs?: Prisma.CapturedInputUncheckedCreateNestedManyWithoutMeetingContextInput
+}
+
+export type MeetingContextCreateOrConnectWithoutExternalAttendeesInput = {
+  where: Prisma.MeetingContextWhereUniqueInput
+  create: Prisma.XOR<Prisma.MeetingContextCreateWithoutExternalAttendeesInput, Prisma.MeetingContextUncheckedCreateWithoutExternalAttendeesInput>
+}
+
+export type MeetingContextUpsertWithoutExternalAttendeesInput = {
+  update: Prisma.XOR<Prisma.MeetingContextUpdateWithoutExternalAttendeesInput, Prisma.MeetingContextUncheckedUpdateWithoutExternalAttendeesInput>
+  create: Prisma.XOR<Prisma.MeetingContextCreateWithoutExternalAttendeesInput, Prisma.MeetingContextUncheckedCreateWithoutExternalAttendeesInput>
+  where?: Prisma.MeetingContextWhereInput
+}
+
+export type MeetingContextUpdateToOneWithWhereWithoutExternalAttendeesInput = {
+  where?: Prisma.MeetingContextWhereInput
+  data: Prisma.XOR<Prisma.MeetingContextUpdateWithoutExternalAttendeesInput, Prisma.MeetingContextUncheckedUpdateWithoutExternalAttendeesInput>
+}
+
+export type MeetingContextUpdateWithoutExternalAttendeesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stakeholderName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stakeholders?: Prisma.MeetingContextUpdatestakeholdersInput | string[]
+  domainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectives?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agendaItems?: Prisma.MeetingContextUpdateagendaItemsInput | string[]
+  desiredOutcome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMeetingContextsNestedInput
+  capturedInputs?: Prisma.CapturedInputUpdateManyWithoutMeetingContextNestedInput
+}
+
+export type MeetingContextUncheckedUpdateWithoutExternalAttendeesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dateTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  stakeholderName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stakeholders?: Prisma.MeetingContextUpdatestakeholdersInput | string[]
+  domainName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectives?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agendaItems?: Prisma.MeetingContextUpdateagendaItemsInput | string[]
+  desiredOutcome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  capturedInputs?: Prisma.CapturedInputUncheckedUpdateManyWithoutMeetingContextNestedInput
+}
+
 export type MeetingContextCreateWithoutCapturedInputsInput = {
   id?: string
   title: string
@@ -686,6 +802,7 @@ export type MeetingContextCreateWithoutCapturedInputsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutMeetingContextsInput
+  externalAttendees?: Prisma.MeetingContextStakeholderCreateNestedManyWithoutMeetingContextInput
 }
 
 export type MeetingContextUncheckedCreateWithoutCapturedInputsInput = {
@@ -703,6 +820,7 @@ export type MeetingContextUncheckedCreateWithoutCapturedInputsInput = {
   desiredOutcome?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  externalAttendees?: Prisma.MeetingContextStakeholderUncheckedCreateNestedManyWithoutMeetingContextInput
 }
 
 export type MeetingContextCreateOrConnectWithoutCapturedInputsInput = {
@@ -736,6 +854,7 @@ export type MeetingContextUpdateWithoutCapturedInputsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutMeetingContextsNestedInput
+  externalAttendees?: Prisma.MeetingContextStakeholderUpdateManyWithoutMeetingContextNestedInput
 }
 
 export type MeetingContextUncheckedUpdateWithoutCapturedInputsInput = {
@@ -753,6 +872,7 @@ export type MeetingContextUncheckedUpdateWithoutCapturedInputsInput = {
   desiredOutcome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  externalAttendees?: Prisma.MeetingContextStakeholderUncheckedUpdateManyWithoutMeetingContextNestedInput
 }
 
 export type MeetingContextCreateManyOrganizationInput = {
@@ -786,6 +906,7 @@ export type MeetingContextUpdateWithoutOrganizationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capturedInputs?: Prisma.CapturedInputUpdateManyWithoutMeetingContextNestedInput
+  externalAttendees?: Prisma.MeetingContextStakeholderUpdateManyWithoutMeetingContextNestedInput
 }
 
 export type MeetingContextUncheckedUpdateWithoutOrganizationInput = {
@@ -803,6 +924,7 @@ export type MeetingContextUncheckedUpdateWithoutOrganizationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capturedInputs?: Prisma.CapturedInputUncheckedUpdateManyWithoutMeetingContextNestedInput
+  externalAttendees?: Prisma.MeetingContextStakeholderUncheckedUpdateManyWithoutMeetingContextNestedInput
 }
 
 export type MeetingContextUncheckedUpdateManyWithoutOrganizationInput = {
@@ -828,10 +950,12 @@ export type MeetingContextUncheckedUpdateManyWithoutOrganizationInput = {
 
 export type MeetingContextCountOutputType = {
   capturedInputs: number
+  externalAttendees: number
 }
 
 export type MeetingContextCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   capturedInputs?: boolean | MeetingContextCountOutputTypeCountCapturedInputsArgs
+  externalAttendees?: boolean | MeetingContextCountOutputTypeCountExternalAttendeesArgs
 }
 
 /**
@@ -849,6 +973,13 @@ export type MeetingContextCountOutputTypeDefaultArgs<ExtArgs extends runtime.Typ
  */
 export type MeetingContextCountOutputTypeCountCapturedInputsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.CapturedInputWhereInput
+}
+
+/**
+ * MeetingContextCountOutputType without action
+ */
+export type MeetingContextCountOutputTypeCountExternalAttendeesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MeetingContextStakeholderWhereInput
 }
 
 
@@ -869,6 +1000,7 @@ export type MeetingContextSelect<ExtArgs extends runtime.Types.Extensions.Intern
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   capturedInputs?: boolean | Prisma.MeetingContext$capturedInputsArgs<ExtArgs>
+  externalAttendees?: boolean | Prisma.MeetingContext$externalAttendeesArgs<ExtArgs>
   _count?: boolean | Prisma.MeetingContextCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["meetingContext"]>
 
@@ -929,6 +1061,7 @@ export type MeetingContextOmit<ExtArgs extends runtime.Types.Extensions.Internal
 export type MeetingContextInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   capturedInputs?: boolean | Prisma.MeetingContext$capturedInputsArgs<ExtArgs>
+  externalAttendees?: boolean | Prisma.MeetingContext$externalAttendeesArgs<ExtArgs>
   _count?: boolean | Prisma.MeetingContextCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MeetingContextIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -943,6 +1076,7 @@ export type $MeetingContextPayload<ExtArgs extends runtime.Types.Extensions.Inte
   objects: {
     organization: Prisma.$OrganizationPayload<ExtArgs>
     capturedInputs: Prisma.$CapturedInputPayload<ExtArgs>[]
+    externalAttendees: Prisma.$MeetingContextStakeholderPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1355,6 +1489,7 @@ export interface Prisma__MeetingContextClient<T, Null = never, ExtArgs extends r
   readonly [Symbol.toStringTag]: "PrismaPromise"
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   capturedInputs<T extends Prisma.MeetingContext$capturedInputsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MeetingContext$capturedInputsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CapturedInputPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  externalAttendees<T extends Prisma.MeetingContext$externalAttendeesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MeetingContext$externalAttendeesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MeetingContextStakeholderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1820,6 +1955,30 @@ export type MeetingContext$capturedInputsArgs<ExtArgs extends runtime.Types.Exte
   take?: number
   skip?: number
   distinct?: Prisma.CapturedInputScalarFieldEnum | Prisma.CapturedInputScalarFieldEnum[]
+}
+
+/**
+ * MeetingContext.externalAttendees
+ */
+export type MeetingContext$externalAttendeesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MeetingContextStakeholder
+   */
+  select?: Prisma.MeetingContextStakeholderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MeetingContextStakeholder
+   */
+  omit?: Prisma.MeetingContextStakeholderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MeetingContextStakeholderInclude<ExtArgs> | null
+  where?: Prisma.MeetingContextStakeholderWhereInput
+  orderBy?: Prisma.MeetingContextStakeholderOrderByWithRelationInput | Prisma.MeetingContextStakeholderOrderByWithRelationInput[]
+  cursor?: Prisma.MeetingContextStakeholderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MeetingContextStakeholderScalarFieldEnum | Prisma.MeetingContextStakeholderScalarFieldEnum[]
 }
 
 /**

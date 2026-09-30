@@ -348,6 +348,9 @@ export type AssessmentTaskWhereInput = {
   requester?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   assignee?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   completedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  dataRoomPack?: Prisma.XOR<Prisma.DataRoomRequestPackNullableScalarRelationFilter, Prisma.DataRoomRequestPackWhereInput> | null
+  externalAssignees?: Prisma.AssessmentTaskStakeholderListRelationFilter
+  activities?: Prisma.AssessmentTaskActivityListRelationFilter
 }
 
 export type AssessmentTaskOrderByWithRelationInput = {
@@ -376,6 +379,9 @@ export type AssessmentTaskOrderByWithRelationInput = {
   requester?: Prisma.UserOrderByWithRelationInput
   assignee?: Prisma.UserOrderByWithRelationInput
   completedBy?: Prisma.UserOrderByWithRelationInput
+  dataRoomPack?: Prisma.DataRoomRequestPackOrderByWithRelationInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderOrderByRelationAggregateInput
+  activities?: Prisma.AssessmentTaskActivityOrderByRelationAggregateInput
 }
 
 export type AssessmentTaskWhereUniqueInput = Prisma.AtLeast<{
@@ -407,6 +413,9 @@ export type AssessmentTaskWhereUniqueInput = Prisma.AtLeast<{
   requester?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   assignee?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   completedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  dataRoomPack?: Prisma.XOR<Prisma.DataRoomRequestPackNullableScalarRelationFilter, Prisma.DataRoomRequestPackWhereInput> | null
+  externalAssignees?: Prisma.AssessmentTaskStakeholderListRelationFilter
+  activities?: Prisma.AssessmentTaskActivityListRelationFilter
 }, "id">
 
 export type AssessmentTaskOrderByWithAggregationInput = {
@@ -487,6 +496,9 @@ export type AssessmentTaskCreateInput = {
   requester: Prisma.UserCreateNestedOneWithoutRequestedAssessmentTasksInput
   assignee: Prisma.UserCreateNestedOneWithoutAssignedAssessmentTasksInput
   completedBy?: Prisma.UserCreateNestedOneWithoutCompletedAssessmentTasksInput
+  dataRoomPack?: Prisma.DataRoomRequestPackCreateNestedOneWithoutAssessmentTaskInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderCreateNestedManyWithoutAssessmentTaskInput
+  activities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutAssessmentTaskInput
 }
 
 export type AssessmentTaskUncheckedCreateInput = {
@@ -511,6 +523,9 @@ export type AssessmentTaskUncheckedCreateInput = {
   completionNote?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  dataRoomPack?: Prisma.DataRoomRequestPackUncheckedCreateNestedOneWithoutAssessmentTaskInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUncheckedCreateNestedManyWithoutAssessmentTaskInput
+  activities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutAssessmentTaskInput
 }
 
 export type AssessmentTaskUpdateInput = {
@@ -535,6 +550,9 @@ export type AssessmentTaskUpdateInput = {
   requester?: Prisma.UserUpdateOneRequiredWithoutRequestedAssessmentTasksNestedInput
   assignee?: Prisma.UserUpdateOneRequiredWithoutAssignedAssessmentTasksNestedInput
   completedBy?: Prisma.UserUpdateOneWithoutCompletedAssessmentTasksNestedInput
+  dataRoomPack?: Prisma.DataRoomRequestPackUpdateOneWithoutAssessmentTaskNestedInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUpdateManyWithoutAssessmentTaskNestedInput
+  activities?: Prisma.AssessmentTaskActivityUpdateManyWithoutAssessmentTaskNestedInput
 }
 
 export type AssessmentTaskUncheckedUpdateInput = {
@@ -559,6 +577,9 @@ export type AssessmentTaskUncheckedUpdateInput = {
   completionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dataRoomPack?: Prisma.DataRoomRequestPackUncheckedUpdateOneWithoutAssessmentTaskNestedInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUncheckedUpdateManyWithoutAssessmentTaskNestedInput
+  activities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutAssessmentTaskNestedInput
 }
 
 export type AssessmentTaskCreateManyInput = {
@@ -717,6 +738,11 @@ export type AssessmentTaskMinOrderByAggregateInput = {
 
 export type AssessmentTaskSumOrderByAggregateInput = {
   priority?: Prisma.SortOrder
+}
+
+export type AssessmentTaskScalarRelationFilter = {
+  is?: Prisma.AssessmentTaskWhereInput
+  isNot?: Prisma.AssessmentTaskWhereInput
 }
 
 export type AssessmentTaskCreateNestedManyWithoutRequesterInput = {
@@ -899,6 +925,48 @@ export type EnumAssessmentTaskReviewStateFieldUpdateOperationsInput = {
   set?: $Enums.AssessmentTaskReviewState
 }
 
+export type AssessmentTaskCreateNestedOneWithoutExternalAssigneesInput = {
+  create?: Prisma.XOR<Prisma.AssessmentTaskCreateWithoutExternalAssigneesInput, Prisma.AssessmentTaskUncheckedCreateWithoutExternalAssigneesInput>
+  connectOrCreate?: Prisma.AssessmentTaskCreateOrConnectWithoutExternalAssigneesInput
+  connect?: Prisma.AssessmentTaskWhereUniqueInput
+}
+
+export type AssessmentTaskUpdateOneRequiredWithoutExternalAssigneesNestedInput = {
+  create?: Prisma.XOR<Prisma.AssessmentTaskCreateWithoutExternalAssigneesInput, Prisma.AssessmentTaskUncheckedCreateWithoutExternalAssigneesInput>
+  connectOrCreate?: Prisma.AssessmentTaskCreateOrConnectWithoutExternalAssigneesInput
+  upsert?: Prisma.AssessmentTaskUpsertWithoutExternalAssigneesInput
+  connect?: Prisma.AssessmentTaskWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AssessmentTaskUpdateToOneWithWhereWithoutExternalAssigneesInput, Prisma.AssessmentTaskUpdateWithoutExternalAssigneesInput>, Prisma.AssessmentTaskUncheckedUpdateWithoutExternalAssigneesInput>
+}
+
+export type AssessmentTaskCreateNestedOneWithoutActivitiesInput = {
+  create?: Prisma.XOR<Prisma.AssessmentTaskCreateWithoutActivitiesInput, Prisma.AssessmentTaskUncheckedCreateWithoutActivitiesInput>
+  connectOrCreate?: Prisma.AssessmentTaskCreateOrConnectWithoutActivitiesInput
+  connect?: Prisma.AssessmentTaskWhereUniqueInput
+}
+
+export type AssessmentTaskUpdateOneRequiredWithoutActivitiesNestedInput = {
+  create?: Prisma.XOR<Prisma.AssessmentTaskCreateWithoutActivitiesInput, Prisma.AssessmentTaskUncheckedCreateWithoutActivitiesInput>
+  connectOrCreate?: Prisma.AssessmentTaskCreateOrConnectWithoutActivitiesInput
+  upsert?: Prisma.AssessmentTaskUpsertWithoutActivitiesInput
+  connect?: Prisma.AssessmentTaskWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AssessmentTaskUpdateToOneWithWhereWithoutActivitiesInput, Prisma.AssessmentTaskUpdateWithoutActivitiesInput>, Prisma.AssessmentTaskUncheckedUpdateWithoutActivitiesInput>
+}
+
+export type AssessmentTaskCreateNestedOneWithoutDataRoomPackInput = {
+  create?: Prisma.XOR<Prisma.AssessmentTaskCreateWithoutDataRoomPackInput, Prisma.AssessmentTaskUncheckedCreateWithoutDataRoomPackInput>
+  connectOrCreate?: Prisma.AssessmentTaskCreateOrConnectWithoutDataRoomPackInput
+  connect?: Prisma.AssessmentTaskWhereUniqueInput
+}
+
+export type AssessmentTaskUpdateOneRequiredWithoutDataRoomPackNestedInput = {
+  create?: Prisma.XOR<Prisma.AssessmentTaskCreateWithoutDataRoomPackInput, Prisma.AssessmentTaskUncheckedCreateWithoutDataRoomPackInput>
+  connectOrCreate?: Prisma.AssessmentTaskCreateOrConnectWithoutDataRoomPackInput
+  upsert?: Prisma.AssessmentTaskUpsertWithoutDataRoomPackInput
+  connect?: Prisma.AssessmentTaskWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AssessmentTaskUpdateToOneWithWhereWithoutDataRoomPackInput, Prisma.AssessmentTaskUpdateWithoutDataRoomPackInput>, Prisma.AssessmentTaskUncheckedUpdateWithoutDataRoomPackInput>
+}
+
 export type AssessmentTaskCreateWithoutRequesterInput = {
   id?: string
   type: $Enums.AssessmentTaskType
@@ -920,6 +988,9 @@ export type AssessmentTaskCreateWithoutRequesterInput = {
   organization: Prisma.OrganizationCreateNestedOneWithoutAssessmentTasksInput
   assignee: Prisma.UserCreateNestedOneWithoutAssignedAssessmentTasksInput
   completedBy?: Prisma.UserCreateNestedOneWithoutCompletedAssessmentTasksInput
+  dataRoomPack?: Prisma.DataRoomRequestPackCreateNestedOneWithoutAssessmentTaskInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderCreateNestedManyWithoutAssessmentTaskInput
+  activities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutAssessmentTaskInput
 }
 
 export type AssessmentTaskUncheckedCreateWithoutRequesterInput = {
@@ -943,6 +1014,9 @@ export type AssessmentTaskUncheckedCreateWithoutRequesterInput = {
   completionNote?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  dataRoomPack?: Prisma.DataRoomRequestPackUncheckedCreateNestedOneWithoutAssessmentTaskInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUncheckedCreateNestedManyWithoutAssessmentTaskInput
+  activities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutAssessmentTaskInput
 }
 
 export type AssessmentTaskCreateOrConnectWithoutRequesterInput = {
@@ -976,6 +1050,9 @@ export type AssessmentTaskCreateWithoutAssigneeInput = {
   organization: Prisma.OrganizationCreateNestedOneWithoutAssessmentTasksInput
   requester: Prisma.UserCreateNestedOneWithoutRequestedAssessmentTasksInput
   completedBy?: Prisma.UserCreateNestedOneWithoutCompletedAssessmentTasksInput
+  dataRoomPack?: Prisma.DataRoomRequestPackCreateNestedOneWithoutAssessmentTaskInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderCreateNestedManyWithoutAssessmentTaskInput
+  activities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutAssessmentTaskInput
 }
 
 export type AssessmentTaskUncheckedCreateWithoutAssigneeInput = {
@@ -999,6 +1076,9 @@ export type AssessmentTaskUncheckedCreateWithoutAssigneeInput = {
   completionNote?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  dataRoomPack?: Prisma.DataRoomRequestPackUncheckedCreateNestedOneWithoutAssessmentTaskInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUncheckedCreateNestedManyWithoutAssessmentTaskInput
+  activities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutAssessmentTaskInput
 }
 
 export type AssessmentTaskCreateOrConnectWithoutAssigneeInput = {
@@ -1032,6 +1112,9 @@ export type AssessmentTaskCreateWithoutCompletedByInput = {
   organization: Prisma.OrganizationCreateNestedOneWithoutAssessmentTasksInput
   requester: Prisma.UserCreateNestedOneWithoutRequestedAssessmentTasksInput
   assignee: Prisma.UserCreateNestedOneWithoutAssignedAssessmentTasksInput
+  dataRoomPack?: Prisma.DataRoomRequestPackCreateNestedOneWithoutAssessmentTaskInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderCreateNestedManyWithoutAssessmentTaskInput
+  activities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutAssessmentTaskInput
 }
 
 export type AssessmentTaskUncheckedCreateWithoutCompletedByInput = {
@@ -1055,6 +1138,9 @@ export type AssessmentTaskUncheckedCreateWithoutCompletedByInput = {
   completionNote?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  dataRoomPack?: Prisma.DataRoomRequestPackUncheckedCreateNestedOneWithoutAssessmentTaskInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUncheckedCreateNestedManyWithoutAssessmentTaskInput
+  activities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutAssessmentTaskInput
 }
 
 export type AssessmentTaskCreateOrConnectWithoutCompletedByInput = {
@@ -1163,6 +1249,9 @@ export type AssessmentTaskCreateWithoutOrganizationInput = {
   requester: Prisma.UserCreateNestedOneWithoutRequestedAssessmentTasksInput
   assignee: Prisma.UserCreateNestedOneWithoutAssignedAssessmentTasksInput
   completedBy?: Prisma.UserCreateNestedOneWithoutCompletedAssessmentTasksInput
+  dataRoomPack?: Prisma.DataRoomRequestPackCreateNestedOneWithoutAssessmentTaskInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderCreateNestedManyWithoutAssessmentTaskInput
+  activities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutAssessmentTaskInput
 }
 
 export type AssessmentTaskUncheckedCreateWithoutOrganizationInput = {
@@ -1186,6 +1275,9 @@ export type AssessmentTaskUncheckedCreateWithoutOrganizationInput = {
   completionNote?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  dataRoomPack?: Prisma.DataRoomRequestPackUncheckedCreateNestedOneWithoutAssessmentTaskInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUncheckedCreateNestedManyWithoutAssessmentTaskInput
+  activities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutAssessmentTaskInput
 }
 
 export type AssessmentTaskCreateOrConnectWithoutOrganizationInput = {
@@ -1212,6 +1304,366 @@ export type AssessmentTaskUpdateWithWhereUniqueWithoutOrganizationInput = {
 export type AssessmentTaskUpdateManyWithWhereWithoutOrganizationInput = {
   where: Prisma.AssessmentTaskScalarWhereInput
   data: Prisma.XOR<Prisma.AssessmentTaskUpdateManyMutationInput, Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationInput>
+}
+
+export type AssessmentTaskCreateWithoutExternalAssigneesInput = {
+  id?: string
+  type: $Enums.AssessmentTaskType
+  title: string
+  description: string
+  context?: string | null
+  dueDate: Date | string
+  priority?: number
+  status?: $Enums.AssessmentTaskStatus
+  humanReviewState?: $Enums.AssessmentTaskReviewState
+  linkedEvidenceId?: string | null
+  linkedCapabilityId?: string | null
+  linkedDecisionId?: string | null
+  linkedReportSection?: string | null
+  completedAt?: Date | string | null
+  completionNote?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutAssessmentTasksInput
+  requester: Prisma.UserCreateNestedOneWithoutRequestedAssessmentTasksInput
+  assignee: Prisma.UserCreateNestedOneWithoutAssignedAssessmentTasksInput
+  completedBy?: Prisma.UserCreateNestedOneWithoutCompletedAssessmentTasksInput
+  dataRoomPack?: Prisma.DataRoomRequestPackCreateNestedOneWithoutAssessmentTaskInput
+  activities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutAssessmentTaskInput
+}
+
+export type AssessmentTaskUncheckedCreateWithoutExternalAssigneesInput = {
+  id?: string
+  organizationId: string
+  requesterId: string
+  assigneeId: string
+  type: $Enums.AssessmentTaskType
+  title: string
+  description: string
+  context?: string | null
+  dueDate: Date | string
+  priority?: number
+  status?: $Enums.AssessmentTaskStatus
+  humanReviewState?: $Enums.AssessmentTaskReviewState
+  linkedEvidenceId?: string | null
+  linkedCapabilityId?: string | null
+  linkedDecisionId?: string | null
+  linkedReportSection?: string | null
+  completedAt?: Date | string | null
+  completedById?: string | null
+  completionNote?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  dataRoomPack?: Prisma.DataRoomRequestPackUncheckedCreateNestedOneWithoutAssessmentTaskInput
+  activities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutAssessmentTaskInput
+}
+
+export type AssessmentTaskCreateOrConnectWithoutExternalAssigneesInput = {
+  where: Prisma.AssessmentTaskWhereUniqueInput
+  create: Prisma.XOR<Prisma.AssessmentTaskCreateWithoutExternalAssigneesInput, Prisma.AssessmentTaskUncheckedCreateWithoutExternalAssigneesInput>
+}
+
+export type AssessmentTaskUpsertWithoutExternalAssigneesInput = {
+  update: Prisma.XOR<Prisma.AssessmentTaskUpdateWithoutExternalAssigneesInput, Prisma.AssessmentTaskUncheckedUpdateWithoutExternalAssigneesInput>
+  create: Prisma.XOR<Prisma.AssessmentTaskCreateWithoutExternalAssigneesInput, Prisma.AssessmentTaskUncheckedCreateWithoutExternalAssigneesInput>
+  where?: Prisma.AssessmentTaskWhereInput
+}
+
+export type AssessmentTaskUpdateToOneWithWhereWithoutExternalAssigneesInput = {
+  where?: Prisma.AssessmentTaskWhereInput
+  data: Prisma.XOR<Prisma.AssessmentTaskUpdateWithoutExternalAssigneesInput, Prisma.AssessmentTaskUncheckedUpdateWithoutExternalAssigneesInput>
+}
+
+export type AssessmentTaskUpdateWithoutExternalAssigneesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAssessmentTaskTypeFieldUpdateOperationsInput | $Enums.AssessmentTaskType
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  context?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumAssessmentTaskStatusFieldUpdateOperationsInput | $Enums.AssessmentTaskStatus
+  humanReviewState?: Prisma.EnumAssessmentTaskReviewStateFieldUpdateOperationsInput | $Enums.AssessmentTaskReviewState
+  linkedEvidenceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedCapabilityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedDecisionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedReportSection?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutAssessmentTasksNestedInput
+  requester?: Prisma.UserUpdateOneRequiredWithoutRequestedAssessmentTasksNestedInput
+  assignee?: Prisma.UserUpdateOneRequiredWithoutAssignedAssessmentTasksNestedInput
+  completedBy?: Prisma.UserUpdateOneWithoutCompletedAssessmentTasksNestedInput
+  dataRoomPack?: Prisma.DataRoomRequestPackUpdateOneWithoutAssessmentTaskNestedInput
+  activities?: Prisma.AssessmentTaskActivityUpdateManyWithoutAssessmentTaskNestedInput
+}
+
+export type AssessmentTaskUncheckedUpdateWithoutExternalAssigneesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  requesterId?: Prisma.StringFieldUpdateOperationsInput | string
+  assigneeId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAssessmentTaskTypeFieldUpdateOperationsInput | $Enums.AssessmentTaskType
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  context?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumAssessmentTaskStatusFieldUpdateOperationsInput | $Enums.AssessmentTaskStatus
+  humanReviewState?: Prisma.EnumAssessmentTaskReviewStateFieldUpdateOperationsInput | $Enums.AssessmentTaskReviewState
+  linkedEvidenceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedCapabilityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedDecisionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedReportSection?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dataRoomPack?: Prisma.DataRoomRequestPackUncheckedUpdateOneWithoutAssessmentTaskNestedInput
+  activities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutAssessmentTaskNestedInput
+}
+
+export type AssessmentTaskCreateWithoutActivitiesInput = {
+  id?: string
+  type: $Enums.AssessmentTaskType
+  title: string
+  description: string
+  context?: string | null
+  dueDate: Date | string
+  priority?: number
+  status?: $Enums.AssessmentTaskStatus
+  humanReviewState?: $Enums.AssessmentTaskReviewState
+  linkedEvidenceId?: string | null
+  linkedCapabilityId?: string | null
+  linkedDecisionId?: string | null
+  linkedReportSection?: string | null
+  completedAt?: Date | string | null
+  completionNote?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutAssessmentTasksInput
+  requester: Prisma.UserCreateNestedOneWithoutRequestedAssessmentTasksInput
+  assignee: Prisma.UserCreateNestedOneWithoutAssignedAssessmentTasksInput
+  completedBy?: Prisma.UserCreateNestedOneWithoutCompletedAssessmentTasksInput
+  dataRoomPack?: Prisma.DataRoomRequestPackCreateNestedOneWithoutAssessmentTaskInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderCreateNestedManyWithoutAssessmentTaskInput
+}
+
+export type AssessmentTaskUncheckedCreateWithoutActivitiesInput = {
+  id?: string
+  organizationId: string
+  requesterId: string
+  assigneeId: string
+  type: $Enums.AssessmentTaskType
+  title: string
+  description: string
+  context?: string | null
+  dueDate: Date | string
+  priority?: number
+  status?: $Enums.AssessmentTaskStatus
+  humanReviewState?: $Enums.AssessmentTaskReviewState
+  linkedEvidenceId?: string | null
+  linkedCapabilityId?: string | null
+  linkedDecisionId?: string | null
+  linkedReportSection?: string | null
+  completedAt?: Date | string | null
+  completedById?: string | null
+  completionNote?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  dataRoomPack?: Prisma.DataRoomRequestPackUncheckedCreateNestedOneWithoutAssessmentTaskInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUncheckedCreateNestedManyWithoutAssessmentTaskInput
+}
+
+export type AssessmentTaskCreateOrConnectWithoutActivitiesInput = {
+  where: Prisma.AssessmentTaskWhereUniqueInput
+  create: Prisma.XOR<Prisma.AssessmentTaskCreateWithoutActivitiesInput, Prisma.AssessmentTaskUncheckedCreateWithoutActivitiesInput>
+}
+
+export type AssessmentTaskUpsertWithoutActivitiesInput = {
+  update: Prisma.XOR<Prisma.AssessmentTaskUpdateWithoutActivitiesInput, Prisma.AssessmentTaskUncheckedUpdateWithoutActivitiesInput>
+  create: Prisma.XOR<Prisma.AssessmentTaskCreateWithoutActivitiesInput, Prisma.AssessmentTaskUncheckedCreateWithoutActivitiesInput>
+  where?: Prisma.AssessmentTaskWhereInput
+}
+
+export type AssessmentTaskUpdateToOneWithWhereWithoutActivitiesInput = {
+  where?: Prisma.AssessmentTaskWhereInput
+  data: Prisma.XOR<Prisma.AssessmentTaskUpdateWithoutActivitiesInput, Prisma.AssessmentTaskUncheckedUpdateWithoutActivitiesInput>
+}
+
+export type AssessmentTaskUpdateWithoutActivitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAssessmentTaskTypeFieldUpdateOperationsInput | $Enums.AssessmentTaskType
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  context?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumAssessmentTaskStatusFieldUpdateOperationsInput | $Enums.AssessmentTaskStatus
+  humanReviewState?: Prisma.EnumAssessmentTaskReviewStateFieldUpdateOperationsInput | $Enums.AssessmentTaskReviewState
+  linkedEvidenceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedCapabilityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedDecisionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedReportSection?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutAssessmentTasksNestedInput
+  requester?: Prisma.UserUpdateOneRequiredWithoutRequestedAssessmentTasksNestedInput
+  assignee?: Prisma.UserUpdateOneRequiredWithoutAssignedAssessmentTasksNestedInput
+  completedBy?: Prisma.UserUpdateOneWithoutCompletedAssessmentTasksNestedInput
+  dataRoomPack?: Prisma.DataRoomRequestPackUpdateOneWithoutAssessmentTaskNestedInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUpdateManyWithoutAssessmentTaskNestedInput
+}
+
+export type AssessmentTaskUncheckedUpdateWithoutActivitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  requesterId?: Prisma.StringFieldUpdateOperationsInput | string
+  assigneeId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAssessmentTaskTypeFieldUpdateOperationsInput | $Enums.AssessmentTaskType
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  context?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumAssessmentTaskStatusFieldUpdateOperationsInput | $Enums.AssessmentTaskStatus
+  humanReviewState?: Prisma.EnumAssessmentTaskReviewStateFieldUpdateOperationsInput | $Enums.AssessmentTaskReviewState
+  linkedEvidenceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedCapabilityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedDecisionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedReportSection?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dataRoomPack?: Prisma.DataRoomRequestPackUncheckedUpdateOneWithoutAssessmentTaskNestedInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUncheckedUpdateManyWithoutAssessmentTaskNestedInput
+}
+
+export type AssessmentTaskCreateWithoutDataRoomPackInput = {
+  id?: string
+  type: $Enums.AssessmentTaskType
+  title: string
+  description: string
+  context?: string | null
+  dueDate: Date | string
+  priority?: number
+  status?: $Enums.AssessmentTaskStatus
+  humanReviewState?: $Enums.AssessmentTaskReviewState
+  linkedEvidenceId?: string | null
+  linkedCapabilityId?: string | null
+  linkedDecisionId?: string | null
+  linkedReportSection?: string | null
+  completedAt?: Date | string | null
+  completionNote?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutAssessmentTasksInput
+  requester: Prisma.UserCreateNestedOneWithoutRequestedAssessmentTasksInput
+  assignee: Prisma.UserCreateNestedOneWithoutAssignedAssessmentTasksInput
+  completedBy?: Prisma.UserCreateNestedOneWithoutCompletedAssessmentTasksInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderCreateNestedManyWithoutAssessmentTaskInput
+  activities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutAssessmentTaskInput
+}
+
+export type AssessmentTaskUncheckedCreateWithoutDataRoomPackInput = {
+  id?: string
+  organizationId: string
+  requesterId: string
+  assigneeId: string
+  type: $Enums.AssessmentTaskType
+  title: string
+  description: string
+  context?: string | null
+  dueDate: Date | string
+  priority?: number
+  status?: $Enums.AssessmentTaskStatus
+  humanReviewState?: $Enums.AssessmentTaskReviewState
+  linkedEvidenceId?: string | null
+  linkedCapabilityId?: string | null
+  linkedDecisionId?: string | null
+  linkedReportSection?: string | null
+  completedAt?: Date | string | null
+  completedById?: string | null
+  completionNote?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUncheckedCreateNestedManyWithoutAssessmentTaskInput
+  activities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutAssessmentTaskInput
+}
+
+export type AssessmentTaskCreateOrConnectWithoutDataRoomPackInput = {
+  where: Prisma.AssessmentTaskWhereUniqueInput
+  create: Prisma.XOR<Prisma.AssessmentTaskCreateWithoutDataRoomPackInput, Prisma.AssessmentTaskUncheckedCreateWithoutDataRoomPackInput>
+}
+
+export type AssessmentTaskUpsertWithoutDataRoomPackInput = {
+  update: Prisma.XOR<Prisma.AssessmentTaskUpdateWithoutDataRoomPackInput, Prisma.AssessmentTaskUncheckedUpdateWithoutDataRoomPackInput>
+  create: Prisma.XOR<Prisma.AssessmentTaskCreateWithoutDataRoomPackInput, Prisma.AssessmentTaskUncheckedCreateWithoutDataRoomPackInput>
+  where?: Prisma.AssessmentTaskWhereInput
+}
+
+export type AssessmentTaskUpdateToOneWithWhereWithoutDataRoomPackInput = {
+  where?: Prisma.AssessmentTaskWhereInput
+  data: Prisma.XOR<Prisma.AssessmentTaskUpdateWithoutDataRoomPackInput, Prisma.AssessmentTaskUncheckedUpdateWithoutDataRoomPackInput>
+}
+
+export type AssessmentTaskUpdateWithoutDataRoomPackInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAssessmentTaskTypeFieldUpdateOperationsInput | $Enums.AssessmentTaskType
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  context?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumAssessmentTaskStatusFieldUpdateOperationsInput | $Enums.AssessmentTaskStatus
+  humanReviewState?: Prisma.EnumAssessmentTaskReviewStateFieldUpdateOperationsInput | $Enums.AssessmentTaskReviewState
+  linkedEvidenceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedCapabilityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedDecisionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedReportSection?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutAssessmentTasksNestedInput
+  requester?: Prisma.UserUpdateOneRequiredWithoutRequestedAssessmentTasksNestedInput
+  assignee?: Prisma.UserUpdateOneRequiredWithoutAssignedAssessmentTasksNestedInput
+  completedBy?: Prisma.UserUpdateOneWithoutCompletedAssessmentTasksNestedInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUpdateManyWithoutAssessmentTaskNestedInput
+  activities?: Prisma.AssessmentTaskActivityUpdateManyWithoutAssessmentTaskNestedInput
+}
+
+export type AssessmentTaskUncheckedUpdateWithoutDataRoomPackInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  requesterId?: Prisma.StringFieldUpdateOperationsInput | string
+  assigneeId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAssessmentTaskTypeFieldUpdateOperationsInput | $Enums.AssessmentTaskType
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  context?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumAssessmentTaskStatusFieldUpdateOperationsInput | $Enums.AssessmentTaskStatus
+  humanReviewState?: Prisma.EnumAssessmentTaskReviewStateFieldUpdateOperationsInput | $Enums.AssessmentTaskReviewState
+  linkedEvidenceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedCapabilityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedDecisionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedReportSection?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUncheckedUpdateManyWithoutAssessmentTaskNestedInput
+  activities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutAssessmentTaskNestedInput
 }
 
 export type AssessmentTaskCreateManyRequesterInput = {
@@ -1304,6 +1756,9 @@ export type AssessmentTaskUpdateWithoutRequesterInput = {
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutAssessmentTasksNestedInput
   assignee?: Prisma.UserUpdateOneRequiredWithoutAssignedAssessmentTasksNestedInput
   completedBy?: Prisma.UserUpdateOneWithoutCompletedAssessmentTasksNestedInput
+  dataRoomPack?: Prisma.DataRoomRequestPackUpdateOneWithoutAssessmentTaskNestedInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUpdateManyWithoutAssessmentTaskNestedInput
+  activities?: Prisma.AssessmentTaskActivityUpdateManyWithoutAssessmentTaskNestedInput
 }
 
 export type AssessmentTaskUncheckedUpdateWithoutRequesterInput = {
@@ -1327,6 +1782,9 @@ export type AssessmentTaskUncheckedUpdateWithoutRequesterInput = {
   completionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dataRoomPack?: Prisma.DataRoomRequestPackUncheckedUpdateOneWithoutAssessmentTaskNestedInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUncheckedUpdateManyWithoutAssessmentTaskNestedInput
+  activities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutAssessmentTaskNestedInput
 }
 
 export type AssessmentTaskUncheckedUpdateManyWithoutRequesterInput = {
@@ -1373,6 +1831,9 @@ export type AssessmentTaskUpdateWithoutAssigneeInput = {
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutAssessmentTasksNestedInput
   requester?: Prisma.UserUpdateOneRequiredWithoutRequestedAssessmentTasksNestedInput
   completedBy?: Prisma.UserUpdateOneWithoutCompletedAssessmentTasksNestedInput
+  dataRoomPack?: Prisma.DataRoomRequestPackUpdateOneWithoutAssessmentTaskNestedInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUpdateManyWithoutAssessmentTaskNestedInput
+  activities?: Prisma.AssessmentTaskActivityUpdateManyWithoutAssessmentTaskNestedInput
 }
 
 export type AssessmentTaskUncheckedUpdateWithoutAssigneeInput = {
@@ -1396,6 +1857,9 @@ export type AssessmentTaskUncheckedUpdateWithoutAssigneeInput = {
   completionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dataRoomPack?: Prisma.DataRoomRequestPackUncheckedUpdateOneWithoutAssessmentTaskNestedInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUncheckedUpdateManyWithoutAssessmentTaskNestedInput
+  activities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutAssessmentTaskNestedInput
 }
 
 export type AssessmentTaskUncheckedUpdateManyWithoutAssigneeInput = {
@@ -1442,6 +1906,9 @@ export type AssessmentTaskUpdateWithoutCompletedByInput = {
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutAssessmentTasksNestedInput
   requester?: Prisma.UserUpdateOneRequiredWithoutRequestedAssessmentTasksNestedInput
   assignee?: Prisma.UserUpdateOneRequiredWithoutAssignedAssessmentTasksNestedInput
+  dataRoomPack?: Prisma.DataRoomRequestPackUpdateOneWithoutAssessmentTaskNestedInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUpdateManyWithoutAssessmentTaskNestedInput
+  activities?: Prisma.AssessmentTaskActivityUpdateManyWithoutAssessmentTaskNestedInput
 }
 
 export type AssessmentTaskUncheckedUpdateWithoutCompletedByInput = {
@@ -1465,6 +1932,9 @@ export type AssessmentTaskUncheckedUpdateWithoutCompletedByInput = {
   completionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dataRoomPack?: Prisma.DataRoomRequestPackUncheckedUpdateOneWithoutAssessmentTaskNestedInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUncheckedUpdateManyWithoutAssessmentTaskNestedInput
+  activities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutAssessmentTaskNestedInput
 }
 
 export type AssessmentTaskUncheckedUpdateManyWithoutCompletedByInput = {
@@ -1534,6 +2004,9 @@ export type AssessmentTaskUpdateWithoutOrganizationInput = {
   requester?: Prisma.UserUpdateOneRequiredWithoutRequestedAssessmentTasksNestedInput
   assignee?: Prisma.UserUpdateOneRequiredWithoutAssignedAssessmentTasksNestedInput
   completedBy?: Prisma.UserUpdateOneWithoutCompletedAssessmentTasksNestedInput
+  dataRoomPack?: Prisma.DataRoomRequestPackUpdateOneWithoutAssessmentTaskNestedInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUpdateManyWithoutAssessmentTaskNestedInput
+  activities?: Prisma.AssessmentTaskActivityUpdateManyWithoutAssessmentTaskNestedInput
 }
 
 export type AssessmentTaskUncheckedUpdateWithoutOrganizationInput = {
@@ -1557,6 +2030,9 @@ export type AssessmentTaskUncheckedUpdateWithoutOrganizationInput = {
   completionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dataRoomPack?: Prisma.DataRoomRequestPackUncheckedUpdateOneWithoutAssessmentTaskNestedInput
+  externalAssignees?: Prisma.AssessmentTaskStakeholderUncheckedUpdateManyWithoutAssessmentTaskNestedInput
+  activities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutAssessmentTaskNestedInput
 }
 
 export type AssessmentTaskUncheckedUpdateManyWithoutOrganizationInput = {
@@ -1582,6 +2058,44 @@ export type AssessmentTaskUncheckedUpdateManyWithoutOrganizationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type AssessmentTaskCountOutputType
+ */
+
+export type AssessmentTaskCountOutputType = {
+  externalAssignees: number
+  activities: number
+}
+
+export type AssessmentTaskCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  externalAssignees?: boolean | AssessmentTaskCountOutputTypeCountExternalAssigneesArgs
+  activities?: boolean | AssessmentTaskCountOutputTypeCountActivitiesArgs
+}
+
+/**
+ * AssessmentTaskCountOutputType without action
+ */
+export type AssessmentTaskCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AssessmentTaskCountOutputType
+   */
+  select?: Prisma.AssessmentTaskCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * AssessmentTaskCountOutputType without action
+ */
+export type AssessmentTaskCountOutputTypeCountExternalAssigneesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AssessmentTaskStakeholderWhereInput
+}
+
+/**
+ * AssessmentTaskCountOutputType without action
+ */
+export type AssessmentTaskCountOutputTypeCountActivitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AssessmentTaskActivityWhereInput
+}
 
 
 export type AssessmentTaskSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1610,6 +2124,10 @@ export type AssessmentTaskSelect<ExtArgs extends runtime.Types.Extensions.Intern
   requester?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   assignee?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   completedBy?: boolean | Prisma.AssessmentTask$completedByArgs<ExtArgs>
+  dataRoomPack?: boolean | Prisma.AssessmentTask$dataRoomPackArgs<ExtArgs>
+  externalAssignees?: boolean | Prisma.AssessmentTask$externalAssigneesArgs<ExtArgs>
+  activities?: boolean | Prisma.AssessmentTask$activitiesArgs<ExtArgs>
+  _count?: boolean | Prisma.AssessmentTaskCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["assessmentTask"]>
 
 export type AssessmentTaskSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1698,6 +2216,10 @@ export type AssessmentTaskInclude<ExtArgs extends runtime.Types.Extensions.Inter
   requester?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   assignee?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   completedBy?: boolean | Prisma.AssessmentTask$completedByArgs<ExtArgs>
+  dataRoomPack?: boolean | Prisma.AssessmentTask$dataRoomPackArgs<ExtArgs>
+  externalAssignees?: boolean | Prisma.AssessmentTask$externalAssigneesArgs<ExtArgs>
+  activities?: boolean | Prisma.AssessmentTask$activitiesArgs<ExtArgs>
+  _count?: boolean | Prisma.AssessmentTaskCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AssessmentTaskIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -1719,6 +2241,9 @@ export type $AssessmentTaskPayload<ExtArgs extends runtime.Types.Extensions.Inte
     requester: Prisma.$UserPayload<ExtArgs>
     assignee: Prisma.$UserPayload<ExtArgs>
     completedBy: Prisma.$UserPayload<ExtArgs> | null
+    dataRoomPack: Prisma.$DataRoomRequestPackPayload<ExtArgs> | null
+    externalAssignees: Prisma.$AssessmentTaskStakeholderPayload<ExtArgs>[]
+    activities: Prisma.$AssessmentTaskActivityPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2140,6 +2665,9 @@ export interface Prisma__AssessmentTaskClient<T, Null = never, ExtArgs extends r
   requester<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   assignee<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   completedBy<T extends Prisma.AssessmentTask$completedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssessmentTask$completedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  dataRoomPack<T extends Prisma.AssessmentTask$dataRoomPackArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssessmentTask$dataRoomPackArgs<ExtArgs>>): Prisma.Prisma__DataRoomRequestPackClient<runtime.Types.Result.GetResult<Prisma.$DataRoomRequestPackPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  externalAssignees<T extends Prisma.AssessmentTask$externalAssigneesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssessmentTask$externalAssigneesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentTaskStakeholderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  activities<T extends Prisma.AssessmentTask$activitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssessmentTask$activitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentTaskActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2607,6 +3135,73 @@ export type AssessmentTask$completedByArgs<ExtArgs extends runtime.Types.Extensi
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * AssessmentTask.dataRoomPack
+ */
+export type AssessmentTask$dataRoomPackArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DataRoomRequestPack
+   */
+  select?: Prisma.DataRoomRequestPackSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DataRoomRequestPack
+   */
+  omit?: Prisma.DataRoomRequestPackOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DataRoomRequestPackInclude<ExtArgs> | null
+  where?: Prisma.DataRoomRequestPackWhereInput
+}
+
+/**
+ * AssessmentTask.externalAssignees
+ */
+export type AssessmentTask$externalAssigneesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AssessmentTaskStakeholder
+   */
+  select?: Prisma.AssessmentTaskStakeholderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AssessmentTaskStakeholder
+   */
+  omit?: Prisma.AssessmentTaskStakeholderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AssessmentTaskStakeholderInclude<ExtArgs> | null
+  where?: Prisma.AssessmentTaskStakeholderWhereInput
+  orderBy?: Prisma.AssessmentTaskStakeholderOrderByWithRelationInput | Prisma.AssessmentTaskStakeholderOrderByWithRelationInput[]
+  cursor?: Prisma.AssessmentTaskStakeholderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AssessmentTaskStakeholderScalarFieldEnum | Prisma.AssessmentTaskStakeholderScalarFieldEnum[]
+}
+
+/**
+ * AssessmentTask.activities
+ */
+export type AssessmentTask$activitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AssessmentTaskActivity
+   */
+  select?: Prisma.AssessmentTaskActivitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AssessmentTaskActivity
+   */
+  omit?: Prisma.AssessmentTaskActivityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AssessmentTaskActivityInclude<ExtArgs> | null
+  where?: Prisma.AssessmentTaskActivityWhereInput
+  orderBy?: Prisma.AssessmentTaskActivityOrderByWithRelationInput | Prisma.AssessmentTaskActivityOrderByWithRelationInput[]
+  cursor?: Prisma.AssessmentTaskActivityWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AssessmentTaskActivityScalarFieldEnum | Prisma.AssessmentTaskActivityScalarFieldEnum[]
 }
 
 /**

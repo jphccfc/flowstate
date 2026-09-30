@@ -20,6 +20,22 @@ export const UserRole = {
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 
+export const ExternalPortalRole = {
+  CLIENT: 'CLIENT',
+  PARTNER: 'PARTNER'
+} as const
+
+export type ExternalPortalRole = (typeof ExternalPortalRole)[keyof typeof ExternalPortalRole]
+
+
+export const AssessmentTaskActivityType = {
+  STATUS_CHANGED: 'STATUS_CHANGED',
+  COMMENT_ADDED: 'COMMENT_ADDED'
+} as const
+
+export type AssessmentTaskActivityType = (typeof AssessmentTaskActivityType)[keyof typeof AssessmentTaskActivityType]
+
+
 export const InputType = {
   AUDIO: 'AUDIO',
   TEXT_NOTE: 'TEXT_NOTE',
@@ -233,6 +249,18 @@ export const AssessmentTaskReviewState = {
 } as const
 
 export type AssessmentTaskReviewState = (typeof AssessmentTaskReviewState)[keyof typeof AssessmentTaskReviewState]
+
+
+export const DataRoomRequestStatus = {
+  REQUESTED: 'REQUESTED',
+  PARTIALLY_RECEIVED: 'PARTIALLY_RECEIVED',
+  RECEIVED: 'RECEIVED',
+  ACCEPTED: 'ACCEPTED',
+  FOLLOW_UP_REQUIRED: 'FOLLOW_UP_REQUIRED',
+  NOT_APPLICABLE: 'NOT_APPLICABLE'
+} as const
+
+export type DataRoomRequestStatus = (typeof DataRoomRequestStatus)[keyof typeof DataRoomRequestStatus]
 
 
 export const AgentRunStatus = {

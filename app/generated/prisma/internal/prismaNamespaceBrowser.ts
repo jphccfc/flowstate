@@ -57,6 +57,7 @@ export const ModelName = {
   BusinessDomain: 'BusinessDomain',
   Capability: 'Capability',
   Stakeholder: 'Stakeholder',
+  StakeholderPortalMembership: 'StakeholderPortalMembership',
   CapabilityStakeholder: 'CapabilityStakeholder',
   KPI: 'KPI',
   CapabilityKPI: 'CapabilityKPI',
@@ -70,6 +71,7 @@ export const ModelName = {
   AchievementStakeholder: 'AchievementStakeholder',
   AssessmentSession: 'AssessmentSession',
   MeetingContext: 'MeetingContext',
+  MeetingContextStakeholder: 'MeetingContextStakeholder',
   CapturedInput: 'CapturedInput',
   CapturedInputAttachment: 'CapturedInputAttachment',
   InboundEmailEndpoint: 'InboundEmailEndpoint',
@@ -96,6 +98,11 @@ export const ModelName = {
   FollowUpSuggestion: 'FollowUpSuggestion',
   ProcessingJob: 'ProcessingJob',
   AssessmentTask: 'AssessmentTask',
+  AssessmentTaskStakeholder: 'AssessmentTaskStakeholder',
+  AssessmentTaskActivity: 'AssessmentTaskActivity',
+  DataRoomRequestPack: 'DataRoomRequestPack',
+  DataRoomRequestCategory: 'DataRoomRequestCategory',
+  DataRoomRequestItem: 'DataRoomRequestItem',
   AgentDefinition: 'AgentDefinition',
   AgentPromptVersion: 'AgentPromptVersion',
   AgentInputRule: 'AgentInputRule',
@@ -205,6 +212,18 @@ export const StakeholderScalarFieldEnum = {
 } as const
 
 export type StakeholderScalarFieldEnum = (typeof StakeholderScalarFieldEnum)[keyof typeof StakeholderScalarFieldEnum]
+
+
+export const StakeholderPortalMembershipScalarFieldEnum = {
+  id: 'id',
+  stakeholderId: 'stakeholderId',
+  userId: 'userId',
+  role: 'role',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StakeholderPortalMembershipScalarFieldEnum = (typeof StakeholderPortalMembershipScalarFieldEnum)[keyof typeof StakeholderPortalMembershipScalarFieldEnum]
 
 
 export const CapabilityStakeholderScalarFieldEnum = {
@@ -366,6 +385,15 @@ export const MeetingContextScalarFieldEnum = {
 } as const
 
 export type MeetingContextScalarFieldEnum = (typeof MeetingContextScalarFieldEnum)[keyof typeof MeetingContextScalarFieldEnum]
+
+
+export const MeetingContextStakeholderScalarFieldEnum = {
+  meetingContextId: 'meetingContextId',
+  stakeholderId: 'stakeholderId',
+  attendedAt: 'attendedAt'
+} as const
+
+export type MeetingContextStakeholderScalarFieldEnum = (typeof MeetingContextStakeholderScalarFieldEnum)[keyof typeof MeetingContextStakeholderScalarFieldEnum]
 
 
 export const CapturedInputScalarFieldEnum = {
@@ -841,6 +869,72 @@ export const AssessmentTaskScalarFieldEnum = {
 } as const
 
 export type AssessmentTaskScalarFieldEnum = (typeof AssessmentTaskScalarFieldEnum)[keyof typeof AssessmentTaskScalarFieldEnum]
+
+
+export const AssessmentTaskStakeholderScalarFieldEnum = {
+  assessmentTaskId: 'assessmentTaskId',
+  stakeholderId: 'stakeholderId',
+  assignedAt: 'assignedAt'
+} as const
+
+export type AssessmentTaskStakeholderScalarFieldEnum = (typeof AssessmentTaskStakeholderScalarFieldEnum)[keyof typeof AssessmentTaskStakeholderScalarFieldEnum]
+
+
+export const AssessmentTaskActivityScalarFieldEnum = {
+  id: 'id',
+  assessmentTaskId: 'assessmentTaskId',
+  actorUserId: 'actorUserId',
+  actorStakeholderId: 'actorStakeholderId',
+  type: 'type',
+  previousStatus: 'previousStatus',
+  nextStatus: 'nextStatus',
+  comment: 'comment',
+  createdAt: 'createdAt'
+} as const
+
+export type AssessmentTaskActivityScalarFieldEnum = (typeof AssessmentTaskActivityScalarFieldEnum)[keyof typeof AssessmentTaskActivityScalarFieldEnum]
+
+
+export const DataRoomRequestPackScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  assessmentTaskId: 'assessmentTaskId',
+  title: 'title',
+  sourceReference: 'sourceReference',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DataRoomRequestPackScalarFieldEnum = (typeof DataRoomRequestPackScalarFieldEnum)[keyof typeof DataRoomRequestPackScalarFieldEnum]
+
+
+export const DataRoomRequestCategoryScalarFieldEnum = {
+  id: 'id',
+  packId: 'packId',
+  title: 'title',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DataRoomRequestCategoryScalarFieldEnum = (typeof DataRoomRequestCategoryScalarFieldEnum)[keyof typeof DataRoomRequestCategoryScalarFieldEnum]
+
+
+export const DataRoomRequestItemScalarFieldEnum = {
+  id: 'id',
+  categoryId: 'categoryId',
+  title: 'title',
+  detail: 'detail',
+  sortOrder: 'sortOrder',
+  status: 'status',
+  completionNote: 'completionNote',
+  linkedInputId: 'linkedInputId',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DataRoomRequestItemScalarFieldEnum = (typeof DataRoomRequestItemScalarFieldEnum)[keyof typeof DataRoomRequestItemScalarFieldEnum]
 
 
 export const AgentDefinitionScalarFieldEnum = {

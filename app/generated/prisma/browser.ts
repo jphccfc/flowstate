@@ -48,6 +48,11 @@ export type Capability = Prisma.CapabilityModel
  */
 export type Stakeholder = Prisma.StakeholderModel
 /**
+ * Model StakeholderPortalMembership
+ * 
+ */
+export type StakeholderPortalMembership = Prisma.StakeholderPortalMembershipModel
+/**
  * Model CapabilityStakeholder
  * 
  */
@@ -112,6 +117,11 @@ export type AssessmentSession = Prisma.AssessmentSessionModel
  * 
  */
 export type MeetingContext = Prisma.MeetingContextModel
+/**
+ * Model MeetingContextStakeholder
+ * 
+ */
+export type MeetingContextStakeholder = Prisma.MeetingContextStakeholderModel
 /**
  * Model CapturedInput
  * 
@@ -242,6 +252,32 @@ export type ProcessingJob = Prisma.ProcessingJobModel
  * 
  */
 export type AssessmentTask = Prisma.AssessmentTaskModel
+/**
+ * Model AssessmentTaskStakeholder
+ * 
+ */
+export type AssessmentTaskStakeholder = Prisma.AssessmentTaskStakeholderModel
+/**
+ * Model AssessmentTaskActivity
+ * 
+ */
+export type AssessmentTaskActivity = Prisma.AssessmentTaskActivityModel
+/**
+ * Model DataRoomRequestPack
+ * Structured, grouped diligence evidence requests. This is intentionally
+ * separate from Growth Plan items and from a noisy flat list of tasks.
+ */
+export type DataRoomRequestPack = Prisma.DataRoomRequestPackModel
+/**
+ * Model DataRoomRequestCategory
+ * 
+ */
+export type DataRoomRequestCategory = Prisma.DataRoomRequestCategoryModel
+/**
+ * Model DataRoomRequestItem
+ * 
+ */
+export type DataRoomRequestItem = Prisma.DataRoomRequestItemModel
 /**
  * Model AgentDefinition
  * 

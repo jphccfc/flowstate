@@ -231,6 +231,7 @@ export type OrganizationWhereInput = {
   integrationSources?: Prisma.IntegrationSourceListRelationFilter
   tagDefinitions?: Prisma.TagDefinitionListRelationFilter
   tagAttachments?: Prisma.TagAttachmentListRelationFilter
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackListRelationFilter
 }
 
 export type OrganizationOrderByWithRelationInput = {
@@ -267,6 +268,7 @@ export type OrganizationOrderByWithRelationInput = {
   integrationSources?: Prisma.IntegrationSourceOrderByRelationAggregateInput
   tagDefinitions?: Prisma.TagDefinitionOrderByRelationAggregateInput
   tagAttachments?: Prisma.TagAttachmentOrderByRelationAggregateInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackOrderByRelationAggregateInput
 }
 
 export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
@@ -306,6 +308,7 @@ export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
   integrationSources?: Prisma.IntegrationSourceListRelationFilter
   tagDefinitions?: Prisma.TagDefinitionListRelationFilter
   tagAttachments?: Prisma.TagAttachmentListRelationFilter
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackListRelationFilter
 }, "id">
 
 export type OrganizationOrderByWithAggregationInput = {
@@ -370,6 +373,7 @@ export type OrganizationCreateInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateInput = {
@@ -406,6 +410,7 @@ export type OrganizationUncheckedCreateInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUpdateInput = {
@@ -442,6 +447,7 @@ export type OrganizationUpdateInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateInput = {
@@ -478,6 +484,7 @@ export type OrganizationUncheckedUpdateInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateManyInput = {
@@ -824,6 +831,20 @@ export type OrganizationUpdateOneRequiredWithoutAssessmentTasksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutAssessmentTasksInput, Prisma.OrganizationUpdateWithoutAssessmentTasksInput>, Prisma.OrganizationUncheckedUpdateWithoutAssessmentTasksInput>
 }
 
+export type OrganizationCreateNestedOneWithoutDataRoomRequestPacksInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutDataRoomRequestPacksInput, Prisma.OrganizationUncheckedCreateWithoutDataRoomRequestPacksInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutDataRoomRequestPacksInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+}
+
+export type OrganizationUpdateOneRequiredWithoutDataRoomRequestPacksNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutDataRoomRequestPacksInput, Prisma.OrganizationUncheckedCreateWithoutDataRoomRequestPacksInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutDataRoomRequestPacksInput
+  upsert?: Prisma.OrganizationUpsertWithoutDataRoomRequestPacksInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutDataRoomRequestPacksInput, Prisma.OrganizationUpdateWithoutDataRoomRequestPacksInput>, Prisma.OrganizationUncheckedUpdateWithoutDataRoomRequestPacksInput>
+}
+
 export type OrganizationCreateNestedOneWithoutAgentProfilesInput = {
   create?: Prisma.XOR<Prisma.OrganizationCreateWithoutAgentProfilesInput, Prisma.OrganizationUncheckedCreateWithoutAgentProfilesInput>
   connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutAgentProfilesInput
@@ -941,6 +962,7 @@ export type OrganizationCreateWithoutUsersInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutUsersInput = {
@@ -976,6 +998,7 @@ export type OrganizationUncheckedCreateWithoutUsersInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutUsersInput = {
@@ -1027,6 +1050,7 @@ export type OrganizationUpdateWithoutUsersInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutUsersInput = {
@@ -1062,6 +1086,7 @@ export type OrganizationUncheckedUpdateWithoutUsersInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutDomainsInput = {
@@ -1097,6 +1122,7 @@ export type OrganizationCreateWithoutDomainsInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutDomainsInput = {
@@ -1132,6 +1158,7 @@ export type OrganizationUncheckedCreateWithoutDomainsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutDomainsInput = {
@@ -1183,6 +1210,7 @@ export type OrganizationUpdateWithoutDomainsInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutDomainsInput = {
@@ -1218,6 +1246,7 @@ export type OrganizationUncheckedUpdateWithoutDomainsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutStakeholdersInput = {
@@ -1253,6 +1282,7 @@ export type OrganizationCreateWithoutStakeholdersInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutStakeholdersInput = {
@@ -1288,6 +1318,7 @@ export type OrganizationUncheckedCreateWithoutStakeholdersInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutStakeholdersInput = {
@@ -1339,6 +1370,7 @@ export type OrganizationUpdateWithoutStakeholdersInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutStakeholdersInput = {
@@ -1374,6 +1406,7 @@ export type OrganizationUncheckedUpdateWithoutStakeholdersInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutKpisInput = {
@@ -1409,6 +1442,7 @@ export type OrganizationCreateWithoutKpisInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutKpisInput = {
@@ -1444,6 +1478,7 @@ export type OrganizationUncheckedCreateWithoutKpisInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutKpisInput = {
@@ -1495,6 +1530,7 @@ export type OrganizationUpdateWithoutKpisInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutKpisInput = {
@@ -1530,6 +1566,7 @@ export type OrganizationUncheckedUpdateWithoutKpisInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutProcessesInput = {
@@ -1565,6 +1602,7 @@ export type OrganizationCreateWithoutProcessesInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutProcessesInput = {
@@ -1600,6 +1638,7 @@ export type OrganizationUncheckedCreateWithoutProcessesInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutProcessesInput = {
@@ -1651,6 +1690,7 @@ export type OrganizationUpdateWithoutProcessesInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutProcessesInput = {
@@ -1686,6 +1726,7 @@ export type OrganizationUncheckedUpdateWithoutProcessesInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutTechnologiesInput = {
@@ -1721,6 +1762,7 @@ export type OrganizationCreateWithoutTechnologiesInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutTechnologiesInput = {
@@ -1756,6 +1798,7 @@ export type OrganizationUncheckedCreateWithoutTechnologiesInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutTechnologiesInput = {
@@ -1807,6 +1850,7 @@ export type OrganizationUpdateWithoutTechnologiesInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutTechnologiesInput = {
@@ -1842,6 +1886,7 @@ export type OrganizationUncheckedUpdateWithoutTechnologiesInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutProjectsInput = {
@@ -1877,6 +1922,7 @@ export type OrganizationCreateWithoutProjectsInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutProjectsInput = {
@@ -1912,6 +1958,7 @@ export type OrganizationUncheckedCreateWithoutProjectsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutProjectsInput = {
@@ -1963,6 +2010,7 @@ export type OrganizationUpdateWithoutProjectsInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutProjectsInput = {
@@ -1998,6 +2046,7 @@ export type OrganizationUncheckedUpdateWithoutProjectsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutAchievementsInput = {
@@ -2033,6 +2082,7 @@ export type OrganizationCreateWithoutAchievementsInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutAchievementsInput = {
@@ -2068,6 +2118,7 @@ export type OrganizationUncheckedCreateWithoutAchievementsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutAchievementsInput = {
@@ -2119,6 +2170,7 @@ export type OrganizationUpdateWithoutAchievementsInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutAchievementsInput = {
@@ -2154,6 +2206,7 @@ export type OrganizationUncheckedUpdateWithoutAchievementsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutSessionsInput = {
@@ -2189,6 +2242,7 @@ export type OrganizationCreateWithoutSessionsInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutSessionsInput = {
@@ -2224,6 +2278,7 @@ export type OrganizationUncheckedCreateWithoutSessionsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutSessionsInput = {
@@ -2275,6 +2330,7 @@ export type OrganizationUpdateWithoutSessionsInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutSessionsInput = {
@@ -2310,6 +2366,7 @@ export type OrganizationUncheckedUpdateWithoutSessionsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutMeetingContextsInput = {
@@ -2345,6 +2402,7 @@ export type OrganizationCreateWithoutMeetingContextsInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutMeetingContextsInput = {
@@ -2380,6 +2438,7 @@ export type OrganizationUncheckedCreateWithoutMeetingContextsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutMeetingContextsInput = {
@@ -2431,6 +2490,7 @@ export type OrganizationUpdateWithoutMeetingContextsInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutMeetingContextsInput = {
@@ -2466,6 +2526,7 @@ export type OrganizationUncheckedUpdateWithoutMeetingContextsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutCapturedInputsInput = {
@@ -2501,6 +2562,7 @@ export type OrganizationCreateWithoutCapturedInputsInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutCapturedInputsInput = {
@@ -2536,6 +2598,7 @@ export type OrganizationUncheckedCreateWithoutCapturedInputsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutCapturedInputsInput = {
@@ -2587,6 +2650,7 @@ export type OrganizationUpdateWithoutCapturedInputsInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutCapturedInputsInput = {
@@ -2622,6 +2686,7 @@ export type OrganizationUncheckedUpdateWithoutCapturedInputsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutInboundEmailEndpointInput = {
@@ -2657,6 +2722,7 @@ export type OrganizationCreateWithoutInboundEmailEndpointInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutInboundEmailEndpointInput = {
@@ -2692,6 +2758,7 @@ export type OrganizationUncheckedCreateWithoutInboundEmailEndpointInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutInboundEmailEndpointInput = {
@@ -2743,6 +2810,7 @@ export type OrganizationUpdateWithoutInboundEmailEndpointInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutInboundEmailEndpointInput = {
@@ -2778,6 +2846,7 @@ export type OrganizationUncheckedUpdateWithoutInboundEmailEndpointInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutTagDefinitionsInput = {
@@ -2813,6 +2882,7 @@ export type OrganizationCreateWithoutTagDefinitionsInput = {
   agentProfiles?: Prisma.OrganizationAgentProfileCreateNestedManyWithoutOrganizationInput
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutTagDefinitionsInput = {
@@ -2848,6 +2918,7 @@ export type OrganizationUncheckedCreateWithoutTagDefinitionsInput = {
   agentProfiles?: Prisma.OrganizationAgentProfileUncheckedCreateNestedManyWithoutOrganizationInput
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutTagDefinitionsInput = {
@@ -2899,6 +2970,7 @@ export type OrganizationUpdateWithoutTagDefinitionsInput = {
   agentProfiles?: Prisma.OrganizationAgentProfileUpdateManyWithoutOrganizationNestedInput
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutTagDefinitionsInput = {
@@ -2934,6 +3006,7 @@ export type OrganizationUncheckedUpdateWithoutTagDefinitionsInput = {
   agentProfiles?: Prisma.OrganizationAgentProfileUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutTagAttachmentsInput = {
@@ -2969,6 +3042,7 @@ export type OrganizationCreateWithoutTagAttachmentsInput = {
   agentProfiles?: Prisma.OrganizationAgentProfileCreateNestedManyWithoutOrganizationInput
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutTagAttachmentsInput = {
@@ -3004,6 +3078,7 @@ export type OrganizationUncheckedCreateWithoutTagAttachmentsInput = {
   agentProfiles?: Prisma.OrganizationAgentProfileUncheckedCreateNestedManyWithoutOrganizationInput
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutTagAttachmentsInput = {
@@ -3055,6 +3130,7 @@ export type OrganizationUpdateWithoutTagAttachmentsInput = {
   agentProfiles?: Prisma.OrganizationAgentProfileUpdateManyWithoutOrganizationNestedInput
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutTagAttachmentsInput = {
@@ -3090,6 +3166,7 @@ export type OrganizationUncheckedUpdateWithoutTagAttachmentsInput = {
   agentProfiles?: Prisma.OrganizationAgentProfileUncheckedUpdateManyWithoutOrganizationNestedInput
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutMaturityRubricsInput = {
@@ -3125,6 +3202,7 @@ export type OrganizationCreateWithoutMaturityRubricsInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutMaturityRubricsInput = {
@@ -3160,6 +3238,7 @@ export type OrganizationUncheckedCreateWithoutMaturityRubricsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutMaturityRubricsInput = {
@@ -3211,6 +3290,7 @@ export type OrganizationUpdateWithoutMaturityRubricsInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutMaturityRubricsInput = {
@@ -3246,6 +3326,7 @@ export type OrganizationUncheckedUpdateWithoutMaturityRubricsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutPlanningItemsInput = {
@@ -3281,6 +3362,7 @@ export type OrganizationCreateWithoutPlanningItemsInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutPlanningItemsInput = {
@@ -3316,6 +3398,7 @@ export type OrganizationUncheckedCreateWithoutPlanningItemsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutPlanningItemsInput = {
@@ -3367,6 +3450,7 @@ export type OrganizationUpdateWithoutPlanningItemsInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutPlanningItemsInput = {
@@ -3402,6 +3486,7 @@ export type OrganizationUncheckedUpdateWithoutPlanningItemsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutCommunicationPacksInput = {
@@ -3437,6 +3522,7 @@ export type OrganizationCreateWithoutCommunicationPacksInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutCommunicationPacksInput = {
@@ -3472,6 +3558,7 @@ export type OrganizationUncheckedCreateWithoutCommunicationPacksInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutCommunicationPacksInput = {
@@ -3523,6 +3610,7 @@ export type OrganizationUpdateWithoutCommunicationPacksInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutCommunicationPacksInput = {
@@ -3558,6 +3646,7 @@ export type OrganizationUncheckedUpdateWithoutCommunicationPacksInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutRecommendationsInput = {
@@ -3593,6 +3682,7 @@ export type OrganizationCreateWithoutRecommendationsInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutRecommendationsInput = {
@@ -3628,6 +3718,7 @@ export type OrganizationUncheckedCreateWithoutRecommendationsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutRecommendationsInput = {
@@ -3679,6 +3770,7 @@ export type OrganizationUpdateWithoutRecommendationsInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutRecommendationsInput = {
@@ -3714,6 +3806,7 @@ export type OrganizationUncheckedUpdateWithoutRecommendationsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutAssessmentTasksInput = {
@@ -3749,6 +3842,7 @@ export type OrganizationCreateWithoutAssessmentTasksInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutAssessmentTasksInput = {
@@ -3784,6 +3878,7 @@ export type OrganizationUncheckedCreateWithoutAssessmentTasksInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutAssessmentTasksInput = {
@@ -3835,6 +3930,7 @@ export type OrganizationUpdateWithoutAssessmentTasksInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutAssessmentTasksInput = {
@@ -3859,6 +3955,167 @@ export type OrganizationUncheckedUpdateWithoutAssessmentTasksInput = {
   meetingContexts?: Prisma.MeetingContextUncheckedUpdateManyWithoutOrganizationNestedInput
   recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutOrganizationNestedInput
   maturityRubrics?: Prisma.MaturityRubricUncheckedUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
+  communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
+  inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationConnections?: Prisma.IntegrationConnectionUncheckedUpdateManyWithoutOrganizationNestedInput
+  documentFindings?: Prisma.DocumentFindingUncheckedUpdateManyWithoutOrganizationNestedInput
+  documentFamilies?: Prisma.DocumentFamilyUncheckedUpdateManyWithoutOrganizationNestedInput
+  agentProfiles?: Prisma.OrganizationAgentProfileUncheckedUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
+  tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
+  tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutDataRoomRequestPacksInput = {
+  id?: string
+  name: string
+  industry?: string | null
+  size?: string | null
+  notes?: string | null
+  engagementMotive?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserOrganizationCreateNestedManyWithoutOrganizationInput
+  domains?: Prisma.BusinessDomainCreateNestedManyWithoutOrganizationInput
+  stakeholders?: Prisma.StakeholderCreateNestedManyWithoutOrganizationInput
+  kpis?: Prisma.KPICreateNestedManyWithoutOrganizationInput
+  achievements?: Prisma.AchievementCreateNestedManyWithoutOrganizationInput
+  technologies?: Prisma.TechnologyCreateNestedManyWithoutOrganizationInput
+  processes?: Prisma.ProcessCreateNestedManyWithoutOrganizationInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutOrganizationInput
+  sessions?: Prisma.AssessmentSessionCreateNestedManyWithoutOrganizationInput
+  capturedInputs?: Prisma.CapturedInputCreateNestedManyWithoutOrganizationInput
+  meetingContexts?: Prisma.MeetingContextCreateNestedManyWithoutOrganizationInput
+  recommendations?: Prisma.RecommendationCreateNestedManyWithoutOrganizationInput
+  maturityRubrics?: Prisma.MaturityRubricCreateNestedManyWithoutOrganizationInput
+  assessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemCreateNestedManyWithoutOrganizationInput
+  communicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutOrganizationInput
+  inboundEmailEndpoint?: Prisma.InboundEmailEndpointCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunCreateNestedManyWithoutOrganizationInput
+  integrationConnections?: Prisma.IntegrationConnectionCreateNestedManyWithoutOrganizationInput
+  documentFindings?: Prisma.DocumentFindingCreateNestedManyWithoutOrganizationInput
+  documentFamilies?: Prisma.DocumentFamilyCreateNestedManyWithoutOrganizationInput
+  agentProfiles?: Prisma.OrganizationAgentProfileCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
+  tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
+  tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutDataRoomRequestPacksInput = {
+  id?: string
+  name: string
+  industry?: string | null
+  size?: string | null
+  notes?: string | null
+  engagementMotive?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
+  domains?: Prisma.BusinessDomainUncheckedCreateNestedManyWithoutOrganizationInput
+  stakeholders?: Prisma.StakeholderUncheckedCreateNestedManyWithoutOrganizationInput
+  kpis?: Prisma.KPIUncheckedCreateNestedManyWithoutOrganizationInput
+  achievements?: Prisma.AchievementUncheckedCreateNestedManyWithoutOrganizationInput
+  technologies?: Prisma.TechnologyUncheckedCreateNestedManyWithoutOrganizationInput
+  processes?: Prisma.ProcessUncheckedCreateNestedManyWithoutOrganizationInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutOrganizationInput
+  sessions?: Prisma.AssessmentSessionUncheckedCreateNestedManyWithoutOrganizationInput
+  capturedInputs?: Prisma.CapturedInputUncheckedCreateNestedManyWithoutOrganizationInput
+  meetingContexts?: Prisma.MeetingContextUncheckedCreateNestedManyWithoutOrganizationInput
+  recommendations?: Prisma.RecommendationUncheckedCreateNestedManyWithoutOrganizationInput
+  maturityRubrics?: Prisma.MaturityRubricUncheckedCreateNestedManyWithoutOrganizationInput
+  assessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutOrganizationInput
+  planningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutOrganizationInput
+  communicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutOrganizationInput
+  inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedCreateNestedOneWithoutOrganizationInput
+  agentRuns?: Prisma.AgentRunUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationConnections?: Prisma.IntegrationConnectionUncheckedCreateNestedManyWithoutOrganizationInput
+  documentFindings?: Prisma.DocumentFindingUncheckedCreateNestedManyWithoutOrganizationInput
+  documentFamilies?: Prisma.DocumentFamilyUncheckedCreateNestedManyWithoutOrganizationInput
+  agentProfiles?: Prisma.OrganizationAgentProfileUncheckedCreateNestedManyWithoutOrganizationInput
+  integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
+  tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
+  tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutDataRoomRequestPacksInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutDataRoomRequestPacksInput, Prisma.OrganizationUncheckedCreateWithoutDataRoomRequestPacksInput>
+}
+
+export type OrganizationUpsertWithoutDataRoomRequestPacksInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutDataRoomRequestPacksInput, Prisma.OrganizationUncheckedUpdateWithoutDataRoomRequestPacksInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutDataRoomRequestPacksInput, Prisma.OrganizationUncheckedCreateWithoutDataRoomRequestPacksInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutDataRoomRequestPacksInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutDataRoomRequestPacksInput, Prisma.OrganizationUncheckedUpdateWithoutDataRoomRequestPacksInput>
+}
+
+export type OrganizationUpdateWithoutDataRoomRequestPacksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserOrganizationUpdateManyWithoutOrganizationNestedInput
+  domains?: Prisma.BusinessDomainUpdateManyWithoutOrganizationNestedInput
+  stakeholders?: Prisma.StakeholderUpdateManyWithoutOrganizationNestedInput
+  kpis?: Prisma.KPIUpdateManyWithoutOrganizationNestedInput
+  achievements?: Prisma.AchievementUpdateManyWithoutOrganizationNestedInput
+  technologies?: Prisma.TechnologyUpdateManyWithoutOrganizationNestedInput
+  processes?: Prisma.ProcessUpdateManyWithoutOrganizationNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutOrganizationNestedInput
+  sessions?: Prisma.AssessmentSessionUpdateManyWithoutOrganizationNestedInput
+  capturedInputs?: Prisma.CapturedInputUpdateManyWithoutOrganizationNestedInput
+  meetingContexts?: Prisma.MeetingContextUpdateManyWithoutOrganizationNestedInput
+  recommendations?: Prisma.RecommendationUpdateManyWithoutOrganizationNestedInput
+  maturityRubrics?: Prisma.MaturityRubricUpdateManyWithoutOrganizationNestedInput
+  assessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutOrganizationNestedInput
+  planningItems?: Prisma.PlanningItemUpdateManyWithoutOrganizationNestedInput
+  communicationPacks?: Prisma.CommunicationPackUpdateManyWithoutOrganizationNestedInput
+  inboundEmailEndpoint?: Prisma.InboundEmailEndpointUpdateOneWithoutOrganizationNestedInput
+  agentRuns?: Prisma.AgentRunUpdateManyWithoutOrganizationNestedInput
+  integrationConnections?: Prisma.IntegrationConnectionUpdateManyWithoutOrganizationNestedInput
+  documentFindings?: Prisma.DocumentFindingUpdateManyWithoutOrganizationNestedInput
+  documentFamilies?: Prisma.DocumentFamilyUpdateManyWithoutOrganizationNestedInput
+  agentProfiles?: Prisma.OrganizationAgentProfileUpdateManyWithoutOrganizationNestedInput
+  integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
+  tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
+  tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutDataRoomRequestPacksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  size?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  engagementMotive?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
+  domains?: Prisma.BusinessDomainUncheckedUpdateManyWithoutOrganizationNestedInput
+  stakeholders?: Prisma.StakeholderUncheckedUpdateManyWithoutOrganizationNestedInput
+  kpis?: Prisma.KPIUncheckedUpdateManyWithoutOrganizationNestedInput
+  achievements?: Prisma.AchievementUncheckedUpdateManyWithoutOrganizationNestedInput
+  technologies?: Prisma.TechnologyUncheckedUpdateManyWithoutOrganizationNestedInput
+  processes?: Prisma.ProcessUncheckedUpdateManyWithoutOrganizationNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutOrganizationNestedInput
+  sessions?: Prisma.AssessmentSessionUncheckedUpdateManyWithoutOrganizationNestedInput
+  capturedInputs?: Prisma.CapturedInputUncheckedUpdateManyWithoutOrganizationNestedInput
+  meetingContexts?: Prisma.MeetingContextUncheckedUpdateManyWithoutOrganizationNestedInput
+  recommendations?: Prisma.RecommendationUncheckedUpdateManyWithoutOrganizationNestedInput
+  maturityRubrics?: Prisma.MaturityRubricUncheckedUpdateManyWithoutOrganizationNestedInput
+  assessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutOrganizationNestedInput
   planningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutOrganizationNestedInput
   communicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutOrganizationNestedInput
   inboundEmailEndpoint?: Prisma.InboundEmailEndpointUncheckedUpdateOneWithoutOrganizationNestedInput
@@ -3905,6 +4162,7 @@ export type OrganizationCreateWithoutAgentProfilesInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutAgentProfilesInput = {
@@ -3940,6 +4198,7 @@ export type OrganizationUncheckedCreateWithoutAgentProfilesInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutAgentProfilesInput = {
@@ -3991,6 +4250,7 @@ export type OrganizationUpdateWithoutAgentProfilesInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutAgentProfilesInput = {
@@ -4026,6 +4286,7 @@ export type OrganizationUncheckedUpdateWithoutAgentProfilesInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutAgentRunsInput = {
@@ -4061,6 +4322,7 @@ export type OrganizationCreateWithoutAgentRunsInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutAgentRunsInput = {
@@ -4096,6 +4358,7 @@ export type OrganizationUncheckedCreateWithoutAgentRunsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutAgentRunsInput = {
@@ -4147,6 +4410,7 @@ export type OrganizationUpdateWithoutAgentRunsInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutAgentRunsInput = {
@@ -4182,6 +4446,7 @@ export type OrganizationUncheckedUpdateWithoutAgentRunsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutIntegrationConnectionsInput = {
@@ -4217,6 +4482,7 @@ export type OrganizationCreateWithoutIntegrationConnectionsInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutIntegrationConnectionsInput = {
@@ -4252,6 +4518,7 @@ export type OrganizationUncheckedCreateWithoutIntegrationConnectionsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutIntegrationConnectionsInput = {
@@ -4303,6 +4570,7 @@ export type OrganizationUpdateWithoutIntegrationConnectionsInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutIntegrationConnectionsInput = {
@@ -4338,6 +4606,7 @@ export type OrganizationUncheckedUpdateWithoutIntegrationConnectionsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutDocumentFindingsInput = {
@@ -4373,6 +4642,7 @@ export type OrganizationCreateWithoutDocumentFindingsInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutDocumentFindingsInput = {
@@ -4408,6 +4678,7 @@ export type OrganizationUncheckedCreateWithoutDocumentFindingsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutDocumentFindingsInput = {
@@ -4459,6 +4730,7 @@ export type OrganizationUpdateWithoutDocumentFindingsInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutDocumentFindingsInput = {
@@ -4494,6 +4766,7 @@ export type OrganizationUncheckedUpdateWithoutDocumentFindingsInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutDocumentFamiliesInput = {
@@ -4529,6 +4802,7 @@ export type OrganizationCreateWithoutDocumentFamiliesInput = {
   integrationSources?: Prisma.IntegrationSourceCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutDocumentFamiliesInput = {
@@ -4564,6 +4838,7 @@ export type OrganizationUncheckedCreateWithoutDocumentFamiliesInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutDocumentFamiliesInput = {
@@ -4615,6 +4890,7 @@ export type OrganizationUpdateWithoutDocumentFamiliesInput = {
   integrationSources?: Prisma.IntegrationSourceUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutDocumentFamiliesInput = {
@@ -4650,6 +4926,7 @@ export type OrganizationUncheckedUpdateWithoutDocumentFamiliesInput = {
   integrationSources?: Prisma.IntegrationSourceUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutIntegrationSourcesInput = {
@@ -4685,6 +4962,7 @@ export type OrganizationCreateWithoutIntegrationSourcesInput = {
   agentProfiles?: Prisma.OrganizationAgentProfileCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutIntegrationSourcesInput = {
@@ -4720,6 +4998,7 @@ export type OrganizationUncheckedCreateWithoutIntegrationSourcesInput = {
   agentProfiles?: Prisma.OrganizationAgentProfileUncheckedCreateNestedManyWithoutOrganizationInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedCreateNestedManyWithoutOrganizationInput
   tagAttachments?: Prisma.TagAttachmentUncheckedCreateNestedManyWithoutOrganizationInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutIntegrationSourcesInput = {
@@ -4771,6 +5050,7 @@ export type OrganizationUpdateWithoutIntegrationSourcesInput = {
   agentProfiles?: Prisma.OrganizationAgentProfileUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutIntegrationSourcesInput = {
@@ -4806,6 +5086,7 @@ export type OrganizationUncheckedUpdateWithoutIntegrationSourcesInput = {
   agentProfiles?: Prisma.OrganizationAgentProfileUncheckedUpdateManyWithoutOrganizationNestedInput
   tagDefinitions?: Prisma.TagDefinitionUncheckedUpdateManyWithoutOrganizationNestedInput
   tagAttachments?: Prisma.TagAttachmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  dataRoomRequestPacks?: Prisma.DataRoomRequestPackUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 
@@ -4838,6 +5119,7 @@ export type OrganizationCountOutputType = {
   integrationSources: number
   tagDefinitions: number
   tagAttachments: number
+  dataRoomRequestPacks: number
 }
 
 export type OrganizationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4865,6 +5147,7 @@ export type OrganizationCountOutputTypeSelect<ExtArgs extends runtime.Types.Exte
   integrationSources?: boolean | OrganizationCountOutputTypeCountIntegrationSourcesArgs
   tagDefinitions?: boolean | OrganizationCountOutputTypeCountTagDefinitionsArgs
   tagAttachments?: boolean | OrganizationCountOutputTypeCountTagAttachmentsArgs
+  dataRoomRequestPacks?: boolean | OrganizationCountOutputTypeCountDataRoomRequestPacksArgs
 }
 
 /**
@@ -5045,6 +5328,13 @@ export type OrganizationCountOutputTypeCountTagAttachmentsArgs<ExtArgs extends r
   where?: Prisma.TagAttachmentWhereInput
 }
 
+/**
+ * OrganizationCountOutputType without action
+ */
+export type OrganizationCountOutputTypeCountDataRoomRequestPacksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DataRoomRequestPackWhereInput
+}
+
 
 export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -5080,6 +5370,7 @@ export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   integrationSources?: boolean | Prisma.Organization$integrationSourcesArgs<ExtArgs>
   tagDefinitions?: boolean | Prisma.Organization$tagDefinitionsArgs<ExtArgs>
   tagAttachments?: boolean | Prisma.Organization$tagAttachmentsArgs<ExtArgs>
+  dataRoomRequestPacks?: boolean | Prisma.Organization$dataRoomRequestPacksArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["organization"]>
 
@@ -5143,6 +5434,7 @@ export type OrganizationInclude<ExtArgs extends runtime.Types.Extensions.Interna
   integrationSources?: boolean | Prisma.Organization$integrationSourcesArgs<ExtArgs>
   tagDefinitions?: boolean | Prisma.Organization$tagDefinitionsArgs<ExtArgs>
   tagAttachments?: boolean | Prisma.Organization$tagAttachmentsArgs<ExtArgs>
+  dataRoomRequestPacks?: boolean | Prisma.Organization$dataRoomRequestPacksArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type OrganizationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -5176,6 +5468,7 @@ export type $OrganizationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     integrationSources: Prisma.$IntegrationSourcePayload<ExtArgs>[]
     tagDefinitions: Prisma.$TagDefinitionPayload<ExtArgs>[]
     tagAttachments: Prisma.$TagAttachmentPayload<ExtArgs>[]
+    dataRoomRequestPacks: Prisma.$DataRoomRequestPackPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -5605,6 +5898,7 @@ export interface Prisma__OrganizationClient<T, Null = never, ExtArgs extends run
   integrationSources<T extends Prisma.Organization$integrationSourcesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$integrationSourcesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IntegrationSourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tagDefinitions<T extends Prisma.Organization$tagDefinitionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$tagDefinitionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TagDefinitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tagAttachments<T extends Prisma.Organization$tagAttachmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$tagAttachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TagAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  dataRoomRequestPacks<T extends Prisma.Organization$dataRoomRequestPacksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$dataRoomRequestPacksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DataRoomRequestPackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6627,6 +6921,30 @@ export type Organization$tagAttachmentsArgs<ExtArgs extends runtime.Types.Extens
   take?: number
   skip?: number
   distinct?: Prisma.TagAttachmentScalarFieldEnum | Prisma.TagAttachmentScalarFieldEnum[]
+}
+
+/**
+ * Organization.dataRoomRequestPacks
+ */
+export type Organization$dataRoomRequestPacksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DataRoomRequestPack
+   */
+  select?: Prisma.DataRoomRequestPackSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DataRoomRequestPack
+   */
+  omit?: Prisma.DataRoomRequestPackOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DataRoomRequestPackInclude<ExtArgs> | null
+  where?: Prisma.DataRoomRequestPackWhereInput
+  orderBy?: Prisma.DataRoomRequestPackOrderByWithRelationInput | Prisma.DataRoomRequestPackOrderByWithRelationInput[]
+  cursor?: Prisma.DataRoomRequestPackWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DataRoomRequestPackScalarFieldEnum | Prisma.DataRoomRequestPackScalarFieldEnum[]
 }
 
 /**

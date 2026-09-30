@@ -210,6 +210,10 @@ export type StakeholderWhereInput = {
   capabilities?: Prisma.CapabilityStakeholderListRelationFilter
   perspectives?: Prisma.MaturityPerspectiveListRelationFilter
   achievements?: Prisma.AchievementStakeholderListRelationFilter
+  portalMemberships?: Prisma.StakeholderPortalMembershipListRelationFilter
+  externalTasks?: Prisma.AssessmentTaskStakeholderListRelationFilter
+  externalMeetings?: Prisma.MeetingContextStakeholderListRelationFilter
+  taskActivities?: Prisma.AssessmentTaskActivityListRelationFilter
 }
 
 export type StakeholderOrderByWithRelationInput = {
@@ -225,6 +229,10 @@ export type StakeholderOrderByWithRelationInput = {
   capabilities?: Prisma.CapabilityStakeholderOrderByRelationAggregateInput
   perspectives?: Prisma.MaturityPerspectiveOrderByRelationAggregateInput
   achievements?: Prisma.AchievementStakeholderOrderByRelationAggregateInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipOrderByRelationAggregateInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderOrderByRelationAggregateInput
+  externalMeetings?: Prisma.MeetingContextStakeholderOrderByRelationAggregateInput
+  taskActivities?: Prisma.AssessmentTaskActivityOrderByRelationAggregateInput
 }
 
 export type StakeholderWhereUniqueInput = Prisma.AtLeast<{
@@ -243,6 +251,10 @@ export type StakeholderWhereUniqueInput = Prisma.AtLeast<{
   capabilities?: Prisma.CapabilityStakeholderListRelationFilter
   perspectives?: Prisma.MaturityPerspectiveListRelationFilter
   achievements?: Prisma.AchievementStakeholderListRelationFilter
+  portalMemberships?: Prisma.StakeholderPortalMembershipListRelationFilter
+  externalTasks?: Prisma.AssessmentTaskStakeholderListRelationFilter
+  externalMeetings?: Prisma.MeetingContextStakeholderListRelationFilter
+  taskActivities?: Prisma.AssessmentTaskActivityListRelationFilter
 }, "id">
 
 export type StakeholderOrderByWithAggregationInput = {
@@ -285,6 +297,10 @@ export type StakeholderCreateInput = {
   capabilities?: Prisma.CapabilityStakeholderCreateNestedManyWithoutStakeholderInput
   perspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutStakeholderInput
   achievements?: Prisma.AchievementStakeholderCreateNestedManyWithoutStakeholderInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutStakeholderInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderCreateNestedManyWithoutStakeholderInput
+  externalMeetings?: Prisma.MeetingContextStakeholderCreateNestedManyWithoutStakeholderInput
+  taskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorStakeholderInput
 }
 
 export type StakeholderUncheckedCreateInput = {
@@ -299,6 +315,10 @@ export type StakeholderUncheckedCreateInput = {
   capabilities?: Prisma.CapabilityStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
   perspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutStakeholderInput
   achievements?: Prisma.AchievementStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutStakeholderInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  taskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorStakeholderInput
 }
 
 export type StakeholderUpdateInput = {
@@ -313,6 +333,10 @@ export type StakeholderUpdateInput = {
   capabilities?: Prisma.CapabilityStakeholderUpdateManyWithoutStakeholderNestedInput
   perspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutStakeholderNestedInput
   achievements?: Prisma.AchievementStakeholderUpdateManyWithoutStakeholderNestedInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutStakeholderNestedInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUpdateManyWithoutStakeholderNestedInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUpdateManyWithoutStakeholderNestedInput
+  taskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorStakeholderNestedInput
 }
 
 export type StakeholderUncheckedUpdateInput = {
@@ -327,6 +351,10 @@ export type StakeholderUncheckedUpdateInput = {
   capabilities?: Prisma.CapabilityStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
   perspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutStakeholderNestedInput
   achievements?: Prisma.AchievementStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutStakeholderNestedInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  taskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorStakeholderNestedInput
 }
 
 export type StakeholderCreateManyInput = {
@@ -456,6 +484,20 @@ export type StakeholderUncheckedUpdateManyWithoutOrganizationNestedInput = {
   deleteMany?: Prisma.StakeholderScalarWhereInput | Prisma.StakeholderScalarWhereInput[]
 }
 
+export type StakeholderCreateNestedOneWithoutPortalMembershipsInput = {
+  create?: Prisma.XOR<Prisma.StakeholderCreateWithoutPortalMembershipsInput, Prisma.StakeholderUncheckedCreateWithoutPortalMembershipsInput>
+  connectOrCreate?: Prisma.StakeholderCreateOrConnectWithoutPortalMembershipsInput
+  connect?: Prisma.StakeholderWhereUniqueInput
+}
+
+export type StakeholderUpdateOneRequiredWithoutPortalMembershipsNestedInput = {
+  create?: Prisma.XOR<Prisma.StakeholderCreateWithoutPortalMembershipsInput, Prisma.StakeholderUncheckedCreateWithoutPortalMembershipsInput>
+  connectOrCreate?: Prisma.StakeholderCreateOrConnectWithoutPortalMembershipsInput
+  upsert?: Prisma.StakeholderUpsertWithoutPortalMembershipsInput
+  connect?: Prisma.StakeholderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StakeholderUpdateToOneWithWhereWithoutPortalMembershipsInput, Prisma.StakeholderUpdateWithoutPortalMembershipsInput>, Prisma.StakeholderUncheckedUpdateWithoutPortalMembershipsInput>
+}
+
 export type StakeholderCreateNestedOneWithoutCapabilitiesInput = {
   create?: Prisma.XOR<Prisma.StakeholderCreateWithoutCapabilitiesInput, Prisma.StakeholderUncheckedCreateWithoutCapabilitiesInput>
   connectOrCreate?: Prisma.StakeholderCreateOrConnectWithoutCapabilitiesInput
@@ -484,6 +526,20 @@ export type StakeholderUpdateOneRequiredWithoutAchievementsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StakeholderUpdateToOneWithWhereWithoutAchievementsInput, Prisma.StakeholderUpdateWithoutAchievementsInput>, Prisma.StakeholderUncheckedUpdateWithoutAchievementsInput>
 }
 
+export type StakeholderCreateNestedOneWithoutExternalMeetingsInput = {
+  create?: Prisma.XOR<Prisma.StakeholderCreateWithoutExternalMeetingsInput, Prisma.StakeholderUncheckedCreateWithoutExternalMeetingsInput>
+  connectOrCreate?: Prisma.StakeholderCreateOrConnectWithoutExternalMeetingsInput
+  connect?: Prisma.StakeholderWhereUniqueInput
+}
+
+export type StakeholderUpdateOneRequiredWithoutExternalMeetingsNestedInput = {
+  create?: Prisma.XOR<Prisma.StakeholderCreateWithoutExternalMeetingsInput, Prisma.StakeholderUncheckedCreateWithoutExternalMeetingsInput>
+  connectOrCreate?: Prisma.StakeholderCreateOrConnectWithoutExternalMeetingsInput
+  upsert?: Prisma.StakeholderUpsertWithoutExternalMeetingsInput
+  connect?: Prisma.StakeholderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StakeholderUpdateToOneWithWhereWithoutExternalMeetingsInput, Prisma.StakeholderUpdateWithoutExternalMeetingsInput>, Prisma.StakeholderUncheckedUpdateWithoutExternalMeetingsInput>
+}
+
 export type StakeholderCreateNestedOneWithoutPerspectivesInput = {
   create?: Prisma.XOR<Prisma.StakeholderCreateWithoutPerspectivesInput, Prisma.StakeholderUncheckedCreateWithoutPerspectivesInput>
   connectOrCreate?: Prisma.StakeholderCreateOrConnectWithoutPerspectivesInput
@@ -500,6 +556,36 @@ export type StakeholderUpdateOneWithoutPerspectivesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StakeholderUpdateToOneWithWhereWithoutPerspectivesInput, Prisma.StakeholderUpdateWithoutPerspectivesInput>, Prisma.StakeholderUncheckedUpdateWithoutPerspectivesInput>
 }
 
+export type StakeholderCreateNestedOneWithoutExternalTasksInput = {
+  create?: Prisma.XOR<Prisma.StakeholderCreateWithoutExternalTasksInput, Prisma.StakeholderUncheckedCreateWithoutExternalTasksInput>
+  connectOrCreate?: Prisma.StakeholderCreateOrConnectWithoutExternalTasksInput
+  connect?: Prisma.StakeholderWhereUniqueInput
+}
+
+export type StakeholderUpdateOneRequiredWithoutExternalTasksNestedInput = {
+  create?: Prisma.XOR<Prisma.StakeholderCreateWithoutExternalTasksInput, Prisma.StakeholderUncheckedCreateWithoutExternalTasksInput>
+  connectOrCreate?: Prisma.StakeholderCreateOrConnectWithoutExternalTasksInput
+  upsert?: Prisma.StakeholderUpsertWithoutExternalTasksInput
+  connect?: Prisma.StakeholderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StakeholderUpdateToOneWithWhereWithoutExternalTasksInput, Prisma.StakeholderUpdateWithoutExternalTasksInput>, Prisma.StakeholderUncheckedUpdateWithoutExternalTasksInput>
+}
+
+export type StakeholderCreateNestedOneWithoutTaskActivitiesInput = {
+  create?: Prisma.XOR<Prisma.StakeholderCreateWithoutTaskActivitiesInput, Prisma.StakeholderUncheckedCreateWithoutTaskActivitiesInput>
+  connectOrCreate?: Prisma.StakeholderCreateOrConnectWithoutTaskActivitiesInput
+  connect?: Prisma.StakeholderWhereUniqueInput
+}
+
+export type StakeholderUpdateOneWithoutTaskActivitiesNestedInput = {
+  create?: Prisma.XOR<Prisma.StakeholderCreateWithoutTaskActivitiesInput, Prisma.StakeholderUncheckedCreateWithoutTaskActivitiesInput>
+  connectOrCreate?: Prisma.StakeholderCreateOrConnectWithoutTaskActivitiesInput
+  upsert?: Prisma.StakeholderUpsertWithoutTaskActivitiesInput
+  disconnect?: Prisma.StakeholderWhereInput | boolean
+  delete?: Prisma.StakeholderWhereInput | boolean
+  connect?: Prisma.StakeholderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StakeholderUpdateToOneWithWhereWithoutTaskActivitiesInput, Prisma.StakeholderUpdateWithoutTaskActivitiesInput>, Prisma.StakeholderUncheckedUpdateWithoutTaskActivitiesInput>
+}
+
 export type StakeholderCreateWithoutOrganizationInput = {
   id?: string
   name: string
@@ -511,6 +597,10 @@ export type StakeholderCreateWithoutOrganizationInput = {
   capabilities?: Prisma.CapabilityStakeholderCreateNestedManyWithoutStakeholderInput
   perspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutStakeholderInput
   achievements?: Prisma.AchievementStakeholderCreateNestedManyWithoutStakeholderInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutStakeholderInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderCreateNestedManyWithoutStakeholderInput
+  externalMeetings?: Prisma.MeetingContextStakeholderCreateNestedManyWithoutStakeholderInput
+  taskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorStakeholderInput
 }
 
 export type StakeholderUncheckedCreateWithoutOrganizationInput = {
@@ -524,6 +614,10 @@ export type StakeholderUncheckedCreateWithoutOrganizationInput = {
   capabilities?: Prisma.CapabilityStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
   perspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutStakeholderInput
   achievements?: Prisma.AchievementStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutStakeholderInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  taskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorStakeholderInput
 }
 
 export type StakeholderCreateOrConnectWithoutOrganizationInput = {
@@ -566,6 +660,90 @@ export type StakeholderScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Stakeholder"> | Date | string
 }
 
+export type StakeholderCreateWithoutPortalMembershipsInput = {
+  id?: string
+  name: string
+  role?: string | null
+  email?: string | null
+  phone?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutStakeholdersInput
+  capabilities?: Prisma.CapabilityStakeholderCreateNestedManyWithoutStakeholderInput
+  perspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutStakeholderInput
+  achievements?: Prisma.AchievementStakeholderCreateNestedManyWithoutStakeholderInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderCreateNestedManyWithoutStakeholderInput
+  externalMeetings?: Prisma.MeetingContextStakeholderCreateNestedManyWithoutStakeholderInput
+  taskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorStakeholderInput
+}
+
+export type StakeholderUncheckedCreateWithoutPortalMembershipsInput = {
+  id?: string
+  organizationId: string
+  name: string
+  role?: string | null
+  email?: string | null
+  phone?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  capabilities?: Prisma.CapabilityStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  perspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutStakeholderInput
+  achievements?: Prisma.AchievementStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  taskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorStakeholderInput
+}
+
+export type StakeholderCreateOrConnectWithoutPortalMembershipsInput = {
+  where: Prisma.StakeholderWhereUniqueInput
+  create: Prisma.XOR<Prisma.StakeholderCreateWithoutPortalMembershipsInput, Prisma.StakeholderUncheckedCreateWithoutPortalMembershipsInput>
+}
+
+export type StakeholderUpsertWithoutPortalMembershipsInput = {
+  update: Prisma.XOR<Prisma.StakeholderUpdateWithoutPortalMembershipsInput, Prisma.StakeholderUncheckedUpdateWithoutPortalMembershipsInput>
+  create: Prisma.XOR<Prisma.StakeholderCreateWithoutPortalMembershipsInput, Prisma.StakeholderUncheckedCreateWithoutPortalMembershipsInput>
+  where?: Prisma.StakeholderWhereInput
+}
+
+export type StakeholderUpdateToOneWithWhereWithoutPortalMembershipsInput = {
+  where?: Prisma.StakeholderWhereInput
+  data: Prisma.XOR<Prisma.StakeholderUpdateWithoutPortalMembershipsInput, Prisma.StakeholderUncheckedUpdateWithoutPortalMembershipsInput>
+}
+
+export type StakeholderUpdateWithoutPortalMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutStakeholdersNestedInput
+  capabilities?: Prisma.CapabilityStakeholderUpdateManyWithoutStakeholderNestedInput
+  perspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutStakeholderNestedInput
+  achievements?: Prisma.AchievementStakeholderUpdateManyWithoutStakeholderNestedInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUpdateManyWithoutStakeholderNestedInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUpdateManyWithoutStakeholderNestedInput
+  taskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorStakeholderNestedInput
+}
+
+export type StakeholderUncheckedUpdateWithoutPortalMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  capabilities?: Prisma.CapabilityStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  perspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutStakeholderNestedInput
+  achievements?: Prisma.AchievementStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  taskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorStakeholderNestedInput
+}
+
 export type StakeholderCreateWithoutCapabilitiesInput = {
   id?: string
   name: string
@@ -577,6 +755,10 @@ export type StakeholderCreateWithoutCapabilitiesInput = {
   organization: Prisma.OrganizationCreateNestedOneWithoutStakeholdersInput
   perspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutStakeholderInput
   achievements?: Prisma.AchievementStakeholderCreateNestedManyWithoutStakeholderInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutStakeholderInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderCreateNestedManyWithoutStakeholderInput
+  externalMeetings?: Prisma.MeetingContextStakeholderCreateNestedManyWithoutStakeholderInput
+  taskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorStakeholderInput
 }
 
 export type StakeholderUncheckedCreateWithoutCapabilitiesInput = {
@@ -590,6 +772,10 @@ export type StakeholderUncheckedCreateWithoutCapabilitiesInput = {
   updatedAt?: Date | string
   perspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutStakeholderInput
   achievements?: Prisma.AchievementStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutStakeholderInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  taskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorStakeholderInput
 }
 
 export type StakeholderCreateOrConnectWithoutCapabilitiesInput = {
@@ -619,6 +805,10 @@ export type StakeholderUpdateWithoutCapabilitiesInput = {
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutStakeholdersNestedInput
   perspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutStakeholderNestedInput
   achievements?: Prisma.AchievementStakeholderUpdateManyWithoutStakeholderNestedInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutStakeholderNestedInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUpdateManyWithoutStakeholderNestedInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUpdateManyWithoutStakeholderNestedInput
+  taskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorStakeholderNestedInput
 }
 
 export type StakeholderUncheckedUpdateWithoutCapabilitiesInput = {
@@ -632,6 +822,10 @@ export type StakeholderUncheckedUpdateWithoutCapabilitiesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   perspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutStakeholderNestedInput
   achievements?: Prisma.AchievementStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutStakeholderNestedInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  taskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorStakeholderNestedInput
 }
 
 export type StakeholderCreateWithoutAchievementsInput = {
@@ -645,6 +839,10 @@ export type StakeholderCreateWithoutAchievementsInput = {
   organization: Prisma.OrganizationCreateNestedOneWithoutStakeholdersInput
   capabilities?: Prisma.CapabilityStakeholderCreateNestedManyWithoutStakeholderInput
   perspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutStakeholderInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutStakeholderInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderCreateNestedManyWithoutStakeholderInput
+  externalMeetings?: Prisma.MeetingContextStakeholderCreateNestedManyWithoutStakeholderInput
+  taskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorStakeholderInput
 }
 
 export type StakeholderUncheckedCreateWithoutAchievementsInput = {
@@ -658,6 +856,10 @@ export type StakeholderUncheckedCreateWithoutAchievementsInput = {
   updatedAt?: Date | string
   capabilities?: Prisma.CapabilityStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
   perspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutStakeholderInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutStakeholderInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  taskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorStakeholderInput
 }
 
 export type StakeholderCreateOrConnectWithoutAchievementsInput = {
@@ -687,6 +889,10 @@ export type StakeholderUpdateWithoutAchievementsInput = {
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutStakeholdersNestedInput
   capabilities?: Prisma.CapabilityStakeholderUpdateManyWithoutStakeholderNestedInput
   perspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutStakeholderNestedInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutStakeholderNestedInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUpdateManyWithoutStakeholderNestedInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUpdateManyWithoutStakeholderNestedInput
+  taskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorStakeholderNestedInput
 }
 
 export type StakeholderUncheckedUpdateWithoutAchievementsInput = {
@@ -700,6 +906,94 @@ export type StakeholderUncheckedUpdateWithoutAchievementsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capabilities?: Prisma.CapabilityStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
   perspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutStakeholderNestedInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutStakeholderNestedInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  taskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorStakeholderNestedInput
+}
+
+export type StakeholderCreateWithoutExternalMeetingsInput = {
+  id?: string
+  name: string
+  role?: string | null
+  email?: string | null
+  phone?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutStakeholdersInput
+  capabilities?: Prisma.CapabilityStakeholderCreateNestedManyWithoutStakeholderInput
+  perspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutStakeholderInput
+  achievements?: Prisma.AchievementStakeholderCreateNestedManyWithoutStakeholderInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutStakeholderInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderCreateNestedManyWithoutStakeholderInput
+  taskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorStakeholderInput
+}
+
+export type StakeholderUncheckedCreateWithoutExternalMeetingsInput = {
+  id?: string
+  organizationId: string
+  name: string
+  role?: string | null
+  email?: string | null
+  phone?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  capabilities?: Prisma.CapabilityStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  perspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutStakeholderInput
+  achievements?: Prisma.AchievementStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutStakeholderInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  taskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorStakeholderInput
+}
+
+export type StakeholderCreateOrConnectWithoutExternalMeetingsInput = {
+  where: Prisma.StakeholderWhereUniqueInput
+  create: Prisma.XOR<Prisma.StakeholderCreateWithoutExternalMeetingsInput, Prisma.StakeholderUncheckedCreateWithoutExternalMeetingsInput>
+}
+
+export type StakeholderUpsertWithoutExternalMeetingsInput = {
+  update: Prisma.XOR<Prisma.StakeholderUpdateWithoutExternalMeetingsInput, Prisma.StakeholderUncheckedUpdateWithoutExternalMeetingsInput>
+  create: Prisma.XOR<Prisma.StakeholderCreateWithoutExternalMeetingsInput, Prisma.StakeholderUncheckedCreateWithoutExternalMeetingsInput>
+  where?: Prisma.StakeholderWhereInput
+}
+
+export type StakeholderUpdateToOneWithWhereWithoutExternalMeetingsInput = {
+  where?: Prisma.StakeholderWhereInput
+  data: Prisma.XOR<Prisma.StakeholderUpdateWithoutExternalMeetingsInput, Prisma.StakeholderUncheckedUpdateWithoutExternalMeetingsInput>
+}
+
+export type StakeholderUpdateWithoutExternalMeetingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutStakeholdersNestedInput
+  capabilities?: Prisma.CapabilityStakeholderUpdateManyWithoutStakeholderNestedInput
+  perspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutStakeholderNestedInput
+  achievements?: Prisma.AchievementStakeholderUpdateManyWithoutStakeholderNestedInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutStakeholderNestedInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUpdateManyWithoutStakeholderNestedInput
+  taskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorStakeholderNestedInput
+}
+
+export type StakeholderUncheckedUpdateWithoutExternalMeetingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  capabilities?: Prisma.CapabilityStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  perspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutStakeholderNestedInput
+  achievements?: Prisma.AchievementStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutStakeholderNestedInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  taskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorStakeholderNestedInput
 }
 
 export type StakeholderCreateWithoutPerspectivesInput = {
@@ -713,6 +1007,10 @@ export type StakeholderCreateWithoutPerspectivesInput = {
   organization: Prisma.OrganizationCreateNestedOneWithoutStakeholdersInput
   capabilities?: Prisma.CapabilityStakeholderCreateNestedManyWithoutStakeholderInput
   achievements?: Prisma.AchievementStakeholderCreateNestedManyWithoutStakeholderInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutStakeholderInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderCreateNestedManyWithoutStakeholderInput
+  externalMeetings?: Prisma.MeetingContextStakeholderCreateNestedManyWithoutStakeholderInput
+  taskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorStakeholderInput
 }
 
 export type StakeholderUncheckedCreateWithoutPerspectivesInput = {
@@ -726,6 +1024,10 @@ export type StakeholderUncheckedCreateWithoutPerspectivesInput = {
   updatedAt?: Date | string
   capabilities?: Prisma.CapabilityStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
   achievements?: Prisma.AchievementStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutStakeholderInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  taskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorStakeholderInput
 }
 
 export type StakeholderCreateOrConnectWithoutPerspectivesInput = {
@@ -755,6 +1057,10 @@ export type StakeholderUpdateWithoutPerspectivesInput = {
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutStakeholdersNestedInput
   capabilities?: Prisma.CapabilityStakeholderUpdateManyWithoutStakeholderNestedInput
   achievements?: Prisma.AchievementStakeholderUpdateManyWithoutStakeholderNestedInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutStakeholderNestedInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUpdateManyWithoutStakeholderNestedInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUpdateManyWithoutStakeholderNestedInput
+  taskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorStakeholderNestedInput
 }
 
 export type StakeholderUncheckedUpdateWithoutPerspectivesInput = {
@@ -768,6 +1074,178 @@ export type StakeholderUncheckedUpdateWithoutPerspectivesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capabilities?: Prisma.CapabilityStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
   achievements?: Prisma.AchievementStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutStakeholderNestedInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  taskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorStakeholderNestedInput
+}
+
+export type StakeholderCreateWithoutExternalTasksInput = {
+  id?: string
+  name: string
+  role?: string | null
+  email?: string | null
+  phone?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutStakeholdersInput
+  capabilities?: Prisma.CapabilityStakeholderCreateNestedManyWithoutStakeholderInput
+  perspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutStakeholderInput
+  achievements?: Prisma.AchievementStakeholderCreateNestedManyWithoutStakeholderInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutStakeholderInput
+  externalMeetings?: Prisma.MeetingContextStakeholderCreateNestedManyWithoutStakeholderInput
+  taskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorStakeholderInput
+}
+
+export type StakeholderUncheckedCreateWithoutExternalTasksInput = {
+  id?: string
+  organizationId: string
+  name: string
+  role?: string | null
+  email?: string | null
+  phone?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  capabilities?: Prisma.CapabilityStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  perspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutStakeholderInput
+  achievements?: Prisma.AchievementStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutStakeholderInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  taskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorStakeholderInput
+}
+
+export type StakeholderCreateOrConnectWithoutExternalTasksInput = {
+  where: Prisma.StakeholderWhereUniqueInput
+  create: Prisma.XOR<Prisma.StakeholderCreateWithoutExternalTasksInput, Prisma.StakeholderUncheckedCreateWithoutExternalTasksInput>
+}
+
+export type StakeholderUpsertWithoutExternalTasksInput = {
+  update: Prisma.XOR<Prisma.StakeholderUpdateWithoutExternalTasksInput, Prisma.StakeholderUncheckedUpdateWithoutExternalTasksInput>
+  create: Prisma.XOR<Prisma.StakeholderCreateWithoutExternalTasksInput, Prisma.StakeholderUncheckedCreateWithoutExternalTasksInput>
+  where?: Prisma.StakeholderWhereInput
+}
+
+export type StakeholderUpdateToOneWithWhereWithoutExternalTasksInput = {
+  where?: Prisma.StakeholderWhereInput
+  data: Prisma.XOR<Prisma.StakeholderUpdateWithoutExternalTasksInput, Prisma.StakeholderUncheckedUpdateWithoutExternalTasksInput>
+}
+
+export type StakeholderUpdateWithoutExternalTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutStakeholdersNestedInput
+  capabilities?: Prisma.CapabilityStakeholderUpdateManyWithoutStakeholderNestedInput
+  perspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutStakeholderNestedInput
+  achievements?: Prisma.AchievementStakeholderUpdateManyWithoutStakeholderNestedInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutStakeholderNestedInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUpdateManyWithoutStakeholderNestedInput
+  taskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorStakeholderNestedInput
+}
+
+export type StakeholderUncheckedUpdateWithoutExternalTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  capabilities?: Prisma.CapabilityStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  perspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutStakeholderNestedInput
+  achievements?: Prisma.AchievementStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutStakeholderNestedInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  taskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorStakeholderNestedInput
+}
+
+export type StakeholderCreateWithoutTaskActivitiesInput = {
+  id?: string
+  name: string
+  role?: string | null
+  email?: string | null
+  phone?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutStakeholdersInput
+  capabilities?: Prisma.CapabilityStakeholderCreateNestedManyWithoutStakeholderInput
+  perspectives?: Prisma.MaturityPerspectiveCreateNestedManyWithoutStakeholderInput
+  achievements?: Prisma.AchievementStakeholderCreateNestedManyWithoutStakeholderInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutStakeholderInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderCreateNestedManyWithoutStakeholderInput
+  externalMeetings?: Prisma.MeetingContextStakeholderCreateNestedManyWithoutStakeholderInput
+}
+
+export type StakeholderUncheckedCreateWithoutTaskActivitiesInput = {
+  id?: string
+  organizationId: string
+  name: string
+  role?: string | null
+  email?: string | null
+  phone?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  capabilities?: Prisma.CapabilityStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  perspectives?: Prisma.MaturityPerspectiveUncheckedCreateNestedManyWithoutStakeholderInput
+  achievements?: Prisma.AchievementStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutStakeholderInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUncheckedCreateNestedManyWithoutStakeholderInput
+}
+
+export type StakeholderCreateOrConnectWithoutTaskActivitiesInput = {
+  where: Prisma.StakeholderWhereUniqueInput
+  create: Prisma.XOR<Prisma.StakeholderCreateWithoutTaskActivitiesInput, Prisma.StakeholderUncheckedCreateWithoutTaskActivitiesInput>
+}
+
+export type StakeholderUpsertWithoutTaskActivitiesInput = {
+  update: Prisma.XOR<Prisma.StakeholderUpdateWithoutTaskActivitiesInput, Prisma.StakeholderUncheckedUpdateWithoutTaskActivitiesInput>
+  create: Prisma.XOR<Prisma.StakeholderCreateWithoutTaskActivitiesInput, Prisma.StakeholderUncheckedCreateWithoutTaskActivitiesInput>
+  where?: Prisma.StakeholderWhereInput
+}
+
+export type StakeholderUpdateToOneWithWhereWithoutTaskActivitiesInput = {
+  where?: Prisma.StakeholderWhereInput
+  data: Prisma.XOR<Prisma.StakeholderUpdateWithoutTaskActivitiesInput, Prisma.StakeholderUncheckedUpdateWithoutTaskActivitiesInput>
+}
+
+export type StakeholderUpdateWithoutTaskActivitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutStakeholdersNestedInput
+  capabilities?: Prisma.CapabilityStakeholderUpdateManyWithoutStakeholderNestedInput
+  perspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutStakeholderNestedInput
+  achievements?: Prisma.AchievementStakeholderUpdateManyWithoutStakeholderNestedInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutStakeholderNestedInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUpdateManyWithoutStakeholderNestedInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUpdateManyWithoutStakeholderNestedInput
+}
+
+export type StakeholderUncheckedUpdateWithoutTaskActivitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  capabilities?: Prisma.CapabilityStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  perspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutStakeholderNestedInput
+  achievements?: Prisma.AchievementStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutStakeholderNestedInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
 }
 
 export type StakeholderCreateManyOrganizationInput = {
@@ -791,6 +1269,10 @@ export type StakeholderUpdateWithoutOrganizationInput = {
   capabilities?: Prisma.CapabilityStakeholderUpdateManyWithoutStakeholderNestedInput
   perspectives?: Prisma.MaturityPerspectiveUpdateManyWithoutStakeholderNestedInput
   achievements?: Prisma.AchievementStakeholderUpdateManyWithoutStakeholderNestedInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutStakeholderNestedInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUpdateManyWithoutStakeholderNestedInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUpdateManyWithoutStakeholderNestedInput
+  taskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorStakeholderNestedInput
 }
 
 export type StakeholderUncheckedUpdateWithoutOrganizationInput = {
@@ -804,6 +1286,10 @@ export type StakeholderUncheckedUpdateWithoutOrganizationInput = {
   capabilities?: Prisma.CapabilityStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
   perspectives?: Prisma.MaturityPerspectiveUncheckedUpdateManyWithoutStakeholderNestedInput
   achievements?: Prisma.AchievementStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  portalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutStakeholderNestedInput
+  externalTasks?: Prisma.AssessmentTaskStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  externalMeetings?: Prisma.MeetingContextStakeholderUncheckedUpdateManyWithoutStakeholderNestedInput
+  taskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorStakeholderNestedInput
 }
 
 export type StakeholderUncheckedUpdateManyWithoutOrganizationInput = {
@@ -825,12 +1311,20 @@ export type StakeholderCountOutputType = {
   capabilities: number
   perspectives: number
   achievements: number
+  portalMemberships: number
+  externalTasks: number
+  externalMeetings: number
+  taskActivities: number
 }
 
 export type StakeholderCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   capabilities?: boolean | StakeholderCountOutputTypeCountCapabilitiesArgs
   perspectives?: boolean | StakeholderCountOutputTypeCountPerspectivesArgs
   achievements?: boolean | StakeholderCountOutputTypeCountAchievementsArgs
+  portalMemberships?: boolean | StakeholderCountOutputTypeCountPortalMembershipsArgs
+  externalTasks?: boolean | StakeholderCountOutputTypeCountExternalTasksArgs
+  externalMeetings?: boolean | StakeholderCountOutputTypeCountExternalMeetingsArgs
+  taskActivities?: boolean | StakeholderCountOutputTypeCountTaskActivitiesArgs
 }
 
 /**
@@ -864,6 +1358,34 @@ export type StakeholderCountOutputTypeCountAchievementsArgs<ExtArgs extends runt
   where?: Prisma.AchievementStakeholderWhereInput
 }
 
+/**
+ * StakeholderCountOutputType without action
+ */
+export type StakeholderCountOutputTypeCountPortalMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StakeholderPortalMembershipWhereInput
+}
+
+/**
+ * StakeholderCountOutputType without action
+ */
+export type StakeholderCountOutputTypeCountExternalTasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AssessmentTaskStakeholderWhereInput
+}
+
+/**
+ * StakeholderCountOutputType without action
+ */
+export type StakeholderCountOutputTypeCountExternalMeetingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MeetingContextStakeholderWhereInput
+}
+
+/**
+ * StakeholderCountOutputType without action
+ */
+export type StakeholderCountOutputTypeCountTaskActivitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AssessmentTaskActivityWhereInput
+}
+
 
 export type StakeholderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -878,6 +1400,10 @@ export type StakeholderSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   capabilities?: boolean | Prisma.Stakeholder$capabilitiesArgs<ExtArgs>
   perspectives?: boolean | Prisma.Stakeholder$perspectivesArgs<ExtArgs>
   achievements?: boolean | Prisma.Stakeholder$achievementsArgs<ExtArgs>
+  portalMemberships?: boolean | Prisma.Stakeholder$portalMembershipsArgs<ExtArgs>
+  externalTasks?: boolean | Prisma.Stakeholder$externalTasksArgs<ExtArgs>
+  externalMeetings?: boolean | Prisma.Stakeholder$externalMeetingsArgs<ExtArgs>
+  taskActivities?: boolean | Prisma.Stakeholder$taskActivitiesArgs<ExtArgs>
   _count?: boolean | Prisma.StakeholderCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["stakeholder"]>
 
@@ -922,6 +1448,10 @@ export type StakeholderInclude<ExtArgs extends runtime.Types.Extensions.Internal
   capabilities?: boolean | Prisma.Stakeholder$capabilitiesArgs<ExtArgs>
   perspectives?: boolean | Prisma.Stakeholder$perspectivesArgs<ExtArgs>
   achievements?: boolean | Prisma.Stakeholder$achievementsArgs<ExtArgs>
+  portalMemberships?: boolean | Prisma.Stakeholder$portalMembershipsArgs<ExtArgs>
+  externalTasks?: boolean | Prisma.Stakeholder$externalTasksArgs<ExtArgs>
+  externalMeetings?: boolean | Prisma.Stakeholder$externalMeetingsArgs<ExtArgs>
+  taskActivities?: boolean | Prisma.Stakeholder$taskActivitiesArgs<ExtArgs>
   _count?: boolean | Prisma.StakeholderCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type StakeholderIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -938,6 +1468,10 @@ export type $StakeholderPayload<ExtArgs extends runtime.Types.Extensions.Interna
     capabilities: Prisma.$CapabilityStakeholderPayload<ExtArgs>[]
     perspectives: Prisma.$MaturityPerspectivePayload<ExtArgs>[]
     achievements: Prisma.$AchievementStakeholderPayload<ExtArgs>[]
+    portalMemberships: Prisma.$StakeholderPortalMembershipPayload<ExtArgs>[]
+    externalTasks: Prisma.$AssessmentTaskStakeholderPayload<ExtArgs>[]
+    externalMeetings: Prisma.$MeetingContextStakeholderPayload<ExtArgs>[]
+    taskActivities: Prisma.$AssessmentTaskActivityPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1346,6 +1880,10 @@ export interface Prisma__StakeholderClient<T, Null = never, ExtArgs extends runt
   capabilities<T extends Prisma.Stakeholder$capabilitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Stakeholder$capabilitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CapabilityStakeholderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   perspectives<T extends Prisma.Stakeholder$perspectivesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Stakeholder$perspectivesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaturityPerspectivePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   achievements<T extends Prisma.Stakeholder$achievementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Stakeholder$achievementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AchievementStakeholderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  portalMemberships<T extends Prisma.Stakeholder$portalMembershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Stakeholder$portalMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StakeholderPortalMembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  externalTasks<T extends Prisma.Stakeholder$externalTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Stakeholder$externalTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentTaskStakeholderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  externalMeetings<T extends Prisma.Stakeholder$externalMeetingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Stakeholder$externalMeetingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MeetingContextStakeholderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  taskActivities<T extends Prisma.Stakeholder$taskActivitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Stakeholder$taskActivitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentTaskActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1853,6 +2391,102 @@ export type Stakeholder$achievementsArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.AchievementStakeholderScalarFieldEnum | Prisma.AchievementStakeholderScalarFieldEnum[]
+}
+
+/**
+ * Stakeholder.portalMemberships
+ */
+export type Stakeholder$portalMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StakeholderPortalMembership
+   */
+  select?: Prisma.StakeholderPortalMembershipSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StakeholderPortalMembership
+   */
+  omit?: Prisma.StakeholderPortalMembershipOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StakeholderPortalMembershipInclude<ExtArgs> | null
+  where?: Prisma.StakeholderPortalMembershipWhereInput
+  orderBy?: Prisma.StakeholderPortalMembershipOrderByWithRelationInput | Prisma.StakeholderPortalMembershipOrderByWithRelationInput[]
+  cursor?: Prisma.StakeholderPortalMembershipWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StakeholderPortalMembershipScalarFieldEnum | Prisma.StakeholderPortalMembershipScalarFieldEnum[]
+}
+
+/**
+ * Stakeholder.externalTasks
+ */
+export type Stakeholder$externalTasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AssessmentTaskStakeholder
+   */
+  select?: Prisma.AssessmentTaskStakeholderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AssessmentTaskStakeholder
+   */
+  omit?: Prisma.AssessmentTaskStakeholderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AssessmentTaskStakeholderInclude<ExtArgs> | null
+  where?: Prisma.AssessmentTaskStakeholderWhereInput
+  orderBy?: Prisma.AssessmentTaskStakeholderOrderByWithRelationInput | Prisma.AssessmentTaskStakeholderOrderByWithRelationInput[]
+  cursor?: Prisma.AssessmentTaskStakeholderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AssessmentTaskStakeholderScalarFieldEnum | Prisma.AssessmentTaskStakeholderScalarFieldEnum[]
+}
+
+/**
+ * Stakeholder.externalMeetings
+ */
+export type Stakeholder$externalMeetingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MeetingContextStakeholder
+   */
+  select?: Prisma.MeetingContextStakeholderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MeetingContextStakeholder
+   */
+  omit?: Prisma.MeetingContextStakeholderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MeetingContextStakeholderInclude<ExtArgs> | null
+  where?: Prisma.MeetingContextStakeholderWhereInput
+  orderBy?: Prisma.MeetingContextStakeholderOrderByWithRelationInput | Prisma.MeetingContextStakeholderOrderByWithRelationInput[]
+  cursor?: Prisma.MeetingContextStakeholderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MeetingContextStakeholderScalarFieldEnum | Prisma.MeetingContextStakeholderScalarFieldEnum[]
+}
+
+/**
+ * Stakeholder.taskActivities
+ */
+export type Stakeholder$taskActivitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AssessmentTaskActivity
+   */
+  select?: Prisma.AssessmentTaskActivitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AssessmentTaskActivity
+   */
+  omit?: Prisma.AssessmentTaskActivityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AssessmentTaskActivityInclude<ExtArgs> | null
+  where?: Prisma.AssessmentTaskActivityWhereInput
+  orderBy?: Prisma.AssessmentTaskActivityOrderByWithRelationInput | Prisma.AssessmentTaskActivityOrderByWithRelationInput[]
+  cursor?: Prisma.AssessmentTaskActivityWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AssessmentTaskActivityScalarFieldEnum | Prisma.AssessmentTaskActivityScalarFieldEnum[]
 }
 
 /**

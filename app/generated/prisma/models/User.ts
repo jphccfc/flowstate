@@ -208,6 +208,8 @@ export type UserWhereInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionListRelationFilter
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionListRelationFilter
   reviewedAgentOutputs?: Prisma.AgentOutputListRelationFilter
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipListRelationFilter
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -232,6 +234,8 @@ export type UserOrderByWithRelationInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionOrderByRelationAggregateInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionOrderByRelationAggregateInput
   reviewedAgentOutputs?: Prisma.AgentOutputOrderByRelationAggregateInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipOrderByRelationAggregateInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -259,6 +263,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionListRelationFilter
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionListRelationFilter
   reviewedAgentOutputs?: Prisma.AgentOutputListRelationFilter
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipListRelationFilter
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -309,6 +315,8 @@ export type UserCreateInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -333,6 +341,8 @@ export type UserUncheckedCreateInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorUserInput
 }
 
 export type UserUpdateInput = {
@@ -357,6 +367,8 @@ export type UserUpdateInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -381,6 +393,8 @@ export type UserUncheckedUpdateInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -479,6 +493,20 @@ export type UserUpdateOneRequiredWithoutOrganizationsNestedInput = {
   upsert?: Prisma.UserUpsertWithoutOrganizationsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOrganizationsInput, Prisma.UserUpdateWithoutOrganizationsInput>, Prisma.UserUncheckedUpdateWithoutOrganizationsInput>
+}
+
+export type UserCreateNestedOneWithoutStakeholderPortalMembershipsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStakeholderPortalMembershipsInput, Prisma.UserUncheckedCreateWithoutStakeholderPortalMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStakeholderPortalMembershipsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutStakeholderPortalMembershipsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStakeholderPortalMembershipsInput, Prisma.UserUncheckedCreateWithoutStakeholderPortalMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStakeholderPortalMembershipsInput
+  upsert?: Prisma.UserUpsertWithoutStakeholderPortalMembershipsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStakeholderPortalMembershipsInput, Prisma.UserUpdateWithoutStakeholderPortalMembershipsInput>, Prisma.UserUncheckedUpdateWithoutStakeholderPortalMembershipsInput>
 }
 
 export type UserCreateNestedOneWithoutSessionsInput = {
@@ -615,6 +643,20 @@ export type UserUpdateOneWithoutCompletedAssessmentTasksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCompletedAssessmentTasksInput, Prisma.UserUpdateWithoutCompletedAssessmentTasksInput>, Prisma.UserUncheckedUpdateWithoutCompletedAssessmentTasksInput>
 }
 
+export type UserCreateNestedOneWithoutExternalAssessmentTaskActivitiesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutExternalAssessmentTaskActivitiesInput, Prisma.UserUncheckedCreateWithoutExternalAssessmentTaskActivitiesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutExternalAssessmentTaskActivitiesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutExternalAssessmentTaskActivitiesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutExternalAssessmentTaskActivitiesInput, Prisma.UserUncheckedCreateWithoutExternalAssessmentTaskActivitiesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutExternalAssessmentTaskActivitiesInput
+  upsert?: Prisma.UserUpsertWithoutExternalAssessmentTaskActivitiesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutExternalAssessmentTaskActivitiesInput, Prisma.UserUpdateWithoutExternalAssessmentTaskActivitiesInput>, Prisma.UserUncheckedUpdateWithoutExternalAssessmentTaskActivitiesInput>
+}
+
 export type UserCreateNestedOneWithoutCreatedAgentDefinitionsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedAgentDefinitionsInput, Prisma.UserUncheckedCreateWithoutCreatedAgentDefinitionsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedAgentDefinitionsInput
@@ -696,6 +738,8 @@ export type UserCreateWithoutOrganizationsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorUserInput
 }
 
 export type UserUncheckedCreateWithoutOrganizationsInput = {
@@ -719,6 +763,8 @@ export type UserUncheckedCreateWithoutOrganizationsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorUserInput
 }
 
 export type UserCreateOrConnectWithoutOrganizationsInput = {
@@ -758,6 +804,8 @@ export type UserUpdateWithoutOrganizationsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrganizationsInput = {
@@ -781,6 +829,124 @@ export type UserUncheckedUpdateWithoutOrganizationsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorUserNestedInput
+}
+
+export type UserCreateWithoutStakeholderPortalMembershipsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationCreateNestedManyWithoutUserInput
+  sessions?: Prisma.AssessmentSessionCreateNestedManyWithoutAdvisorInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutRequesterInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutAssigneeInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutApproverInput
+  createdCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutCreatorInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutReviewerInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
+  reviewedAgentOutputs?: Prisma.AgentOutputCreateNestedManyWithoutReviewerInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorUserInput
+}
+
+export type UserUncheckedCreateWithoutStakeholderPortalMembershipsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.AssessmentSessionUncheckedCreateNestedManyWithoutAdvisorInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutRequesterInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutApproverInput
+  createdCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutCreatorInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutReviewerInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
+  reviewedAgentOutputs?: Prisma.AgentOutputUncheckedCreateNestedManyWithoutReviewerInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorUserInput
+}
+
+export type UserCreateOrConnectWithoutStakeholderPortalMembershipsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutStakeholderPortalMembershipsInput, Prisma.UserUncheckedCreateWithoutStakeholderPortalMembershipsInput>
+}
+
+export type UserUpsertWithoutStakeholderPortalMembershipsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutStakeholderPortalMembershipsInput, Prisma.UserUncheckedUpdateWithoutStakeholderPortalMembershipsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutStakeholderPortalMembershipsInput, Prisma.UserUncheckedCreateWithoutStakeholderPortalMembershipsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutStakeholderPortalMembershipsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutStakeholderPortalMembershipsInput, Prisma.UserUncheckedUpdateWithoutStakeholderPortalMembershipsInput>
+}
+
+export type UserUpdateWithoutStakeholderPortalMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.AssessmentSessionUpdateManyWithoutAdvisorNestedInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutRequesterNestedInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutAssigneeNestedInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUpdateManyWithoutApproverNestedInput
+  createdCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutCreatorNestedInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutReviewerNestedInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
+  reviewedAgentOutputs?: Prisma.AgentOutputUpdateManyWithoutReviewerNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutStakeholderPortalMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.AssessmentSessionUncheckedUpdateManyWithoutAdvisorNestedInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutRequesterNestedInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutApproverNestedInput
+  createdCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutCreatorNestedInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutReviewerNestedInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
+  reviewedAgentOutputs?: Prisma.AgentOutputUncheckedUpdateManyWithoutReviewerNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -804,6 +970,8 @@ export type UserCreateWithoutSessionsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -827,6 +995,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -866,6 +1036,8 @@ export type UserUpdateWithoutSessionsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -889,6 +1061,8 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserCreateWithoutCreatedPlanningItemsInput = {
@@ -912,6 +1086,8 @@ export type UserCreateWithoutCreatedPlanningItemsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedPlanningItemsInput = {
@@ -935,6 +1111,8 @@ export type UserUncheckedCreateWithoutCreatedPlanningItemsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedPlanningItemsInput = {
@@ -963,6 +1141,8 @@ export type UserCreateWithoutApprovedPlanningItemsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorUserInput
 }
 
 export type UserUncheckedCreateWithoutApprovedPlanningItemsInput = {
@@ -986,6 +1166,8 @@ export type UserUncheckedCreateWithoutApprovedPlanningItemsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorUserInput
 }
 
 export type UserCreateOrConnectWithoutApprovedPlanningItemsInput = {
@@ -1025,6 +1207,8 @@ export type UserUpdateWithoutCreatedPlanningItemsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedPlanningItemsInput = {
@@ -1048,6 +1232,8 @@ export type UserUncheckedUpdateWithoutCreatedPlanningItemsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUpsertWithoutApprovedPlanningItemsInput = {
@@ -1082,6 +1268,8 @@ export type UserUpdateWithoutApprovedPlanningItemsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApprovedPlanningItemsInput = {
@@ -1105,6 +1293,8 @@ export type UserUncheckedUpdateWithoutApprovedPlanningItemsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserCreateWithoutCreatedCommunicationPacksInput = {
@@ -1128,6 +1318,8 @@ export type UserCreateWithoutCreatedCommunicationPacksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedCommunicationPacksInput = {
@@ -1151,6 +1343,8 @@ export type UserUncheckedCreateWithoutCreatedCommunicationPacksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedCommunicationPacksInput = {
@@ -1179,6 +1373,8 @@ export type UserCreateWithoutReviewedCommunicationPacksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorUserInput
 }
 
 export type UserUncheckedCreateWithoutReviewedCommunicationPacksInput = {
@@ -1202,6 +1398,8 @@ export type UserUncheckedCreateWithoutReviewedCommunicationPacksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorUserInput
 }
 
 export type UserCreateOrConnectWithoutReviewedCommunicationPacksInput = {
@@ -1241,6 +1439,8 @@ export type UserUpdateWithoutCreatedCommunicationPacksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedCommunicationPacksInput = {
@@ -1264,6 +1464,8 @@ export type UserUncheckedUpdateWithoutCreatedCommunicationPacksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUpsertWithoutReviewedCommunicationPacksInput = {
@@ -1298,6 +1500,8 @@ export type UserUpdateWithoutReviewedCommunicationPacksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewedCommunicationPacksInput = {
@@ -1321,6 +1525,8 @@ export type UserUncheckedUpdateWithoutReviewedCommunicationPacksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserCreateWithoutCommunicationPackAcknowledgementsInput = {
@@ -1344,6 +1550,8 @@ export type UserCreateWithoutCommunicationPackAcknowledgementsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorUserInput
 }
 
 export type UserUncheckedCreateWithoutCommunicationPackAcknowledgementsInput = {
@@ -1367,6 +1575,8 @@ export type UserUncheckedCreateWithoutCommunicationPackAcknowledgementsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorUserInput
 }
 
 export type UserCreateOrConnectWithoutCommunicationPackAcknowledgementsInput = {
@@ -1406,6 +1616,8 @@ export type UserUpdateWithoutCommunicationPackAcknowledgementsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommunicationPackAcknowledgementsInput = {
@@ -1429,6 +1641,8 @@ export type UserUncheckedUpdateWithoutCommunicationPackAcknowledgementsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserCreateWithoutRequestedAssessmentTasksInput = {
@@ -1452,6 +1666,8 @@ export type UserCreateWithoutRequestedAssessmentTasksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorUserInput
 }
 
 export type UserUncheckedCreateWithoutRequestedAssessmentTasksInput = {
@@ -1475,6 +1691,8 @@ export type UserUncheckedCreateWithoutRequestedAssessmentTasksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorUserInput
 }
 
 export type UserCreateOrConnectWithoutRequestedAssessmentTasksInput = {
@@ -1503,6 +1721,8 @@ export type UserCreateWithoutAssignedAssessmentTasksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorUserInput
 }
 
 export type UserUncheckedCreateWithoutAssignedAssessmentTasksInput = {
@@ -1526,6 +1746,8 @@ export type UserUncheckedCreateWithoutAssignedAssessmentTasksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorUserInput
 }
 
 export type UserCreateOrConnectWithoutAssignedAssessmentTasksInput = {
@@ -1554,6 +1776,8 @@ export type UserCreateWithoutCompletedAssessmentTasksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorUserInput
 }
 
 export type UserUncheckedCreateWithoutCompletedAssessmentTasksInput = {
@@ -1577,6 +1801,8 @@ export type UserUncheckedCreateWithoutCompletedAssessmentTasksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorUserInput
 }
 
 export type UserCreateOrConnectWithoutCompletedAssessmentTasksInput = {
@@ -1616,6 +1842,8 @@ export type UserUpdateWithoutRequestedAssessmentTasksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRequestedAssessmentTasksInput = {
@@ -1639,6 +1867,8 @@ export type UserUncheckedUpdateWithoutRequestedAssessmentTasksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUpsertWithoutAssignedAssessmentTasksInput = {
@@ -1673,6 +1903,8 @@ export type UserUpdateWithoutAssignedAssessmentTasksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedAssessmentTasksInput = {
@@ -1696,6 +1928,8 @@ export type UserUncheckedUpdateWithoutAssignedAssessmentTasksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUpsertWithoutCompletedAssessmentTasksInput = {
@@ -1730,6 +1964,8 @@ export type UserUpdateWithoutCompletedAssessmentTasksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCompletedAssessmentTasksInput = {
@@ -1753,6 +1989,124 @@ export type UserUncheckedUpdateWithoutCompletedAssessmentTasksInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorUserNestedInput
+}
+
+export type UserCreateWithoutExternalAssessmentTaskActivitiesInput = {
+  id?: string
+  email: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationCreateNestedManyWithoutUserInput
+  sessions?: Prisma.AssessmentSessionCreateNestedManyWithoutAdvisorInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutRequesterInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutAssigneeInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemCreateNestedManyWithoutApproverInput
+  createdCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutCreatorInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackCreateNestedManyWithoutReviewerInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
+  reviewedAgentOutputs?: Prisma.AgentOutputCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutExternalAssessmentTaskActivitiesInput = {
+  id?: string
+  email: string
+  name?: string | null
+  role?: $Enums.UserRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.AssessmentSessionUncheckedCreateNestedManyWithoutAdvisorInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutRequesterInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedCreateNestedManyWithoutCompletedByInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutCreatorInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedCreateNestedManyWithoutApproverInput
+  createdCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutCreatorInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedCreateNestedManyWithoutReviewerInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedCreateNestedManyWithoutActorInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedCreateNestedManyWithoutCreatorInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
+  reviewedAgentOutputs?: Prisma.AgentOutputUncheckedCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutExternalAssessmentTaskActivitiesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutExternalAssessmentTaskActivitiesInput, Prisma.UserUncheckedCreateWithoutExternalAssessmentTaskActivitiesInput>
+}
+
+export type UserUpsertWithoutExternalAssessmentTaskActivitiesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutExternalAssessmentTaskActivitiesInput, Prisma.UserUncheckedUpdateWithoutExternalAssessmentTaskActivitiesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutExternalAssessmentTaskActivitiesInput, Prisma.UserUncheckedCreateWithoutExternalAssessmentTaskActivitiesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutExternalAssessmentTaskActivitiesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutExternalAssessmentTaskActivitiesInput, Prisma.UserUncheckedUpdateWithoutExternalAssessmentTaskActivitiesInput>
+}
+
+export type UserUpdateWithoutExternalAssessmentTaskActivitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.AssessmentSessionUpdateManyWithoutAdvisorNestedInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutRequesterNestedInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutAssigneeNestedInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUpdateManyWithoutApproverNestedInput
+  createdCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutCreatorNestedInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackUpdateManyWithoutReviewerNestedInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
+  reviewedAgentOutputs?: Prisma.AgentOutputUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutExternalAssessmentTaskActivitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferences?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  organizations?: Prisma.UserOrganizationUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.AssessmentSessionUncheckedUpdateManyWithoutAdvisorNestedInput
+  requestedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutRequesterNestedInput
+  assignedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  completedAssessmentTasks?: Prisma.AssessmentTaskUncheckedUpdateManyWithoutCompletedByNestedInput
+  createdPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutCreatorNestedInput
+  approvedPlanningItems?: Prisma.PlanningItemUncheckedUpdateManyWithoutApproverNestedInput
+  createdCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutCreatorNestedInput
+  reviewedCommunicationPacks?: Prisma.CommunicationPackUncheckedUpdateManyWithoutReviewerNestedInput
+  communicationPackAcknowledgements?: Prisma.CommunicationPackAcknowledgementUncheckedUpdateManyWithoutActorNestedInput
+  createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedUpdateManyWithoutCreatorNestedInput
+  authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
+  publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
+  reviewedAgentOutputs?: Prisma.AgentOutputUncheckedUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCreatedAgentDefinitionsInput = {
@@ -1776,6 +2130,8 @@ export type UserCreateWithoutCreatedAgentDefinitionsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedAgentDefinitionsInput = {
@@ -1799,6 +2155,8 @@ export type UserUncheckedCreateWithoutCreatedAgentDefinitionsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedAgentDefinitionsInput = {
@@ -1838,6 +2196,8 @@ export type UserUpdateWithoutCreatedAgentDefinitionsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedAgentDefinitionsInput = {
@@ -1861,6 +2221,8 @@ export type UserUncheckedUpdateWithoutCreatedAgentDefinitionsInput = {
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserCreateWithoutAuthoredAgentPromptVersionsInput = {
@@ -1884,6 +2246,8 @@ export type UserCreateWithoutAuthoredAgentPromptVersionsInput = {
   createdAgentDefinitions?: Prisma.AgentDefinitionCreateNestedManyWithoutCreatorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorUserInput
 }
 
 export type UserUncheckedCreateWithoutAuthoredAgentPromptVersionsInput = {
@@ -1907,6 +2271,8 @@ export type UserUncheckedCreateWithoutAuthoredAgentPromptVersionsInput = {
   createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedCreateNestedManyWithoutCreatorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorUserInput
 }
 
 export type UserCreateOrConnectWithoutAuthoredAgentPromptVersionsInput = {
@@ -1935,6 +2301,8 @@ export type UserCreateWithoutPublishedAgentPromptVersionsInput = {
   createdAgentDefinitions?: Prisma.AgentDefinitionCreateNestedManyWithoutCreatorInput
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
   reviewedAgentOutputs?: Prisma.AgentOutputCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorUserInput
 }
 
 export type UserUncheckedCreateWithoutPublishedAgentPromptVersionsInput = {
@@ -1958,6 +2326,8 @@ export type UserUncheckedCreateWithoutPublishedAgentPromptVersionsInput = {
   createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedCreateNestedManyWithoutCreatorInput
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedCreateNestedManyWithoutReviewerInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorUserInput
 }
 
 export type UserCreateOrConnectWithoutPublishedAgentPromptVersionsInput = {
@@ -1997,6 +2367,8 @@ export type UserUpdateWithoutAuthoredAgentPromptVersionsInput = {
   createdAgentDefinitions?: Prisma.AgentDefinitionUpdateManyWithoutCreatorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuthoredAgentPromptVersionsInput = {
@@ -2020,6 +2392,8 @@ export type UserUncheckedUpdateWithoutAuthoredAgentPromptVersionsInput = {
   createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedUpdateManyWithoutCreatorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUpsertWithoutPublishedAgentPromptVersionsInput = {
@@ -2054,6 +2428,8 @@ export type UserUpdateWithoutPublishedAgentPromptVersionsInput = {
   createdAgentDefinitions?: Prisma.AgentDefinitionUpdateManyWithoutCreatorNestedInput
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPublishedAgentPromptVersionsInput = {
@@ -2077,6 +2453,8 @@ export type UserUncheckedUpdateWithoutPublishedAgentPromptVersionsInput = {
   createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedUpdateManyWithoutCreatorNestedInput
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
   reviewedAgentOutputs?: Prisma.AgentOutputUncheckedUpdateManyWithoutReviewerNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserCreateWithoutReviewedAgentOutputsInput = {
@@ -2100,6 +2478,8 @@ export type UserCreateWithoutReviewedAgentOutputsInput = {
   createdAgentDefinitions?: Prisma.AgentDefinitionCreateNestedManyWithoutCreatorInput
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionCreateNestedManyWithoutPublisherInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityCreateNestedManyWithoutActorUserInput
 }
 
 export type UserUncheckedCreateWithoutReviewedAgentOutputsInput = {
@@ -2123,6 +2503,8 @@ export type UserUncheckedCreateWithoutReviewedAgentOutputsInput = {
   createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedCreateNestedManyWithoutCreatorInput
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutAuthorInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedCreateNestedManyWithoutPublisherInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedCreateNestedManyWithoutUserInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedCreateNestedManyWithoutActorUserInput
 }
 
 export type UserCreateOrConnectWithoutReviewedAgentOutputsInput = {
@@ -2162,6 +2544,8 @@ export type UserUpdateWithoutReviewedAgentOutputsInput = {
   createdAgentDefinitions?: Prisma.AgentDefinitionUpdateManyWithoutCreatorNestedInput
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUpdateManyWithoutPublisherNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUpdateManyWithoutActorUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewedAgentOutputsInput = {
@@ -2185,6 +2569,8 @@ export type UserUncheckedUpdateWithoutReviewedAgentOutputsInput = {
   createdAgentDefinitions?: Prisma.AgentDefinitionUncheckedUpdateManyWithoutCreatorNestedInput
   authoredAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutAuthorNestedInput
   publishedAgentPromptVersions?: Prisma.AgentPromptVersionUncheckedUpdateManyWithoutPublisherNestedInput
+  stakeholderPortalMemberships?: Prisma.StakeholderPortalMembershipUncheckedUpdateManyWithoutUserNestedInput
+  externalAssessmentTaskActivities?: Prisma.AssessmentTaskActivityUncheckedUpdateManyWithoutActorUserNestedInput
 }
 
 
@@ -2207,6 +2593,8 @@ export type UserCountOutputType = {
   authoredAgentPromptVersions: number
   publishedAgentPromptVersions: number
   reviewedAgentOutputs: number
+  stakeholderPortalMemberships: number
+  externalAssessmentTaskActivities: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2224,6 +2612,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   authoredAgentPromptVersions?: boolean | UserCountOutputTypeCountAuthoredAgentPromptVersionsArgs
   publishedAgentPromptVersions?: boolean | UserCountOutputTypeCountPublishedAgentPromptVersionsArgs
   reviewedAgentOutputs?: boolean | UserCountOutputTypeCountReviewedAgentOutputsArgs
+  stakeholderPortalMemberships?: boolean | UserCountOutputTypeCountStakeholderPortalMembershipsArgs
+  externalAssessmentTaskActivities?: boolean | UserCountOutputTypeCountExternalAssessmentTaskActivitiesArgs
 }
 
 /**
@@ -2334,6 +2724,20 @@ export type UserCountOutputTypeCountReviewedAgentOutputsArgs<ExtArgs extends run
   where?: Prisma.AgentOutputWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountStakeholderPortalMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StakeholderPortalMembershipWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountExternalAssessmentTaskActivitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AssessmentTaskActivityWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2357,6 +2761,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   authoredAgentPromptVersions?: boolean | Prisma.User$authoredAgentPromptVersionsArgs<ExtArgs>
   publishedAgentPromptVersions?: boolean | Prisma.User$publishedAgentPromptVersionsArgs<ExtArgs>
   reviewedAgentOutputs?: boolean | Prisma.User$reviewedAgentOutputsArgs<ExtArgs>
+  stakeholderPortalMemberships?: boolean | Prisma.User$stakeholderPortalMembershipsArgs<ExtArgs>
+  externalAssessmentTaskActivities?: boolean | Prisma.User$externalAssessmentTaskActivitiesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2406,6 +2812,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   authoredAgentPromptVersions?: boolean | Prisma.User$authoredAgentPromptVersionsArgs<ExtArgs>
   publishedAgentPromptVersions?: boolean | Prisma.User$publishedAgentPromptVersionsArgs<ExtArgs>
   reviewedAgentOutputs?: boolean | Prisma.User$reviewedAgentOutputsArgs<ExtArgs>
+  stakeholderPortalMemberships?: boolean | Prisma.User$stakeholderPortalMembershipsArgs<ExtArgs>
+  externalAssessmentTaskActivities?: boolean | Prisma.User$externalAssessmentTaskActivitiesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2428,6 +2836,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     authoredAgentPromptVersions: Prisma.$AgentPromptVersionPayload<ExtArgs>[]
     publishedAgentPromptVersions: Prisma.$AgentPromptVersionPayload<ExtArgs>[]
     reviewedAgentOutputs: Prisma.$AgentOutputPayload<ExtArgs>[]
+    stakeholderPortalMemberships: Prisma.$StakeholderPortalMembershipPayload<ExtArgs>[]
+    externalAssessmentTaskActivities: Prisma.$AssessmentTaskActivityPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2845,6 +3255,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   authoredAgentPromptVersions<T extends Prisma.User$authoredAgentPromptVersionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$authoredAgentPromptVersionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentPromptVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   publishedAgentPromptVersions<T extends Prisma.User$publishedAgentPromptVersionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$publishedAgentPromptVersionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentPromptVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviewedAgentOutputs<T extends Prisma.User$reviewedAgentOutputsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewedAgentOutputsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentOutputPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  stakeholderPortalMemberships<T extends Prisma.User$stakeholderPortalMembershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$stakeholderPortalMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StakeholderPortalMembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  externalAssessmentTaskActivities<T extends Prisma.User$externalAssessmentTaskActivitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$externalAssessmentTaskActivitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentTaskActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3607,6 +4019,54 @@ export type User$reviewedAgentOutputsArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.AgentOutputScalarFieldEnum | Prisma.AgentOutputScalarFieldEnum[]
+}
+
+/**
+ * User.stakeholderPortalMemberships
+ */
+export type User$stakeholderPortalMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StakeholderPortalMembership
+   */
+  select?: Prisma.StakeholderPortalMembershipSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StakeholderPortalMembership
+   */
+  omit?: Prisma.StakeholderPortalMembershipOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StakeholderPortalMembershipInclude<ExtArgs> | null
+  where?: Prisma.StakeholderPortalMembershipWhereInput
+  orderBy?: Prisma.StakeholderPortalMembershipOrderByWithRelationInput | Prisma.StakeholderPortalMembershipOrderByWithRelationInput[]
+  cursor?: Prisma.StakeholderPortalMembershipWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StakeholderPortalMembershipScalarFieldEnum | Prisma.StakeholderPortalMembershipScalarFieldEnum[]
+}
+
+/**
+ * User.externalAssessmentTaskActivities
+ */
+export type User$externalAssessmentTaskActivitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AssessmentTaskActivity
+   */
+  select?: Prisma.AssessmentTaskActivitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AssessmentTaskActivity
+   */
+  omit?: Prisma.AssessmentTaskActivityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AssessmentTaskActivityInclude<ExtArgs> | null
+  where?: Prisma.AssessmentTaskActivityWhereInput
+  orderBy?: Prisma.AssessmentTaskActivityOrderByWithRelationInput | Prisma.AssessmentTaskActivityOrderByWithRelationInput[]
+  cursor?: Prisma.AssessmentTaskActivityWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AssessmentTaskActivityScalarFieldEnum | Prisma.AssessmentTaskActivityScalarFieldEnum[]
 }
 
 /**

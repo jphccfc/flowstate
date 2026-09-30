@@ -15,6 +15,16 @@ enum UserRole {
   INVESTOR
 }
 
+enum ExternalPortalRole {
+  CLIENT
+  PARTNER
+}
+
+enum AssessmentTaskActivityType {
+  STATUS_CHANGED
+  COMMENT_ADDED
+}
+
 model User {
   id          String   @id @default(cuid())
   email       String   @unique
@@ -38,6 +48,8 @@ model User {
   authoredAgentPromptVersions       AgentPromptVersion[]               @relation("AgentPromptVersionAuthor")
   publishedAgentPromptVersions      AgentPromptVersion[]               @relation("AgentPromptVersionPublisher")
   reviewedAgentOutputs              AgentOutput[]                      @relation("AgentOutputReviewer")
+  stakeholderPortalMemberships      StakeholderPortalMembership[]
+  externalAssessmentTaskActivities  AssessmentTaskActivity[]
 }
 
 model Organization {
@@ -150,6 +162,25 @@ model Stakeholder {
   capabilities CapabilityStakeholder[]
   perspectives MaturityPerspective[]
   achievements AchievementStakeholder[]
+  portalMemberships StakeholderPortalMembership[]
+  externalTasks     AssessmentTaskStakeholder[]
+  externalMeetings  MeetingContextStakeholder[]
+  taskActivities    AssessmentTaskActivity[]
+}
+
+model StakeholderPortalMembership {
+  id            String             @id @default(cuid())
+  stakeholderId String
+  userId        String
+  role          ExternalPortalRole
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+
+  stakeholder Stakeholder @relation(fields: [stakeholderId], references: [id], onDelete: Cascade)
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([stakeholderId, userId])
+  @@index([userId])
 }
 
 model CapabilityStakeholder {
@@ -357,8 +388,21 @@ model MeetingContext {
 
   organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   capturedInputs CapturedInput[]
+  externalAttendees MeetingContextStakeholder[]
 
   @@index([organizationId, startsAt])
+}
+
+model MeetingContextStakeholder {
+  meetingContextId String
+  stakeholderId    String
+  attendedAt       DateTime?
+
+  meetingContext MeetingContext @relation(fields: [meetingContextId], references: [id], onDelete: Cascade)
+  stakeholder    Stakeholder    @relation(fields: [stakeholderId], references: [id], onDelete: Cascade)
+
+  @@id([meetingContextId, stakeholderId])
+  @@index([stakeholderId])
 }
 
 model CapturedInput {
@@ -1028,9 +1072,41 @@ model AssessmentTask {
   assignee     User                 @relation("TaskAssignee", fields: [assigneeId], references: [id])
   completedBy  User?                @relation("TaskCompleter", fields: [completedById], references: [id])
   dataRoomPack DataRoomRequestPack?
+  externalAssignees AssessmentTaskStakeholder[]
+  activities        AssessmentTaskActivity[]
 
   @@index([organizationId, status, dueDate])
   @@index([assigneeId, status])
+}
+
+model AssessmentTaskStakeholder {
+  assessmentTaskId String
+  stakeholderId    String
+  assignedAt       DateTime @default(now())
+
+  assessmentTask AssessmentTask @relation(fields: [assessmentTaskId], references: [id], onDelete: Cascade)
+  stakeholder    Stakeholder    @relation(fields: [stakeholderId], references: [id], onDelete: Cascade)
+
+  @@id([assessmentTaskId, stakeholderId])
+  @@index([stakeholderId])
+}
+
+model AssessmentTaskActivity {
+  id                 String                     @id @default(cuid())
+  assessmentTaskId   String
+  actorUserId        String
+  actorStakeholderId String?
+  type               AssessmentTaskActivityType
+  previousStatus     AssessmentTaskStatus?
+  nextStatus         AssessmentTaskStatus?
+  comment            String?
+  createdAt          DateTime                   @default(now())
+
+  assessmentTask   AssessmentTask @relation(fields: [assessmentTaskId], references: [id], onDelete: Cascade)
+  actorUser        User           @relation(fields: [actorUserId], references: [id], onDelete: Restrict)
+  actorStakeholder Stakeholder?   @relation(fields: [actorStakeholderId], references: [id], onDelete: SetNull)
+
+  @@index([assessmentTaskId, createdAt])
 }
 
 /// Structured, grouped diligence evidence requests. This is intentionally
