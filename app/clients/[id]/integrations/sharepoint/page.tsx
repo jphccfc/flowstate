@@ -262,9 +262,9 @@ export default function SharePointIntegrationPage({ params }: { params: Promise<
       const response = await fetch(`${api}/sync?sourceId=${encodeURIComponent(source.id)}`, { method: "POST" });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? "The change scan could not be started.");
-      setSyncResult(data as SyncResult);
-      setSources((current) => current.map((item) => item.id === source.id ? { ...item, syncStatus: data.syncStatus ?? "READY", lastSyncedAt: new Date().toISOString(), lastError: data.failed ? `${data.failed} item(s) failed` : null } : item));
-      setNotice(`Change scan complete: ${data.discovered ?? 0} changed item(s), ${data.imported ?? 0} imported, ${data.duplicates ?? 0} already present, ${data.removed ?? 0} removed, ${data.failed ?? 0} failed.`);
+      setSyncResult(null);
+      setSources((current) => current.map((item) => item.id === source.id ? { ...item, syncStatus: data.syncStatus ?? "RUNNING", lastError: null } : item));
+      setNotice("Change scan started. New and updated documents will be analysed; removed sources will be marked removed. Refresh this page to see the completed status.");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "The change scan could not be started.");
     } finally { setSyncing(false); }

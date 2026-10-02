@@ -7,13 +7,13 @@ describe("FlowCoach answer citations", () => {
     const markup = renderToStaticMarkup(renderAnswerWithCitations(
       "See [1] and [2].\nUnknown [3] and <script>alert(1)</script>.",
       [
-        { id: "doc-1", kind: "document", title: "Document", date: "2026-01-01", excerpt: "Excerpt", href: "/clients/workspace-1/capture" },
+        { id: "doc-1", kind: "document", title: "Document", date: "2026-01-01", excerpt: "Excerpt", href: "/clients/workspace-1/documents/doc-1" },
         { id: "kpi-1", kind: "KPI record", title: "KPI", date: "2026-01-01", excerpt: "Excerpt", href: "https://evil.example/phish" },
       ],
       "workspace-1",
     ));
 
-    expect(markup).toContain('See <a href="/clients/workspace-1/capture">[1]</a> and [2].');
+    expect(markup).toContain('See <a href="/clients/workspace-1/documents/doc-1">[1]</a> and [2].');
     expect(markup).toContain("Unknown [3]");
     expect(markup).not.toContain("evil.example");
     expect(markup).toContain("&lt;script&gt;alert(1)&lt;/script&gt;");

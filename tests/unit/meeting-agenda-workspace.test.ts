@@ -44,11 +44,11 @@ describe("scratch pad agenda linkage contract", () => {
 
   it("passes the requested context to both initial and conflict-reload reads", () => {
     expect(scratchpad).toContain("requestedContextId ? `&contextId=${encodeURIComponent(requestedContextId)}`");
-    expect(scratchpad).toContain("const selected = rows[0] ?? null;");
+    expect(scratchpad).toContain("requestedNoteId\n        ? rows.find(row => row.id === requestedNoteId) ?? null\n        : requestedContextId ? rows[0] ?? null : null");
   });
 
   it("does not infer a context from an unrelated first note when no agenda is requested", () => {
-    expect(scratchpad).toContain("const selected = rows[0] ?? null;");
+    expect(scratchpad).toContain("requestedNoteId\n        ? rows.find(row => row.id === requestedNoteId) ?? null\n        : requestedContextId ? rows[0] ?? null : null");
     expect(scratchpad).toContain("setContextId(saved?.meetingContextId ?? requestedContextId)");
     expect(scratchpad).toContain("contextId: contextRef.current || null");
   });

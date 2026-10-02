@@ -15,7 +15,7 @@ describe("document-level tag review", () => {
   it("renders one document approval action with expandable tag detail", () => {
     expect(page).toContain("Approve document");
     expect(page).toContain("Reject document");
-    expect(page).toContain("Show supporting tags (not separate approval tasks)");
+    expect(page).toContain("Supporting tag detail (read-only)");
     expect(page).toContain("/api/tags/bulk");
   });
 });

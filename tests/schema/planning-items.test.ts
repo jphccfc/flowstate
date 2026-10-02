@@ -45,8 +45,9 @@ describe("planning item contract", () => {
     currentEmail = adminEmail;
     const list = await GET(new Request("http://localhost") as unknown as NextRequest, { params: Promise.resolve({ id: organizationId }) });
     expect(list.status).toBe(200);
-    const missingOwner = await POST(request({ type: "GOAL", title: "Unsafe owner", description: "Must require a member owner." }) as unknown as NextRequest, { params: Promise.resolve({ id: organizationId }) });
-    expect(missingOwner.status).toBe(400);
+    const defaultOwner = await POST(request({ type: "GOAL", title: "Admin-owned goal", description: "Defaults to the submitting user when no placeholder owner is supplied." }) as unknown as NextRequest, { params: Promise.resolve({ id: organizationId }) });
+    expect(defaultOwner.status).toBe(201);
+    expect(await defaultOwner.json()).toMatchObject({ ownerEmail: adminEmail, createdBy: adminEmail });
     const response = await POST(request({ type: "GOAL", title: "Admin-created goal", description: "Owned by an organisation member.", ownerEmail: "planning-advisor@test.com" }) as unknown as NextRequest, { params: Promise.resolve({ id: organizationId }) });
     expect(response.status).toBe(201);
     expect((await response.json()).createdBy).toBe(adminEmail);
@@ -58,9 +59,10 @@ describe("planning item contract", () => {
     expect(denied.status).toBe(403);
   });
 
-  it("rejects an owner from another organisation", async () => {
-    const response = await POST(request({ type: "GOAL", title: "Cross tenant goal", description: "Should not save.", ownerEmail: "planning-outsider@test.com" }) as unknown as NextRequest, { params: Promise.resolve({ id: organizationId }) });
-    expect(response.status).toBe(400);
+  it("allows a valid non-member placeholder owner without creating an account", async () => {
+    const response = await POST(request({ type: "GOAL", title: "Placeholder-owned goal", description: "Ownership may be recorded before an owner is invited.", ownerEmail: "planning-outsider@test.com" }) as unknown as NextRequest, { params: Promise.resolve({ id: organizationId }) });
+    expect(response.status).toBe(201);
+    expect(await response.json()).toMatchObject({ ownerEmail: "planning-outsider@test.com", createdBy: "planning-advisor@test.com" });
   });
 
   it("rejects a parent planning item from another organisation", async () => {

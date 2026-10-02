@@ -108,7 +108,9 @@ export default function ScratchpadPage({ params }: { params: Promise<{ id: strin
     }).then(rows => {
       if (!active) return;
       setNoteCollection(rows);
-      const selected = rows.find(row => row.id === requestedNoteId) ?? rows[0] ?? null;
+      const selected = requestedNoteId
+        ? rows.find(row => row.id === requestedNoteId) ?? null
+        : requestedContextId ? rows[0] ?? null : null;
       showNote(selected);
       if (requestedContextId && selected) { setContextId(requestedContextId); contextRef.current = requestedContextId; }
       loadedRef.current = true;
